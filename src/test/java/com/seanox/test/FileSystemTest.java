@@ -60,8 +60,10 @@ public class FileSystemTest {
         Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/C/ // /e"));
         Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("../../../a/b/c/ // /e"));
 
-        Assertions.assertEquals("/a/b/c/d/e/...", normalizePath("a/b/c/d/e/..."));
-        Assertions.assertEquals("/a/b/.../d/e", normalizePath("a/b/.../d/e/"));
+        Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/c/d/e/..."));
+        Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/.../d/e/"));
+        Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/. . ./d/e/"));
+        Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/c/d/e/. . ."));
 
         Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/\t/d/e"));
         Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/\n/d/e"));

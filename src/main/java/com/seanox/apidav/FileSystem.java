@@ -101,8 +101,8 @@ class FileSystem {
         if (path.matches("^.*[\\*\\?\"'<>\\|].*$"))
             throw new InvalidPathException(path, "Illegal character found: :*?\"'<>|");
         // Paths based only on spaces and dots are often a problem
-        if (path.matches("(^.*(/\\s+/)|(/\\.+/).*$)|(/\\.+$)"))
-            throw new InvalidPathException(path, "Illegal Character sequence found");
+        if (path.matches(".*/[\\s\\.]+(/.*)?$"))
+            throw new InvalidPathException(path, "Illegal character sequence found");
 
         return path;
     }
