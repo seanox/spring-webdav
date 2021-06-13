@@ -38,6 +38,7 @@ public @interface ApiDavMapping {
     String creationDate() default "";
     boolean isReadOnly()  default false;
     boolean isHidden()    default false;
+    boolean isPermitted() default true;
 
     enum Type {
         GET, META, PUT
