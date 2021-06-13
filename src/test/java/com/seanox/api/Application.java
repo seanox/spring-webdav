@@ -26,8 +26,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.io.IOException;
-
 // Normally @ComponentScan does not need to be used because Application.class
 // already sets the package com.seanox.api, but in this example there is still
 // a parallel com.seanox.test package. There are no classical UnitTests. Tests
@@ -45,8 +43,7 @@ import java.io.IOException;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String... options)
-            throws IOException {
+    public static void main(String... options) {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.CONSOLE);
         springApplication.setBanner((environment, sourceClass, out) -> out.println("A Fallback Banner...!"));
