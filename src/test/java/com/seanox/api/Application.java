@@ -36,10 +36,10 @@ import java.io.IOException;
 // must be configured.
 
 // Why are the tests not in com.seanox.apidav?
-// The tests must be recognized by Spring as a component and executed with the
-// startup. For this @ComponentScan must scan the package. For the release
-// version, however, it should be ensured that the library also works without
-// scanning com.seanox.apidav.
+// Spring Test is used for the tests. For this @ComponentScan must scan the
+// package. For the release version, however, it should be ensured that the
+// library com.seanox.apidav also works without @ComponentScan and therefore
+// another package is used for the tests of the package com.seanox.apidav.
 
 @ComponentScan({"com.seanox.api", "com.seanox.test"})
 @SpringBootApplication
