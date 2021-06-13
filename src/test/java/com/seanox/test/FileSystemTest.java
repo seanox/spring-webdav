@@ -13,7 +13,7 @@ public class FileSystemTest {
     // and reflections. This is error-prone because the compiler cannot support
     // during development and problems occur only at runtime during testing.
 
-    private static final Class FileSystemClass;
+    private static final Class<?> FileSystemClass;
     private static final Method FileSystemNormalizePathMethod;
 
     static {
@@ -39,7 +39,7 @@ public class FileSystemTest {
     }
 
     @Test
-    void testNormalitePath_1() {
+    void testNormalizePath_1() {
         Assertions.assertEquals("/", normalizePath(" "));
         Assertions.assertEquals("/a", normalizePath(" a "));
         Assertions.assertEquals("/a/b/c", normalizePath(" \\a/b\\c/ "));
@@ -53,7 +53,7 @@ public class FileSystemTest {
     }
 
     @Test
-    void testNormalitePath_2() {
+    void testNormalizePath_2() {
 
         // Paths based only on spaces and dots are often a problem
         Assertions.assertThrows(InvalidPathException.class, () -> normalizePath("a/b/C/ /e"));
@@ -78,7 +78,7 @@ public class FileSystemTest {
     }
 
     @Test
-    void testNormalitePath_3() {
+    void testNormalizePath_3() {
         Assertions.assertEquals("/a/b/c/d/e", normalizePath("a/b/c/d/e/"));
         Assertions.assertEquals("/a/b/c/d/e", normalizePath("a/b/c//d/e/"));
         Assertions.assertEquals("/a/b/c/d/e", normalizePath("a/b/c///d/e/"));
