@@ -21,10 +21,19 @@
  */
 package com.seanox.api;
 
+import com.seanox.apidav.ApiDavFilter;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 // Normally @ComponentScan does not need to be used because Application.class
 // already sets the package com.seanox.api, but in this example there is still
@@ -39,14 +48,39 @@ import org.springframework.context.annotation.ComponentScan;
 // library com.seanox.apidav also works without @ComponentScan and therefore
 // another package is used for the tests of the package com.seanox.apidav.
 
+// SpringBootServletInitializer to prepare the application to deploy on
+// external servlet container/runner.
+
 @ComponentScan({"com.seanox.api", "com.seanox.test"})
 @SpringBootApplication
-public class Application {
+public class Application extends SpringBootServletInitializer {
+
+    @Autowired
+    private ApplicationConfiguration applicationConfiguration;
 
     public static void main(String... options) {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.CONSOLE);
         springApplication.setBanner((environment, sourceClass, out) -> out.println("A Fallback Banner...!"));
         springApplication.run(options);
+    }
+
+    @Bean
+    public FilterRegistrationBean someFilterRegistration() {
+
+        final FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new ApiDavFilter());
+        registration.setName(ApiDavFilter.class.getName());
+        registration.addUrlPatterns("/*", "/context/*");
+        registration.setOrder(1);
+        return registration;
+    }
+
+    @Data
+    @Configuration
+    @ConfigurationProperties(prefix="example")
+    @EnableConfigurationProperties
+    public static class ApplicationConfiguration {
+        // Example of the configuration as an inner class in combination with lombok
     }
 }
