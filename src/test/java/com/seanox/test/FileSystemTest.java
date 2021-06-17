@@ -1,11 +1,17 @@
 package com.seanox.test;
 
+import com.seanox.apidav.ApiDavMapping;
+import com.seanox.apidav.FileSystemException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.InvalidPathException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class FileSystemTest {
 
@@ -14,27 +20,62 @@ public class FileSystemTest {
     // during development and problems occur only at runtime during testing.
 
     private static final Class<?> FileSystemClass;
+    private static final Constructor<?> FileSystemConstructor;
     private static final Method FileSystemNormalizePathMethod;
+    private static final Method FileSystemMapMethod;
 
     static {
         try {
             FileSystemClass = Class.forName("com.seanox.apidav.FileSystem");
+            FileSystemConstructor = FileSystemClass.getDeclaredConstructor();
+            FileSystemConstructor.setAccessible(true);
             FileSystemNormalizePathMethod = FileSystemClass.getDeclaredMethod("normalizePath", String.class);
             FileSystemNormalizePathMethod.setAccessible(true);
+            FileSystemMapMethod = Arrays.stream(FileSystemClass.getDeclaredMethods())
+                    .filter(method -> method.getName().equals("map"))
+                    .reduce((first, next) -> first).orElse(null);
+            FileSystemMapMethod.setAccessible(true);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
     }
 
-    private static String normalizePath(String path) {
+    private static Exception getTargetException(Exception exception) {
+        while (exception instanceof InvocationTargetException) {
+            if (!exception.equals(((InvocationTargetException)exception).getTargetException()))
+                exception = (Exception)((InvocationTargetException)exception).getTargetException();
+            else break;
+        }
+        return exception;
+    }
 
+    private static RuntimeException getTargetRuntimeException(Exception exception) {
+        exception = FileSystemTest.getTargetException(exception);
+        if (exception instanceof RuntimeException)
+            return (RuntimeException)exception;
+        return new RuntimeException(exception);
+    }
+
+    private static String normalizePath(String path) {
         try {return (String)FileSystemNormalizePathMethod.invoke(FileSystemClass, path);
         } catch (Exception exception) {
-            if (exception instanceof InvocationTargetException)
-                exception = (Exception)((InvocationTargetException)exception).getTargetException();
-            if (exception instanceof RuntimeException)
-                throw (RuntimeException)exception;
-            throw new RuntimeException(exception);
+            throw FileSystemTest.getTargetRuntimeException(exception);
+        }
+    }
+
+    private static Object createFileSystemInstanze()
+            throws Exception {
+        try {return FileSystemConstructor.newInstance();
+        } catch (Exception exception) {
+            throw FileSystemTest.getTargetRuntimeException(exception);
+        }
+    }
+
+    private static Object map(final Object fileSystemInstanze, final ApiDavMapping mappingAnnotation)
+            throws Exception {
+        try {return FileSystemMapMethod.invoke(fileSystemInstanze, mappingAnnotation, null);
+        } catch (Exception exception) {
+            throw FileSystemTest.getTargetException(exception);
         }
     }
 
@@ -96,5 +137,70 @@ public class FileSystemTest {
         Assertions.assertEquals("/a/b/c/d/e", normalizePath("a/b/c/\\/d/e"));
         Assertions.assertEquals("/a/b/c/d/e", normalizePath("a/b/c/\\\\/d/e"));
         Assertions.assertEquals("/a/b/c/d/e", normalizePath("a/b/c/\\\\\\/d/e"));
+    }
+
+    private static <T> Collection<T> collectApiAnnotations(String methodRegExFilter, Class<? extends T> searchAnnotation) {
+        final Collection<T> annotations = new ArrayList<>();
+        Arrays.stream(FileSystemTest.class.getDeclaredMethods())
+                .filter(method ->
+                        method.getName().matches(methodRegExFilter))
+                .sorted((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()))
+                .forEach(method -> {
+                    Arrays.stream(method.getDeclaredAnnotations())
+                            .filter(annotation -> annotation.annotationType().equals(searchAnnotation))
+                            .forEach(annotation -> annotations.add((T)annotation));
+                });
+        return annotations;
+    }
+
+    @ApiDavMapping(path="a")
+    private void map_1_1() {
+    }
+    @ApiDavMapping(path="/a")
+    private void map_1_2() {
+    }
+    @Test
+    void testMap_1()
+            throws Exception {
+        final Object fileSystem = FileSystemTest.createFileSystemInstanze();
+        Throwable throwable = Assertions.assertThrows(FileSystemException.class, () -> {
+                for (ApiDavMapping apiDavMapping : FileSystemTest.collectApiAnnotations("^map_1_.*", ApiDavMapping.class))
+                    FileSystemTest.map(fileSystem, apiDavMapping);
+        });
+        Assertions.assertEquals("Ambiguous Mapping: /a", throwable.getMessage());
+    }
+
+    @ApiDavMapping(path="/a/b/c")
+    private void map_2_1() {
+    }
+    @ApiDavMapping(path="/a/b/c/d/e")
+    private void map_2_2() {
+    }
+    @Test
+    void testMap_2()
+            throws Exception {
+        final Object fileSystem = FileSystemTest.createFileSystemInstanze();
+        Throwable throwable = Assertions.assertThrows(FileSystemException.class, () -> {
+            for (ApiDavMapping apiDavMapping : FileSystemTest.collectApiAnnotations("^map_2_.*", ApiDavMapping.class))
+                FileSystemTest.map(fileSystem, apiDavMapping);
+        });
+        Assertions.assertEquals("Ambiguous Mapping: /a/b/c/d", throwable.getMessage());
+    }
+
+    @ApiDavMapping(path="/a/b/c/d/e")
+    private void map_3_1() {
+    }
+    @ApiDavMapping(path="/a/b/c")
+    private void map_3_2() {
+    }
+    @Test
+    void testMap_3()
+            throws Exception {
+        final Object fileSystem = FileSystemTest.createFileSystemInstanze();
+        Throwable throwable = Assertions.assertThrows(FileSystemException.class, () -> {
+            for (ApiDavMapping apiDavMapping : FileSystemTest.collectApiAnnotations("^map_3_.*", ApiDavMapping.class))
+                FileSystemTest.map(fileSystem, apiDavMapping);
+        });
+        Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
 }

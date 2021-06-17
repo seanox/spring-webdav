@@ -21,46 +21,50 @@
  */
 package com.seanox.api.customer;
 
+import com.seanox.apidav.ApiDavInput;
 import com.seanox.apidav.ApiDavMapping;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.seanox.apidav.ApiDavMapping.Type.GET;
-import static com.seanox.apidav.ApiDavMapping.Type.PUT;
-
 // A managed bean is required.
 // There are various annotations for this: e.g. @Component, @Service, @RestController, ...
+// The methods and annotations for apiDAV combine well with @RestController.
 @Component
 public class CustomerController {
 
-    @ApiDavMapping(type=GET, path="/customer/list.xlsx")
-    public void getList(OutputStream output) {
+    private static final String CUSTOMER_LIST_XLSX = "/customer/list.xlsx";
+    @ApiDavMapping(path=CUSTOMER_LIST_XLSX)
+    public void list(OutputStream output) {
     }
-    @ApiDavMapping(type=PUT, path="/customer/list.xlsx")
-    public void putList(InputStream output) {
+    @ApiDavInput(path="/customer/list.xlsx")
+    public void list(InputStream output) {
     }
 
-    @ApiDavMapping(type=GET, path="/customer/reports/statistic.xlsx")
+    private static final String CUSTOMER_REPORTS_STATISTIC_XLSX = "/customer/reports/statistic.xlsx";
+    @ApiDavMapping(path=CUSTOMER_REPORTS_STATISTIC_XLSX)
     public void statistic(OutputStream output) {
     }
 
-    @ApiDavMapping(type=GET, path="/customer/reports/turnover.xlsx")
+    private static final String CUSTOMER_REPORTS_TURNOVER_XLSX = "/customer/reports/turnover.xlsx";
+    @ApiDavMapping(path=CUSTOMER_REPORTS_TURNOVER_XLSX)
     public void turnover(OutputStream output) {
     }
 
-    @ApiDavMapping(type=GET, path="/marketing/newsletter.pptx")
-    public void getNewsletter(OutputStream output) {
+    private static final String MARKETING_NEWSLETTER_PPTX = "/marketing/newsletter.pptx";
+    @ApiDavMapping(path=MARKETING_NEWSLETTER_PPTX)
+    public void newsletter(OutputStream output) {
     }
-    @ApiDavMapping(type=PUT, path="/marketing/newsletter.pptx")
-    public void putNewsletter(InputStream output) {
+    @ApiDavInput(path=MARKETING_NEWSLETTER_PPTX)
+    public void newsletter(InputStream output) {
     }
 
-    @ApiDavMapping(type=GET, path="/marketing/sales.pptx")
-    public void getSales(OutputStream output) {
+    private static final String MARKETING_SALES_PPTX = "/marketing/sales.pptx";
+    @ApiDavMapping(path=MARKETING_SALES_PPTX)
+    public void sales(OutputStream output) {
     }
-    @ApiDavMapping(type=PUT, path="/marketing/sales.pptx")
-    public void putSales(InputStream output) {
+    @ApiDavInput(path=MARKETING_SALES_PPTX)
+    public void sales(InputStream output) {
     }
 }

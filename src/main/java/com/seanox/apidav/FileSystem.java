@@ -29,7 +29,6 @@ import lombok.NonNull;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -38,22 +37,27 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
+// Rules (similar error behavior as mapping from RestController):
+// - Ambiguous mapping causes FileSystemException
+// - Virtual paths must be unique (case insensitive)
+// - Collisions (file + file / folder + folder / folder + file / file + folder) cause FileSystemException
+
 class FileSystem {
 
-    private final TreeMap<String, FileSystem.Entry> tree;
+    private final TreeMap<String, Entry> tree;
 
-    private final Date creationDate;
+    private static final Date CREATION_DATE = FileSystem.getBuildDate();
 
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
     FileSystem() {
         this.tree = new TreeMap<>();
-        this.creationDate = FileSystem.getBuildDate();
     }
 
     private static Date getBuildDate() {
@@ -99,7 +103,7 @@ class FileSystem {
 
         // Special characters only relevant for Windows (:*?"'<>|)
         if (path.matches("^.*[\\*\\?\"'<>\\|].*$"))
-            throw new InvalidPathException(path, "Illegal character found: :*?\"'<>|");
+            throw new InvalidPathException(path, "Illegal character found");
         // Paths based only on spaces and dots are often a problem
         if (path.matches(".*/[\\s\\.]+(/.*)?$"))
             throw new InvalidPathException(path, "Illegal character sequence found");
@@ -107,10 +111,58 @@ class FileSystem {
         return path;
     }
 
-    Entry map(final ApiDavMapping mappingAnnotation, final Object object, final Method callback)
+    private static Entry add(final TreeMap<String, Entry> tree, final Entry entry)
+            throws FileSystemException {
+
+        // Files cannot already exist, because none are created recursively.
+        if (entry instanceof File
+                && tree.containsKey(entry.getPath().toLowerCase()))
+            throw new FileSystemException("Ambiguous Mapping: " + entry.getPath());
+
+        // Parent entries can only be folders.
+        String parentPath = entry.getParent();
+        if (tree.containsKey(parentPath.toLowerCase())
+                && !(tree.get(parentPath.toLowerCase()) instanceof Folder))
+            throw new FileSystemException("Ambiguous Mapping: " + entry.getPath());
+
+        Folder parentFolder = (Folder)tree.get(parentPath.toLowerCase());
+        if (entry instanceof Folder
+                && ((Folder)entry).isRoot()) {
+            if (Objects.nonNull(parentFolder))
+                return parentFolder;
+            tree.put(entry.getPath().toLowerCase(), entry);
+            return entry;
+        }
+
+        if (Objects.isNull(parentFolder))
+            parentFolder = (Folder)FileSystem.add(tree, Folder.builder()
+                    .path(parentPath)
+                    .name(parentPath.replaceAll("^.*/(?=[^/]*$)", ""))
+                    .creationDate(FileSystem.CREATION_DATE)
+                    .lastModified(FileSystem.CREATION_DATE)
+                    .collection(new HashSet<>())
+                    .build());
+
+        entry.path = parentFolder.getPath().replaceAll("/+$", "") + "/" + entry.getName();
+        tree.put(entry.getPath().toLowerCase(), entry);
+        parentFolder.getCollection().add(entry);
+
+        return entry;
+    }
+
+    File map(final ApiDavMapping mappingAnnotation, final Callback... callback)
             throws FileSystemException {
 
         String path = mappingAnnotation.path();
+        try {path = FileSystem.normalizePath(path);
+        } catch (InvalidPathException exception) {
+            String message = "Invalid mapping path";
+            if (Objects.isNull(exception.getReason())
+                    || exception.getReason().isBlank())
+                throw new FileSystemException("Invalid mapping path");
+            throw new FileSystemException("Invalid mapping path: " + exception.getReason().trim());
+        }
+
         path = path.replace('\\', '/');
         path = path.replaceAll("//+$", "").trim();
         if (path.isBlank()) {
@@ -119,14 +171,14 @@ class FileSystem {
             else throw new FileSystemException("Invalid mapping path: " + path);
         }
 
-        String name = path.replaceAll("[^/]+$", "");
+        String name = path.replaceAll("^.*/(?=[^/]*$)", "");
         if (name.isBlank()) {
             if (mappingAnnotation.path().isBlank())
                 throw new FileSystemException("Invalid mapping path");
             else throw new FileSystemException("Invalid mapping path: " + path);
         }
 
-        Date creationDate = this.creationDate;
+        Date creationDate = this.CREATION_DATE;
 
         Date lastModified = null;
         if (!mappingAnnotation.lastModified().isBlank()) {
@@ -146,7 +198,7 @@ class FileSystem {
         boolean isReadOnly = mappingAnnotation.isReadOnly();
         boolean isPermitted = mappingAnnotation.isPermitted();
 
-        File file = File.builder()
+        final File file = File.builder()
                 .path(path)
                 .name(name)
                 .creationDate(creationDate)
@@ -157,25 +209,65 @@ class FileSystem {
                 .isHidden(isReadOnly)
                 .isPermitted(isPermitted)
                 .build();
+        // TODO: add/set callbacks
 
-        // TODO: callbacks
+        // First of all, the implementation is not thread-safe.
+        // It is not required for WebDAV/apiDAV implementation.
 
-        return file;
+        // To avoid adding unnecessary entries to the tree in case of errors, a
+        // working copy is used. Only if no errors occur, the copy is merged
+        // into the final tree.
+
+        // The Add method creates recursive parent structures of folders, this
+        // is not good in case of error when adding them to the final tree.
+        // FileSystem can be used as an instance (which is not planned) and if
+        // the map method is called and it generates a FileSystemException, the
+        // error can be caught and the instance from FileSystem will be used
+        // further. In that case no automatically recursively created folders
+        // should be added to the final tree.
+
+        // PutAll to merge looks strange, but the TreeMap replaces eponymous
+        // and so it works as expected.
+
+        final TreeMap<String, FileSystem.Entry> treeWorkspace = (TreeMap<String, Entry>)this.tree.clone();
+        final Entry entry = FileSystem.add(treeWorkspace, file);
+        this.tree.putAll(treeWorkspace);
+        return (File)entry;
     }
 
-    @Getter
+    @Override
+    public String toString() {
+
+        final StringBuilder builder = new StringBuilder();
+        for (final Entry entry : this.tree.values()) {
+            if (entry instanceof Folder
+                    && ((Folder)entry).isRoot())
+                continue;
+            builder.append(entry.getParent().replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
+                    .append(entry instanceof Folder ? "+" : "-")
+                    .append(" ")
+                    .append(entry.getName() + System.lineSeparator());
+        }
+        return builder.toString().trim();
+    }
+
+    @Getter(AccessLevel.PACKAGE)
     @AllArgsConstructor
     abstract static class Entry {
 
-        private final String path;
-        private final String name;
-        private final Date creationDate;
-        private final Date lastModified;
-        private final boolean isHidden;
-        private final boolean isReadOnly;
+        private String path;
+        private String name;
+        private Date creationDate;
+        private Date lastModified;
+        private boolean isHidden;
+        private boolean isReadOnly;
+
+        String getParent() {
+            return this.path.replaceAll("((?<=.)/[^/]+$)|([^/]+$)", "");
+        }
     }
 
-    @Getter @NonNull
+    @Getter(AccessLevel.PACKAGE) @NonNull
     static class Folder extends Entry {
 
         private final Set<Entry> collection;
@@ -187,15 +279,19 @@ class FileSystem {
             super(path, name, creationDate, lastModified, isHidden, isReadOnly);
             this.collection = collection;
         }
+
+        boolean isRoot() {
+            return this.getPath().equals("/");
+        }
     }
 
-    @Getter
+    @Getter(AccessLevel.PACKAGE)
     static class File extends Entry {
 
-        private final long contentLength;
-        private final String contentType;
-        private final boolean isPermitted;
-        private final Map<Class<? extends Annotation>, Callback> callbacks;
+        private long contentLength;
+        private String contentType;
+        private boolean isPermitted;
+        private Map<Class<? extends Annotation>, Callback> callbacks;
 
         @Builder(access=AccessLevel.PRIVATE)
         File(final String path, final String name,
@@ -209,15 +305,6 @@ class FileSystem {
             this.isPermitted = isPermitted;
 
             this.callbacks = callbacks;
-        }
-
-        @Getter
-        @Builder(access=AccessLevel.PRIVATE)
-        private static class Callback<T extends ApiDavMapping & ApiDavProperty> {
-
-            private final T type;
-            private final Object object;
-            private final Method method;
         }
     }
 }
