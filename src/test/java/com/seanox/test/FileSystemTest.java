@@ -144,7 +144,7 @@ public class FileSystemTest {
         Arrays.stream(FileSystemTest.class.getDeclaredMethods())
                 .filter(method ->
                         method.getName().matches(methodRegExFilter))
-                .sorted((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()))
+                .sorted((method, compare) -> method.getName().compareToIgnoreCase(compare.getName()))
                 .forEach(method -> {
                     Arrays.stream(method.getDeclaredAnnotations())
                             .filter(annotation -> annotation.annotationType().equals(searchAnnotation))
@@ -202,5 +202,39 @@ public class FileSystemTest {
                 FileSystemTest.map(fileSystem, apiDavMapping);
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
+    }
+
+    @ApiDavMapping(path="/a/b/c/d/e")
+    private void map_4_1() {
+    }
+    @ApiDavMapping(path="/a/b/C")
+    private void map_4_2() {
+    }
+    @Test
+    void testMap_4()
+            throws Exception {
+        final Object fileSystem = FileSystemTest.createFileSystemInstanze();
+        Throwable throwable = Assertions.assertThrows(FileSystemException.class, () -> {
+            for (ApiDavMapping apiDavMapping : FileSystemTest.collectApiAnnotations("^map_4_.*", ApiDavMapping.class))
+                FileSystemTest.map(fileSystem, apiDavMapping);
+        });
+        Assertions.assertEquals("Ambiguous Mapping: /a/b/C", throwable.getMessage());
+    }
+
+    @ApiDavMapping(path="/a/B/c/d/e")
+    private void map_5_1() {
+    }
+    @ApiDavMapping(path="/A/b/c")
+    private void map_5_2() {
+    }
+    @Test
+    void testMap_5()
+            throws Exception {
+        final Object fileSystem = FileSystemTest.createFileSystemInstanze();
+        Throwable throwable = Assertions.assertThrows(FileSystemException.class, () -> {
+            for (ApiDavMapping apiDavMapping : FileSystemTest.collectApiAnnotations("^map_5_.*", ApiDavMapping.class))
+                FileSystemTest.map(fileSystem, apiDavMapping);
+        });
+        Assertions.assertEquals("Ambiguous Mapping: /A/b/c", throwable.getMessage());
     }
 }
