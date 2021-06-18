@@ -33,38 +33,38 @@ import java.lang.reflect.Method;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ApiDavProperty {
+public @interface ApiDavInput {
 
     String path();
-    Property property();
-
-    enum Property {
-        ContentLength, ContentType, LastModified, CreationDate
-    }
+    long contentLengthMax() default -1;
+    String accept()         default "*/*";
 
     @Getter(AccessLevel.PACKAGE)
-    static class PropertyCallback extends Callback {
+    static class InputCallback extends Callback {
 
-        private Property property;
+        private long contentLengthMax;
+        private String accept;
 
         @Builder(access=AccessLevel.PRIVATE)
-        PropertyCallback(final String path, final Type type, final Object object, final Method method,
-                final Property property) {
+        InputCallback(final String path, final Type type, final Object object, final Method method,
+                final long contentLengthMax, final String accept) {
 
             super(path, type, object, method);
 
-            this.property = property;
+            this.contentLengthMax = contentLengthMax;
+            this.accept           = accept;
         }
 
-        static PropertyCallback create(final ApiDavProperty annotation, final Object object, final Method method) {
+        static InputCallback create(final ApiDavInput annotation, final Object object, final Method method) {
 
-            return PropertyCallback.builder()
+            return InputCallback.builder()
                     .path(annotation.path())
-                    .type(Type.Property)
+                    .type(Type.Input)
                     .object(object)
                     .method(method)
 
-                    .property(annotation.property())
+                    .contentLengthMax(annotation.contentLengthMax())
+                    .accept(annotation.accept())
                     .build();
         }
     }

@@ -33,38 +33,38 @@ import java.lang.reflect.Method;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ApiDavProperty {
+public @interface ApiDavAttribute {
 
     String path();
-    Property property();
+    Attribute attribute();
 
-    enum Property {
-        ContentLength, ContentType, LastModified, CreationDate
+    enum Attribute {
+        Meta, ReadOnly, Hidden, Permission, Acceptance
     }
 
     @Getter(AccessLevel.PACKAGE)
-    static class PropertyCallback extends Callback {
+    static class AttributeCallback extends Callback {
 
-        private Property property;
+        private Attribute attribute;
 
         @Builder(access=AccessLevel.PRIVATE)
-        PropertyCallback(final String path, final Type type, final Object object, final Method method,
-                final Property property) {
+        AttributeCallback(final String path, final Type type, final Object object, final Method method,
+                final Attribute attribute) {
 
             super(path, type, object, method);
 
-            this.property = property;
+            this.attribute = attribute;
         }
 
-        static PropertyCallback create(final ApiDavProperty annotation, final Object object, final Method method) {
+        static AttributeCallback create(final ApiDavAttribute annotation, final Object object, final Method method) {
 
-            return PropertyCallback.builder()
+            return AttributeCallback.builder()
                     .path(annotation.path())
-                    .type(Type.Property)
+                    .type(Type.Attribute)
                     .object(object)
                     .method(method)
 
-                    .property(annotation.property())
+                    .attribute(annotation.attribute())
                     .build();
         }
     }
