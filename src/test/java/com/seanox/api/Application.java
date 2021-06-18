@@ -61,7 +61,7 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String... options) {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.CONSOLE);
-        springApplication.setBanner((environment, sourceClass, out) -> out.println("A Fallback Banner...!"));
+        springApplication.setBanner((environment, sourceClass, output) -> output.println("A Fallback Banner...!"));
         springApplication.run(options);
     }
 
