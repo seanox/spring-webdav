@@ -24,6 +24,16 @@ package com.seanox.apidav;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+/**
+ * Testing private parts and/or components visible only in the package requires
+ * an adapter for access.
+ *
+ * Why are the tests not in com.seanox.apidav?
+ * Spring Test is used for the tests. For this @ComponentScan must scan the
+ * package. For the release version, however, it should be ensured that the
+ * library com.seanox.apidav also works without @ComponentScan and therefore
+ * another package is used for the tests of the package com.seanox.apidav.
+ */
 public class CallbackAdapter {
 
     public static ApiDavAttribute.AttributeCallback createAttributeCallback(final ApiDavAttribute attributeAnnotation,

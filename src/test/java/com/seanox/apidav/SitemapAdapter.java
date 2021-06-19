@@ -26,6 +26,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * Testing private parts and/or components visible only in the package requires
+ * an adapter for access.
+ *
+ * Why are the tests not in com.seanox.apidav?
+ * Spring Test is used for the tests. For this @ComponentScan must scan the
+ * package. For the release version, however, it should be ensured that the
+ * library com.seanox.apidav also works without @ComponentScan and therefore
+ * another package is used for the tests of the package com.seanox.apidav.
+ */
 public class SitemapAdapter {
 
     private static final Method SitemapNormalizePathMethod;
@@ -66,9 +76,9 @@ public class SitemapAdapter {
         }
     }
 
-    public static Object map(final Sitemap sitemap, final Annotation[] annotations)
+    public static Object map(final Object sitemap, final Annotation[] annotations)
             throws Exception {
-        return sitemap.map(Arrays.stream(annotations).map(annotation -> {
+        return ((Sitemap)sitemap).map(Arrays.stream(annotations).map(annotation -> {
             try {return CallbackAdapter.createCallback(annotation);
             } catch (AnnotationException exception) {
                 throw new AdapterException(exception);

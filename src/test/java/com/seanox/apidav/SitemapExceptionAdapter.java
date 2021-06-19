@@ -21,6 +21,11 @@
  */
 package com.seanox.apidav;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
 /**
  * Testing private parts and/or components visible only in the package requires
  * an adapter for access.
@@ -31,13 +36,9 @@ package com.seanox.apidav;
  * library com.seanox.apidav also works without @ComponentScan and therefore
  * another package is used for the tests of the package com.seanox.apidav.
  */
-public class AdapterException extends RuntimeException {
+public class SitemapExceptionAdapter {
 
-    public AdapterException(final String message) {
-        super(message);
-    }
-
-    public AdapterException(final Throwable cause) {
-        super(cause);
+    public static Class<SitemapException> getSitemapExceptionClass() {
+        return SitemapException.class;
     }
 }
