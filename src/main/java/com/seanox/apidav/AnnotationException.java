@@ -21,9 +21,9 @@
  */
 package com.seanox.apidav;
 
-public class FileSystemException extends Exception {
+class AnnotationException extends Exception {
 
-    FileSystemException(final String message) {
+    AnnotationException(final String message) {
         super(message);
     }
 }

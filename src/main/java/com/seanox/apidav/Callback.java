@@ -2,11 +2,8 @@ package com.seanox.apidav;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +34,6 @@ abstract class Callback {
     }
 
     enum Type {
-        Mapping, Input, Attribute, Property
+        Attribute, Input, Mapping, Property
     }
 }

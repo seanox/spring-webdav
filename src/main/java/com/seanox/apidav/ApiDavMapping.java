@@ -77,7 +77,19 @@ public @interface ApiDavMapping {
         }
 
         static MappingCallback create(final ApiDavMapping apiDavMapping, final Object object, final Method method)
-                throws ParseException {
+                throws AnnotationException {
+
+            Date creationDate;
+            try {creationDate = Callback.convertDateTime(apiDavMapping.creationDate());
+            } catch (ParseException exception) {
+                throw new AnnotationException("Invalid value for creationDate: " + apiDavMapping.creationDate().trim());
+            }
+
+            Date lastModified;
+            try {lastModified = Callback.convertDateTime(apiDavMapping.lastModified());
+            } catch (ParseException exception) {
+                throw new AnnotationException("Invalid value for lastModified: " + apiDavMapping.lastModified().trim());
+            }
 
             return MappingCallback.builder()
                     .path(apiDavMapping.path())
@@ -87,8 +99,8 @@ public @interface ApiDavMapping {
 
                     .contentLength(apiDavMapping.contentLength())
                     .contentType(Callback.convertText(apiDavMapping.contentType()))
-                    .creationDate(Callback.convertDateTime(apiDavMapping.creationDate()))
-                    .lastModified(Callback.convertDateTime(apiDavMapping.lastModified()))
+                    .creationDate(creationDate)
+                    .lastModified(lastModified)
                     .isReadOnly(apiDavMapping.isReadOnly())
                     .isHidden(apiDavMapping.isHidden())
                     .isPermitted(apiDavMapping.isPermitted())
