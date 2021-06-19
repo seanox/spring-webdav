@@ -21,11 +21,6 @@
  */
 package com.seanox.apidav;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 /**
  * Testing private parts and/or components visible only in the package requires
  * an adapter for access.

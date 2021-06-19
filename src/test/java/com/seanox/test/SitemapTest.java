@@ -101,10 +101,7 @@ public class SitemapTest {
                 .filter(method ->
                         method.getName().matches(methodRegExFilter))
                 .sorted((method, compare) -> method.getName().compareToIgnoreCase(compare.getName()))
-                .forEach(method -> {
-                    Arrays.stream(method.getDeclaredAnnotations())
-                            .forEach(annotation -> annotations.add(annotation));
-                });
+                .forEach(method -> annotations.addAll(Arrays.asList(method.getDeclaredAnnotations())));
         return annotations;
     }
 
@@ -115,8 +112,7 @@ public class SitemapTest {
     private void map_1_2() {
     }
     @Test
-    void testMap_1()
-            throws Exception {
+    void testMap_1() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_1_.*"))
@@ -132,8 +128,7 @@ public class SitemapTest {
     private void map_2_2() {
     }
     @Test
-    void testMap_2()
-            throws Exception {
+    void testMap_2() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_2_.*"))
@@ -149,8 +144,7 @@ public class SitemapTest {
     private void map_3_2() {
     }
     @Test
-    void testMap_3()
-            throws Exception {
+    void testMap_3() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_3_.*"))
@@ -166,8 +160,7 @@ public class SitemapTest {
     private void map_4_2() {
     }
     @Test
-    void testMap_4()
-            throws Exception {
+    void testMap_4() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_4_.*"))
@@ -183,8 +176,7 @@ public class SitemapTest {
     private void map_5_2() {
     }
     @Test
-    void testMap_5()
-            throws Exception {
+    void testMap_5() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_5_.*"))
