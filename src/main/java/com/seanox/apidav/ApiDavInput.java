@@ -40,10 +40,10 @@ public @interface ApiDavInput {
     String accept()         default "*/*";
 
     @Getter(AccessLevel.PACKAGE)
-    static class InputCallback extends Callback {
+    class InputCallback extends Callback {
 
-        private long contentLengthMax;
-        private String accept;
+        private final long contentLengthMax;
+        private final String accept;
 
         @Builder(access=AccessLevel.PRIVATE)
         InputCallback(final String path, final Type type, final Object object, final Method method,

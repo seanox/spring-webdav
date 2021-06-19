@@ -48,16 +48,16 @@ public @interface ApiDavMapping {
     boolean isAccepted()  default true;
 
     @Getter(AccessLevel.PACKAGE)
-    static class MappingCallback extends Callback {
+    class MappingCallback extends Callback {
 
-        private long contentLength;
-        private String contentType;
-        private Date creationDate;
-        private Date lastModified;
-        private boolean isReadOnly;
-        private boolean isHidden;
-        private boolean isPermitted;
-        private boolean isAccepted;
+        private final long contentLength;
+        private final String contentType;
+        private final Date creationDate;
+        private final Date lastModified;
+        private final boolean isReadOnly;
+        private final boolean isHidden;
+        private final boolean isPermitted;
+        private final boolean isAccepted;
 
         @Builder(access=AccessLevel.PRIVATE)
         MappingCallback(final String path, final Type type, final Object object, final Method method,

@@ -43,9 +43,9 @@ public @interface ApiDavProperty {
     }
 
     @Getter(AccessLevel.PACKAGE)
-    static class PropertyCallback extends Callback {
+    class PropertyCallback extends Callback {
 
-        private Property property;
+        private final Property property;
 
         @Builder(access=AccessLevel.PRIVATE)
         PropertyCallback(final String path, final Type type, final Object object, final Method method,

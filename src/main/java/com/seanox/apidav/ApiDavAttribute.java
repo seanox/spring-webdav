@@ -43,9 +43,9 @@ public @interface ApiDavAttribute {
     }
 
     @Getter(AccessLevel.PACKAGE)
-    static class AttributeCallback extends Callback {
+    class AttributeCallback extends Callback {
 
-        private Attribute attribute;
+        private final Attribute attribute;
 
         @Builder(access=AccessLevel.PRIVATE)
         AttributeCallback(final String path, final Type type, final Object object, final Method method,

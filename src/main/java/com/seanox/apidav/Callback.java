@@ -15,10 +15,10 @@ abstract class Callback {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd h-h:mm:ss";
 
-    private String path;
-    private Type   type;
-    private Object object;
-    private Method method;
+    private final String path;
+    private final Type   type;
+    private final Object object;
+    private final Method method;
 
     static Date convertDateTime(String datetime)
             throws ParseException {
