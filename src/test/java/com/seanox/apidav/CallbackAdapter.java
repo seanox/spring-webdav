@@ -46,6 +46,11 @@ public class CallbackAdapter {
         return ApiDavProperty.PropertyCallback.create(propertyAnnotation, object, method);
     }
 
+    public static Callback createCallback(final Annotation annotation)
+            throws AnnotationException {
+        return CallbackAdapter.createCallback(annotation, null, null);
+    }
+
     public static Callback createCallback(final Annotation annotation, final Object object, final Method method)
             throws AnnotationException {
         if (annotation.annotationType().equals(ApiDavAttribute.class))

@@ -26,4 +26,8 @@ public class AdapterException extends RuntimeException {
     public AdapterException(final String message) {
         super(message);
     }
+
+    public AdapterException(final Throwable cause) {
+        super(cause);
+    }
 }
