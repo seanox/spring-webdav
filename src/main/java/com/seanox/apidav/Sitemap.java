@@ -42,8 +42,12 @@ import java.util.TreeMap;
 
 // Rules (similar error behavior as mapping from RestController):
 // - Ambiguous mapping causes SitemapException
-// - Virtual paths must be unique (case insensitive)
+// - Virtual paths must be unique (case insensitive), otherwise SitemapException
 // - Collisions (file + file / folder + folder / folder + file / file + folder) cause SitemapException
+// - Paths must start with slash, otherwise SitemapException (TODO)
+// - Not permitted (unauthorized) entries are not included in the sitemap (TODO)
+// - Not permitted (unauthorized) entries are used as non-existent (TODO)
+// - Empty folders are not included in the Sitemap, e.g. if files in substructure are not permitted (TODO)
 
 class Sitemap {
 
@@ -110,18 +114,18 @@ class Sitemap {
             throws SitemapException {
 
         // Files cannot already exist, because none are created recursively.
-        if (entry instanceof File
+        if (entry.isFile()
                 && tree.containsKey(entry.getPath().toLowerCase()))
             throw new SitemapException("Ambiguous Mapping: " + entry.getPath());
 
         // Parent entries can only be folders.
         String parentPath = entry.getParent();
         if (tree.containsKey(parentPath.toLowerCase())
-                && !(tree.get(parentPath.toLowerCase()) instanceof Folder))
+                && !(tree.get(parentPath.toLowerCase()).isFolder()))
             throw new SitemapException("Ambiguous Mapping: " + entry.getPath());
 
         Folder parentFolder = (Folder)tree.get(parentPath.toLowerCase());
-        if (entry instanceof Folder
+        if (entry.isFolder()
                 && ((Folder)entry).isRoot()) {
             if (Objects.nonNull(parentFolder))
                 return parentFolder;
@@ -215,16 +219,20 @@ class Sitemap {
         return (File)entry;
     }
 
+    Entry locate(final String path) {
+        return this.tree.get(Sitemap.normalizePath(path).toLowerCase());
+    }
+
     @Override
     public String toString() {
 
         final StringBuilder builder = new StringBuilder();
         for (final Entry entry : this.tree.values()) {
-            if (entry instanceof Folder
+            if (entry.isFolder()
                     && ((Folder)entry).isRoot())
                 continue;
             builder.append(entry.getParent().replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
-                    .append(entry instanceof Folder ? "+" : "-")
+                    .append(entry.isFolder() ? "+" : "-")
                     .append(" ")
                     .append(entry.getName())
                     .append(System.lineSeparator());
@@ -246,6 +254,14 @@ class Sitemap {
 
         String getParent() {
             return this.path.replaceAll("((?<=.)/[^/]+$)|([^/]+$)", "");
+        }
+
+        boolean isFolder() {
+            return this instanceof Folder;
+        }
+
+        boolean isFile() {
+            return this instanceof File;
         }
     }
 
