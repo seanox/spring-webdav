@@ -166,7 +166,7 @@ public class SitemapTest {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_4_.*"))
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
-        Assertions.assertEquals("Ambiguous Mapping: /a/b/C", throwable.getMessage());
+        Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
 
     @ApiDavMapping(path="/a/B/c/d/e")
@@ -182,6 +182,39 @@ public class SitemapTest {
             for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_5_.*"))
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
-        Assertions.assertEquals("Ambiguous Mapping: /A/b/c", throwable.getMessage());
+        Assertions.assertEquals("Ambiguous Mapping: /a/B/c", throwable.getMessage());
+    }
+
+    @ApiDavMapping(path="/customer/list.xlsx")
+    private void map_6_1() {
+    }
+    @ApiDavMapping(path="/customer/reports/statistic.xlsx")
+    private void map_6_2() {
+    }
+    @ApiDavMapping(path="/customer/reports/turnover.xlsx")
+    private void map_6_3() {
+    }
+    @ApiDavMapping(path="/marketing/newsletter.pptx")
+    private void map_6_4() {
+    }
+    @ApiDavMapping(path="/marketing/sales.pptx")
+    private void map_6_5() {
+    }
+    @Test
+    void testMap_6()
+            throws Exception {
+        final Object sitemap = SitemapAdapter.createInstance();
+        for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_6_.*"))
+            SitemapAdapter.map(sitemap, new Annotation[] {annotation});
+        final String output = sitemap.toString().replaceAll("\\R", "\n");
+        final String pattern = "+ customer\n" +
+                "  - list.xlsx\n" +
+                "  + reports\n" +
+                "    - statistic.xlsx\n" +
+                "    - turnover.xlsx\n" +
+                "+ marketing\n" +
+                "  - newsletter.pptx\n" +
+                "  - sales.pptx";
+        Assertions.assertEquals(pattern, output);
     }
 }

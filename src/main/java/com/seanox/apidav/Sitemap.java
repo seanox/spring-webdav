@@ -21,21 +21,16 @@
  */
 package com.seanox.apidav;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
@@ -110,41 +105,33 @@ class Sitemap {
         return path;
     }
 
-    private static Entry add(final TreeMap<String, Entry> tree, final Entry entry)
+    private Entry add(final TreeMap<String, Entry> tree, final Entry entry)
             throws SitemapException {
 
         // Files cannot already exist, because none are created recursively.
+        // The existing and colliding path in the tree is used as the message.
         if (entry.isFile()
-                && tree.containsKey(entry.getPath().toLowerCase()))
-            throw new SitemapException("Ambiguous Mapping: " + entry.getPath());
+                && tree.containsKey(entry.getPathUnique()))
+            throw new SitemapException("Ambiguous Mapping: " + tree.get(entry.getPathUnique()).getPath());
 
         // Parent entries can only be folders.
-        String parentPath = entry.getParent();
-        if (tree.containsKey(parentPath.toLowerCase())
-                && !(tree.get(parentPath.toLowerCase()).isFolder()))
+        // Caution, no parent entry must exist at this time, so use the path.
+        // Or with ambiguous mapping, it doesn't have to be a folder.
+        // The existing and colliding path in the tree is used as the message.
+        String parentPathUnique = entry.getParentPathUnique();
+        if (Objects.nonNull(parentPathUnique)
+                && tree.containsKey(parentPathUnique)
+                && !tree.get(parentPathUnique).isFolder())
             throw new SitemapException("Ambiguous Mapping: " + entry.getPath());
 
-        Folder parentFolder = (Folder)tree.get(parentPath.toLowerCase());
-        if (entry.isFolder()
-                && ((Folder)entry).isRoot()) {
-            if (Objects.nonNull(parentFolder))
-                return parentFolder;
-            tree.put(entry.getPath().toLowerCase(), entry);
-            return entry;
-        }
+        Folder parentFolder = entry.getParent();
+        if (Objects.nonNull(entry.getParentPath())
+                && Objects.isNull(parentFolder))
+            parentFolder = (Folder)this.add(tree, new Folder(entry.getParentPath()));
 
-        if (Objects.isNull(parentFolder))
-            parentFolder = (Folder) Sitemap.add(tree, Folder.builder()
-                    .path(parentPath)
-                    .name(parentPath.replaceAll("^.*/(?=[^/]*$)", ""))
-                    .creationDate(Sitemap.CREATION_DATE)
-                    .lastModified(Sitemap.CREATION_DATE)
-                    .collection(new HashSet<>())
-                    .build());
-
-        entry.path = parentFolder.getPath().replaceAll("/+$", "") + "/" + entry.getName();
-        tree.put(entry.getPath().toLowerCase(), entry);
-        parentFolder.getCollection().add(entry);
+        tree.put(entry.getPathUnique(), entry);
+        if (Objects.nonNull(parentFolder))
+            parentFolder.getCollection().add(entry);
 
         return entry;
     }
@@ -153,8 +140,7 @@ class Sitemap {
             throws SitemapException {
 
         final ApiDavMapping.MappingCallback mappingCallback = (ApiDavMapping.MappingCallback)Arrays.stream(callbacks)
-                .filter(callback -> callback.getType().equals(Callback.Type.Mapping))
-                .reduce((first, next) -> first).orElse(null);
+                .filter(callback -> callback.getType().equals(Callback.Type.Mapping)).findFirst().orElse(null);
         if (Objects.isNull(mappingCallback))
             throw new SitemapException("Mapping is missing");
 
@@ -167,33 +153,20 @@ class Sitemap {
             throw new SitemapException("Invalid mapping path: " + exception.getReason().trim());
         }
 
-        path = path.replace('\\', '/');
-        path = path.replaceAll("//+$", "").trim();
         if (path.isBlank()) {
             if (mappingCallback.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
             else throw new SitemapException("Invalid mapping path: " + mappingCallback.getPath().trim());
         }
 
-        String name = path.replaceAll("^.*/(?=[^/]*$)", "");
+        final String name = path.replaceAll("^.*/(?=[^/]*$)", "");
         if (name.isBlank()) {
             if (mappingCallback.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
             else throw new SitemapException("Invalid mapping path: " + mappingCallback.getPath().trim());
         }
 
-        final File file = File.builder()
-                .path(path)
-                .name(name)
-                .creationDate(Sitemap.CREATION_DATE)
-                .lastModified(mappingCallback.getLastModified())
-                .contentLength(Math.max(-1, mappingCallback.getContentLength()))
-                .contentType(mappingCallback.getContentType())
-                .isReadOnly(mappingCallback.isReadOnly())
-                .isHidden(mappingCallback.isHidden())
-                .isPermitted(mappingCallback.isPermitted())
-                .callbacks(new HashSet<>(Arrays.asList(callbacks)))
-                .build();
+        final File file = new File(path);
 
         // First of all, the implementation is not thread-safe.
         // It is not required for WebDAV/apiDAV implementation.
@@ -214,7 +187,7 @@ class Sitemap {
         // and so it works as expected.
 
         final TreeMap<String, Sitemap.Entry> treeWorkspace = (TreeMap<String, Entry>)this.tree.clone();
-        final Entry entry = Sitemap.add(treeWorkspace, file);
+        final Entry entry = this.add(treeWorkspace, file);
         this.tree.putAll(treeWorkspace);
         return (File)entry;
     }
@@ -228,10 +201,8 @@ class Sitemap {
 
         final StringBuilder builder = new StringBuilder();
         for (final Entry entry : this.tree.values()) {
-            if (entry.isFolder()
-                    && ((Folder)entry).isRoot())
-                continue;
-            builder.append(entry.getParent().replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
+            final String parentPath = Objects.nonNull(entry.getParentPath()) ? entry.getParentPath() : "";
+            builder.append(parentPath.replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
                     .append(entry.isFolder() ? "+" : "-")
                     .append(" ")
                     .append(entry.getName())
@@ -240,20 +211,24 @@ class Sitemap {
         return builder.toString().trim();
     }
 
-    @Getter(AccessLevel.PACKAGE)
-    @AllArgsConstructor(access=AccessLevel.PRIVATE)
-    abstract static class Entry {
+    abstract class Entry {
 
+        private String parent;
         private String path;
+        private String name;
 
-        private final String name;
-        private final Date creationDate;
-        private final Date lastModified;
-        private final boolean isHidden;
-        private final boolean isReadOnly;
+        private Entry(final String path) {
 
-        String getParent() {
-            return this.path.replaceAll("((?<=.)/[^/]+$)|([^/]+$)", "");
+            String parent = Sitemap.normalizePath(path);
+            parent = parent.replaceAll("/+[^/]*$", "");
+            if (!parent.isEmpty()) {
+                if (Sitemap.this.tree.containsKey(parent.toLowerCase()))
+                    parent = Sitemap.this.tree.get(parent.toLowerCase()).getPath();
+                this.parent = parent;
+            } else this.parent = null;
+
+            this.name = path.replaceAll("^.*/(?=[^/]*$)", "");
+            this.path = parent.replaceAll("/+$", "") + "/" + this.name;
         }
 
         boolean isFolder() {
@@ -263,46 +238,112 @@ class Sitemap {
         boolean isFile() {
             return this instanceof File;
         }
-    }
 
-    @Getter(AccessLevel.PACKAGE) @NonNull
-    static class Folder extends Entry {
-
-        private final Set<Entry> collection;
-
-        @Builder(access=AccessLevel.PRIVATE)
-        Folder(final String path, final String name,
-                final Date creationDate, final Date lastModified, final boolean isHidden, final boolean isReadOnly,
-                final Set<Entry> collection) {
-            super(path, name, creationDate, lastModified, isHidden, isReadOnly);
-            this.collection = collection;
+        Folder getParent() {
+            if (Objects.isNull(this.parent))
+                return null;
+            return (Folder)Sitemap.this.tree.get(this.parent);
         }
 
-        boolean isRoot() {
-            return this.getPath().equals("/");
+        String getParentPath() {
+            return this.parent;
+        }
+
+        String getParentPathUnique() {
+            if (Objects.isNull(this.parent))
+                return null;
+            return this.parent.toLowerCase();
+        }
+
+        String getPath() {
+            return this.path;
+        }
+
+        String getPathUnique() {
+            return this.getPath().toLowerCase();
+        }
+
+        String getName() {
+            return this.name;
+        }
+
+        abstract Date getCreationDate();
+        abstract Date getLastModified();
+        abstract boolean isHidden();
+        abstract boolean isReadOnly();
+    }
+
+    class Folder extends Entry {
+
+        private Collection<Entry> collection;
+
+        private Folder(final String path) {
+            super(path);
+            this.collection = new ArrayList<>();
+        }
+
+        @Override
+        Date getCreationDate() {
+            return null;
+        }
+
+        @Override
+        Date getLastModified() {
+            return null;
+        }
+
+        @Override
+        boolean isHidden() {
+            return false;
+        }
+
+        @Override
+        boolean isReadOnly() {
+            return false;
+        }
+
+        Collection<Entry> getCollection() {
+            return this.collection;
         }
     }
 
-    @Getter(AccessLevel.PACKAGE)
-    static class File extends Entry {
+    class File extends Entry {
 
-        private final long contentLength;
-        private final String contentType;
-        private final boolean isPermitted;
-        private final Set<Callback> callbacks;
+        private long contentLength;
+        private String contentType;
+        private boolean isPermitted;
+        private Set<Callback> callbacks;
 
-        @Builder(access=AccessLevel.PRIVATE)
-        File(final String path, final String name,
-                final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
-                final boolean isHidden, final boolean isReadOnly, final boolean isPermitted,
-                final Set<Callback> callbacks) {
-            super(path, name, creationDate, lastModified, isHidden, isReadOnly);
+        private File(final String path) {
+            super(path);
+        }
 
-            this.contentLength = contentLength;
-            this.contentType = contentType;
-            this.isPermitted = isPermitted;
+        @Override
+        Date getCreationDate() {
+            return null;
+        }
 
-            this.callbacks = callbacks;
+        @Override
+        Date getLastModified() {
+            return null;
+        }
+
+        @Override
+        boolean isHidden() {
+            return false;
+        }
+
+        @Override
+        boolean isReadOnly() {
+            return false;
+        }
+
+        String getContentType() {
+            return contentType;
+        }
+
+        long getContentLength() {
+            return contentLength;
         }
     }
 }
