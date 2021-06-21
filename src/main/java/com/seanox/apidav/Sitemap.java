@@ -21,6 +21,8 @@
  */
 package com.seanox.apidav;
 
+import org.springframework.util.LinkedCaseInsensitiveMap;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
@@ -47,11 +50,22 @@ import java.util.TreeMap;
 class Sitemap {
 
     private final TreeMap<String, Entry> tree;
+    private final Properties<Object> data;
 
     private static final Date CREATION_DATE = Sitemap.getBuildDate();
 
     Sitemap() {
+
         this.tree = new TreeMap<>();
+        this.data = new Properties<>();
+    }
+
+    Sitemap share(Properties<Object> properties) {
+
+        final Sitemap sitemap = new Sitemap();
+        sitemap.tree.putAll((Map)this.tree.clone());
+        sitemap.data.putAll(properties.clone());
+        return sitemap;
     }
 
     private static Date getBuildDate() {
@@ -136,16 +150,16 @@ class Sitemap {
         return entry;
     }
 
-    File map(final Callback... callbacks)
+    File map(final Annotation... annotations)
             throws SitemapException {
 
-        final ApiDavMapping.MappingCallback mappingCallback = (ApiDavMapping.MappingCallback)Arrays.stream(callbacks)
-                .filter(callback -> callback.getType().equals(Callback.Type.Mapping)).findFirst().orElse(null);
-        if (Objects.isNull(mappingCallback))
+        final ApiDavMapping.MappingAnnotation mappingAnnotation = (ApiDavMapping.MappingAnnotation)Arrays.stream(annotations)
+                .filter(annotation -> annotation.getType().equals(Annotation.Type.Mapping)).findFirst().orElse(null);
+        if (Objects.isNull(mappingAnnotation))
             throw new SitemapException("Mapping is missing");
 
         String path;
-        try {path = Sitemap.normalizePath(mappingCallback.getPath());
+        try {path = Sitemap.normalizePath(mappingAnnotation.getPath());
         } catch (InvalidPathException exception) {
             if (Objects.isNull(exception.getReason())
                     || exception.getReason().isBlank())
@@ -154,16 +168,16 @@ class Sitemap {
         }
 
         if (path.isBlank()) {
-            if (mappingCallback.getPath().isBlank())
+            if (mappingAnnotation.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
-            else throw new SitemapException("Invalid mapping path: " + mappingCallback.getPath().trim());
+            else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         final String name = path.replaceAll("^.*/(?=[^/]*$)", "");
         if (name.isBlank()) {
-            if (mappingCallback.getPath().isBlank())
+            if (mappingAnnotation.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
-            else throw new SitemapException("Invalid mapping path: " + mappingCallback.getPath().trim());
+            else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         final File file = new File(path);
@@ -267,10 +281,21 @@ class Sitemap {
             return this.name;
         }
 
-        abstract Date getCreationDate();
-        abstract Date getLastModified();
-        abstract boolean isHidden();
-        abstract boolean isReadOnly();
+        Date getCreationDate() {
+            return CREATION_DATE;
+        }
+
+        Date getLastModified() {
+            return CREATION_DATE;
+        }
+
+        boolean isHidden() {
+            return true;
+        }
+
+        boolean isReadOnly() {
+            return true;
+        }
     }
 
     class Folder extends Entry {
@@ -280,26 +305,6 @@ class Sitemap {
         private Folder(final String path) {
             super(path);
             this.collection = new ArrayList<>();
-        }
-
-        @Override
-        Date getCreationDate() {
-            return null;
-        }
-
-        @Override
-        Date getLastModified() {
-            return null;
-        }
-
-        @Override
-        boolean isHidden() {
-            return false;
-        }
-
-        @Override
-        boolean isReadOnly() {
-            return false;
         }
 
         Collection<Entry> getCollection() {
@@ -312,30 +317,10 @@ class Sitemap {
         private long contentLength;
         private String contentType;
         private boolean isPermitted;
-        private Set<Callback> callbacks;
+        private Set<Attribute> attributes;
 
-        private File(final String path) {
+        private File(final String path, Attribute... attributes) {
             super(path);
-        }
-
-        @Override
-        Date getCreationDate() {
-            return null;
-        }
-
-        @Override
-        Date getLastModified() {
-            return null;
-        }
-
-        @Override
-        boolean isHidden() {
-            return false;
-        }
-
-        @Override
-        boolean isReadOnly() {
-            return false;
         }
 
         String getContentType() {
@@ -345,5 +330,17 @@ class Sitemap {
         long getContentLength() {
             return contentLength;
         }
+    }
+
+    private static class Properties<V> extends LinkedCaseInsensitiveMap<V> {
+    }
+
+    static abstract class Attribute {
+    }
+    static class Static extends Attribute {
+    }
+    static class Expression extends Attribute {
+    }
+    static class Callback extends Attribute {
     }
 }
