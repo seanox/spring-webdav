@@ -139,12 +139,13 @@ class Sitemap {
             throw new SitemapException("Ambiguous Mapping: " + entry.getPath());
 
         Folder parentFolder = entry.getParent();
-        if (Objects.nonNull(entry.getParentPath())
-                && Objects.isNull(parentFolder))
+        if (Objects.isNull(parentFolder)
+                && !entry.isRoot())
             parentFolder = (Folder)this.add(tree, new Folder(entry.getParentPath()));
 
         tree.put(entry.getPathUnique(), entry);
-        if (Objects.nonNull(parentFolder))
+        if (Objects.nonNull(parentFolder)
+                && !entry.isRoot())
             parentFolder.getCollection().add(entry);
 
         return entry;
@@ -207,16 +208,18 @@ class Sitemap {
     }
 
     Entry locate(final String path) {
+        if (Objects.isNull(path))
+            return null;
         return this.tree.get(Sitemap.normalizePath(path).toLowerCase());
     }
 
     @Override
     public String toString() {
-
         final StringBuilder builder = new StringBuilder();
         for (final Entry entry : this.tree.values()) {
-            final String parentPath = Objects.nonNull(entry.getParentPath()) ? entry.getParentPath() : "";
-            builder.append(parentPath.replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
+            if (entry.isRoot())
+                continue;
+            builder.append(entry.getParentPath().replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
                     .append(entry.isFolder() ? "+" : "-")
                     .append(" ")
                     .append(entry.getName())
@@ -239,10 +242,14 @@ class Sitemap {
                 if (Sitemap.this.tree.containsKey(parent.toLowerCase()))
                     parent = Sitemap.this.tree.get(parent.toLowerCase()).getPath();
                 this.parent = parent;
-            } else this.parent = null;
+            } else this.parent = "/";
 
             this.name = path.replaceAll("^.*/(?=[^/]*$)", "");
             this.path = parent.replaceAll("/+$", "") + "/" + this.name;
+        }
+
+        boolean isRoot() {
+            return this.getPath().equals("/");
         }
 
         boolean isFolder() {
@@ -330,9 +337,6 @@ class Sitemap {
         long getContentLength() {
             return contentLength;
         }
-    }
-
-    private static class Properties<V> extends LinkedCaseInsensitiveMap<V> {
     }
 
     static abstract class Attribute {
