@@ -213,9 +213,9 @@ class Sitemap {
 
     abstract class Entry {
 
-        private String parent;
-        private String path;
-        private String name;
+        private final String parent;
+        private final String path;
+        private final String name;
 
         private Entry(final String path) {
 
@@ -275,7 +275,7 @@ class Sitemap {
 
     class Folder extends Entry {
 
-        private Collection<Entry> collection;
+        private final Collection<Entry> collection;
 
         private Folder(final String path) {
             super(path);
