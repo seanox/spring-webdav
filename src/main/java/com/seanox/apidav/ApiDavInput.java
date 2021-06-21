@@ -40,24 +40,22 @@ public @interface ApiDavInput {
     String accept()         default "*/*";
 
     @Getter(AccessLevel.PACKAGE)
-    class InputCallback extends Callback {
+    class InputAnnotation extends Annotation {
 
         private final long contentLengthMax;
         private final String accept;
 
         @Builder(access=AccessLevel.PRIVATE)
-        InputCallback(final String path, final Type type, final Object object, final Method method,
-                final long contentLengthMax, final String accept) {
-
+        InputAnnotation(final String path, final Type type, final Object object, final Method method,
+                        final long contentLengthMax, final String accept) {
             super(path, type, object, method);
 
             this.contentLengthMax = contentLengthMax;
             this.accept           = accept;
         }
 
-        static InputCallback create(final ApiDavInput annotation, final Object object, final Method method) {
-
-            return InputCallback.builder()
+        static InputAnnotation create(final ApiDavInput annotation, final Object object, final Method method) {
+            return InputAnnotation.builder()
                     .path(annotation.path())
                     .type(Type.Input)
                     .object(object)

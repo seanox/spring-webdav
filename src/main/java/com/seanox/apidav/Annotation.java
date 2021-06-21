@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
-abstract class Callback {
+abstract class Annotation {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd h-h:mm:ss";
 

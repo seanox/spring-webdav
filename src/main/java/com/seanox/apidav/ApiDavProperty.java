@@ -43,22 +43,18 @@ public @interface ApiDavProperty {
     }
 
     @Getter(AccessLevel.PACKAGE)
-    class PropertyCallback extends Callback {
+    class PropertyAnnotation extends Annotation {
 
         private final Property property;
 
         @Builder(access=AccessLevel.PRIVATE)
-        PropertyCallback(final String path, final Type type, final Object object, final Method method,
-                final Property property) {
-
+        PropertyAnnotation(final String path, final Type type, final Object object, final Method method, final Property property) {
             super(path, type, object, method);
-
             this.property = property;
         }
 
-        static PropertyCallback create(final ApiDavProperty annotation, final Object object, final Method method) {
-
-            return PropertyCallback.builder()
+        static PropertyAnnotation create(final ApiDavProperty annotation, final Object object, final Method method) {
+            return PropertyAnnotation.builder()
                     .path(annotation.path())
                     .type(Type.Property)
                     .object(object)

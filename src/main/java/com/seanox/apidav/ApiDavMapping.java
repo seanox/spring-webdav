@@ -48,7 +48,7 @@ public @interface ApiDavMapping {
     boolean isAccepted()  default true;
 
     @Getter(AccessLevel.PACKAGE)
-    class MappingCallback extends Callback {
+    class MappingAnnotation extends Annotation {
 
         private final long contentLength;
         private final String contentType;
@@ -60,10 +60,9 @@ public @interface ApiDavMapping {
         private final boolean isAccepted;
 
         @Builder(access=AccessLevel.PRIVATE)
-        MappingCallback(final String path, final Type type, final Object object, final Method method,
-                 final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
-                 final boolean isReadOnly, final boolean isHidden, final boolean isPermitted, final boolean isAccepted) {
-
+        MappingAnnotation(final String path, final Type type, final Object object, final Method method,
+                        final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
+                        final boolean isReadOnly, final boolean isHidden, final boolean isPermitted, final boolean isAccepted) {
             super(path, type, object, method);
 
             this.contentLength = contentLength;
@@ -76,29 +75,29 @@ public @interface ApiDavMapping {
             this.isAccepted    = isAccepted;
         }
 
-        static MappingCallback create(final ApiDavMapping apiDavMapping, final Object object, final Method method)
+        static MappingAnnotation create(final ApiDavMapping apiDavMapping, final Object object, final Method method)
                 throws AnnotationException {
 
             Date creationDate;
-            try {creationDate = Callback.convertDateTime(apiDavMapping.creationDate());
+            try {creationDate = Annotation.convertDateTime(apiDavMapping.creationDate());
             } catch (ParseException exception) {
                 throw new AnnotationException("Invalid value for creationDate: " + apiDavMapping.creationDate().trim());
             }
 
             Date lastModified;
-            try {lastModified = Callback.convertDateTime(apiDavMapping.lastModified());
+            try {lastModified = Annotation.convertDateTime(apiDavMapping.lastModified());
             } catch (ParseException exception) {
                 throw new AnnotationException("Invalid value for lastModified: " + apiDavMapping.lastModified().trim());
             }
 
-            return MappingCallback.builder()
+            return MappingAnnotation.builder()
                     .path(apiDavMapping.path())
                     .type(Type.Mapping)
                     .object(object)
                     .method(method)
 
                     .contentLength(apiDavMapping.contentLength())
-                    .contentType(Callback.convertText(apiDavMapping.contentType()))
+                    .contentType(Annotation.convertText(apiDavMapping.contentType()))
                     .creationDate(creationDate)
                     .lastModified(lastModified)
                     .isReadOnly(apiDavMapping.isReadOnly())

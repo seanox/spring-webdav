@@ -43,22 +43,18 @@ public @interface ApiDavAttribute {
     }
 
     @Getter(AccessLevel.PACKAGE)
-    class AttributeCallback extends Callback {
+    class AttributeAnnotation extends Annotation {
 
         private final Attribute attribute;
 
         @Builder(access=AccessLevel.PRIVATE)
-        AttributeCallback(final String path, final Type type, final Object object, final Method method,
-                final Attribute attribute) {
-
+        AttributeAnnotation(final String path, final Type type, final Object object, final Method method, final Attribute attribute) {
             super(path, type, object, method);
-
             this.attribute = attribute;
         }
 
-        static AttributeCallback create(final ApiDavAttribute annotation, final Object object, final Method method) {
-
-            return AttributeCallback.builder()
+        static AttributeAnnotation create(final ApiDavAttribute annotation, final Object object, final Method method) {
+            return AttributeAnnotation.builder()
                     .path(annotation.path())
                     .type(Type.Attribute)
                     .object(object)
