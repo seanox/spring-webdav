@@ -21,7 +21,6 @@
  */
 package com.seanox.apidav;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -76,13 +75,13 @@ public class SitemapAdapter {
         }
     }
 
-    public static Object map(final Object sitemap, final Annotation[] annotations)
+    public static Object map(final Object sitemap, final java.lang.annotation.Annotation[] annotations)
             throws Exception {
         return ((Sitemap)sitemap).map(Arrays.stream(annotations).map(annotation -> {
-            try {return CallbackAdapter.createCallback(annotation);
+            try {return AnnotationAdapter.createAnnotation(annotation);
             } catch (AnnotationException exception) {
                 throw new AdapterException(exception);
             }
-        }).toArray(Callback[]::new));
+        }).toArray(Annotation[]::new));
     }
 }

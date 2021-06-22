@@ -21,7 +21,6 @@
  */
 package com.seanox.apidav;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -34,43 +33,43 @@ import java.lang.reflect.Method;
  * library com.seanox.apidav also works without @ComponentScan and therefore
  * another package is used for the tests of the package com.seanox.apidav.
  */
-public class CallbackAdapter {
+public class AnnotationAdapter {
 
-    public static ApiDavAttribute.AttributeCallback createAttributeCallback(final ApiDavAttribute attributeAnnotation,
-            final Object object, final Method method) {
-        return ApiDavAttribute.AttributeCallback.create(attributeAnnotation, object, method);
+    public static ApiDavAttribute.AttributeAnnotation createAttributeAnnotation(final ApiDavAttribute attributeAnnotation,
+                    final Object object, final Method method) {
+        return ApiDavAttribute.AttributeAnnotation.create(attributeAnnotation, object, method);
     }
 
-    public static ApiDavInput.InputCallback createInputCallback(final ApiDavInput inputAnnotation,
-            final Object object, final Method method) {
-        return ApiDavInput.InputCallback.create(inputAnnotation, object, method);
+    public static ApiDavInput.InputAnnotation createInputAnnotation(final ApiDavInput inputAnnotation,
+                    final Object object, final Method method) {
+        return ApiDavInput.InputAnnotation.create(inputAnnotation, object, method);
     }
 
-    public static ApiDavMapping.MappingCallback createMappingCallback(final ApiDavMapping mappingAnnotation,
-            final Object object, final Method method) throws AnnotationException {
-        return ApiDavMapping.MappingCallback.create(mappingAnnotation, object, method);
+    public static ApiDavMapping.MappingAnnotation createMappingAnnotation(final ApiDavMapping mappingAnnotation,
+                    final Object object, final Method method) throws AnnotationException {
+        return ApiDavMapping.MappingAnnotation.create(mappingAnnotation, object, method);
     }
 
-    public static ApiDavProperty.PropertyCallback createPropertyCallback(final ApiDavProperty propertyAnnotation,
-            final Object object, final Method method) {
-        return ApiDavProperty.PropertyCallback.create(propertyAnnotation, object, method);
+    public static ApiDavProperty.PropertyAnnotation createPropertyAnnotation(final ApiDavProperty propertyAnnotation,
+                    final Object object, final Method method) {
+        return ApiDavProperty.PropertyAnnotation.create(propertyAnnotation, object, method);
     }
 
-    public static Callback createCallback(final Annotation annotation)
+    public static Annotation createAnnotation(final java.lang.annotation.Annotation annotation)
             throws AnnotationException {
-        return CallbackAdapter.createCallback(annotation, null, null);
+        return AnnotationAdapter.createAnnotation(annotation, null, null);
     }
 
-    public static Callback createCallback(final Annotation annotation, final Object object, final Method method)
+    public static Annotation createAnnotation(final java.lang.annotation.Annotation annotation, final Object object, final Method method)
             throws AnnotationException {
         if (annotation.annotationType().equals(ApiDavAttribute.class))
-            return CallbackAdapter.createAttributeCallback((ApiDavAttribute)annotation, object, method);
+            return AnnotationAdapter.createAttributeAnnotation((ApiDavAttribute)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavInput.class))
-            return CallbackAdapter.createInputCallback((ApiDavInput)annotation, object, method);
+            return AnnotationAdapter.createInputAnnotation((ApiDavInput)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavMapping.class))
-            return CallbackAdapter.createMappingCallback((ApiDavMapping)annotation, object, method);
+            return AnnotationAdapter.createMappingAnnotation((ApiDavMapping)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavProperty.class))
-            return CallbackAdapter.createPropertyCallback((ApiDavProperty)annotation, object, method);
+            return AnnotationAdapter.createPropertyAnnotation((ApiDavProperty)annotation, object, method);
         throw new AdapterException("Unsupported annotation type: " + annotation.annotationType());
     }
 }
