@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
 abstract class Annotation {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd h-h:mm:ss";
+    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
     private final String path;
     private final Type   type;
