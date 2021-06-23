@@ -35,7 +35,7 @@ import java.lang.reflect.Method;
 @Target(ElementType.METHOD)
 public @interface ApiDavProperty {
 
-    String path();
+    String   path();
     Property property();
 
     enum Property {

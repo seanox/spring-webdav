@@ -37,15 +37,30 @@ import java.util.Date;
 @Target(ElementType.METHOD)
 public @interface ApiDavMapping {
 
-    String path();
-    long contentLength()  default -1;
-    String contentType()  default "application/octet-stream";
-    String lastModified() default "";
-    String creationDate() default "";
-    boolean isReadOnly()  default false;
-    boolean isHidden()    default false;
-    boolean isPermitted() default true;
-    boolean isAccepted()  default true;
+    // Following values use the default values: -1, ""
+
+    String  path();
+
+    long    contentLength() default -1;
+    String  contentType()   default "";
+    String  lastModified()  default "";
+    String  creationDate()  default "";
+    boolean isReadOnly()    default true;
+    boolean isHidden()      default false;
+    boolean isPermitted()   default true;
+
+    ApiDavMappingExpression[] expression() default {};
+
+    public @interface ApiDavMappingExpression {
+
+        Attribute attribute();
+        String    expression();
+
+        enum Attribute {
+            ReadOnly, Hidden, Permitted,
+            ContentType, ContentLength, CreationDate, LastModified
+        }
+    }
 
     @Getter(AccessLevel.PACKAGE)
     class MappingAnnotation extends Annotation {
@@ -57,12 +72,11 @@ public @interface ApiDavMapping {
         private final boolean isReadOnly;
         private final boolean isHidden;
         private final boolean isPermitted;
-        private final boolean isAccepted;
 
         @Builder(access=AccessLevel.PRIVATE)
         MappingAnnotation(final String path, final Type type, final Object object, final Method method,
                         final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
-                        final boolean isReadOnly, final boolean isHidden, final boolean isPermitted, final boolean isAccepted) {
+                        final boolean isReadOnly, final boolean isHidden, final boolean isPermitted) {
             super(path, type, object, method);
 
             this.contentLength = contentLength;
@@ -72,7 +86,6 @@ public @interface ApiDavMapping {
             this.isReadOnly    = isReadOnly;
             this.isHidden      = isHidden;
             this.isPermitted   = isPermitted;
-            this.isAccepted    = isAccepted;
         }
 
         static MappingAnnotation create(final ApiDavMapping apiDavMapping, final Object object, final Method method)
@@ -103,7 +116,6 @@ public @interface ApiDavMapping {
                     .isReadOnly(apiDavMapping.isReadOnly())
                     .isHidden(apiDavMapping.isHidden())
                     .isPermitted(apiDavMapping.isPermitted())
-                    .isAccepted(apiDavMapping.isAccepted())
                     .build();
         }
     }

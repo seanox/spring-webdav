@@ -39,7 +39,7 @@ public @interface ApiDavAttribute {
     Attribute attribute();
 
     enum Attribute {
-        Meta, ReadOnly, Hidden, Permission, Acceptance
+        Meta, ReadOnly, Hidden, Permitted, Acceptance
     }
 
     @Getter(AccessLevel.PACKAGE)

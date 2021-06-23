@@ -35,9 +35,11 @@ import java.lang.reflect.Method;
 @Target(ElementType.METHOD)
 public @interface ApiDavInput {
 
+    // Following values use the default values: -1, ""
+
     String path();
-    long contentLengthMax() default -1;
-    String accept()         default "*/*";
+    String accept()           default "";
+    long   contentLengthMax() default -1;
 
     @Getter(AccessLevel.PACKAGE)
     class InputAnnotation extends Annotation {
