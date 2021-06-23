@@ -21,8 +21,6 @@
  */
 package com.seanox.apidav;
 
-import org.springframework.util.LinkedCaseInsensitiveMap;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -297,7 +295,7 @@ class Sitemap {
         }
 
         boolean isHidden() {
-            return true;
+            return false;
         }
 
         boolean isReadOnly() {
