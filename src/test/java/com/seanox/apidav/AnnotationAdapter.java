@@ -50,11 +50,6 @@ public class AnnotationAdapter {
         return ApiDavMapping.MappingAnnotation.create(mappingAnnotation, object, method);
     }
 
-    public static ApiDavProperty.PropertyAnnotation createPropertyAnnotation(final ApiDavProperty propertyAnnotation,
-                    final Object object, final Method method) {
-        return ApiDavProperty.PropertyAnnotation.create(propertyAnnotation, object, method);
-    }
-
     public static Annotation createAnnotation(final java.lang.annotation.Annotation annotation)
             throws AnnotationException {
         return AnnotationAdapter.createAnnotation(annotation, null, null);
@@ -68,8 +63,6 @@ public class AnnotationAdapter {
             return AnnotationAdapter.createInputAnnotation((ApiDavInput)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavMapping.class))
             return AnnotationAdapter.createMappingAnnotation((ApiDavMapping)annotation, object, method);
-        else if (annotation.annotationType().equals(ApiDavProperty.class))
-            return AnnotationAdapter.createPropertyAnnotation((ApiDavProperty)annotation, object, method);
         throw new AdapterException("Unsupported annotation type: " + annotation.annotationType());
     }
 }

@@ -55,6 +55,17 @@ abstract class Annotation {
     }
 
     enum Type {
-        Attribute, Input, Mapping, Property
+        Mapping, Input, Attribute
+    }
+
+    static class Expression {
+
+        final Class<?> type;
+        final String phrase;
+
+        Expression(final Class<?> type, final String phrase) {
+            this.type = type;
+            this.phrase = phrase;
+        }
     }
 }
