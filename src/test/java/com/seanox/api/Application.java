@@ -71,7 +71,7 @@ public class Application extends SpringBootServletInitializer {
         final FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new ApiDavFilter());
         registration.setName(ApiDavFilter.class.getName());
-        registration.addUrlPatterns("/*", "/context/*");
+        registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;
     }
