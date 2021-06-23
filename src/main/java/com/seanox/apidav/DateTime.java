@@ -39,7 +39,6 @@ class DateTime {
     }
 
     static String formatDate(final TimeZone timeZone, final Date date, final String format) {
-
         final SimpleDateFormat pattern = new SimpleDateFormat(format, Locale.US);
         pattern.setTimeZone(Objects.nonNull(timeZone) ? timeZone : DEFAULT_TIME_ZONE);
         return pattern.format(date);
