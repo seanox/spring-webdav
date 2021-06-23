@@ -58,7 +58,7 @@ public class Application extends SpringBootServletInitializer {
     @Autowired
     private ApplicationConfiguration applicationConfiguration;
 
-    public static void main(String... options) {
+    public static void main(final String... options) {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.CONSOLE);
         springApplication.run(options);
