@@ -38,7 +38,6 @@ public class MetaInputStream extends InputStream {
 
     @Getter(AccessLevel.PUBLIC) private String contentType;
     @Getter(AccessLevel.PUBLIC) private Long   contentLength;
-    @Getter(AccessLevel.PUBLIC) private Date   lastModified;
 
     private InputStream input;
 

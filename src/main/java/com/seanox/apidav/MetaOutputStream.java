@@ -84,9 +84,8 @@ public class MetaOutputStream extends OutputStream {
     @Override
     public void flush()
             throws IOException {
-        if (Objects.nonNull(this.output))
-            this.output = this.response.getOutputStream();
         if (!this.response.isCommitted()) {
+            this.response.setStatus(HttpServletResponse.SC_OK);
             if (Objects.nonNull(this.contentType)
                     && !this.contentType.isBlank())
                 this.response.setContentType(this.contentType);
@@ -97,5 +96,7 @@ public class MetaOutputStream extends OutputStream {
                 this.response.setHeader("Last-Modified", DateTime.formatDate(this.lastModified, "E, dd MMM yyyy HH:mm:ss z"));
             this.response.flushBuffer();
         }
+        if (Objects.nonNull(this.output))
+            this.output = this.response.getOutputStream();
     }
 }
