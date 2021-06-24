@@ -21,51 +21,47 @@
  */
 package com.seanox.apidav;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Repeatable(ApiDavInput.ApiDavInputs.class)
 public @interface ApiDavInput {
 
     // Following values use the default values: -1, ""
 
     String path();
+
     String accept()           default "";
     long   contentLengthMax() default -1;
 
-    @Getter(AccessLevel.PACKAGE)
-    class InputAnnotation extends Annotation {
+    AttributeExpression[] attributeExpressions() default {};
 
-        private final long contentLengthMax;
-        private final String accept;
+    @interface AttributeExpression {
 
-        @Builder(access=AccessLevel.PRIVATE)
-        InputAnnotation(final String path, final Type type, final Object object, final Method method,
-                        final long contentLengthMax, final String accept) {
-            super(path, type, object, method);
+        Attribute attribute();
+        String    phrase();
 
-            this.contentLengthMax = contentLengthMax;
-            this.accept           = accept;
+        enum Attribute {
+            Accept(Annotation.Attribute.AttributeType.Accept),
+            ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax),
+            Accepted(Annotation.Attribute.AttributeType.Accepted);
+
+            final Annotation.Attribute.AttributeType attributeType;
+
+            Attribute(final Annotation.Attribute.AttributeType type) {
+                this.attributeType = type;
+            }
         }
+    }
 
-        static InputAnnotation create(final ApiDavInput annotation, final Object object, final Method method) {
-            return InputAnnotation.builder()
-                    .path(annotation.path())
-                    .type(Type.Input)
-                    .object(object)
-                    .method(method)
-
-                    .contentLengthMax(annotation.contentLengthMax())
-                    .accept(annotation.accept())
-                    .build();
-        }
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface ApiDavInputs {
+        ApiDavInput[] value();
     }
 }

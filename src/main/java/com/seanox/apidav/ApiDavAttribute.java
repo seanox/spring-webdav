@@ -21,47 +21,39 @@
  */
 package com.seanox.apidav;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Repeatable(ApiDavAttribute.ApiDavAttributes.class)
 public @interface ApiDavAttribute {
 
-    String path();
+    String    path();
     Attribute attribute();
 
     enum Attribute {
-        Meta, ReadOnly, Hidden, Permitted, Acceptance
+        ContentLength(Annotation.Attribute.AttributeType.ContentLength),
+        ContentType(Annotation.Attribute.AttributeType.ContentType),
+        LastModified(Annotation.Attribute.AttributeType.LastModified),
+
+        ReadOnly(Annotation.Attribute.AttributeType.ReadOnly),
+        Hidden(Annotation.Attribute.AttributeType.Hidden),
+        Permitted(Annotation.Attribute.AttributeType.Permitted);
+
+        final Annotation.Attribute.AttributeType attributeType;
+
+        private Attribute(Annotation.Attribute.AttributeType attributeType) {
+            this.attributeType = attributeType;
+        }
     }
 
-    @Getter(AccessLevel.PACKAGE)
-    class AttributeAnnotation extends Annotation {
-
-        private final Attribute attribute;
-
-        @Builder(access=AccessLevel.PRIVATE)
-        AttributeAnnotation(final String path, final Type type, final Object object, final Method method, final Attribute attribute) {
-            super(path, type, object, method);
-            this.attribute = attribute;
-        }
-
-        static AttributeAnnotation create(final ApiDavAttribute annotation, final Object object, final Method method) {
-            return AttributeAnnotation.builder()
-                    .path(annotation.path())
-                    .type(Type.Attribute)
-                    .object(object)
-                    .method(method)
-
-                    .attribute(annotation.attribute())
-                    .build();
-        }
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface ApiDavAttributes {
+        ApiDavAttribute[] value();
     }
 }
