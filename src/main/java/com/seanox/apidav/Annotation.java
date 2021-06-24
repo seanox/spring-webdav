@@ -24,6 +24,7 @@ package com.seanox.apidav;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.expression.Expression;
 
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -58,14 +59,20 @@ abstract class Annotation {
         Mapping, Input, Attribute
     }
 
-    static class Expression {
+    static class AnnotationExpression {
 
-        final Class<?> type;
-        final String phrase;
+        final Type type;
+        final Expression expression;
 
-        Expression(final Class<?> type, final String phrase) {
+        AnnotationExpression(final AnnotationExpression.Type type, final Expression expression) {
             this.type = type;
-            this.phrase = phrase;
+            this.expression = expression;
+        }
+
+        enum Type {
+            ReadOnly, Hidden, Permitted,
+            ContentType, ContentLength, CreationDate, LastModified,
+            Accept, ContentLengthMax
         }
     }
 }
