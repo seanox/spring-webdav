@@ -35,19 +35,19 @@ import java.lang.reflect.Method;
  */
 public class AnnotationAdapter {
 
-    public static ApiDavAttribute.AttributeAnnotation createAttributeAnnotation(final ApiDavAttribute attributeAnnotation,
+    public static Annotation.Attribute createAnnotationAttribute(final ApiDavAttribute attributeAnnotation,
                     final Object object, final Method method) {
-        return ApiDavAttribute.AttributeAnnotation.create(attributeAnnotation, object, method);
+        return Annotation.Attribute.create(attributeAnnotation, object, method);
     }
 
-    public static ApiDavInput.InputAnnotation createInputAnnotation(final ApiDavInput inputAnnotation,
+    public static Annotation.Input createAnnotationInput(final ApiDavInput inputAnnotation,
                     final Object object, final Method method) {
-        return ApiDavInput.InputAnnotation.create(inputAnnotation, object, method);
+        return Annotation.Input.create(inputAnnotation, object, method);
     }
 
-    public static ApiDavMapping.MappingAnnotation createMappingAnnotation(final ApiDavMapping mappingAnnotation,
+    public static Annotation.Mapping createAnnotationMapping(final ApiDavMapping mappingAnnotation,
                     final Object object, final Method method) throws AnnotationException {
-        return ApiDavMapping.MappingAnnotation.create(mappingAnnotation, object, method);
+        return Annotation.Mapping.create(mappingAnnotation, object, method);
     }
 
     public static Annotation createAnnotation(final java.lang.annotation.Annotation annotation)
@@ -58,11 +58,11 @@ public class AnnotationAdapter {
     public static Annotation createAnnotation(final java.lang.annotation.Annotation annotation, final Object object, final Method method)
             throws AnnotationException {
         if (annotation.annotationType().equals(ApiDavAttribute.class))
-            return AnnotationAdapter.createAttributeAnnotation((ApiDavAttribute)annotation, object, method);
+            return AnnotationAdapter.createAnnotationAttribute((ApiDavAttribute)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavInput.class))
-            return AnnotationAdapter.createInputAnnotation((ApiDavInput)annotation, object, method);
+            return AnnotationAdapter.createAnnotationInput((ApiDavInput)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavMapping.class))
-            return AnnotationAdapter.createMappingAnnotation((ApiDavMapping)annotation, object, method);
+            return AnnotationAdapter.createAnnotationMapping((ApiDavMapping)annotation, object, method);
         throw new AdapterException("Unsupported annotation type: " + annotation.annotationType());
     }
 }
