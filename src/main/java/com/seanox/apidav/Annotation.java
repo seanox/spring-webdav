@@ -70,7 +70,6 @@ abstract class Annotation {
         final AttributeType attributeType;
 
         enum AttributeType {
-            Meta,
             ReadOnly, Hidden, Permitted,
             ContentType, ContentLength, CreationDate, LastModified,
             Accept, ContentLengthMax, Accepted
