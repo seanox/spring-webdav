@@ -21,7 +21,13 @@
  */
 package com.seanox.apidav;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -33,17 +39,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 
 // Rules (similar error behavior as mapping from RestController):
 // - Ambiguous mapping causes SitemapException
 // - Virtual paths must be unique (case insensitive), otherwise SitemapException
 // - Collisions (file + file / folder + folder / folder + file / file + folder) cause SitemapException
-// - Paths must start with slash, otherwise SitemapException (TODO)
-// - Not permitted (unauthorized) entries are not included in the sitemap (TODO)
-// - Not permitted (unauthorized) entries are used as non-existent (TODO)
-// - Empty folders are not included in the Sitemap, e.g. if files in substructure are not permitted (TODO)
+// - Paths must start with slash, otherwise SitemapException (TODO:)
+// - Not permitted (unauthorized) entries are not included in the sitemap (TODO:)
+// - Not permitted (unauthorized) entries are used as non-existent (TODO:)
+// - Empty folders are not included in the Sitemap, e.g. if files in substructure are not permitted (TODO:)
 
 class Sitemap {
 
@@ -61,7 +66,7 @@ class Sitemap {
     Sitemap share(Properties<Object> properties) {
 
         final Sitemap sitemap = new Sitemap();
-        sitemap.tree.putAll((Map)this.tree.clone());
+        sitemap.tree.putAll((Map<String, Sitemap.Entry>)this.tree.clone());
         sitemap.data.putAll(properties.clone());
         return sitemap;
     }
@@ -152,8 +157,8 @@ class Sitemap {
     File map(final Annotation... annotations)
             throws SitemapException {
 
-        final ApiDavMapping.MappingAnnotation mappingAnnotation = (ApiDavMapping.MappingAnnotation)Arrays.stream(annotations)
-                .filter(annotation -> annotation.getType().equals(Annotation.Type.Mapping)).findFirst().orElse(null);
+        final Annotation.Mapping mappingAnnotation = (Annotation.Mapping)Arrays.stream(annotations)
+                .filter(annotation -> annotation.getType().equals(Annotation.AnnotationType.Mapping)).findFirst().orElse(null);
         if (Objects.isNull(mappingAnnotation))
             throw new SitemapException("Mapping is missing");
 
@@ -179,7 +184,7 @@ class Sitemap {
             else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
-        final File file = new File(path);
+        final File file = new File(path, annotations);
 
         // First of all, the implementation is not thread-safe.
         // It is not required for WebDAV/apiDAV implementation.
@@ -206,16 +211,40 @@ class Sitemap {
     }
 
     Entry locate(final String path) {
+
         if (Objects.isNull(path))
             return null;
-        return this.tree.get(Sitemap.normalizePath(path).toLowerCase());
+
+        final Entry entry = this.tree.get(Sitemap.normalizePath(path).toLowerCase());
+        if (Objects.isNull(entry))
+            return null;
+
+        if (entry.isFile()) {
+            final File file = (File)entry;
+            if (file.isPermitted())
+                return file;
+            return null;
+        }
+
+        if (entry.isFolder()) {
+            final Folder folder = (Folder)entry;
+            return folder;
+            // TODO: Folder
+            // - check isPermitted
+            // - clean up sub directory, if a sub directory does not contain any files
+            // - null, if there are no files -- but not for root, that is then empty
+            // - generally the values of the attributes in the get methods are resolved
+        }
+
+        return null;
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         for (final Entry entry : this.tree.values()) {
-            if (entry.isRoot())
+            if (entry.isRoot()
+                    || entry.isHidden())
                 continue;
             builder.append(entry.getParentPath().replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
                     .append(entry.isFolder() ? "+" : "-")
@@ -224,6 +253,16 @@ class Sitemap {
                     .append(System.lineSeparator());
         }
         return builder.toString().trim();
+    }
+
+    static class Defaults {
+        static final Long    contentLength = null;
+        static final String  contentType   = "application/octet-stream";
+        static final Date    lastModified  = Sitemap.getBuildDate();
+        static final Date    creationDate  = Sitemap.getBuildDate();
+        static final Boolean isReadOnly    = Boolean.TRUE;
+        static final Boolean isHidden      = Boolean.FALSE;
+        static final Boolean isPermitted   = Boolean.TRUE;
     }
 
     abstract class Entry {
@@ -319,30 +358,225 @@ class Sitemap {
 
     class File extends Entry {
 
-        private long contentLength;
-        private String contentType;
-        private boolean isPermitted;
-        private Set<Attribute> attributes;
+        private Attribute accept;
+        private Attribute contentLength;
+        private Attribute contentLengthMax;
+        private Attribute contentType;
+        private Attribute lastModified;
+        private Attribute creationDate;
+        private Attribute isReadOnly;
+        private Attribute isHidden;
+        private Attribute isPermitted;
+        private Attribute isAccepted;
 
-        private File(final String path, Attribute... attributes) {
+        @Getter(AccessLevel.PACKAGE) private Callback readCallback;
+        @Getter(AccessLevel.PACKAGE) private Callback writeCallback;
+        @Getter(AccessLevel.PACKAGE) private Callback metaCallback;
+
+        private File(final String path, Annotation... annotations) {
+
             super(path);
+
+            for (final Annotation annotation : annotations) {
+                if (annotation instanceof Annotation.Attribute) {
+                    final Annotation.Attribute attributeAnnotation = (Annotation.Attribute)annotation;
+                    final Callback callback = new Callback(attributeAnnotation.getObject(), attributeAnnotation.getMethod());
+                    final Annotation.Attribute.AttributeType attributeType = attributeAnnotation.attributeType;
+
+                    if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeType))
+                        this.isReadOnly = callback;
+                    else if (Annotation.Attribute.AttributeType.Hidden.equals(attributeType))
+                        this.isHidden = callback;
+                    else if (Annotation.Attribute.AttributeType.Permitted.equals(attributeType))
+                        this.isPermitted = callback;
+
+                    else if (Annotation.Attribute.AttributeType.ContentType.equals(attributeType))
+                        this.contentType = callback;
+                    else if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeType))
+                        this.contentLength = callback;
+                    else if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeType))
+                        this.creationDate = callback;
+                    else if (Annotation.Attribute.AttributeType.LastModified.equals(attributeType))
+                        this.lastModified = callback;
+
+                    else if (Annotation.Attribute.AttributeType.Accept.equals(attributeType))
+                        this.accept = callback;
+                    else if (Annotation.Attribute.AttributeType.ContentLengthMax.equals(attributeType))
+                        this.contentLengthMax = callback;
+                    else if (Annotation.Attribute.AttributeType.Accepted.equals(attributeType))
+                        this.isAccepted = callback;
+
+                } else if (annotation instanceof Annotation.Input) {
+                    final Annotation.Input inputAnnotation = (Annotation.Input)annotation;
+                    this.writeCallback = new Callback(inputAnnotation.getObject(), inputAnnotation.getMethod());
+
+                    if (Objects.nonNull(inputAnnotation.getAccept())
+                            && !inputAnnotation.getAccept().isBlank())
+                        this.accept = new Static(inputAnnotation.getAccept());
+                    if (inputAnnotation.getContentLengthMax() >= 0)
+                        this.contentLengthMax = new Static(Long.valueOf(inputAnnotation.getContentLengthMax()));
+
+                    if (Objects.nonNull(inputAnnotation.getExpressions())) {
+                        for (final Annotation.Attribute.AttributeExpression attributeExpression : inputAnnotation.getExpressions()) {
+                            final Expression expression = new Expression(attributeExpression.expression);
+                            if (Annotation.Attribute.AttributeType.Accept.equals(attributeExpression.type))
+                                this.accept = expression;
+                            if (Annotation.Attribute.AttributeType.ContentLengthMax.equals(attributeExpression.type))
+                                this.contentLengthMax = expression;
+                            if (Annotation.Attribute.AttributeType.Accepted.equals(attributeExpression.type))
+                                this.isAccepted = expression;
+                        }
+                    }
+
+                } else if (annotation instanceof Annotation.Mapping) {
+                    final Annotation.Mapping mappingAnnotation = (Annotation.Mapping)annotation;
+                    this.readCallback = new Callback(mappingAnnotation.getObject(), mappingAnnotation.getMethod());
+
+                    if (mappingAnnotation.getContentLength() >= 0)
+                        this.contentLengthMax = new Static(Long.valueOf(mappingAnnotation.getContentLength()));
+                    if (Objects.nonNull(mappingAnnotation.getContentType())
+                            && !mappingAnnotation.getContentType().isBlank())
+                        this.contentType = new Static(mappingAnnotation.getContentType());
+                    if (Objects.nonNull(mappingAnnotation.getCreationDate()))
+                        this.creationDate = new Static(mappingAnnotation.getCreationDate());
+                    if (Objects.nonNull(mappingAnnotation.getLastModified()))
+                        this.lastModified = new Static(mappingAnnotation.getLastModified());
+                    this.isReadOnly = new Static(Boolean.valueOf(mappingAnnotation.isReadOnly()));
+                    this.isHidden = new Static(Boolean.valueOf(mappingAnnotation.isHidden()));
+                    this.isPermitted = new Static(Boolean.valueOf(mappingAnnotation.isPermitted()));
+
+                    if (Objects.nonNull(mappingAnnotation.getExpressions())) {
+                        for (final Annotation.Attribute.AttributeExpression attributeExpression : mappingAnnotation.getExpressions()) {
+                            final Expression expression = new Expression(attributeExpression.expression);
+                            if (Annotation.Attribute.AttributeType.ContentType.equals(attributeExpression.type))
+                                this.contentType = expression;
+                            if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeExpression.type))
+                                this.contentLength = expression;
+                            if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeExpression.type))
+                                this.creationDate = expression;
+                            if (Annotation.Attribute.AttributeType.LastModified.equals(attributeExpression.type))
+                                this.lastModified = expression;
+                            if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeExpression.type))
+                                this.isReadOnly = expression;
+                            if (Annotation.Attribute.AttributeType.Hidden.equals(attributeExpression.type))
+                                this.isHidden = expression;
+                            if (Annotation.Attribute.AttributeType.Permitted.equals(attributeExpression.type))
+                                this.isPermitted = expression;
+                        }
+                    }
+
+                } else if (annotation instanceof Annotation.Meta) {
+                    final Annotation.Meta metaAnnotation = (Annotation.Meta)annotation;
+                    this.metaCallback = new Callback(metaAnnotation.getObject(), metaAnnotation.getMethod());
+                }
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private <T> T eval(Attribute attribute, T fallback) {
+
+            if (Objects.isNull(attribute))
+                return fallback;
+
+            if (attribute instanceof Static) {
+                if (Objects.isNull(((Static)attribute).value))
+                    return fallback;
+                return (T)((Static)attribute).value;
+            }
+
+            if (attribute instanceof Expression) {
+                final T result = (T)((Expression)attribute).eval();
+                if (Objects.nonNull(result))
+                    return result;
+                return fallback;
+            }
+
+            if (attribute instanceof Callback) {
+                // TODO:
+                return null;
+            }
+
+            return null;
         }
 
         String getContentType() {
-            return contentType;
+            return this.eval(this.contentType, Defaults.contentType);
         }
 
-        long getContentLength() {
-            return contentLength;
+        Long getContentLength() {
+            return this.eval(this.contentLength, Defaults.contentLength);
+        }
+
+        @Override
+        Date getCreationDate() {
+            return this.eval(this.creationDate, Defaults.creationDate);
+        }
+
+        @Override
+        Date getLastModified() {
+            return this.eval(this.lastModified, Defaults.lastModified);
+        }
+
+        boolean isReadOnly() {
+            if (Objects.isNull(this.readCallback)
+                    || !this.isPermitted())
+                return true;
+            final Boolean result = this.eval(this.isReadOnly, Defaults.isReadOnly);
+            return Objects.nonNull(result) && result.booleanValue();
+        }
+
+        boolean isHidden() {
+            final Boolean result = this.eval(this.isHidden, Defaults.isHidden);
+            return Objects.nonNull(result) && result.booleanValue();
+        }
+
+        boolean isPermitted() {
+            final Boolean result = this.eval(this.isPermitted, Defaults.isPermitted);
+            return Objects.nonNull(result) && result.booleanValue();
         }
     }
 
-    static abstract class Attribute {
+    abstract class Attribute {
     }
-    static class Static extends Attribute {
+
+    class Static extends Attribute {
+
+        private final Object value;
+
+        Static(final Object value) {
+            this.value = value;
+        }
     }
-    static class Expression extends Attribute {
+
+    class Expression extends Attribute {
+
+        private final org.springframework.expression.Expression expression;
+
+        Expression(final org.springframework.expression.Expression expression) {
+            this.expression = expression;
+        }
+
+        Object eval() {
+            StandardEvaluationContext context = new StandardEvaluationContext();
+            Sitemap.this.data.forEach(context::setVariable);
+            return this.expression.getValue(context);
+        }
     }
-    static class Callback extends Attribute {
+
+    class Callback extends Attribute {
+
+        @Getter(AccessLevel.PACKAGE) private final Object object;
+        @Getter(AccessLevel.PACKAGE) private final Method method;
+
+        Callback(Object object, Method method) {
+            this.object = object;
+            this.method = method;
+        }
+
+        Object invoke(Object... arguments)
+                throws InvocationTargetException, IllegalAccessException {
+            this.method.setAccessible(true);
+            return this.method.invoke(this.object, arguments);
+        }
     }
 }
