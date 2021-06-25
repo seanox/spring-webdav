@@ -28,7 +28,6 @@ import lombok.Getter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Objects;
 
 @Builder(access=AccessLevel.PACKAGE)
@@ -36,8 +35,8 @@ public class MetaInputStream extends InputStream {
 
     private final HttpServletRequest request;
 
-    @Getter(AccessLevel.PUBLIC) private String contentType;
-    @Getter(AccessLevel.PUBLIC) private Long   contentLength;
+    @Getter(AccessLevel.PUBLIC) private final String contentType;
+    @Getter(AccessLevel.PUBLIC) private final Long   contentLength;
 
     private InputStream input;
 
