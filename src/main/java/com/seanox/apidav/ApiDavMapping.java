@@ -21,20 +21,15 @@
  */
 package com.seanox.apidav;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
-import java.text.ParseException;
-import java.util.Date;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Repeatable(ApiDavMapping.ApiDavMappings.class)
 public @interface ApiDavMapping {
 
     // Following values use the default values: -1, ""
@@ -49,74 +44,35 @@ public @interface ApiDavMapping {
     boolean isHidden()      default false;
     boolean isPermitted()   default true;
 
-    ApiDavMappingExpression[] expression() default {};
+    AttributeExpression[] attributeExpressions() default {};
 
-    public @interface ApiDavMappingExpression {
+    @interface AttributeExpression {
 
         Attribute attribute();
-        String    expression();
+        String    phrase();
 
         enum Attribute {
-            ReadOnly, Hidden, Permitted,
-            ContentType, ContentLength, CreationDate, LastModified
+
+            ContentType(Annotation.Attribute.AttributeType.ContentType),
+            ContentLength(Annotation.Attribute.AttributeType.ContentLength),
+            CreationDate(Annotation.Attribute.AttributeType.CreationDate),
+            LastModified(Annotation.Attribute.AttributeType.LastModified),
+
+            ReadOnly(Annotation.Attribute.AttributeType.ReadOnly),
+            Hidden(Annotation.Attribute.AttributeType.Hidden),
+            Permitted(Annotation.Attribute.AttributeType.Permitted);
+
+            final Annotation.Attribute.AttributeType type;
+
+            Attribute(final Annotation.Attribute.AttributeType type) {
+                this.type = type;
+            }
         }
     }
 
-    @Getter(AccessLevel.PACKAGE)
-    class MappingAnnotation extends Annotation {
-
-        private final long contentLength;
-        private final String contentType;
-        private final Date creationDate;
-        private final Date lastModified;
-        private final boolean isReadOnly;
-        private final boolean isHidden;
-        private final boolean isPermitted;
-
-        @Builder(access=AccessLevel.PRIVATE)
-        MappingAnnotation(final String path, final Type type, final Object object, final Method method,
-                        final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
-                        final boolean isReadOnly, final boolean isHidden, final boolean isPermitted) {
-            super(path, type, object, method);
-
-            this.contentLength = contentLength;
-            this.contentType   = contentType;
-            this.creationDate  = creationDate;
-            this.lastModified  = lastModified;
-            this.isReadOnly    = isReadOnly;
-            this.isHidden      = isHidden;
-            this.isPermitted   = isPermitted;
-        }
-
-        static MappingAnnotation create(final ApiDavMapping apiDavMapping, final Object object, final Method method)
-                throws AnnotationException {
-
-            Date creationDate;
-            try {creationDate = Annotation.convertDateTime(apiDavMapping.creationDate());
-            } catch (ParseException exception) {
-                throw new AnnotationException("Invalid value for creationDate: " + apiDavMapping.creationDate().trim());
-            }
-
-            Date lastModified;
-            try {lastModified = Annotation.convertDateTime(apiDavMapping.lastModified());
-            } catch (ParseException exception) {
-                throw new AnnotationException("Invalid value for lastModified: " + apiDavMapping.lastModified().trim());
-            }
-
-            return MappingAnnotation.builder()
-                    .path(apiDavMapping.path())
-                    .type(Type.Mapping)
-                    .object(object)
-                    .method(method)
-
-                    .contentLength(apiDavMapping.contentLength())
-                    .contentType(Annotation.convertText(apiDavMapping.contentType()))
-                    .creationDate(creationDate)
-                    .lastModified(lastModified)
-                    .isReadOnly(apiDavMapping.isReadOnly())
-                    .isHidden(apiDavMapping.isHidden())
-                    .isPermitted(apiDavMapping.isPermitted())
-                    .build();
-        }
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface ApiDavMappings {
+        ApiDavMapping[] value();
     }
 }
