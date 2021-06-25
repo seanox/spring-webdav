@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 @Repeatable(ApiDavMeta.ApiDavMetas.class)
 public @interface ApiDavMeta {
 
-    String    path();
+    String path();
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
