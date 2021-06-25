@@ -69,7 +69,7 @@ class XmlWriter implements Closeable {
          * @param open  Opening character sequence
          * @param close Closing character sequence
          */
-        private ElementType(String open, String close) {
+        ElementType(String open, String close) {
             this.open  = open;
             this.close = close;
         }
