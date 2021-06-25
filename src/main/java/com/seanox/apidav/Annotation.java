@@ -61,13 +61,13 @@ abstract class Annotation {
     }
 
     enum AnnotationType {
-        Mapping, Input, Attribute
+        Mapping, Input, Attribute, Meta
     }
 
     @Getter(AccessLevel.PACKAGE)
     static class Attribute extends Annotation {
 
-        final AttributeType type;
+        final AttributeType attributeType;
 
         enum AttributeType {
             Meta,
@@ -79,7 +79,7 @@ abstract class Annotation {
         @Builder(access=AccessLevel.PRIVATE)
         Attribute(final String path, final AnnotationType type, final Object object, final Method method, final AttributeType attribute) {
             super(path, type, object, method);
-            this.type = attribute;
+            this.attributeType = attribute;
         }
 
         static Annotation.Attribute create(final ApiDavAttribute apiDavAttribute, final Object object, final Method method) {
@@ -205,6 +205,24 @@ abstract class Annotation {
                                 final Expression expression = parser.parseExpression(attributeExpression.phrase());
                                 return new Attribute.AttributeExpression(attributeExpression.attribute().type, expression);})
                             .toArray(Attribute.AttributeExpression[]::new))
+                    .build();
+        }
+    }
+
+    @Getter(AccessLevel.PACKAGE)
+    static class Meta extends Annotation {
+
+        @Builder(access=AccessLevel.PRIVATE)
+        Meta(final String path, final AnnotationType type, final Object object, final Method method) {
+            super(path, type, object, method);
+        }
+
+        static Meta create(final ApiDavMeta apiDavMeta, final Object object, final Method method) {
+            return Meta.builder()
+                    .path(apiDavMeta.path())
+                    .type(AnnotationType.Meta)
+                    .object(object)
+                    .method(method)
                     .build();
         }
     }
