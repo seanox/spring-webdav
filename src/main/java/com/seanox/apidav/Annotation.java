@@ -107,7 +107,7 @@ abstract class Annotation {
     @Getter(AccessLevel.PACKAGE)
     static class Input extends Annotation {
 
-        private final long contentLengthMax;
+        private final long   contentLengthMax;
         private final String accept;
 
         private final Collection<Annotation.Attribute.AttributeExpression> expressions;
