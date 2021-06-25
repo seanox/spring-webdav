@@ -46,7 +46,7 @@ public @interface ApiDavAttribute {
 
         final Annotation.Attribute.AttributeType attributeType;
 
-        private Attribute(Annotation.Attribute.AttributeType attributeType) {
+        Attribute(Annotation.Attribute.AttributeType attributeType) {
             this.attributeType = attributeType;
         }
     }
