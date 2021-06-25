@@ -38,9 +38,7 @@ public class CustomerController {
 
     private byte[] customerList;
     private static final String CUSTOMER_LIST_XLSX = "/customer/list.xlsx";
-    private static final String CUSTOMER_LIST_XLSX_TEMP = "/customer/~$list.xlsx";
     @ApiDavMapping(path=CUSTOMER_LIST_XLSX, isReadOnly=false)
-    @ApiDavMapping(path=CUSTOMER_LIST_XLSX_TEMP, isReadOnly=false, isHidden=true)
     public void list(MetaOutputStream output) throws IOException {
         if (Objects.isNull(this.customerList))
             this.customerList = CustomerController.class.getResourceAsStream("/templates/empty.xlsx").readAllBytes();
@@ -49,7 +47,6 @@ public class CustomerController {
         output.write(this.customerList);
     }
     @ApiDavInput(path=CUSTOMER_LIST_XLSX)
-    @ApiDavInput(path=CUSTOMER_LIST_XLSX_TEMP)
     public void list(MetaInputStream output) throws IOException {
         final byte[] bytes = output.readAllBytes();
         this.customerList = bytes;
@@ -83,9 +80,7 @@ public class CustomerController {
 
     private byte[] newsletter;
     private static final String MARKETING_NEWSLETTER_PUB = "/marketing/newsletter.pub";
-    private static final String MARKETING_NEWSLETTER_PUB_TEMP = "/marketing/~$newsletter.pub";
     @ApiDavMapping(path=MARKETING_NEWSLETTER_PUB, isReadOnly=false)
-    @ApiDavMapping(path=MARKETING_NEWSLETTER_PUB_TEMP, isReadOnly=false, isHidden=true)
     public void newsletter(MetaOutputStream output) throws IOException {
         if (Objects.isNull(this.customerList))
             this.newsletter = CustomerController.class.getResourceAsStream("/templates/empty.pub").readAllBytes();
@@ -94,7 +89,6 @@ public class CustomerController {
         output.write(this.newsletter);
     }
     @ApiDavInput(path=MARKETING_NEWSLETTER_PUB)
-    @ApiDavInput(path=MARKETING_NEWSLETTER_PUB_TEMP)
     public void newsletter(MetaInputStream output)throws IOException {
         final byte[] bytes = output.readAllBytes();
         this.customerList = bytes;
@@ -102,9 +96,7 @@ public class CustomerController {
 
     private byte[] sales;
     private static final String MARKETING_SALES_PUB = "/marketing/sales.pub";
-    private static final String MARKETING_SALES_PUB_TEMP = "/marketing/~$sales.pub";
     @ApiDavMapping(path=MARKETING_SALES_PUB, isReadOnly=false)
-    @ApiDavMapping(path=MARKETING_SALES_PUB_TEMP, isReadOnly=false, isHidden=true)
     public void sales(MetaOutputStream output) throws IOException {
         if (Objects.isNull(this.customerList))
             this.newsletter = CustomerController.class.getResourceAsStream("/templates/empty.pub").readAllBytes();
@@ -113,7 +105,6 @@ public class CustomerController {
         output.write(this.newsletter);
     }
     @ApiDavInput(path=MARKETING_SALES_PUB)
-    @ApiDavInput(path=MARKETING_SALES_PUB_TEMP)
     public void sales(MetaInputStream output)throws IOException {
         final byte[] bytes = output.readAllBytes();
         this.customerList = bytes;
