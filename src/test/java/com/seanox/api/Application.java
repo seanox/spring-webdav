@@ -35,22 +35,32 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-// Normally @ComponentScan does not need to be used because Application.class
-// already sets the package com.seanox.api, but in this example there is still
-// a parallel com.seanox.test package. There are no classical UnitTests. Tests
-// are integrated in the application and are executed at startup. For this
-// purpose, the tests are integrated as @components. Therefore @ComponentScan
-// must be configured.
-
-// Why are the tests not in com.seanox.apidav?
-// Spring Test is used for the tests. For this @ComponentScan must scan the
-// package. For the release version, however, it should be ensured that the
-// library com.seanox.apidav also works without @ComponentScan and therefore
-// another package is used for the tests of the package com.seanox.apidav.
-
-// SpringBootServletInitializer to prepare the application to deploy on
-// external servlet container/runner.
-
+/**
+ * Example for the integration of apiDAV in a Spring bases application.
+ *
+ * Normally @ComponentScan does not need to be used because Application.class
+ * already sets the package com.seanox.api, but in this example there is still
+ * a parallel com.seanox.test package. There are no classical UnitTests. Tests
+ * are integrated in the application and are executed at startup. For this
+ * purpose, the tests are integrated as @components. Therefore @ComponentScan
+ * must be configured.
+ *
+ * Why are the tests not in com.seanox.apidav?
+ * Spring Test is used for the tests. For this @ComponentScan must scan the
+ * package. For the release version, however, it should be ensured that the
+ * library com.seanox.apidav also works without @ComponentScan and therefore
+ * another package is used for the tests of the package com.seanox.apidav.
+ *
+ * SpringBootServletInitializer to prepare the application to deploy on
+ * external servlet container/runner.
+ *
+ * Application 1.0.0 20210626
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210626
+ */
 @ComponentScan({"com.seanox.api", "com.seanox.test"})
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
