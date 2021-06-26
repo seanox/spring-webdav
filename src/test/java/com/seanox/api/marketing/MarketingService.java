@@ -21,6 +21,8 @@
  */
 package com.seanox.api.marketing;
 
+import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
@@ -34,6 +36,7 @@ import java.io.IOException;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210626
  */
+@Service
 class MarketingService {
 
     private byte[] marketingFlyer;
