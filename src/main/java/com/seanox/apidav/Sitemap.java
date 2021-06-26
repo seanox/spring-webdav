@@ -514,7 +514,10 @@ class Sitemap {
 
         @Override
         Date getLastModified() {
-            return this.eval(this.lastModified, Defaults.lastModified);
+            Date lastModified = Defaults.creationDate;
+            if (!this.isReadOnly())
+                lastModified = new Date();
+            return this.eval(this.lastModified, lastModified);
         }
 
         boolean isReadOnly() {
