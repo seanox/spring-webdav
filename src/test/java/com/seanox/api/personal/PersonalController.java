@@ -62,7 +62,7 @@ class PersonalController {
         this.personalService.savePersonalBudget(output.readAllBytes());
     }
     @ApiDavAttribute(path=PERSONAL_BUDGET_XLSX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getPersonalBudgetContentLength() throws IOException {
+    Long getPersonalBudgetContentLength() {
         return Long.valueOf(this.personalService.readPersonalBudget().length);
     }
 
@@ -73,7 +73,7 @@ class PersonalController {
         output.write(this.personalService.readPersonalReportStatistic());
     }
     @ApiDavAttribute(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getPersonalReportStatisticLength() throws IOException {
+    Long getPersonalReportStatisticLength() {
         return Long.valueOf(this.personalService.readPersonalBudget().length);
     }
 
@@ -92,7 +92,7 @@ class PersonalController {
         output.write(this.personalService.readPersonalReportSales());
     }
     @ApiDavAttribute(path=PERSONAL_REPORTS_SALES_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getPersonalReportSalesLength() throws IOException {
+    Long getPersonalReportSalesLength() {
         return Long.valueOf(this.personalService.readPersonalReportSales().length);
     }
 }

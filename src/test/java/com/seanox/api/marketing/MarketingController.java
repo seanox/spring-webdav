@@ -62,7 +62,7 @@ class MarketingController {
         this.marketingService.saveMarketingNewsletter(output.readAllBytes());
     }
     @ApiDavAttribute(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getMarketingNewsletterContentLength() throws IOException {
+    Long getMarketingNewsletterContentLength() {
         return Long.valueOf(this.marketingService.readMarketingNewsletter().length);
     }
 
@@ -77,7 +77,7 @@ class MarketingController {
         this.marketingService.saveMarketingFlyer(output.readAllBytes());
     }
     @ApiDavAttribute(path=MARKETING_FLYER_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getMarketingFlyerContentLength() throws IOException {
+    Long getMarketingFlyerContentLength() {
         return Long.valueOf(this.marketingService.readMarketingFlyer().length);
     }
 }
