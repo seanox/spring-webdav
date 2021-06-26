@@ -23,5 +23,17 @@ package com.seanox.apidav;
 
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
+/**
+ * Case-insensitive properties based on a {@link java.util.Map}.
+ *
+ * @param <V> Data type of value
+ *
+ * Properties 1.0.0 20210626
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210626
+ */
 public class Properties<V> extends LinkedCaseInsensitiveMap<V> {
 }

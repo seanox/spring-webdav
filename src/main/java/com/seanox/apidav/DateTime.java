@@ -27,6 +27,16 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+/**
+ * Static utilities for date and time.
+ *
+ * DateTime 1.0.0 20210626
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210626
+ */
 class DateTime {
 
     final static TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
