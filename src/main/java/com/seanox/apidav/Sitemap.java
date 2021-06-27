@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -54,6 +56,7 @@ class Sitemap {
 
     private final TreeMap<String, Entry> tree;
     private final Properties<Object> data;
+    private final Properties<Object> meta;
 
     private static final Date CREATION_DATE = Sitemap.getBuildDate();
 
@@ -61,6 +64,7 @@ class Sitemap {
 
         this.tree = new TreeMap<>();
         this.data = new Properties<>();
+        this.meta = new Properties<>();
     }
 
     Sitemap share(Properties<Object> properties) {
@@ -472,8 +476,22 @@ class Sitemap {
             }
         }
 
-        @SuppressWarnings("unchecked")
-        private <T> T eval(Attribute attribute, T fallback) {
+        // The attributes use a sitemap instance related (and thus request related) attribute cache.
+        // This avoids that expressions and callbacks are called more than once by the getter.
+        // The construct may not be self-explanatory, therefore a short explanation.
+        // Each request uses its own sitemap instance.
+        // Sitemap::data contains the request-related properties, which are then used for the expressions, among other things.
+        // Sitemap::meta is a cache of attributes for a sitemap instance.
+        // After calling the share method a new sitemap instance is created and Sitemap::data as well as Sitemap::meta are then empty and filled with the usage.
+        // For the use of the attributes the following priority exists:
+        //     1. Dynamic value from the attribute-method implementation
+        //     2. Dynamic value from the meta-method implementation
+        //     3. Dynamic value from the annotation expression
+        //     4. Static value from annotation
+        //     5. Default value from the class
+        // A lot of logic can be called and therefore the cache for the attributes.
+
+        private <T> T eval(final Annotation.Attribute.AttributeType attributeType, final Attribute attribute, final T fallback) {
 
             if (Objects.isNull(attribute))
                 return fallback;
@@ -500,16 +518,16 @@ class Sitemap {
         }
 
         String getContentType() {
-            return this.eval(this.contentType, Defaults.contentType);
+            return this.eval(Annotation.Attribute.AttributeType.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
         }
 
         Long getContentLength() {
-            return this.eval(this.contentLength, Defaults.contentLength);
+            return this.eval(Annotation.Attribute.AttributeType.ContentLength, this.contentLength, Defaults.contentLength);
         }
 
         @Override
         Date getCreationDate() {
-            return this.eval(this.creationDate, Defaults.creationDate);
+            return this.eval(Annotation.Attribute.AttributeType.CreationDate, this.creationDate, Defaults.creationDate);
         }
 
         @Override
@@ -517,24 +535,24 @@ class Sitemap {
             Date lastModified = Defaults.creationDate;
             if (!this.isReadOnly())
                 lastModified = new Date();
-            return this.eval(this.lastModified, lastModified);
+            return this.eval(Annotation.Attribute.AttributeType.LastModified, this.lastModified, lastModified);
         }
 
         boolean isReadOnly() {
             if (Objects.isNull(this.readCallback)
                     || !this.isPermitted())
                 return true;
-            final Boolean result = this.eval(this.isReadOnly, Defaults.isReadOnly);
+            final Boolean result = this.eval(Annotation.Attribute.AttributeType.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
         boolean isHidden() {
-            final Boolean result = this.eval(this.isHidden, Defaults.isHidden);
+            final Boolean result = this.eval(Annotation.Attribute.AttributeType.Hidden, this.isHidden, Defaults.isHidden);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
         boolean isPermitted() {
-            final Boolean result = this.eval(this.isPermitted, Defaults.isPermitted);
+            final Boolean result = this.eval(Annotation.Attribute.AttributeType.Permitted, this.isPermitted, Defaults.isPermitted);
             return Objects.nonNull(result) && result.booleanValue();
         }
     }
@@ -576,10 +594,26 @@ class Sitemap {
             this.method = method;
         }
 
+        private Object[] composeArguments(Object... arguments) {
+
+            final Map<Class<?>, Object> placeholder = new HashMap<>();
+            Arrays.stream(arguments).forEach(argument -> {
+                if (Objects.nonNull(argument))
+                    placeholder.put(argument.getClass(), argument);
+            });
+            final List<Object> compose = new ArrayList<>();
+            Arrays.stream(this.method.getParameterTypes()).forEach(parameterType ->
+                compose.add(placeholder.get(parameterType))
+            );
+            return compose.toArray(new Object[0]);
+        }
+
         Object invoke(Object... arguments)
                 throws InvocationTargetException, IllegalAccessException {
             this.method.setAccessible(true);
-            return this.method.invoke(this.object, arguments);
+            final List<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
+            argumentList.add(Sitemap.this.data.clone());
+            return this.method.invoke(this.object, this.composeArguments(argumentList.toArray(new Object[0])));
         }
     }
 }
