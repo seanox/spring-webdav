@@ -391,7 +391,6 @@ public class ApiDavFilter extends HttpFilter {
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "iscollection", XmlWriter.ElementType.EMPTY);
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "creationdate", XmlWriter.ElementType.EMPTY);
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getlastmodified", XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getetag", XmlWriter.ElementType.EMPTY);
 
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "isreadonly", XmlWriter.ElementType.EMPTY);
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "ishidden", XmlWriter.ElementType.EMPTY);
