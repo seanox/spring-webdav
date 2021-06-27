@@ -22,18 +22,18 @@
 package com.seanox.apidav;
 
 /**
- * SitemapException
+ * SitemapCallbackException
  *
- * SitemapException 1.0.0 20210627
+ * SitemapCallbackException 1.0.0 20210627
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210627
  */
-class SitemapException extends Exception {
+class SitemapCallbackException extends RuntimeException {
 
-    SitemapException(final String message) {
-        super(message);
+    SitemapCallbackException(final Exception cause) {
+        super(cause);
     }
 }
