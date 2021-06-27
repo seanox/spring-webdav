@@ -599,15 +599,13 @@ public class ApiDavFilter extends HttpFilter {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
             LOGGER.error("GET callback failed", exception);
-            throw new InternalServerError();
+            throw new InternalServerErrorState();
         }
         throw new SuccessState();
     }
 
-    private void doPut(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
-
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request, false);
+    private void doPut(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request, true);
 
         if (entry.isFolder()
                 || entry.isReadOnly())
@@ -625,7 +623,7 @@ public class ApiDavFilter extends HttpFilter {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
             LOGGER.error("PUT callback failed", exception);
-            throw new InternalServerError();
+            throw new InternalServerErrorState();
         }
         throw new NoContentState();
     }
@@ -701,6 +699,18 @@ public class ApiDavFilter extends HttpFilter {
                     ApiDavFilter.METHOD_LOCK, ApiDavFilter.METHOD_UNLOCK);
 
         } catch (State state) {
+            try {state.forceResponseStatus(response);
+            } finally {
+                LOGGER.info("{} {} {} ({} ms)", state.getStatusCode(),
+                        request.getMethod(), request.getRequestURI(),
+                        System.currentTimeMillis() -timing);
+            }
+        } catch (Exception exception) {
+            if (!(exception instanceof State)) {
+                LOGGER.error("Unexpected exception has occurred", exception);
+                exception = new InternalServerErrorState();
+            }
+            final State state = (State)exception;
             try {state.forceResponseStatus(response);
             } finally {
                 LOGGER.info("{} {} {} ({} ms)", state.getStatusCode(),
@@ -831,7 +841,7 @@ public class ApiDavFilter extends HttpFilter {
         }
     }
 
-    private static class InternalServerError extends State {
+    private static class InternalServerErrorState extends State {
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
