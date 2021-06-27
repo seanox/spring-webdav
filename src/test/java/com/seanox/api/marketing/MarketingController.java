@@ -38,12 +38,12 @@ import java.io.IOException;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * MarketingController 1.0.0 20210626
+ * MarketingController 1.0.0 20210627
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
+ * @version 1.0.0 20210627
  */
 @RequiredArgsConstructor
 @RestController
@@ -52,8 +52,7 @@ class MarketingController {
     private final MarketingService marketingService;
 
     private static final String MARKETING_NEWSLETTER_DOTX="/marketing/newsletter.docx";
-    @ApiDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false,
-            contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    @ApiDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
     void getMarketingNewsletter(MetaOutputStream output) throws IOException {
         output.write(this.marketingService.readMarketingNewsletter());
     }
@@ -67,8 +66,7 @@ class MarketingController {
     }
 
     private static final String MARKETING_FLYER_PPTX="/marketing/flyer.pptx";
-    @ApiDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false,
-            contentType="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+    @ApiDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
     void getMarketingFlyer(MetaOutputStream output) throws IOException {
         output.write(this.marketingService.readMarketingFlyer());
     }

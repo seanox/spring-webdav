@@ -38,12 +38,12 @@ import java.io.IOException;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * PersonalController 1.0.0 20210626
+ * PersonalController 1.0.0 20210627
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
+ * @version 1.0.0 20210627
  */
 @RequiredArgsConstructor
 @RestController
@@ -51,9 +51,28 @@ class PersonalController {
 
     private final PersonalService personalService;
 
+    // The method signatures are not fixed.
+    // The arguments and their data type are to be understood as placeholders
+    // that are set by the apiDAV filter when called. For unknown arguments or
+    // data types null is used.
+
+    // The method signatures can be composed as follows, the order of the
+    // arguments is unimportant, all arguments are optional and further
+    // arguments can be used and are filled with null:
+    //     GET-Method Callback:
+    // Return: void, Arguments: Properties, MetaOutputStream
+    //     PUT-Method Callback:
+    // Return: void, Arguments: Properties, MetaInputStream
+    //     Meta-Method Callback:
+    // Return: Meta, Arguments: Properties
+    //     Attribute Callback:
+    // Return: Object, Arguments: Properties
+
+    // The declaration of the ContentType is optional.
+    // In many cases this can be derived from the file name from the mapping.
+
     private static final String PERSONAL_BUDGET_XLSX="/personal/budget.xlsx";
-    @ApiDavMapping(path=PERSONAL_BUDGET_XLSX, isReadOnly=false,
-            contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    @ApiDavMapping(path=PERSONAL_BUDGET_XLSX, isReadOnly=false)
     void getPersonalBudget(MetaOutputStream output) throws IOException {
         output.write(this.personalService.readPersonalBudget());
     }
@@ -67,8 +86,7 @@ class PersonalController {
     }
 
     private static final String PERSONAL_REPORTS_STATISTIC_PPTX="/personal/reports/statistic.pptx";
-    @ApiDavMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX,
-            contentType="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+    @ApiDavMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX)
     void getPersonalReportStatistic(MetaOutputStream output) throws IOException  {
         output.write(this.personalService.readPersonalReportStatistic());
     }
@@ -86,8 +104,7 @@ class PersonalController {
     // }
 
     private static final String PERSONAL_REPORTS_SALES_PPTX="/personal/reports/sales.pptx";
-    @ApiDavMapping(path=PERSONAL_REPORTS_SALES_PPTX,
-            contentType="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+    @ApiDavMapping(path=PERSONAL_REPORTS_SALES_PPTX)
     void getPersonalReportSales(MetaOutputStream output) throws IOException  {
         output.write(this.personalService.readPersonalReportSales());
     }
