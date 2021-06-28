@@ -57,20 +57,29 @@ class Sitemap {
     private final TreeMap<String, Entry> tree;
     private final Properties<Object> data;
     private final Properties<Object> meta;
+    private final List<Annotation[]> trace;
 
     private static final Date CREATION_DATE = Sitemap.getBuildDate();
 
     Sitemap() {
 
-        this.tree = new TreeMap<>();
-        this.data = new Properties<>();
-        this.meta = new Properties<>();
+        this.tree  = new TreeMap<>();
+        this.data  = new Properties<>();
+        this.meta  = new Properties<>();
+        this.trace = new ArrayList<>();
     }
 
-    Sitemap share(Properties<Object> properties) {
+    Sitemap share(Properties<Object> properties)
+            throws SitemapException {
+
+        // The trace is the basis for sharing, which is very complex due to the
+        // reference to the parent sitemap instance. That's why a trace is
+        // created to build the sitemap, so that for sharing a new instance can
+        // be easily created based on the existing source information.
 
         final Sitemap sitemap = new Sitemap();
-        sitemap.tree.putAll((Map<String, Sitemap.Entry>)this.tree.clone());
+        for (final Annotation[] annotations : this.trace)
+            sitemap.map(annotations);
         sitemap.data.putAll(properties.clone());
         return sitemap;
     }
@@ -211,6 +220,13 @@ class Sitemap {
         final TreeMap<String, Sitemap.Entry> treeWorkspace = (TreeMap<String, Entry>)this.tree.clone();
         final Entry entry = this.add(treeWorkspace, file);
         this.tree.putAll(treeWorkspace);
+
+        // The trace is the basis for sharing, which is very complex due to the
+        // reference to the parent sitemap instance. That's why a trace is
+        // created to build the sitemap, so that for sharing a new instance can
+        // be easily created based on the existing source information.
+        this.trace.add(annotations);
+
         return (File)entry;
     }
 

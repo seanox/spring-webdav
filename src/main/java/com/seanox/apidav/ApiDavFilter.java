@@ -627,7 +627,7 @@ public class ApiDavFilter extends HttpFilter {
 
     @Override
     protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
-            throws IOException {
+            throws ServletException, IOException {
 
         final long timing = System.currentTimeMillis();
 
@@ -650,7 +650,12 @@ public class ApiDavFilter extends HttpFilter {
             properties.put(SITEMAP_PROPERTY_USER_REMOTE, request.getRemoteUser());
         if (Objects.nonNull(request.getUserPrincipal()))
             properties.put(SITEMAP_PROPERTY_USER_PRINCIPAL, request.getUserPrincipal());
-        final Sitemap sitemap = this.sitemap.share(properties);
+
+        final Sitemap sitemap;
+        try {sitemap = this.sitemap.share(properties);
+        } catch (SitemapException exception) {
+            throw new ServletException(exception);
+        }
 
         // Short help to the often asked question where the path comes from:
         // PathInfo is not available, so the path has to be determined
