@@ -60,6 +60,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+// What is not allowed is handled as if it does not exist.
+
 public class ApiDavFilter extends HttpFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiDavFilter.class);
@@ -553,23 +555,27 @@ public class ApiDavFilter extends HttpFilter {
             throws ServletException, IOException {
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request, true);
 
-        if (entry.isFolder()) {
-            // TODO:
-            throw new SuccessState();
-        }
+        if (entry.isFolder())
+            throw new NotFoundState();
 
-        // TODO:
+        final Sitemap.File file = (Sitemap.File)entry;
+        if (Objects.nonNull(file.getLastModified()))
+            response.setHeader("Last-Modified", DateTime.formatDate(file.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED));
+        if (Objects.isNull(file.getLastModified())
+                && Objects.nonNull(file.getCreationDate()))
+            response.setHeader("Last-Modified", DateTime.formatDate(file.getCreationDate(), DATETIME_FORMAT_LAST_MODIFIED));
+        if (Objects.isNull(file.getContentLength()))
+            response.setContentLengthLong(file.getContentLength());
+        if (Objects.isNull(file.getContentType()))
+            response.setContentType(file.getContentType());
         throw new SuccessState();
     }
 
-    private void doGet(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    private void doGet(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request, true);
 
-        if (entry.isFolder()) {
-            // TODO:
-            throw new SuccessState();
-        }
+        if (entry.isFolder())
+            throw new NotFoundState();
 
         final Sitemap.File file = ((Sitemap.File)entry);
         final Sitemap.Callback readCallback = file.getReadCallback();
@@ -592,8 +598,9 @@ public class ApiDavFilter extends HttpFilter {
     private void doPut(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request, true);
 
-        if (entry.isFolder()
-                || entry.isReadOnly())
+        if (entry.isFolder())
+            throw new NotFoundState();
+        if (entry.isReadOnly())
             throw new ForbiddenState();
 
         final Sitemap.File file = ((Sitemap.File)entry);
@@ -613,6 +620,7 @@ public class ApiDavFilter extends HttpFilter {
         throw new NoContentState();
     }
 
+    // TODO: Mirroring from token
     private void doLock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
         this.locateSitemapEntry(sitemap, request, true);
         // MS Office is satisfied with the very simple lock -- Thanks guys :-)
@@ -620,6 +628,7 @@ public class ApiDavFilter extends HttpFilter {
         throw new SuccessState();
     }
 
+    // TODO: Mirroring from token
     private void doUnlock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
         this.locateSitemapEntry(sitemap, request, true);
         throw new NoContentState();
@@ -638,7 +647,7 @@ public class ApiDavFilter extends HttpFilter {
         final Properties<Object> properties = new Properties<>();
         final HttpSession session = request.getSession(false);
         if (Objects.nonNull(session))
-            session.getAttributeNames() .asIterator()
+            session.getAttributeNames().asIterator()
                     .forEachRemaining(attribute -> properties.put(SITEMAP_PROPERTY_SESSION_ATTRIBUTE + "." + attribute, session.getAttribute(attribute)));
         if (Objects.nonNull(request.getRequestedSessionId()))
             properties.put(SITEMAP_PROPERTY_REQUEST_SESSION_ID, request.getRequestedSessionId());
