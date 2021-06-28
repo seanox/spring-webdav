@@ -85,6 +85,10 @@ class PersonalController {
         return Long.valueOf(this.personalService.readPersonalBudget().length);
     }
 
+
+
+
+
     private static final String PERSONAL_REPORTS_STATISTIC_PPTX="/personal/reports/statistic.pptx";
     @ApiDavMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX)
     void getPersonalReportStatistic(MetaOutputStream output) throws IOException  {
@@ -92,8 +96,12 @@ class PersonalController {
     }
     @ApiDavAttribute(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
     Long getPersonalReportStatisticLength() {
-        return Long.valueOf(this.personalService.readPersonalBudget().length);
+        return Long.valueOf(this.personalService.readPersonalReportStatistic().length);
     }
+
+
+
+
 
     // TODO: final idea for the annotations (outsourcing) e.g. ApiDavMappingAttributeExpression + ApiDavMappingAttribute
     // private static final String PERSONAL_REPORTS_STATISTIC_PPTX="/personal/reports/statistic.pptx";
@@ -102,6 +110,10 @@ class PersonalController {
     // })
     // public void getPersonalReportStatistic(MetaOutputStream output) {
     // }
+
+
+
+
 
     private static final String PERSONAL_REPORTS_SALES_PPTX="/personal/reports/sales.pptx";
     @ApiDavMapping(path=PERSONAL_REPORTS_SALES_PPTX)
