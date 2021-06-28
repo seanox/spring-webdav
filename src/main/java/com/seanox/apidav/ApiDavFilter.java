@@ -215,20 +215,6 @@ public class ApiDavFilter extends HttpFilter {
         }
     }
 
-    private String locateRequestContextUrl(final HttpServletRequest request) {
-
-        final String contextHostAddress = request.getRequestURL().toString().replaceAll("^(\\w+:/+[^/]+).*$", "$1");
-        final String filterName = this.getClass().getName();
-        final Collection<String> filterUrlMappings = request.getServletContext().getFilterRegistration(filterName).getUrlPatternMappings();
-        for (String urlPatternMapping : filterUrlMappings) {
-            urlPatternMapping = urlPatternMapping.replaceAll("/+\\**$", "");
-            if (request.getRequestURI().startsWith(urlPatternMapping + "/")
-                    || request.getRequestURI().equals(urlPatternMapping))
-                return contextHostAddress + urlPatternMapping;
-        }
-        return "";
-    }
-
     private String locateRequestContextPath(final HttpServletRequest request) {
 
         final String filterName = this.getClass().getName();
@@ -641,7 +627,7 @@ public class ApiDavFilter extends HttpFilter {
 
     @Override
     protected void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
-            throws ServletException, IOException {
+            throws IOException {
 
         final long timing = System.currentTimeMillis();
 
