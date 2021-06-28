@@ -48,9 +48,9 @@ import java.util.TreeMap;
 // - Virtual paths must be unique (case insensitive), otherwise SitemapException
 // - Collisions (file + file / folder + folder / folder + file / file + folder) cause SitemapException
 // - Paths must start with slash, otherwise SitemapException (TODO:)
-// - Not permitted (unauthorized) entries are not included in the sitemap (TODO:)
-// - Not permitted (unauthorized) entries are used as non-existent (TODO:)
-// - Empty folders are not included in the Sitemap, e.g. if files in substructure are not permitted (TODO:)
+// - Not permitted (unauthorized) entries are not included in the sitemap
+// - Not permitted (unauthorized) entries are used as non-existent as 404 (TODO:)
+// - Empty folders are not included in the Sitemap, e.g. if files in substructure are not permitted
 
 class Sitemap {
 
@@ -100,7 +100,7 @@ class Sitemap {
     private static String probeContentType(final String file) {
         try {return Files.probeContentType(Path.of(file));
         } catch (IOException exception) {
-            return "application/octet-stream";
+            return Defaults.contentType;
         }
     }
 
@@ -246,25 +246,14 @@ class Sitemap {
             return null;
         }
 
-        if (entry.isFolder()) {
-            final Folder folder = (Folder)entry;
-            return folder;
-            // TODO: Folder
-            // - check isPermitted
-            // - clean up sub directory, if a sub directory does not contain any files
-            // - null, if there are no files -- but not for root, that is then empty
-            // - generally the values of the attributes in the get methods are resolved
-        }
-
-        return null;
+        return entry;
     }
 
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         for (final Entry entry : this.tree.values()) {
-            if (entry.isRoot()
-                    || entry.isHidden())
+            if (entry.isRoot())
                 continue;
             builder.append(entry.getParentPath().replaceAll("/[^/]+", "  ").replaceAll("/+$", ""))
                     .append(entry.isFolder() ? "+" : "-")
@@ -369,6 +358,14 @@ class Sitemap {
         private Folder(final String path) {
             super(path);
             this.collection = new ArrayList<>();
+        }
+
+        @Override
+        boolean isHidden() {
+            for (final Entry entry : this.getCollection())
+                if (!entry.isHidden())
+                    return false;
+            return !this.isRoot();
         }
 
         Collection<Entry> getCollection() {
@@ -588,7 +585,8 @@ class Sitemap {
         }
 
         boolean isReadOnly() {
-            if (!this.isPermitted())
+            if (!this.isPermitted()
+                    || Objects.isNull(this.writeCallback))
                 return true;
             final Boolean result = this.eval(Annotation.Attribute.AttributeType.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
             return Objects.nonNull(result) && result.booleanValue();
