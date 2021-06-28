@@ -476,45 +476,81 @@ class Sitemap {
             }
         }
 
-        // The attributes use a sitemap instance related (and thus request related) attribute cache.
-        // This avoids that expressions and callbacks are called more than once by the getter.
-        // The construct may not be self-explanatory, therefore a short explanation.
-        // Each request uses its own sitemap instance.
-        // Sitemap::data contains the request-related properties, which are then used for the expressions, among other things.
-        // Sitemap::meta is a cache of attributes for a sitemap instance.
-        // After calling the share method a new sitemap instance is created and Sitemap::data as well as Sitemap::meta are then empty and filled with the usage.
+        // The attributes use a sitemap instance related (and thus request
+        // related) attribute cache. This avoids that expressions and callbacks
+        // are called more than once by the getter. The construct may not be
+        // self-explanatory, therefore a short explanation. Each request uses
+        // its own sitemap instance. Sitemap::data contains the request-related
+        // properties, which are then used for the expressions, among other
+        // things. Sitemap::meta is a cache of attributes for a sitemap
+        // instance. After calling the share method a new sitemap instance is
+        // created and Sitemap::data as well as Sitemap::meta are then empty
+        // and filled with the usage.
+        //
         // For the use of the attributes the following priority exists:
         //     1. Dynamic value from the attribute-method implementation
         //     2. Dynamic value from the meta-method implementation
         //     3. Dynamic value from the annotation expression
         //     4. Static value from annotation
         //     5. Default value from the class
-        // A lot of logic can be called and therefore the cache for the attributes.
+        //
+        // A lot of logic can be called and therefore the cache for the
+        // attributes.
 
         private <T> T eval(final Annotation.Attribute.AttributeType attributeType, final Attribute attribute, final T fallback) {
 
             if (Objects.isNull(attribute))
                 return fallback;
 
-            if (attribute instanceof Static) {
-                if (Objects.isNull(((Static)attribute).value))
-                    return fallback;
-                return (T)((Static)attribute).value;
-            }
+            if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
+                Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
+            final HashMap<Object, Object> metaMap = (HashMap<Object, Object>)Sitemap.this.meta.get(this.getPathUnique());
+            if (metaMap.containsKey(attribute))
+                return (T)metaMap.get(attribute);
 
-            if (attribute instanceof Expression) {
-                final T result = (T)((Expression)attribute).eval();
-                if (Objects.nonNull(result))
-                    return result;
-                return fallback;
-            }
-
+            T result = fallback;
             if (attribute instanceof Callback) {
-                // TODO:
-                return null;
+                try {result = (T)((Callback)attribute).invoke();
+                } catch (Exception exception) {
+                    while (exception instanceof InvocationTargetException)
+                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                    throw new SitemapCallbackException(exception);
+                }
+            } else if (Objects.nonNull(this.metaCallback)) {
+                if (!metaMap.containsKey(Meta.class))
+                    try {metaMap.put(Meta.class, this.metaCallback.invoke());
+                    } catch (Exception exception) {
+                        while (exception instanceof InvocationTargetException)
+                            exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                        throw new SitemapCallbackException(exception);
+                    }
+                final Meta metaAttributes = (Meta)metaMap.get(Meta.class);
+                if (Objects.nonNull(metaAttributes)) {
+                    if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeType))
+                        result = (T)metaAttributes.getContentLength();
+                    else if (Annotation.Attribute.AttributeType.ContentType.equals(attributeType))
+                        result = (T)metaAttributes.getContentType();
+                    else if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeType))
+                        result = (T)metaAttributes.getCreationDate();
+                    else if (Annotation.Attribute.AttributeType.LastModified.equals(attributeType))
+                        result = (T)metaAttributes.getLastModified();
+                    else if (Annotation.Attribute.AttributeType.Hidden.equals(attributeType))
+                        result = (T)Boolean.valueOf(metaAttributes.isHidden());
+                    else if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeType))
+                        result = (T)Boolean.valueOf(metaAttributes.isReadOnly());
+                    else if (Annotation.Attribute.AttributeType.Permitted.equals(attributeType))
+                        result = (T)Boolean.valueOf(metaAttributes.isPermitted());
+                    // TODO: And in the other cases (e.g. for input)?
+                }
+            } else if (attribute instanceof Expression) {
+                result = (T)((Expression)attribute).eval();
+            } else if (attribute instanceof Static) {
+                result = (T)((Static)attribute).value;
             }
 
-            return null;
+            metaMap.put(attribute, result);
+
+            return result;
         }
 
         String getContentType() {
@@ -532,21 +568,19 @@ class Sitemap {
 
         @Override
         Date getLastModified() {
-            Date lastModified = Defaults.creationDate;
-            if (!this.isReadOnly())
-                lastModified = new Date();
-            return this.eval(Annotation.Attribute.AttributeType.LastModified, this.lastModified, lastModified);
+            return this.eval(Annotation.Attribute.AttributeType.LastModified, this.lastModified, Defaults.lastModified);
         }
 
         boolean isReadOnly() {
-            if (Objects.isNull(this.readCallback)
-                    || !this.isPermitted())
+            if (!this.isPermitted())
                 return true;
             final Boolean result = this.eval(Annotation.Attribute.AttributeType.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
         boolean isHidden() {
+            if (!this.isPermitted())
+                return true;
             final Boolean result = this.eval(Annotation.Attribute.AttributeType.Hidden, this.isHidden, Defaults.isHidden);
             return Objects.nonNull(result) && result.booleanValue();
         }
