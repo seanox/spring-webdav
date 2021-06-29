@@ -21,51 +21,62 @@
  */
 package com.seanox.api.personal;
 
+import com.seanox.api.personal.data.PersonalBudget;
+import com.seanox.api.personal.data.PersonalReportSales;
+import com.seanox.api.personal.data.PersonalReportStatistic;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Simulation of a simple data access layer.
  *
- * PersonalService 1.0.0 20210626
+ * PersonalService 1.0.0 20210629
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
+ * @version 1.0.0 20210629
  */
 @Service
 class PersonalService {
 
-    private byte[] personalBudget;
+    private PersonalBudget personalBudget;
     @PostConstruct
     private void initPersonalBudget() throws IOException {
-        this.personalBudget = PersonalService.class.getResourceAsStream("/templates/budget.xlsx").readAllBytes();
+        this.personalBudget = new PersonalBudget();
+        this.personalBudget.setData(PersonalService.class.getResourceAsStream("/templates/budget.xlsx").readAllBytes());
+        this.personalBudget.setLastModified(new Date());
     }
-    byte[] readPersonalBudget() {
+    PersonalBudget readPersonalBudget() {
         return this.personalBudget;
     }
-    void savePersonalBudget(byte[] personalBudget) {
-        this.personalBudget = personalBudget;
+    void savePersonalBudget(PersonalBudget personalBudget) {
+        this.personalBudget.setData(personalBudget.getData());
+        this.personalBudget.setLastModified(new Date());
     }
 
-    private byte[] personalReportStatistic;
+    private PersonalReportStatistic personalReportStatistic;
     @PostConstruct
     private void initPersonalReportStatistic() throws IOException {
-        this.personalReportStatistic = PersonalService.class.getResourceAsStream("/templates/statistic.pptx").readAllBytes();
+        this.personalReportStatistic = new PersonalReportStatistic();
+        this.personalReportStatistic.setData(PersonalService.class.getResourceAsStream("/templates/statistic.pptx").readAllBytes());
+        this.personalReportStatistic.setLastModified(new Date());
     }
-    byte[] readPersonalReportStatistic() {
+    PersonalReportStatistic readPersonalReportStatistic() {
         return this.personalReportStatistic;
     }
 
-    private byte[] personalReportSales;
+    private PersonalReportSales personalReportSales;
     @PostConstruct
     private void initPersonalReportSales() throws IOException {
-        this.personalReportSales = PersonalService.class.getResourceAsStream("/templates/sales.pptx").readAllBytes();
+        this.personalReportSales = new PersonalReportSales();
+        this.personalReportSales.setData(PersonalService.class.getResourceAsStream("/templates/sales.pptx").readAllBytes());
+        this.personalReportSales.setLastModified(new Date());
     }
-    byte[] readPersonalReportSales() {
+    PersonalReportSales readPersonalReportSales() {
         return this.personalReportSales;
     }
 }

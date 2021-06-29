@@ -21,45 +21,54 @@
  */
 package com.seanox.api.marketing;
 
+import com.seanox.api.marketing.data.MarketingFlyer;
+import com.seanox.api.marketing.data.MarketingNewsletter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Simulation of a simple data access layer.
  *
- * MarketingService 1.0.0 20210626
+ * MarketingService 1.0.0 20210629
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
+ * @version 1.0.0 20210629
  */
 @Service
 class MarketingService {
 
-    private byte[] marketingFlyer;
+    private MarketingFlyer marketingFlyer;
     @PostConstruct
     private void initMarketingFlyer() throws IOException {
-        this.marketingFlyer = MarketingService.class.getResourceAsStream("/templates/flyer.pptx").readAllBytes();
+        this.marketingFlyer = new MarketingFlyer();
+        this.marketingFlyer.setData(MarketingService.class.getResourceAsStream("/templates/flyer.pptx").readAllBytes());
+        this.marketingFlyer.setLastModified(new Date());
     }
-    byte[] readMarketingFlyer() {
+    MarketingFlyer readMarketingFlyer() {
         return this.marketingFlyer;
     }
-    void saveMarketingFlyer(byte[] marketingFlyer) {
-        this.marketingFlyer = marketingFlyer;
+    void saveMarketingFlyer(MarketingFlyer marketingFlyer) {
+        this.marketingFlyer.setData(marketingFlyer.getData());
+        this.marketingFlyer.setLastModified(new Date());
     }
 
-    private byte[] marketingNewsletter;
+    private MarketingNewsletter marketingNewsletter;
     @PostConstruct
     private void initMarketingNewsletter() throws IOException {
-        this.marketingNewsletter = MarketingService.class.getResourceAsStream("/templates/newsletter.docx").readAllBytes();
+        this.marketingNewsletter = new MarketingNewsletter();
+        this.marketingNewsletter.setData(MarketingService.class.getResourceAsStream("/templates/newsletter.docx").readAllBytes());
+        this.marketingNewsletter.setLastModified(new Date());
     }
-    byte[] readMarketingNewsletter() {
+    MarketingNewsletter readMarketingNewsletter() {
         return this.marketingNewsletter;
     }
-    void saveMarketingNewsletter(byte[] marketingNewsletter) {
-        this.marketingNewsletter = marketingNewsletter;
+    void saveMarketingNewsletter(MarketingNewsletter marketingNewsletter) {
+        this.marketingNewsletter.setData(marketingNewsletter.getData());
+        this.marketingNewsletter.setLastModified(new Date());
     }
 }

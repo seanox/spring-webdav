@@ -21,6 +21,8 @@
  */
 package com.seanox.api.marketing;
 
+import com.seanox.api.marketing.data.MarketingFlyer;
+import com.seanox.api.marketing.data.MarketingNewsletter;
 import com.seanox.apidav.ApiDavAttribute;
 import com.seanox.apidav.ApiDavInput;
 import com.seanox.apidav.ApiDavMapping;
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Example for the integration of apiDAV into a RestController.
@@ -38,12 +41,12 @@ import java.io.IOException;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * MarketingController 1.0.0 20210627
+ * MarketingController 1.0.0 20210629
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210627
+ * @version 1.0.0 20210629
  */
 @RequiredArgsConstructor
 @RestController
@@ -54,28 +57,46 @@ class MarketingController {
     private static final String MARKETING_NEWSLETTER_DOTX="/marketing/newsletter.docx";
     @ApiDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
     void getMarketingNewsletter(MetaOutputStream output) throws IOException {
-        output.write(this.marketingService.readMarketingNewsletter());
+        final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
+        output.setContentLength((long)marketingNewsletter.getData().length);
+        output.setLastModified(marketingNewsletter.getLastModified());
+        output.write(marketingNewsletter.getData());
     }
     @ApiDavInput(path=MARKETING_NEWSLETTER_DOTX)
     void putMarketingNewsletter(MetaInputStream output) throws IOException {
-        this.marketingService.saveMarketingNewsletter(output.readAllBytes());
+        final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
+        marketingNewsletter.setData(output.readAllBytes());
+        this.marketingService.saveMarketingNewsletter(marketingNewsletter);
     }
     @ApiDavAttribute(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getMarketingNewsletterContentLength() {
-        return Long.valueOf(this.marketingService.readMarketingNewsletter().length);
+    Long getMarketingNewsletterLength() {
+        return Long.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
+    }
+    @ApiDavAttribute(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavAttribute.Attribute.LastModified)
+    Date getMarketingNewsletterLastModified() {
+        return this.marketingService.readMarketingNewsletter().getLastModified();
     }
 
     private static final String MARKETING_FLYER_PPTX="/marketing/flyer.pptx";
     @ApiDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
     void getMarketingFlyer(MetaOutputStream output) throws IOException {
-        output.write(this.marketingService.readMarketingFlyer());
+        final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
+        output.setContentLength((long)marketingFlyer.getData().length);
+        output.setLastModified(marketingFlyer.getLastModified());
+        output.write(marketingFlyer.getData());
     }
     @ApiDavInput(path=MARKETING_FLYER_PPTX)
     void putMarketingFlyer(MetaInputStream output) throws IOException {
-        this.marketingService.saveMarketingFlyer(output.readAllBytes());
+        final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
+        marketingFlyer.setData(output.readAllBytes());
+        this.marketingService.saveMarketingFlyer(marketingFlyer);
     }
     @ApiDavAttribute(path=MARKETING_FLYER_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
-    Long getMarketingFlyerContentLength() {
-        return Long.valueOf(this.marketingService.readMarketingFlyer().length);
+    Long getMarketingFlyerLength() {
+        return Long.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
+    }
+    @ApiDavAttribute(path=MARKETING_FLYER_PPTX, attribute=ApiDavAttribute.Attribute.LastModified)
+    Date getMarketingFlyerLastModified() {
+        return this.marketingService.readMarketingNewsletter().getLastModified();
     }
 }
