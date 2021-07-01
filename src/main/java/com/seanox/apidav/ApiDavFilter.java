@@ -21,6 +21,7 @@
  */
 package com.seanox.apidav;
 
+import org.apache.tomcat.util.buf.HexUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -41,8 +42,13 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -57,6 +63,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -109,8 +116,8 @@ public class ApiDavFilter extends HttpFilter {
     /** Constant of the default XML namespace for WebDAV */
     private static final String WEBDAV_DEFAULT_XML_NAMESPACE = "d";
 
-    /** Constant of the declaration of the XML namespace for WebDAV */
-    private static final String WEBDAV_DEFAULT_XML_NAMESPACE_DECLARATION = " xmlns:" + WEBDAV_DEFAULT_XML_NAMESPACE + "=\"DAV:\"";
+    /** Constant of the default XML namespace URI for WebDAV */
+    private static final String WEBDAV_DEFAULT_XML_NAMESPACE_URI = "DAV:";
 
     private static final String DATETIME_FORMAT_CREATION_DATE = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String DATETIME_FORMAT_LAST_MODIFIED = "E, dd MMM yyyy HH:mm:ss z";
@@ -124,7 +131,7 @@ public class ApiDavFilter extends HttpFilter {
             source = source.getClass();
 
         final List<Class<?>> classes = new ArrayList<>();
-        while (source != null) {
+        while (Objects.nonNull(source)) {
             classes.add((Class<?>)source);
             source = ((Class<?>)source).getSuperclass();
         }
@@ -217,9 +224,9 @@ public class ApiDavFilter extends HttpFilter {
         }
     }
 
-    private String locateRequestContextPath(final HttpServletRequest request) {
+    private static String locateRequestContextPath(final HttpServletRequest request) {
 
-        final String filterName = this.getClass().getName();
+        final String filterName = ApiDavFilter.class.getName();
         final Collection<String> filterUrlMappings = request.getServletContext().getFilterRegistration(filterName).getUrlPatternMappings();
         for (String urlPatternMapping : filterUrlMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("/+\\**$", "");
@@ -230,10 +237,10 @@ public class ApiDavFilter extends HttpFilter {
         return "";
     }
 
-    private String locateSitemapPath(final HttpServletRequest request) {
+    private static String locateSitemapPath(final HttpServletRequest request) {
 
-        final String requestURI =  URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
-        final String filterName = this.getClass().getName();
+        final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
+        final String filterName = ApiDavFilter.class.getName();
         final Collection<String> filterUrlMappings = request.getServletContext().getFilterRegistration(filterName).getUrlPatternMappings();
         for (String urlPatternMapping : filterUrlMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("\\*?$", "");
@@ -245,13 +252,13 @@ public class ApiDavFilter extends HttpFilter {
         return null;
     }
 
-    private Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request) {
-        return this.locateSitemapEntry(sitemap, request, false);
+    private static Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request) {
+        return ApiDavFilter.locateSitemapEntry(sitemap, request, false);
     }
 
-    private Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request, boolean stateful) {
+    private static Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request, boolean stateful) {
 
-        final String pathInfo = this.locateSitemapPath(request);
+        final String pathInfo = ApiDavFilter.locateSitemapPath(request);
         if (Objects.isNull(pathInfo))
             if (stateful)
                 throw new NotFoundState();
@@ -295,7 +302,7 @@ public class ApiDavFilter extends HttpFilter {
         return factory.newDocumentBuilder().parse(request.getInputStream());
     }
 
-    private static Properties<String> getPropertiesFromXml(final Node node) {
+    private static Properties<String> getPropertiesFromNode(final Node node) {
 
         final Properties<String> properties = new Properties<>();
         final NodeList nodeList = node.getChildNodes();
@@ -330,6 +337,8 @@ public class ApiDavFilter extends HttpFilter {
         final String isSystem   = "false";
         final String isArchive  = "false";
 
+        final String etag = Long.toString(entry.getLastModified().getTime(), 36).toUpperCase();
+
         // Win32FileAttributes
         // see also https://docs.microsoft.com/de-de/windows/win32/api/fileapi/nf-fileapi-setfileattributesa?redirectedfrom=MSDN
         // readOnly: 0x01, hidden: 0x02, system: 0x04, directory: 0x10, achive: 0x20
@@ -362,6 +371,18 @@ public class ApiDavFilter extends HttpFilter {
                 } else {
                     xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getcontenttype", contentType);
                     xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getcontentlength", contentLength);
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getetag", "\"" + etag + "\"");
+
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "supportedlock", XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "DAV:", "lockentry", XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "lockscope", XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "exclusive", XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "lockscope", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "locktype", XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "write", XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "locktype", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "lockentry", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "supportedlock", XmlWriter.ElementType.CLOSING);
                 }
 
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "prop", XmlWriter.ElementType.CLOSING);
@@ -392,6 +413,7 @@ public class ApiDavFilter extends HttpFilter {
                 } else {
                     xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getcontenttype", XmlWriter.ElementType.EMPTY);
                     xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getcontentlength", XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getetag", XmlWriter.ElementType.EMPTY);
                 }
 
                 xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "prop", XmlWriter.ElementType.CLOSING);
@@ -441,6 +463,9 @@ public class ApiDavFilter extends HttpFilter {
                         } else if (!entry.isFolder()
                                 && property.equals("getcontenttype")) {
                             xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getcontenttype", contentType);
+                        } else if (!entry.isFolder()
+                                && property.equals("getetag")) {
+                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "getetag", "\"" + etag + "\"");
                         } else list.add(property);
                     }
                 }
@@ -511,11 +536,11 @@ public class ApiDavFilter extends HttpFilter {
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             final XmlWriter xmlWriter = new XmlWriter(buffer);
             xmlWriter.writeXmlHeader();
-            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "multistatus" +  ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_DECLARATION, XmlWriter.ElementType.OPENING);
+            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,"multistatus", XmlWriter.ElementType.OPENING);
 
             final int depth = ApiDavFilter.getDepth(request);
 
-            if (document != null) {
+            if (Objects.nonNull(document)) {
                 final Element root = document.getDocumentElement();
                 final NodeList nodeList = root.getChildNodes();
                 final Set<Node> nodeSet = IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
@@ -525,7 +550,7 @@ public class ApiDavFilter extends HttpFilter {
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
                 } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase("prop"))) {
                     final Node propNode = nodeSet.stream().filter(streamNode -> streamNode.getLocalName().equalsIgnoreCase("prop")).findFirst().get();
-                    properties.putAll(ApiDavFilter.getPropertiesFromXml(propNode));
+                    properties.putAll(ApiDavFilter.getPropertiesFromNode(propNode));
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_BY_PROPERTY, properties, depth);
                 } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase("propname"))) {
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_PROPERTY_NAMES, properties, depth);
@@ -603,6 +628,8 @@ public class ApiDavFilter extends HttpFilter {
         if (entry.isReadOnly())
             throw new ForbiddenState();
 
+        response.setHeader("Content-Location", this.locateSitemapPath(request));
+
         final Sitemap.File file = ((Sitemap.File)entry);
         final Sitemap.Callback writeCallback = file.getWriteCallback();
         final MetaInputStream metaInputStream = MetaInputStream.builder()
@@ -620,15 +647,108 @@ public class ApiDavFilter extends HttpFilter {
         throw new NoContentState();
     }
 
-    // TODO: Mirroring from token
-    private void doLock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+    private static String getLockOwner(final HttpServletRequest request)
+            throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+
+        if (request.getContentLength() <= 0)
+            return null;
+
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder builder = factory.newDocumentBuilder();
+        final Document document = builder.parse(request.getInputStream());
+        if (Objects.isNull(document))
+            return null;
+
+        final XPath xpath = XPathFactory.newInstance().newXPath();
+        final String owner = ((Node)xpath.compile("/lockinfo/owner/href/text()").evaluate(document, XPathConstants.NODE)).getNodeValue();
+        if (Objects.isNull(owner)
+                || owner.isBlank())
+            return null;
+        return owner;
+    }
+
+    private void doLock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
         this.locateSitemapEntry(sitemap, request, true);
-        // MS Office is satisfied with the very simple lock -- Thanks guys :-)
-        response.addHeader("Lock-Token", "<opaquelocktoken:0123456789>");
+
+        // Lock and token are more a simulation not real.
+        // Only Exclusive Write Locks are supported.
+        // It  based on an echo of the If-OpaqueLockToken.
+        // Timeout headers are ignored.
+
+        String token = request.getHeader("If");
+        if (Objects.nonNull(token)
+                && token.matches("(?i)^\\(<([a-z0-9]+(?:-[a-z0-9]+)+)>\\)$"))
+            token = token.replaceAll("(?i)^\\(<([a-z0-9]+(?:-[a-z0-9]+)+)>\\)$", "$1");
+        else token = UUID.randomUUID().toString();
+
+        String owner = null;
+        try {owner = ApiDavFilter.getLockOwner(request);
+        } catch (Exception exception) {
+        }
+
+        if (Objects.nonNull(owner))
+            token = (Long.toString(System.currentTimeMillis(), 16) + "-" + HexUtils.toHexString(owner.getBytes())).toUpperCase();
+        else if (token.matches("^[0-9A-F]+-[0-9A-F]+$"))
+            owner = new String(HexUtils.fromHexString(token.replaceAll("^.*-", "")));
+
+        String timeout = request.getHeader("Timeout");
+        if (Objects.isNull(timeout)
+                || !timeout.matches("(?i)^[a-z]-\\d+"))
+            timeout = String.format("Second-%s", 60 *60 *24 *7);
+
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        final XmlWriter xmlWriter = new XmlWriter(buffer);
+        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, WEBDAV_DEFAULT_XML_NAMESPACE_URI, "prop", XmlWriter.ElementType.OPENING);
+            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "lockdiscovery", XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "activelock", XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "locktype", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "write", XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "locktype", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "lockscope", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "exclusive", XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "lockscope", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "depth", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeText("Infinity");
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "depth", XmlWriter.ElementType.CLOSING);
+
+                if (Objects.nonNull(owner)) {
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "owner", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "href", XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeText(owner);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "href", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "owner", XmlWriter.ElementType.CLOSING);
+                }
+
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "timeout", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeText(timeout);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "timeout", XmlWriter.ElementType.CLOSING);
+
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "locktoken", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "href", XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeText(token);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "href", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "locktoken", XmlWriter.ElementType.CLOSING);
+
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "lockroot", XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "href", XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeText(this.locateSitemapPath(request));
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "href", XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "lockroot", XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "activelock", XmlWriter.ElementType.CLOSING);
+            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "lockdiscovery", XmlWriter.ElementType.CLOSING);
+        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, "prop", XmlWriter.ElementType.CLOSING);
+        xmlWriter.flush();
+
+        final String markup = buffer.toString();
+
+        response.addHeader("Lock-Token", "<" + token + ">");
+        response.setContentType(MediaType.TEXT_XML.toString());
+        response.setContentLength(markup.length());
+        response.getOutputStream().write(markup.getBytes());
         throw new SuccessState();
     }
 
-    // TODO: Mirroring from token
     private void doUnlock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
         this.locateSitemapEntry(sitemap, request, true);
         throw new NoContentState();
