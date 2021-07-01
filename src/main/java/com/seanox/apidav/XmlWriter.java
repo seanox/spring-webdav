@@ -31,12 +31,12 @@ import java.util.Objects;
 /**
  * Writer for the output of XML data.<br>
  * <br>
- * XmlWriter 1.1.0 20210622<br>
+ * XmlWriter 1.1.0 20210701<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210622
+ * @version 1.1.0 20210701
  */
 class XmlWriter implements Closeable {
 
@@ -96,97 +96,97 @@ class XmlWriter implements Closeable {
 
     /**
      * Writes an XML parameter into the data stream.
-     * @param  space Namespace (short)
-     * @param  note  Namespace note
-     * @param  name  Element name
-     * @param  value Element value
+     * @param  namespace Namespace
+     * @param  uri       Namespace URI
+     * @param  name      Element name
+     * @param  value     Element value
      * @throws IOException
      *     In case of faulty access to the data stream
      */
-    void writeProperty(final String space, final String note, final String name, final String value)
+    void writeProperty(final String namespace, final String uri, final String name, final String value)
             throws IOException {
 
-        this.writeElement(space, note, name, ElementType.OPENING);
+        this.writeElement(namespace, uri, name, ElementType.OPENING);
         this.writeText(value);
-        this.writeElement(space, note, name, ElementType.CLOSING);
+        this.writeElement(namespace, uri, name, ElementType.CLOSING);
     }
 
     /**
      * Writes an XML parameter into the data stream.
-     * @param  space Namespace (short)
-     * @param  name  Element name
-     * @param  value Element value
+     * @param  namespace Namespace
+     * @param  name      Element name
+     * @param  value     Element value
      * @throws IOException
      *     In case of faulty access to the data stream
      */
-    void writeProperty(final String space, final String name, final String value)
+    void writeProperty(final String namespace, final String name, final String value)
             throws IOException {
 
-        this.writeElement(space, name, ElementType.OPENING);
+        this.writeElement(namespace, name, ElementType.OPENING);
         this.writeText(value);
-        this.writeElement(space, name, ElementType.CLOSING);
+        this.writeElement(namespace, name, ElementType.CLOSING);
     }
 
     /**
      * Writes an XML parameter as data segment into the data stream.
-     * @param  space Namespace (short)
-     * @param  name  Element name
-     * @param  value Element value
+     * @param  namespace Namespace
+     * @param  name      Element name
+     * @param  value     Element value
      * @throws IOException
      *     In case of faulty access to the data stream
      */
-    void writePropertyData(final String space, final String name, final String value)
+    void writePropertyData(final String namespace, final String name, final String value)
             throws IOException {
 
-        this.writeElement(space, name, ElementType.OPENING);
+        this.writeElement(namespace, name, ElementType.OPENING);
         this.writeText(String.format("<![CDATA[%s]]>", value));
-        this.writeElement(space, name, ElementType.CLOSING);
+        this.writeElement(namespace, name, ElementType.CLOSING);
     }
 
     /**
      * Writes an XML element into the data stream.
-     * @param  space Namespace (short)
-     * @param  name  Element name
+     * @param  namespace Namespace
+     * @param  name      Element name
      * @throws IOException
      *     In case of faulty access to the data stream
      */
-    void writeProperty(final String space, final String name)
+    void writeProperty(final String namespace, final String name)
             throws IOException {
-        this.writeElement(space, name, ElementType.EMPTY);
+        this.writeElement(namespace, name, ElementType.EMPTY);
     }
 
     /**
      * Writes an XML element into the data stream.
-     * @param  space Namespace (short)
-     * @param  name  Element name
-     * @param  type  Element type
+     * @param  namespace Namespace
+     * @param  name      Element name
+     * @param  type      Element type
      * @throws IOException
      *     In case of faulty access to the data stream
      */
-    void writeElement(final String space, final String name, final ElementType type)
+    void writeElement(final String namespace, final String name, final ElementType type)
             throws IOException {
-        this.writeElement(space, null, name, type);
+        this.writeElement(namespace, null, name, type);
     }
 
     /**
      * Writes an XML element into the data stream.
-     * @param  space Namespace (short)
-     * @param  note  Namespace note
-     * @param  name  Element name
-     * @param  type  Element type
+     * @param  namespace Namespace
+     * @param  uri       Namespace URI
+     * @param  name      Element name
+     * @param  type      Element type
      * @throws IOException
      *     In case of faulty access to the data stream
      */
-    void writeElement(final String space, final String note, final String name, final ElementType type)
+    void writeElement(final String namespace, final String uri, final String name, final ElementType type)
             throws IOException {
 
         this.writeText(Objects.nonNull(type) ? type.open : ElementType.EMPTY.open);
-        if (space != null
-                && !space.isBlank()) {
-            this.writeText(String.format("%s:%s", space.trim(), name));
-            if (note != null
-                    && !note.isBlank())
-                this.writeText(String.format(" xmlns:%s=\"%s\"", space.trim(), note.trim()));
+        if (namespace != null
+                && !namespace.isBlank()) {
+            this.writeText(String.format("%s:%s", namespace.trim(), name));
+            if (uri != null
+                    && !uri.isBlank())
+                this.writeText(String.format(" xmlns:%s=\"%s\"", namespace.trim(), uri.trim()));
         } else this.writeText(name);
         this.writeText(Objects.nonNull(type) ? type.close : ElementType.EMPTY.close);
     }
