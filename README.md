@@ -14,4 +14,45 @@
 # Description
 
 API-WebDAV mapping for Spring Boot  
-Use an API like a network drive, open data as files, edit and save them.
+Use an API like a network drive, open data as files, edit and save them.  
+Why use a frontend when the data can be edited directly as an Office document?
+
+
+# Features
+- Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`;
+- Supports MS Office documents (Excel, Word, PowerPoint, ...)
+- ...
+
+
+# Licence Agreement
+
+
+# System Requirement
+
+
+# Downloads
+
+
+# Manuals
+
+
+# Contact
+[Issues](https://github.com/seanox/apiDAV/issues)  
+[Requests](https://github.com/seanox/apiDAV/pulls)  
+[Mail](http://seanox.de/contact)
+
+
+# Thanks!
+<img src="https://raw.githubusercontent.com/seanox/seanox/master/sources/resources/images/thanks.png">
+
+[JetBrains](https://www.jetbrains.com/?from=seanox)  
+Sven Lorenz  
+Andreas Mitterhofer  
+[novaObjects GmbH](https://www.novaobjects.de)  
+Leo Pelillo  
+Gunter Pfannm&uuml;ller  
+Annette und Steffen Pokel  
+Edgar R&ouml;stle  
+Michael S&auml;mann  
+Markus Schlosneck  
+[T-Systems International GmbH](https://www.t-systems.com)
