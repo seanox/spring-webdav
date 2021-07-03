@@ -23,9 +23,10 @@ package com.seanox.api.marketing;
 
 import com.seanox.api.marketing.data.MarketingFlyer;
 import com.seanox.api.marketing.data.MarketingNewsletter;
-import com.seanox.apidav.ApiDavAttribute;
-import com.seanox.apidav.ApiDavInput;
+import com.seanox.apidav.ApiDavAttributeMapping;
+import com.seanox.apidav.ApiDavInputMapping;
 import com.seanox.apidav.ApiDavMapping;
+import com.seanox.apidav.ApiDavMappingAttribute;
 import com.seanox.apidav.MetaInputStream;
 import com.seanox.apidav.MetaOutputStream;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +42,12 @@ import java.util.Date;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * MarketingController 1.0.0 20210629
+ * MarketingController 1.0.0 20210703
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210629
+ * @version 1.0.0 20210703
  */
 @RequiredArgsConstructor
 @RestController
@@ -62,17 +63,17 @@ class MarketingController {
         output.setLastModified(marketingNewsletter.getLastModified());
         output.write(marketingNewsletter.getData());
     }
-    @ApiDavInput(path=MARKETING_NEWSLETTER_DOTX)
+    @ApiDavInputMapping(path=MARKETING_NEWSLETTER_DOTX)
     void putMarketingNewsletter(MetaInputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
         marketingNewsletter.setData(output.readAllBytes());
         this.marketingService.saveMarketingNewsletter(marketingNewsletter);
     }
-    @ApiDavAttribute(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavAttribute.Attribute.ContentLength)
+    @ApiDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getMarketingNewsletterLength() {
         return Long.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
     }
-    @ApiDavAttribute(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavAttribute.Attribute.LastModified)
+    @ApiDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getMarketingNewsletterLastModified() {
         return this.marketingService.readMarketingNewsletter().getLastModified();
     }
@@ -85,17 +86,17 @@ class MarketingController {
         output.setLastModified(marketingFlyer.getLastModified());
         output.write(marketingFlyer.getData());
     }
-    @ApiDavInput(path=MARKETING_FLYER_PPTX)
+    @ApiDavInputMapping(path=MARKETING_FLYER_PPTX)
     void putMarketingFlyer(MetaInputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
         marketingFlyer.setData(output.readAllBytes());
         this.marketingService.saveMarketingFlyer(marketingFlyer);
     }
-    @ApiDavAttribute(path=MARKETING_FLYER_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
+    @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getMarketingFlyerLength() {
         return Long.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
     }
-    @ApiDavAttribute(path=MARKETING_FLYER_PPTX, attribute=ApiDavAttribute.Attribute.LastModified)
+    @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getMarketingFlyerLastModified() {
         return this.marketingService.readMarketingNewsletter().getLastModified();
     }

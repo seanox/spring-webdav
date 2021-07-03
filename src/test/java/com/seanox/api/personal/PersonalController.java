@@ -24,9 +24,10 @@ package com.seanox.api.personal;
 import com.seanox.api.personal.data.PersonalBudget;
 import com.seanox.api.personal.data.PersonalReportSales;
 import com.seanox.api.personal.data.PersonalReportStatistic;
-import com.seanox.apidav.ApiDavAttribute;
-import com.seanox.apidav.ApiDavInput;
+import com.seanox.apidav.ApiDavAttributeMapping;
+import com.seanox.apidav.ApiDavInputMapping;
 import com.seanox.apidav.ApiDavMapping;
+import com.seanox.apidav.ApiDavMappingAttribute;
 import com.seanox.apidav.MetaInputStream;
 import com.seanox.apidav.MetaOutputStream;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +43,12 @@ import java.util.Date;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * PersonalController 1.0.0 20210629
+ * PersonalController 1.0.0 20210703
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210629
+ * @version 1.0.0 20210703
  */
 @RequiredArgsConstructor
 @RestController
@@ -83,17 +84,17 @@ class PersonalController {
         output.setLastModified(personalBudget.getLastModified());
         output.write(personalBudget.getData());
     }
-    @ApiDavInput(path=PERSONAL_BUDGET_XLSX)
+    @ApiDavInputMapping(path=PERSONAL_BUDGET_XLSX)
     void putPersonalBudget(MetaInputStream output) throws IOException {
         final PersonalBudget personalBudget = this.personalService.readPersonalBudget();
         personalBudget.setData(output.readAllBytes());
         this.personalService.savePersonalBudget(personalBudget);
     }
-    @ApiDavAttribute(path=PERSONAL_BUDGET_XLSX, attribute=ApiDavAttribute.Attribute.ContentLength)
+    @ApiDavAttributeMapping(path=PERSONAL_BUDGET_XLSX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getPersonalBudgetContentLength() {
         return Long.valueOf(this.personalService.readPersonalBudget().getData().length);
     }
-    @ApiDavAttribute(path=PERSONAL_BUDGET_XLSX, attribute=ApiDavAttribute.Attribute.LastModified)
+    @ApiDavAttributeMapping(path=PERSONAL_BUDGET_XLSX, attribute=ApiDavMappingAttribute.LastModified)
     Date getPersonalBudgetLastModified() {
         return this.personalService.readPersonalBudget().getLastModified();
     }
@@ -110,26 +111,14 @@ class PersonalController {
         output.setLastModified(personalReportStatistic.getLastModified());
         output.write(personalReportStatistic.getData());
     }
-    @ApiDavAttribute(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
+    @ApiDavAttributeMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getPersonalReportStatisticLength() {
         return Long.valueOf(this.personalService.readPersonalReportStatistic().getData().length);
     }
-    @ApiDavAttribute(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavAttribute.Attribute.LastModified)
+    @ApiDavAttributeMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getPersonalReportStatisticLastModified() {
         return this.personalService.readPersonalReportStatistic().getLastModified();
     }
-
-
-
-
-
-    // TODO: final idea for the annotations (outsourcing) e.g. ApiDavMappingAttributeExpression + ApiDavMappingAttribute
-    // private static final String PERSONAL_REPORTS_STATISTIC_PPTX="/personal/reports/statistic.pptx";
-    // @ApiDavMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX, attributeExpressions={
-    //         @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Permitted, phrase="#{'TODO:'}")
-    // })
-    // public void getPersonalReportStatistic(MetaOutputStream output) {
-    // }
 
 
 
@@ -143,11 +132,11 @@ class PersonalController {
         output.setLastModified(personalReportSales.getLastModified());
         output.write(personalReportSales.getData());
     }
-    @ApiDavAttribute(path=PERSONAL_REPORTS_SALES_PPTX, attribute=ApiDavAttribute.Attribute.ContentLength)
+    @ApiDavAttributeMapping(path=PERSONAL_REPORTS_SALES_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getPersonalReportSalesLength() {
         return Long.valueOf(this.personalService.readPersonalReportSales().getData().length);
     }
-    @ApiDavAttribute(path=PERSONAL_REPORTS_SALES_PPTX, attribute=ApiDavAttribute.Attribute.LastModified)
+    @ApiDavAttributeMapping(path=PERSONAL_REPORTS_SALES_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getPersonalReportSalesLastModified() {
         return this.personalService.readPersonalReportSales().getLastModified();
     }
