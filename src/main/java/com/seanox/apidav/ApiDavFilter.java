@@ -53,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -165,25 +164,25 @@ public class ApiDavFilter extends HttpFilter {
                         for (final java.lang.annotation.Annotation annotation : method.getDeclaredAnnotations()) {
                             // TODO: Check expected methods signature, otherwise exception with more details
                             // TODO: Check for uniqueness of annotations, multiple occurrences cause exception
-                            if (annotation.annotationType().equals(ApiDavAttribute.class))
-                                annotations.add(Annotation.Attribute.create((ApiDavAttribute)annotation, object, method));
-                            else if (annotation.annotationType().equals(ApiDavAttribute.ApiDavAttributes.class))
-                                for (final ApiDavAttribute apiDavAttribute : ((ApiDavAttribute.ApiDavAttributes)annotation).value())
+                            if (annotation.annotationType().equals(ApiDavAttributeMapping.class))
+                                annotations.add(Annotation.Attribute.create((ApiDavAttributeMapping)annotation, object, method));
+                            else if (annotation.annotationType().equals(ApiDavAttributeMapping.ApiDavAttributeMappings.class))
+                                for (final ApiDavAttributeMapping apiDavAttribute : ((ApiDavAttributeMapping.ApiDavAttributeMappings)annotation).value())
                                     annotations.add(Annotation.Attribute.create(apiDavAttribute, object, method));
-                            else if (annotation.annotationType().equals(ApiDavInput.class))
-                                annotations.add(Annotation.Input.create((ApiDavInput)annotation, object, method));
-                            else if (annotation.annotationType().equals(ApiDavInput.ApiDavInputs.class))
-                                for (final ApiDavInput apiDavAttribute : ((ApiDavInput.ApiDavInputs)annotation).value())
+                            else if (annotation.annotationType().equals(ApiDavInputMapping.class))
+                                annotations.add(Annotation.Input.create((ApiDavInputMapping)annotation, object, method));
+                            else if (annotation.annotationType().equals(ApiDavInputMapping.ApiDavInputMappings.class))
+                                for (final ApiDavInputMapping apiDavAttribute : ((ApiDavInputMapping.ApiDavInputMappings)annotation).value())
                                     annotations.add(Annotation.Input.create(apiDavAttribute, object, method));
                             else if (annotation.annotationType().equals(ApiDavMapping.class))
                                 annotations.add(Annotation.Mapping.create((ApiDavMapping)annotation, object, method));
                             else if (annotation.annotationType().equals(ApiDavMapping.ApiDavMappings.class))
                                 for (final ApiDavMapping apiDavAttribute : ((ApiDavMapping.ApiDavMappings)annotation).value())
                                     annotations.add(Annotation.Mapping.create(apiDavAttribute, object, method));
-                            else if (annotation.annotationType().equals(ApiDavMeta.class))
-                                annotations.add(Annotation.Meta.create((ApiDavMeta)annotation, object, method));
-                            else if (annotation.annotationType().equals(ApiDavMeta.ApiDavMetas.class))
-                                for (final ApiDavMeta apiDavMeta : ((ApiDavMeta.ApiDavMetas)annotation).value())
+                            else if (annotation.annotationType().equals(ApiDavMetaMapping.class))
+                                annotations.add(Annotation.Meta.create((ApiDavMetaMapping)annotation, object, method));
+                            else if (annotation.annotationType().equals(ApiDavMetaMapping.ApiDavMetaMappings.class))
+                                for (final ApiDavMetaMapping apiDavMeta : ((ApiDavMetaMapping.ApiDavMetaMappings)annotation).value())
                                     annotations.add(Annotation.Meta.create(apiDavMeta, object, method));
                         }
                     }
@@ -257,9 +256,15 @@ public class ApiDavFilter extends HttpFilter {
                 && !request.getRequestURI().endsWith("/"))
             throw new FoundState(request.getRequestURI() + "/");
 
+        final String method = request.getMethod().toUpperCase();
+
         final Sitemap.Entry entry = sitemap.locate(pathInfo);
-        if (Objects.isNull(entry))
+        if (Objects.isNull(entry)) {
+            if (METHOD_PUT.equals(method)
+                    || METHOD_LOCK.equals(method))
+                throw new ForbiddenState();
             throw new NotFoundState();
+        }
 
         if (entry.isFolder()
                 && !pathInfo.endsWith("/"))
@@ -268,7 +273,6 @@ public class ApiDavFilter extends HttpFilter {
                 && pathInfo.endsWith("/"))
             throw new FoundState(request.getRequestURI().replaceAll("/+$", ""));
 
-        final String method = request.getMethod().toUpperCase();
         if (!Arrays.asList(METHOD_HEAD, METHOD_GET, METHOD_LOCK, METHOD_PUT).contains(method))
             return entry;
 

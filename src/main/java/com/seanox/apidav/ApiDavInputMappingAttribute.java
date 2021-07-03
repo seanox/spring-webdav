@@ -21,22 +21,15 @@
  */
 package com.seanox.apidav;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public enum ApiDavInputMappingAttribute {
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Repeatable(ApiDavMeta.ApiDavMetas.class)
-public @interface ApiDavMeta {
+    Accept(Annotation.Attribute.AttributeType.Accept),
+    ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax),
+    Accepted(Annotation.Attribute.AttributeType.Accepted);
 
-    String path();
+    final Annotation.Attribute.AttributeType attributeType;
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface ApiDavMetas {
-        ApiDavMeta[] value();
+    ApiDavInputMappingAttribute(final Annotation.Attribute.AttributeType type) {
+        this.attributeType = type;
     }
 }

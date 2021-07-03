@@ -29,31 +29,14 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Repeatable(ApiDavAttribute.ApiDavAttributes.class)
-public @interface ApiDavAttribute {
+@Repeatable(ApiDavMetaMapping.ApiDavMetaMappings.class)
+public @interface ApiDavMetaMapping {
 
-    String    path();
-    Attribute attribute();
-
-    enum Attribute {
-        ContentLength(Annotation.Attribute.AttributeType.ContentLength),
-        ContentType(Annotation.Attribute.AttributeType.ContentType),
-        LastModified(Annotation.Attribute.AttributeType.LastModified),
-
-        ReadOnly(Annotation.Attribute.AttributeType.ReadOnly),
-        Hidden(Annotation.Attribute.AttributeType.Hidden),
-        Permitted(Annotation.Attribute.AttributeType.Permitted);
-
-        final Annotation.Attribute.AttributeType attributeType;
-
-        Attribute(Annotation.Attribute.AttributeType attributeType) {
-            this.attributeType = attributeType;
-        }
-    }
+    String path();
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    @interface ApiDavAttributes {
-        ApiDavAttribute[] value();
+    @interface ApiDavMetaMappings {
+        ApiDavMetaMapping[] value();
     }
 }

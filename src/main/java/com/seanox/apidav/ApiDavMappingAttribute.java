@@ -21,34 +21,20 @@
  */
 package com.seanox.apidav;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public enum ApiDavMappingAttribute {
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Repeatable(ApiDavMapping.ApiDavMappings.class)
-public @interface ApiDavMapping {
+    ContentType(Annotation.Attribute.AttributeType.ContentType),
+    ContentLength(Annotation.Attribute.AttributeType.ContentLength),
+    CreationDate(Annotation.Attribute.AttributeType.CreationDate),
+    LastModified(Annotation.Attribute.AttributeType.LastModified),
 
-    // Following values use the default values: -1, ""
+    ReadOnly(Annotation.Attribute.AttributeType.ReadOnly),
+    Hidden(Annotation.Attribute.AttributeType.Hidden),
+    Permitted(Annotation.Attribute.AttributeType.Permitted);
 
-    String  path();
+    final Annotation.Attribute.AttributeType type;
 
-    long    contentLength() default -1;
-    String  contentType()   default "";
-    String  lastModified()  default "";
-    String  creationDate()  default "";
-    boolean isReadOnly()    default true;
-    boolean isHidden()      default false;
-    boolean isPermitted()   default true;
-
-    ApiDavMappingAttributeExpression[] attributeExpressions() default {};
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface ApiDavMappings {
-        ApiDavMapping[] value();
+    ApiDavMappingAttribute(final Annotation.Attribute.AttributeType type) {
+        this.type = type;
     }
 }

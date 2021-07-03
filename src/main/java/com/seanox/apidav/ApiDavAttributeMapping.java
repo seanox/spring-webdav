@@ -29,26 +29,15 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Repeatable(ApiDavMapping.ApiDavMappings.class)
-public @interface ApiDavMapping {
+@Repeatable(ApiDavAttributeMapping.ApiDavAttributeMappings.class)
+public @interface ApiDavAttributeMapping {
 
-    // Following values use the default values: -1, ""
-
-    String  path();
-
-    long    contentLength() default -1;
-    String  contentType()   default "";
-    String  lastModified()  default "";
-    String  creationDate()  default "";
-    boolean isReadOnly()    default true;
-    boolean isHidden()      default false;
-    boolean isPermitted()   default true;
-
-    ApiDavMappingAttributeExpression[] attributeExpressions() default {};
+    String                 path();
+    ApiDavMappingAttribute attribute();
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    @interface ApiDavMappings {
-        ApiDavMapping[] value();
+    @interface ApiDavAttributeMappings {
+        ApiDavAttributeMapping[] value();
     }
 }

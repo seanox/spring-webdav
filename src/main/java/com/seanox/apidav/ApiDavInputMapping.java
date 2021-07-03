@@ -29,8 +29,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Repeatable(ApiDavInput.ApiDavInputs.class)
-public @interface ApiDavInput {
+@Repeatable(ApiDavInputMapping.ApiDavInputMappings.class)
+public @interface ApiDavInputMapping {
 
     // Following values use the default values: -1, ""
 
@@ -39,29 +39,11 @@ public @interface ApiDavInput {
     String accept()           default "";
     long   contentLengthMax() default -1;
 
-    AttributeExpression[] attributeExpressions() default {};
-
-    @interface AttributeExpression {
-
-        Attribute attribute();
-        String    phrase();
-
-        enum Attribute {
-            Accept(Annotation.Attribute.AttributeType.Accept),
-            ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax),
-            Accepted(Annotation.Attribute.AttributeType.Accepted);
-
-            final Annotation.Attribute.AttributeType attributeType;
-
-            Attribute(final Annotation.Attribute.AttributeType type) {
-                this.attributeType = type;
-            }
-        }
-    }
+    ApiDavInputMappingAttributeExpression[] attributeExpressions() default {};
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    @interface ApiDavInputs {
-        ApiDavInput[] value();
+    @interface ApiDavInputMappings {
+        ApiDavInputMapping[] value();
     }
 }

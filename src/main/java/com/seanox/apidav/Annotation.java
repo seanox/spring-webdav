@@ -81,14 +81,14 @@ abstract class Annotation {
             this.attributeType = attribute;
         }
 
-        static Annotation.Attribute create(final ApiDavAttribute apiDavAttribute, final Object object, final Method method) {
+        static Annotation.Attribute create(final ApiDavAttributeMapping apiDavAttribute, final Object object, final Method method) {
             return Annotation.Attribute.builder()
                     .path(apiDavAttribute.path())
                     .type(AnnotationType.Attribute)
                     .object(object)
                     .method(method)
 
-                    .attribute(apiDavAttribute.attribute().attributeType)
+                    .attribute(apiDavAttribute.attribute().type)
                     .build();
         }
 
@@ -122,7 +122,7 @@ abstract class Annotation {
             this.expressions      = Objects.nonNull(expressions) ? Arrays.asList(expressions) : null;
         }
 
-        static Input create(final ApiDavInput apiDavInput, final Object object, final Method method) {
+        static Input create(final ApiDavInputMapping apiDavInput, final Object object, final Method method) {
             return Input.builder()
                     .path(apiDavInput.path())
                     .type(AnnotationType.Input)
@@ -216,7 +216,7 @@ abstract class Annotation {
             super(path, type, object, method);
         }
 
-        static Meta create(final ApiDavMeta apiDavMeta, final Object object, final Method method) {
+        static Meta create(final ApiDavMetaMapping apiDavMeta, final Object object, final Method method) {
             return Meta.builder()
                     .path(apiDavMeta.path())
                     .type(AnnotationType.Meta)

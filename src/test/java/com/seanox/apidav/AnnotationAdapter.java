@@ -35,12 +35,12 @@ import java.lang.reflect.Method;
  */
 public class AnnotationAdapter {
 
-    public static Annotation.Attribute createAnnotationAttribute(final ApiDavAttribute attributeAnnotation,
+    public static Annotation.Attribute createAnnotationAttribute(final ApiDavAttributeMapping attributeAnnotation,
                     final Object object, final Method method) {
         return Annotation.Attribute.create(attributeAnnotation, object, method);
     }
 
-    public static Annotation.Input createAnnotationInput(final ApiDavInput inputAnnotation,
+    public static Annotation.Input createAnnotationInput(final ApiDavInputMapping inputAnnotation,
                     final Object object, final Method method) {
         return Annotation.Input.create(inputAnnotation, object, method);
     }
@@ -57,10 +57,10 @@ public class AnnotationAdapter {
 
     public static Annotation createAnnotation(final java.lang.annotation.Annotation annotation, final Object object, final Method method)
             throws AnnotationException {
-        if (annotation.annotationType().equals(ApiDavAttribute.class))
-            return AnnotationAdapter.createAnnotationAttribute((ApiDavAttribute)annotation, object, method);
-        else if (annotation.annotationType().equals(ApiDavInput.class))
-            return AnnotationAdapter.createAnnotationInput((ApiDavInput)annotation, object, method);
+        if (annotation.annotationType().equals(ApiDavAttributeMapping.class))
+            return AnnotationAdapter.createAnnotationAttribute((ApiDavAttributeMapping)annotation, object, method);
+        else if (annotation.annotationType().equals(ApiDavInputMapping.class))
+            return AnnotationAdapter.createAnnotationInput((ApiDavInputMapping)annotation, object, method);
         else if (annotation.annotationType().equals(ApiDavMapping.class))
             return AnnotationAdapter.createAnnotationMapping((ApiDavMapping)annotation, object, method);
         throw new AdapterException("Unsupported annotation type: " + annotation.annotationType());

@@ -21,34 +21,8 @@
  */
 package com.seanox.apidav;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public @interface ApiDavInputMappingAttributeExpression {
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Repeatable(ApiDavMapping.ApiDavMappings.class)
-public @interface ApiDavMapping {
-
-    // Following values use the default values: -1, ""
-
-    String  path();
-
-    long    contentLength() default -1;
-    String  contentType()   default "";
-    String  lastModified()  default "";
-    String  creationDate()  default "";
-    boolean isReadOnly()    default true;
-    boolean isHidden()      default false;
-    boolean isPermitted()   default true;
-
-    ApiDavMappingAttributeExpression[] attributeExpressions() default {};
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface ApiDavMappings {
-        ApiDavMapping[] value();
-    }
+    ApiDavInputMappingAttribute attribute();
+    String                      phrase();
 }
