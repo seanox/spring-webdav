@@ -21,7 +21,6 @@ Why use a frontend when the data can be edited directly as an Office document?
 # Features
 
 - Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
-- Configuration free integration
 - Declarative approach with annotations, also supports Spring Expression Language  
 - Supports use of MS Office (Excel, Word, PowerPoint, ...)
 - ...
