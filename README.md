@@ -14,4 +14,4 @@
 # Description
 
 API-WebDAV mapping for Spring Boot  
-Use an API like a network drive, open files, edit and save them.
+Use an API like a network drive, open data as files, edit and save them.
