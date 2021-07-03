@@ -342,6 +342,15 @@ class Sitemap {
             return CREATION_DATE;
         }
 
+        String getIdentifier() {
+            Date date = this.getLastModified();
+            if (Objects.isNull(date))
+                date = this.getCreationDate();
+            if (Objects.isNull(date))
+                return null;
+            return Long.toString(this.getLastModified().getTime(), 36).toUpperCase();
+        }
+
         boolean isHidden() {
             return false;
         }

@@ -94,6 +94,9 @@ public class MetaOutputStream extends OutputStream {
                 this.response.setContentLengthLong(this.contentLength);
             if (Objects.nonNull(this.lastModified))
                 this.response.setHeader("Last-Modified", DateTime.formatDate(this.lastModified, "E, dd MMM yyyy HH:mm:ss z"));
+            final Date lastModified = this.getLastModified();
+            if (Objects.nonNull(lastModified))
+                response.setHeader("Etag", "\"" + Long.toString(lastModified.getTime(), 36).toUpperCase() + "\"");
             this.response.flushBuffer();
         }
         if (Objects.isNull(this.output))
