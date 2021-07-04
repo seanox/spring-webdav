@@ -19,55 +19,28 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.test.http;
+package com.seanox.test.api;
 
-import com.seanox.api.Application;
-import com.seanox.apidav.ApiDavFilter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockFilterConfig;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.ServletException;
 import java.net.URI;
 
 /**
- * Test for HTTP method PROPPATCH.
- * PROPPATCH is not supported/allowed.
+ * Test for HTTP method COPY.
+ * COPY is not supported/allowed.
  *     Expectation:
  * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
  *
- * ProppatchTest 1.0.0 20210704
+ * CopyTest 1.0.0 20210704
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210704
  */
-@SpringBootTest(classes=Application.class)
-public class ProppatchTest {
-
-    private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @BeforeEach
-    public void setup()
-            throws ServletException {
-        final MockFilterConfig mockFilterConfig = new MockFilterConfig(webApplicationContext.getServletContext());
-        final ApiDavFilter apiDavFilter = new ApiDavFilter();
-        apiDavFilter.init(mockFilterConfig);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .addFilters(apiDavFilter)
-                .build();
-    }
+public class CopyTest extends AbstractApiTest {
 
     @Test
     void testRequest()
