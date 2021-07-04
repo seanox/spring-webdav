@@ -21,22 +21,12 @@
  */
 package com.seanox.test;
 
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.SitemapAdapter;
-import com.seanox.apidav.SitemapExceptionAdapter;
 import com.seanox.apidav.XmlWriterAdapter;
-import org.apache.catalina.util.XMLWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.nio.file.InvalidPathException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Locale;
 
 public class XmlWriterTest {
 
@@ -46,8 +36,6 @@ public class XmlWriterTest {
 
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         final XmlWriterAdapter xmlWriter = new XmlWriterAdapter(buffer);
-
-        xmlWriter.writeXmlHeader();
 
         xmlWriter.writeData("writeData1-\u00F6");
 

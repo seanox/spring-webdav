@@ -23,12 +23,7 @@ package com.seanox.apidav;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Testing private parts and/or components visible only in the package requires
@@ -42,11 +37,13 @@ import java.util.Objects;
  */
 public class XmlWriterAdapter extends XmlWriter {
 
-    public XmlWriterAdapter(final OutputStream output) {
+    public XmlWriterAdapter(final OutputStream output)
+            throws IOException {
         super(output);
     }
 
-    public XmlWriterAdapter(final OutputStream output, final Charset encoding) {
+    public XmlWriterAdapter(final OutputStream output, final Charset encoding)
+            throws IOException {
         super(output, encoding);
     }
 
@@ -107,12 +104,6 @@ public class XmlWriterAdapter extends XmlWriter {
     public void writeData(final String data)
             throws IOException {
         super.writeData(data);
-    }
-
-    @Override
-    public void writeXmlHeader()
-            throws IOException {
-        super.writeXmlHeader();
     }
 
     @Override
