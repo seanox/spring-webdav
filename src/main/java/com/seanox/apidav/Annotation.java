@@ -70,9 +70,25 @@ abstract class Annotation {
         final AttributeType attributeType;
 
         enum AttributeType {
-            ReadOnly, Hidden, Permitted,
-            ContentType, ContentLength, CreationDate, LastModified,
-            Accept, ContentLengthMax, Accepted
+
+            ReadOnly(ApiDavAttribute.ReadOnly),
+            Hidden(ApiDavAttribute.Hidden),
+            Permitted(ApiDavAttribute.Permitted),
+
+            ContentType(ApiDavAttribute.ContentType),
+            ContentLength(ApiDavAttribute.ContentLength),
+            CreationDate(ApiDavAttribute.CreationDate),
+            LastModified(ApiDavAttribute.LastModified),
+
+            Accept(ApiDavAttribute.Accept),
+            ContentLengthMax(ApiDavAttribute.ContentLengthMax),
+            Accepted(ApiDavAttribute.Accepted);
+
+            final ApiDavAttribute attribute;
+
+            AttributeType(ApiDavAttribute attribute) {
+                this.attribute = attribute;
+            }
         }
 
         @Builder(access=AccessLevel.PRIVATE)

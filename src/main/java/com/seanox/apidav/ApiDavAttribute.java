@@ -21,35 +21,8 @@
  */
 package com.seanox.apidav;
 
-import org.springframework.util.LinkedCaseInsensitiveMap;
-
-import java.util.Map;
-
-/**
- * Case-insensitive properties based on a {@link java.util.Map}.
- *
- * @param <V> Data type of value
- *
- * Properties 1.0.0 20210704
- * Copyright (C) 2021 Seanox Software Solutions
- * All rights reserved.
- *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
- */
-public class Properties<V> extends LinkedCaseInsensitiveMap<V> {
-
-    public Properties() {
-        super();
-    }
-
-    public Properties(Properties<V> properties) {
-        super();
-        this.putAll(properties);
-    }
-
-    @Override
-    public Properties<V> clone() {
-        return new Properties<V>(this);
-    }
+public enum ApiDavAttribute {
+    ReadOnly, Hidden, Permitted,
+    ContentType, ContentLength, CreationDate, LastModified,
+    Accept, ContentLengthMax, Accepted
 }

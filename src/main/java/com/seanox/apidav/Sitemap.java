@@ -532,7 +532,7 @@ class Sitemap {
 
             T result = fallback;
             if (attribute instanceof Callback) {
-                try {result = (T)((Callback)attribute).invoke();
+                try {result = (T)((Callback)attribute).invoke(attributeType.attribute, Sitemap.File.this);
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
                         exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -540,7 +540,7 @@ class Sitemap {
                 }
             } else if (Objects.nonNull(this.metaCallback)) {
                 if (!metaMap.containsKey(Meta.class))
-                    try {metaMap.put(Meta.class, this.metaCallback.invoke());
+                    try {metaMap.put(Meta.class, this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception)((InvocationTargetException)exception).getTargetException();

@@ -642,7 +642,7 @@ public class ApiDavFilter extends HttpFilter {
                 .contentLength(file.getContentLength())
                 .lastModified(file.getLastModified())
                 .build();
-        try {readCallback.invoke(metaOutputStream);
+        try {readCallback.invoke(file, metaOutputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -670,7 +670,7 @@ public class ApiDavFilter extends HttpFilter {
                 .contentType(file.getContentType())
                 .contentLength(file.getContentLength())
                 .build();
-        try {writeCallback.invoke(metaInputStream);
+        try {writeCallback.invoke(file, metaInputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
