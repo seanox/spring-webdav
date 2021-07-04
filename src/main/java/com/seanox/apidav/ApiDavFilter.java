@@ -239,9 +239,9 @@ public class ApiDavFilter extends HttpFilter {
 
     private String locateSitemapPath(final HttpServletRequest request) {
 
-        if (this.filterUrlPatternMappings.isEmpty())
-            return "/";
         final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
+        if (this.filterUrlPatternMappings.isEmpty())
+            return requestURI;
         for (String urlPatternMapping : this.filterUrlPatternMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("\\*?$", "");
             if (requestURI.startsWith(urlPatternMapping))
@@ -807,6 +807,13 @@ public class ApiDavFilter extends HttpFilter {
                     this.doPut(sitemap, request, response);
                 case ApiDavFilter.METHOD_UNLOCK:
                     this.doUnlock(sitemap, request, response);
+                case ApiDavFilter.METHOD_PROPPATCH:
+                case ApiDavFilter.METHOD_MKCOL:
+                case ApiDavFilter.METHOD_COPY:
+                case ApiDavFilter.METHOD_MOVE:
+                case ApiDavFilter.METHOD_DELETE:
+                    this.locateSitemapEntry(sitemap, request);
+                    throw new ForbiddenState();
             }
 
             throw new MethodNotAllowedState(ApiDavFilter.METHOD_OPTIONS, ApiDavFilter.METHOD_PROPFIND,
