@@ -51,14 +51,14 @@ public class FileLockSequenceTest extends AbstractApiTest {
     void test()
             throws Exception {
 
-        final MvcResult mvcResult1 = this.mockMvc.perform(
+        this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(rootURI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
                 .andReturn();
 
-        final MvcResult mvcResult2 = this.mockMvc.perform(
+        this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(targetURI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -122,7 +122,7 @@ public class FileLockSequenceTest extends AbstractApiTest {
         Assertions.assertTrue(lockToken4.matches("^[A-Za-z0-9]+(-[A-Za-z0-9]+)+$"));
         Assertions.assertEquals(lockToken4, lockToken5);
 
-        final MvcResult mvcResult6 = this.mockMvc.perform(
+        this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("UNLOCK", new URI(targetURI))
                         .header("Lock-Token", "<" + lockToken4 + ">"))
