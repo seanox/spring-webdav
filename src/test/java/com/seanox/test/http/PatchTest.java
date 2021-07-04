@@ -38,12 +38,12 @@ import javax.servlet.ServletException;
 import java.net.URI;
 
 /**
- * Test for HTTP method COPY.
- * COPY is not supported/allowed.
+ * Test for HTTP methods PATCH.
+ * PATCH is not supported, it is an example for other unsupported  methods.
  *     Expectation:
- * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
+ * If an Entry found in the SiteMap, the requests are responded with METHOD NOT ALLOWED
  *
- * CopyTest 1.0.0 20210704
+ * PatchTest 1.0.0 20210704
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
@@ -51,7 +51,7 @@ import java.net.URI;
  * @version 1.0.0 20210704
  */
 @SpringBootTest(classes=Application.class)
-public class CopyTest {
+public class PatchTest {
 
     private MockMvc mockMvc;
 
@@ -80,24 +80,22 @@ public class CopyTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/budget.xlsx")))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/budget.xlsx/")))
-                .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/personal/budget.xlsx"));
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/")))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal")))
-                .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/personal/"));
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/ooo")))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
     }
 }
