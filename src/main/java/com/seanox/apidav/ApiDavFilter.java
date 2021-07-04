@@ -563,7 +563,6 @@ public class ApiDavFilter extends HttpFilter {
             final Document document = ApiDavFilter.readXmlRequest(request);
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             final XmlWriter xmlWriter = new XmlWriter(buffer);
-            xmlWriter.writeXmlHeader();
             xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,"multistatus", XmlWriter.ElementType.OPENING);
 
             final int depth = ApiDavFilter.getDepth(request);
@@ -692,8 +691,8 @@ public class ApiDavFilter extends HttpFilter {
 
         String token = request.getHeader("If");
         if (Objects.nonNull(token)
-                && token.matches("(?i)^\\(<([a-z0-9]+(?:-[a-z0-9]+)+)>\\)$"))
-            token = token.replaceAll("(?i)^\\(<([a-z0-9]+(?:-[a-z0-9]+)+)>\\)$", "$1");
+                && token.matches("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+)>$"))
+            token = token.replaceAll("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+>)$", "$1");
         else token = UUID.randomUUID().toString();
 
         String timeout = request.getHeader("Timeout");

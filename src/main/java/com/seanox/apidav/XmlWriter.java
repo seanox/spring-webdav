@@ -31,12 +31,12 @@ import java.util.Objects;
 /**
  * Writer for the output of XML data.<br>
  * <br>
- * XmlWriter 1.1.0 20210701<br>
+ * XmlWriter 1.1.0 20210704<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210701
+ * @version 1.1.0 20210704
  */
 class XmlWriter implements Closeable {
 
@@ -77,21 +77,31 @@ class XmlWriter implements Closeable {
 
     /**
      * Constructor, creates the XML writer with UTF-8 encoding.
-     * @param output Output stream.
+     * The XML header is immediately written to the output.
+     * @param  output Output stream.
+     * @throws IOException
+     *     In case of faulty access to the data stream
      */
-    XmlWriter(final OutputStream output) {
+    XmlWriter(final OutputStream output)
+            throws IOException {
         this(output, null);
     }
 
     /**
      * Constructor, creates the XML writer with the specified encoding.
-     * @param output   Output stream.
-     * @param encoding Encoding to be used
+     * The XML header is immediately written to the output.
+     * @param  output   Output stream.
+     * @param  encoding Encoding to be used
+     * @throws IOException
+     *     In case of faulty access to the data stream
      */
-    XmlWriter(final OutputStream output, final Charset encoding) {
+    XmlWriter(final OutputStream output, final Charset encoding)
+            throws IOException {
 
         this.output   = output;
         this.encoding = Objects.isNull(encoding) ? StandardCharsets.UTF_8 : encoding;
+
+        this.writeText(String.format("<?xml version=\"1.0\" encoding=\"%s\"?>", this.encoding.name()));
     }
 
     /**
@@ -211,16 +221,6 @@ class XmlWriter implements Closeable {
     void writeData(final String data)
             throws IOException {
         this.writeText(String.format("<![CDATA[%s]]>", data));
-    }
-
-    /**
-     * Writes the XML header into the data stream.
-     * @throws IOException
-     *     In case of faulty access to the data stream
-     */
-    void writeXmlHeader()
-            throws IOException {
-        this.writeText(String.format("<?xml version=\"1.0\" encoding=\"%s\"?>", this.encoding.name()));
     }
 
     /**
