@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpFilter;
@@ -116,6 +117,12 @@ public class ApiDavFilter extends HttpFilter {
     private static final String DATETIME_FORMAT_CREATION_DATE = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String DATETIME_FORMAT_LAST_MODIFIED = "E, dd MMM yyyy HH:mm:ss z";
 
+    private final Collection<String> filterUrlPatternMappings;
+
+    public ApiDavFilter() {
+        this.filterUrlPatternMappings = new ArrayList<>();
+    }
+
     private static Class<?>[] getClassHierarchy(Object source) {
 
         if (Objects.isNull(source))
@@ -145,11 +152,11 @@ public class ApiDavFilter extends HttpFilter {
         // slash, optionally contain word-character sequences separated by
         // slashes and if the patterns finally end with a slash or slash with
         // asterisk are supported.
-        final String filterName = this.getClass().getName();
-        final Collection<String> filterUrlPatternMappings = filterConfig.getServletContext().getFilterRegistration(filterName).getUrlPatternMappings();
-        if (filterUrlPatternMappings.isEmpty())
-            throw new ServletException("Invalid URL pattern mapping for filter: " + this.getClass().getName());
-        for (String urlPatternMapping : filterUrlPatternMappings)
+        final String filterName = filterConfig.getFilterName();
+        final FilterRegistration filterRegistration = filterConfig.getServletContext().getFilterRegistration(filterName);
+        if (Objects.nonNull(filterRegistration))
+            this.filterUrlPatternMappings.addAll(filterRegistration.getUrlPatternMappings());
+        for (String urlPatternMapping : this.filterUrlPatternMappings)
             if (!urlPatternMapping.matches("^/(\\w+/){0,}\\*?$"))
                 throw new ServletException("Invalid URL pattern mapping for filter: " + this.getClass().getName());
 
@@ -218,25 +225,24 @@ public class ApiDavFilter extends HttpFilter {
         }
     }
 
-    private static String locateRequestContextPath(final HttpServletRequest request) {
+    private String locateRequestContextPath(final HttpServletRequest request) {
 
-        final String filterName = ApiDavFilter.class.getName();
-        final Collection<String> filterUrlMappings = request.getServletContext().getFilterRegistration(filterName).getUrlPatternMappings();
-        for (String urlPatternMapping : filterUrlMappings) {
+        final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
+        for (String urlPatternMapping : this.filterUrlPatternMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("/+\\**$", "");
-            if (request.getRequestURI().startsWith(urlPatternMapping + "/")
-                    || request.getRequestURI().equals(urlPatternMapping))
+            if (requestURI.startsWith(urlPatternMapping + "/")
+                    || requestURI.equals(urlPatternMapping))
                 return urlPatternMapping;
         }
         return "";
     }
 
-    private static String locateSitemapPath(final HttpServletRequest request) {
+    private String locateSitemapPath(final HttpServletRequest request) {
 
+        if (this.filterUrlPatternMappings.isEmpty())
+            return "/";
         final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
-        final String filterName = ApiDavFilter.class.getName();
-        final Collection<String> filterUrlMappings = request.getServletContext().getFilterRegistration(filterName).getUrlPatternMappings();
-        for (String urlPatternMapping : filterUrlMappings) {
+        for (String urlPatternMapping : this.filterUrlPatternMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("\\*?$", "");
             if (requestURI.startsWith(urlPatternMapping))
                 return requestURI.substring(urlPatternMapping.length() -1);
@@ -246,9 +252,9 @@ public class ApiDavFilter extends HttpFilter {
         return null;
     }
 
-    private static Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request) {
+    private Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request) {
 
-        final String pathInfo = ApiDavFilter.locateSitemapPath(request);
+        final String pathInfo = this.locateSitemapPath(request);
         if (Objects.isNull(pathInfo))
             throw new NotFoundState();
 
