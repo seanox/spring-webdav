@@ -32,7 +32,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Test the sequence for locked and unlocked a file.
+ * Test the sequence for locked and unlocked file and folders.
  * There are no real locks, but the behavior is supposed to be correct.
  *
  * LockTest 1.0.0 20210704
