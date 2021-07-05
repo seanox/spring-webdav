@@ -53,6 +53,9 @@ abstract class AbstractApiTest {
     final static String FOLDER_URI = "/personal/";
     final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
 
+    final static String FILE_FOLDER_URI = "/personal/budget.xlsx/";
+    final static String FOLDER_REDIRECT_URI = "/personal";
+
     MockMvc mockMvc;
 
     @Autowired

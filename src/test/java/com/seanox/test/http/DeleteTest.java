@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.net.URI;
+
 /**
  * Test for HTTP method DELETE.
  * DELETE is not supported/allowed.
@@ -43,31 +45,32 @@ public class DeleteTest extends AbstractApiTest {
     @Test
     void testRequest()
             throws Exception {
+        final String method = this.getClass().getSimpleName().replaceAll("(?<=[a-z])[A-Z].*$", "").toUpperCase();
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .head("/personal/budget.xlsx"))
+                        .head(FILE_URI))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/personal/budget.xlsx"))
+                        .request(method, new URI(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/personal/budget.xlsx/"))
+                        .request(method, new URI(FILE_FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/personal/budget.xlsx"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl(FILE_URI));
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/personal/"))
+                        .request(method, new URI(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/personal"))
+                        .request(method, new URI(FOLDER_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/personal/"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl(FOLDER_URI));
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/personal/ooo"))
+                        .request(method, new URI(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

@@ -48,27 +48,27 @@ public class PatchTest extends AbstractApiTest {
         final String method = this.getClass().getSimpleName().replaceAll("(?<=[a-z])[A-Z].*$", "").toUpperCase();
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .head("/personal/budget.xlsx"))
+                        .head(FILE_URI))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI("/personal/budget.xlsx")))
+                        .request(method, new URI(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI("/personal/budget.xlsx/")))
+                        .request(method, new URI(FILE_FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI("/personal/")))
+                        .request(method, new URI(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI("/personal")))
+                        .request(method, new URI(FOLDER_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI("/personal/ooo")))
+                        .request(method, new URI(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
     }
 }
