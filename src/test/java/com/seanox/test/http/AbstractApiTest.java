@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.test.api;
+package com.seanox.test.http;
 
 import com.seanox.api.Application;
 import com.seanox.apidav.ApiDavFilter;

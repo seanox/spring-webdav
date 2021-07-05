@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.test.api;
+package com.seanox.test.http;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,19 +28,19 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.net.URI;
 
 /**
- * Test for HTTP method MKCOL.
- * MKCOL is not supported/allowed.
+ * Test for HTTP methods PATCH.
+ * PATCH is not supported, it is an example for other unsupported  methods.
  *     Expectation:
- * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
+ * If an Entry found in the SiteMap, the requests are responded with METHOD NOT ALLOWED
  *
- * MkcolTest 1.0.0 20210704
+ * PatchTest 1.0.0 20210704
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210704
  */
-public class MkcolTest extends AbstractApiTest {
+public class PatchTest extends AbstractApiTest {
 
     @Test
     void testRequest()
@@ -53,24 +53,22 @@ public class MkcolTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/budget.xlsx")))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/budget.xlsx/")))
-                .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/personal/budget.xlsx"));
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/")))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal")))
-                .andExpect(MockMvcResultMatchers.status().isFound())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/personal/"));
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, new URI("/personal/ooo")))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
     }
 }

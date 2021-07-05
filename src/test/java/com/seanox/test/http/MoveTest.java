@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.test.api;
+package com.seanox.test.http;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,19 +28,19 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.net.URI;
 
 /**
- * Test for HTTP method PROPPATCH.
- * PROPPATCH is not supported/allowed.
+ * Test for HTTP method MOVE.
+ * MOVE is not supported/allowed.
  *     Expectation:
  * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
  *
- * ProppatchTest 1.0.0 20210704
+ * MoveTest 1.0.0 20210704
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210704
  */
-public class ProppatchTest extends AbstractApiTest {
+public class MoveTest extends AbstractApiTest {
 
     @Test
     void testRequest()
