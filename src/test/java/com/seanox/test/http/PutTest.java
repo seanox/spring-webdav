@@ -23,12 +23,9 @@ package com.seanox.test.http;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.net.URI;
 
 /**
  * Test the sequence for PUT file and folders.
@@ -123,42 +120,6 @@ public class PutTest extends AbstractApiTest {
         Assertions.assertEquals(
                 AbstractApiTest.readTemplate(TEMPLATE_EMPTY_XLSX).length,
                 headResult2.getResponse().getContentLength());
-    }
-
-    @Test
-    void test_file_put_sequence()
-            throws Exception {
-
-        // 1. Reset data
-
-        this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .put(FILE_URI)
-                        .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
-                .andExpect(MockMvcResultMatchers.status().isNoContent());
-
-        final MvcResult headResult1 = this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .head(FILE_URI))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().exists("Last-Modified"))
-                .andExpect(MockMvcResultMatchers.header().exists("Content-Length"))
-                .andReturn();
-
-        Thread.sleep(3000);
-
-        // 2. Start of sequence
-
-        this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FILE_URI))
-                        .header("Depth", "0"))
-                .andExpect(MockMvcResultMatchers.status().is(207))
-                .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
-                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "951"))
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_XML))
-                .andReturn();
     }
 
     @Test

@@ -50,13 +50,22 @@ public class OptionsTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
+                .andExpect(MockMvcResultMatchers.content().string(""));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
+                .andExpect(MockMvcResultMatchers.content().string(""));
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("OPTIONS", new URI(FILE_PARENT_URI)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
+                .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     @Test
