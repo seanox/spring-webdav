@@ -55,13 +55,16 @@ abstract class AbstractApiTest {
     final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
 
     final static String FILE_FOLDER_URI = "/personal/budget.xlsx/";
+    final static String FILE_PARENT_URI = "/personal/";
     final static String FOLDER_REDIRECT_URI = "/personal";
 
     final static String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    final static String CONTENT_TYPE_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
 
     final static String TEMPLATE_BUDGET_XLSX = "/templates/budget.xlsx";
     final static String TEMPLATE_EMPTY_XLSX = "/templates/empty.xlsx";
     final static String TEMPLATE_STATISTIC_PPTX = "/templates/statistic.pptx";
+    final static String TEMPLATE_SALES_PPTX = "/templates/sales.pptx";
 
     MockMvc mockMvc;
 
