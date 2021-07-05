@@ -32,16 +32,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletException;
+import java.io.IOException;
 
 /**
  * General implementation for the execution of API tests.
  *
- * AbstractApiTest 1.0.0 20210704
+ * AbstractApiTest 1.0.0 20210705
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
+ * @version 1.0.0 20210705
  */
 @SpringBootTest(classes= Application.class)
 abstract class AbstractApiTest {
@@ -55,6 +56,12 @@ abstract class AbstractApiTest {
 
     final static String FILE_FOLDER_URI = "/personal/budget.xlsx/";
     final static String FOLDER_REDIRECT_URI = "/personal";
+
+    final static String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+    final static String TEMPLATE_BUDGET_XLSX = "/templates/budget.xlsx";
+    final static String TEMPLATE_EMPTY_XLSX = "/templates/empty.xlsx";
+    final static String TEMPLATE_STATISTIC_PPTX = "/templates/statistic.pptx";
 
     MockMvc mockMvc;
 
@@ -70,5 +77,10 @@ abstract class AbstractApiTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .addFilters(apiDavFilter)
                 .build();
+    }
+
+    static byte[] readTemplate(String template)
+            throws IOException {
+        return AbstractApiTest.class.getResourceAsStream(template).readAllBytes();
     }
 }

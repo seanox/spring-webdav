@@ -28,14 +28,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.net.URI;
 
 /**
- * Test the sequence for options for files and folders.
+ * Test the sequence for OPTIONS for files and folders.
  *
- * OptionsTest 1.0.0 20210704
+ * OptionsTest 1.0.0 20210705
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
+ * @version 1.0.0 20210705
  */
 public class OptionsTest extends AbstractApiTest {
 
@@ -43,7 +43,7 @@ public class OptionsTest extends AbstractApiTest {
     void test_folder()
             throws Exception {
 
-        // LOCK and UNLOCK for readonly files/folders are responded with status Forbidden.
+        // LOCK and UNLOCK for readonly files/folders are responded with status FORBIDDEN.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
 
         this.mockMvc.perform(
@@ -87,7 +87,7 @@ public class OptionsTest extends AbstractApiTest {
     void test_file_readonly()
             throws Exception {
 
-        // LOCK and UNLOCK for readonly files/folders are responded with status Forbidden.
+        // LOCK and UNLOCK for readonly files/folders are responded with status FORBIDDEN.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
 
         this.mockMvc.perform(

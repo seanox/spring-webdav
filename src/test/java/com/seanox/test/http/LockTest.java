@@ -32,15 +32,15 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Test the sequence for locked and unlocked file and folders.
+ * Test the sequence for LOCK and UNLOCK file and folders.
  * There are no real locks, but the behavior is supposed to be correct.
  *
- * LockTest 1.0.0 20210704
+ * LockTest 1.0.0 20210705
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
+ * @version 1.0.0 20210705
  */
 public class LockTest extends AbstractApiTest {
 
@@ -48,7 +48,7 @@ public class LockTest extends AbstractApiTest {
     void test_folder()
             throws Exception {
 
-        // LOCK and UNLOCK for readonly files/folders are responded with status Forbidden.
+        // LOCK and UNLOCK for readonly files/folders are responded with status FORBIDDEN.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
 
         this.mockMvc.perform(
@@ -172,7 +172,7 @@ public class LockTest extends AbstractApiTest {
     void test_file_readonly()
             throws Exception {
 
-        // LOCK and UNLOCK for readonly files/folders are responded with status Forbidden.
+        // LOCK and UNLOCK for readonly files/folders are responded with status FORBIDDEN.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
 
         this.mockMvc.perform(
