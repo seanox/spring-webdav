@@ -21,15 +21,11 @@
  */
 package com.seanox.test.http;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Test the sequence for options for files and folders.
@@ -42,13 +38,6 @@ import java.nio.charset.StandardCharsets;
  * @version 1.0.0 20210704
  */
 public class OptionsTest extends AbstractApiTest {
-
-    private final static String ROOT_URI = "/";
-    private final static String FILE_URI = "/personal/budget.xlsx";
-    private final static String FILE_READONLY_URI = "/personal/reports/sales.pptx";
-    private final static String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
-    private final static String FOLDER_URI = "/personal/";
-    private final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
 
     @Test
     void test_folder()

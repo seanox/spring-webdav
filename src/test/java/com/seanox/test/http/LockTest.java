@@ -44,13 +44,6 @@ import java.nio.charset.StandardCharsets;
  */
 public class LockTest extends AbstractApiTest {
 
-    private final static String ROOT_URI = "/";
-    private final static String FILE_URI = "/personal/budget.xlsx";
-    private final static String FILE_READONLY_URI = "/personal/reports/sales.pptx";
-    private final static String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
-    private final static String FOLDER_URI = "/personal/";
-    private final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
-
     @Test
     void test_folder()
             throws Exception {

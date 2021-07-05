@@ -46,6 +46,13 @@ import javax.servlet.ServletException;
 @SpringBootTest(classes= Application.class)
 abstract class AbstractApiTest {
 
+    final static String ROOT_URI = "/";
+    final static String FILE_URI = "/personal/budget.xlsx";
+    final static String FILE_READONLY_URI = "/personal/reports/sales.pptx";
+    final static String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
+    final static String FOLDER_URI = "/personal/";
+    final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
+
     MockMvc mockMvc;
 
     @Autowired
