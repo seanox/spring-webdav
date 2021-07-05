@@ -33,12 +33,12 @@ import java.net.URI;
  *     Expectation:
  * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
  *
- * CopyTest 1.0.0 20210704
+ * CopyTest 1.0.0 20210705
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
+ * @version 1.0.0 20210705
  */
 public class CopyTest extends AbstractApiTest {
 
@@ -56,7 +56,7 @@ public class CopyTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FILE_FOLDER_URI)))
+                        .request(method, new URI(FILE_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(MockMvcResultMatchers.redirectedUrl(FILE_URI));
         this.mockMvc.perform(

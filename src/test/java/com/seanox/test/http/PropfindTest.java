@@ -116,6 +116,17 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
+    void test_file_redirect()
+            throws Exception {
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("PROPFIND", new URI(FILE_REDIRECT_URI))
+                        .header("Depth", "0"))
+                .andExpect(MockMvcResultMatchers.status().is(302));
+    }
+
+    @Test
     void test_folder()
             throws Exception {
 
@@ -140,6 +151,17 @@ public class PropfindTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response[3]/propstat/prop/iscollection").booleanValue(true))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response[3]/propstat/prop/isreadonly").booleanValue(true))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response[3]/propstat/prop/Win32FileAttributes").number(11d));
+    }
+
+    @Test
+    void test_folder_redirect()
+            throws Exception {
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("PROPFIND", new URI(FOLDER_REDIRECT_URI))
+                        .header("Depth", "0"))
+                .andExpect(MockMvcResultMatchers.status().is(302));
     }
 
     @Test

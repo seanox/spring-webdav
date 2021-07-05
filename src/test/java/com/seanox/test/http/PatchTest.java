@@ -33,12 +33,12 @@ import java.net.URI;
  *     Expectation:
  * If an Entry found in the SiteMap, the requests are responded with METHOD NOT ALLOWED
  *
- * PatchTest 1.0.0 20210704
+ * PatchTest 1.0.0 20210705
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
+ * @version 1.0.0 20210705
  */
 public class PatchTest extends AbstractApiTest {
 
@@ -56,7 +56,7 @@ public class PatchTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FILE_FOLDER_URI)))
+                        .request(method, new URI(FILE_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
