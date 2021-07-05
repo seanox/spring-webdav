@@ -55,15 +55,13 @@ public class LockTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -117,15 +115,13 @@ public class LockTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -179,15 +175,13 @@ public class LockTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(FILE_READONLY_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -241,15 +235,13 @@ public class LockTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND, LOCK, PUT, UNLOCK"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND, LOCK, PUT, UNLOCK"));
 
         // New lock request is responded with a new lock + token,
         // but there is no real lock.
@@ -322,8 +314,7 @@ public class LockTest extends AbstractApiTest {
                         .request("UNLOCK", new URI(FILE_URI))
                         .header("Lock-Token", "<" + lockToken4 + ">"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
-                .andExpect(MockMvcResultMatchers.header().doesNotExist("Lock-Token"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().doesNotExist("Lock-Token"));
     }
 
     @Test
@@ -337,15 +328,13 @@ public class LockTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("OPTIONS", new URI(FILE_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
