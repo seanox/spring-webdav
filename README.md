@@ -15,7 +15,7 @@
 
 API-WebDAV mapping for Spring Boot  
 Use an API like a network drive, open data as files, edit and save them.  
-Why use a frontend when the data can be edited directly as an Office document?
+Why use a frontend when the data can be edited directly in an Office application?
 
 <img src="https://github.com/seanox/apiDAV/raw/main/manual/animation.gif"/>
 
