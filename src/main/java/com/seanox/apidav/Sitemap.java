@@ -43,15 +43,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-// Rules (similar error behavior as mapping from RestController):
-// - Ambiguous mapping causes SitemapException
-// - Virtual paths must be unique (case insensitive), otherwise SitemapException
-// - Collisions (file + file / folder + folder / folder + file / file + folder) cause SitemapException
-// - Paths must start with slash, otherwise SitemapException (TODO:)
-// - Not permitted (unauthorized) entries are not included in the sitemap
-// - Not permitted (unauthorized) entries are used as non-existent as 404 (TODO:)
-// - Empty folders are not included in the Sitemap, e.g. if files in substructure are not permitted
-
+/**
+ * Sitemap for mapping a virtual file system.
+ *
+ * Rules (similar error behavior as mapping from RestController):
+ * <ul>
+ *   <li>Ambiguous mapping causes SitemapException</li>
+ *   <li>Path must be unique (case insensitive), otherwise SitemapException</li>
+ *   <li>Path must start with slash, otherwise SitemapException</li>
+ *   <li>Not permitted (unauthorized) entries are not included in the sitemap</li>
+ *   <li>Not permitted (unauthorized) entries are used as non-existent as 404</li>
+ *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
+ * </ul>
+ *
+ * Sitemap 1.0.0 20210706
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210706
+ */
 class Sitemap {
 
     private final TreeMap<String, Entry> tree;
@@ -185,6 +196,12 @@ class Sitemap {
         }
 
         if (path.isBlank()) {
+            if (mappingAnnotation.getPath().isBlank())
+                throw new SitemapException("Invalid mapping path");
+            else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+        }
+
+        if (!path.startsWith("/")) {
             if (mappingAnnotation.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
             else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
