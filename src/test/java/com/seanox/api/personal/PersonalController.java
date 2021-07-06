@@ -85,9 +85,9 @@ class PersonalController {
         output.write(personalBudget.getData());
     }
     @ApiDavInputMapping(path=PERSONAL_BUDGET_XLSX)
-    void putPersonalBudget(MetaInputStream output) throws IOException {
+    void putPersonalBudget(MetaInputStream input) throws IOException {
         final PersonalBudget personalBudget = this.personalService.readPersonalBudget();
-        personalBudget.setData(output.readAllBytes());
+        personalBudget.setData(input.readAllBytes());
         this.personalService.savePersonalBudget(personalBudget);
     }
     @ApiDavAttributeMapping(path=PERSONAL_BUDGET_XLSX, attribute=ApiDavMappingAttribute.ContentLength)
