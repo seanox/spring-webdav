@@ -35,12 +35,12 @@ import java.nio.charset.StandardCharsets;
  * Test the sequence for LOCK and UNLOCK file and folders.
  * There are no real locks, but the behavior is supposed to be correct.
  *
- * LockTest 1.0.0 20210705
+ * LockTest 1.0.0 20210706
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210706
  */
 public class LockTest extends AbstractApiTest {
 
@@ -315,6 +315,62 @@ public class LockTest extends AbstractApiTest {
                         .header("Lock-Token", "<" + lockToken4 + ">"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Lock-Token"));
+    }
+
+    @Test
+    void test_file_etag()
+            throws Exception {
+
+        final MvcResult headResult1 = this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .head(FILE_URI))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().exists("Etag"))
+                .andReturn();
+        final String etag1 = headResult1.getResponse().getHeader("Etag");
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        final MvcResult headResult2 = this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .head(FILE_URI))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().exists("Etag"))
+                .andReturn();
+        final String etag2 = headResult2.getResponse().getHeader("Etag");
+
+        // If-None-Match: The ETag sent by the server must not match, otherwise 304/412
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("LOCK", new URI(FILE_URI))
+                        .header("If-None-Match", etag2))
+                .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("LOCK", new URI(FILE_URI))
+                        .header("If-None-Match", etag1))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // If-Match: The ETag sent by the server must match, otherwise 304/412
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("LOCK", new URI(FILE_URI))
+                        .header("If-Match", etag2))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .request("LOCK", new URI(FILE_URI))
+                        .header("If-Match", etag1))
+                .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
     }
 
     @Test

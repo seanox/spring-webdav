@@ -30,12 +30,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Test the sequence for PUT file and folders.
  *
- * PutTest 1.0.0 20210705
+ * PutTest 1.0.0 20210706
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210706
  */
 public class PutTest extends AbstractApiTest {
 
@@ -93,6 +93,8 @@ public class PutTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.header().exists("Content-Length"))
                 .andReturn();
 
+        Thread.sleep(1500);
+
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(FILE_URI)
@@ -120,6 +122,78 @@ public class PutTest extends AbstractApiTest {
         Assertions.assertEquals(
                 AbstractApiTest.readTemplate(TEMPLATE_EMPTY_XLSX).length,
                 headResult2.getResponse().getContentLength());
+    }
+
+    @Test
+    void test_file_etag()
+            throws Exception {
+
+        final MvcResult headResult1 = this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .head(FILE_URI))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().exists("Etag"))
+                .andReturn();
+        final String etag1 = headResult1.getResponse().getHeader("Etag");
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        final MvcResult headResult2 = this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .head(FILE_URI))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().exists("Etag"))
+                .andReturn();
+        final String etag2 = headResult2.getResponse().getHeader("Etag");
+
+        // If-None-Match: The ETag sent by the server must not match, otherwise 304/412
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .header("If-None-Match", etag2)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .header("If-None-Match", etag1)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        final MvcResult headResult3 = this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .head(FILE_URI))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().exists("Etag"))
+                .andReturn();
+        final String etag3 = headResult3.getResponse().getHeader("Etag");
+
+        // If-Match: The ETag sent by the server must match, otherwise 304/412
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .header("If-Match", etag1)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .header("If-Match", etag3)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
