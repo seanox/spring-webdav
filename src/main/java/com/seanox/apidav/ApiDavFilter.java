@@ -95,6 +95,9 @@ public class ApiDavFilter extends HttpFilter {
     private static final String HEADER_DAV              = "DAV";
     private static final String HEADER_DEPTH            = "Depth";
     private static final String HEADER_ETAG             = "Etag";
+    private static final String HEADER_IF               = "If";
+    private static final String HEADER_IF_MATCH         = "If-Match";
+    private static final String HEADER_IF_NONE_MATCH    = "If-None-Match";
     private static final String HEADER_LAST_MODIFIED    = "Last-Modified";
     private static final String HEADER_LOCATION         = "Location";
     private static final String HEADER_LOCK_TOKEN       = "Lock-Token";
@@ -293,7 +296,7 @@ public class ApiDavFilter extends HttpFilter {
 
         final String identifier = entry.getIdentifier();
         if (Objects.nonNull(identifier)) {
-            final String ifNoneMatch = request.getHeader("If-None-Match");
+            final String ifNoneMatch = request.getHeader(HEADER_IF_NONE_MATCH);
             if (Objects.nonNull(ifNoneMatch)
                     && !ifNoneMatch.isBlank()) {
                 if (Arrays.asList(ifNoneMatch.split("\\s*,\\s*")).contains("\"" + identifier + "\"")) {
@@ -305,7 +308,7 @@ public class ApiDavFilter extends HttpFilter {
                         throw new PreconditionFailedState();
                 }
             }
-            final String ifMatch = request.getHeader("If-Match");
+            final String ifMatch = request.getHeader(HEADER_IF_MATCH);
             if (Objects.nonNull(ifMatch)
                     && !ifMatch.isBlank()) {
                 if (!Arrays.asList(ifMatch.split("\\s*,\\s*")).contains("\"" + identifier + "\"")) {
@@ -710,7 +713,7 @@ public class ApiDavFilter extends HttpFilter {
         // It  based on an echo of the If-OpaqueLockToken.
         // Timeout headers are ignored.
 
-        String token = request.getHeader("If");
+        String token = request.getHeader(HEADER_IF);
         if (Objects.nonNull(token)
                 && token.matches("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+)>$"))
             token = token.replaceAll("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+>)$", "$1");
