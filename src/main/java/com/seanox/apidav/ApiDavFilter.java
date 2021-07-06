@@ -90,7 +90,16 @@ public class ApiDavFilter extends HttpFilter {
     private static final String SITEMAP_PROPERTY_USER_REMOTE        = "user.remote";
     private static final String SITEMAP_PROPERTY_USER_PRINCIPAL     = "user.principal";
 
-    private static final String HEADER_DEPTH = "Depth";
+    private static final String HEADER_ALLOW            = "Allow";
+    private static final String HEADER_CONTENT_LOCATION = "Content-Location";
+    private static final String HEADER_DAV              = "DAV";
+    private static final String HEADER_DEPTH            = "Depth";
+    private static final String HEADER_ETAG             = "Etag";
+    private static final String HEADER_LAST_MODIFIED    = "Last-Modified";
+    private static final String HEADER_LOCATION         = "Location";
+    private static final String HEADER_LOCK_TOKEN       = "Lock-Token";
+    private static final String HEADER_MS_AUTHOR_VIA    = "MS-Author-Via";
+    private static final String HEADER_TIMEOUT          = "Timeout";
 
     /**
      * Constant for max. depth with infinite processing depth
@@ -169,7 +178,6 @@ public class ApiDavFilter extends HttpFilter {
                 for (final Class source: ApiDavFilter.getClassHierarchy(object)) {
                     for (final Method method : source.getDeclaredMethods()) {
                         for (final java.lang.annotation.Annotation annotation : method.getDeclaredAnnotations()) {
-                            // TODO: Check expected methods signature, otherwise exception with more details
                             // TODO: Check for uniqueness of annotations, multiple occurrences cause exception
                             if (annotation.annotationType().equals(ApiDavAttributeMapping.class))
                                 annotations.add(Annotation.Attribute.create((ApiDavAttributeMapping)annotation, object, method));
@@ -281,6 +289,8 @@ public class ApiDavFilter extends HttpFilter {
         if (!Arrays.asList(METHOD_HEAD, METHOD_GET, METHOD_LOCK, METHOD_PUT).contains(method))
             return entry;
 
+        // If-None-Match / If-Match is only supported for: GET / HEAD / PUT / LOCK
+
         final String identifier = entry.getIdentifier();
         if (Objects.nonNull(identifier)) {
             final String ifNoneMatch = request.getHeader("If-None-Match");
@@ -300,7 +310,9 @@ public class ApiDavFilter extends HttpFilter {
                     && !ifMatch.isBlank()) {
                 if (!Arrays.asList(ifMatch.split("\\s*,\\s*")).contains("\"" + identifier + "\"")) {
                     if (METHOD_PUT.equals(method)
-                            || METHOD_LOCK.equals(method))
+                            || METHOD_LOCK.equals(method)
+                            || METHOD_HEAD.equals(method)
+                            || METHOD_GET.equals(method))
                         throw new PreconditionFailedState();
                 }
             }
@@ -361,8 +373,8 @@ public class ApiDavFilter extends HttpFilter {
 
         final String isReadOnly = String.valueOf(entry.isReadOnly());
         final String isHidden   = String.valueOf(entry.isHidden());
-        final String isSystem   = "false";
-        final String isArchive  = "false";
+        final String isSystem   = Boolean.FALSE.toString();
+        final String isArchive  = Boolean.FALSE.toString();
 
         final String etag = Objects.nonNull(entry.getIdentifier()) ? "\"" + entry.getIdentifier() + "\"" : "";
 
@@ -542,16 +554,16 @@ public class ApiDavFilter extends HttpFilter {
         } catch (State state) {
         }
 
-        response.setHeader("DAV", "1, 2");
-        response.setHeader("MS-Author-Via", "DAV");
-        response.setHeader("Allow", String.join(", ",
+        response.setHeader(HEADER_DAV, "1, 2");
+        response.setHeader(HEADER_MS_AUTHOR_VIA, "DAV");
+        response.setHeader(HEADER_ALLOW, String.join(", ",
                 ApiDavFilter.METHOD_OPTIONS,
                 ApiDavFilter.METHOD_HEAD,
                 ApiDavFilter.METHOD_GET,
                 ApiDavFilter.METHOD_PROPFIND));
         if (Objects.nonNull(entry)
                 && !entry.isReadOnly()) {
-            response.setHeader("Allow", response.getHeader("Allow")
+            response.setHeader(HEADER_ALLOW, response.getHeader(HEADER_ALLOW)
                     + ", " + String.join(", ",
                     ApiDavFilter.METHOD_LOCK,
                     ApiDavFilter.METHOD_PUT,
@@ -622,12 +634,12 @@ public class ApiDavFilter extends HttpFilter {
 
         final Sitemap.File file = (Sitemap.File)entry;
         if (Objects.nonNull(file.getIdentifier()))
-            response.setHeader("Etag", file.getIdentifier());
+            response.setHeader(HEADER_ETAG, "\"" + file.getIdentifier() + "\"");
         if (Objects.nonNull(file.getLastModified()))
-            response.setHeader("Last-Modified", DateTime.formatDate(file.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED));
+            response.setDateHeader(HEADER_LAST_MODIFIED, file.getLastModified().getTime());
         if (Objects.isNull(file.getLastModified())
                 && Objects.nonNull(file.getCreationDate()))
-            response.setHeader("Last-Modified", DateTime.formatDate(file.getCreationDate(), DATETIME_FORMAT_LAST_MODIFIED));
+            response.setDateHeader(HEADER_LAST_MODIFIED, file.getCreationDate().getTime());
         if (Objects.nonNull(file.getContentLength()))
             response.setContentLengthLong(file.getContentLength());
         if (Objects.nonNull(file.getContentType()))
@@ -667,7 +679,7 @@ public class ApiDavFilter extends HttpFilter {
         if (entry.isReadOnly())
             throw new ForbiddenState();
 
-        response.setHeader("Content-Location", this.locateSitemapPath(request));
+        response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
 
         final Sitemap.File file = ((Sitemap.File)entry);
         final Sitemap.Callback writeCallback = file.getWriteCallback();
@@ -704,7 +716,7 @@ public class ApiDavFilter extends HttpFilter {
             token = token.replaceAll("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+>)$", "$1");
         else token = UUID.randomUUID().toString();
 
-        String timeout = request.getHeader("Timeout");
+        String timeout = request.getHeader(HEADER_TIMEOUT);
         if (Objects.isNull(timeout)
                 || !timeout.matches("(?i)^[a-z]-\\d+"))
             timeout = String.format("Second-%s", 60 *60 *24 *7);
@@ -746,7 +758,7 @@ public class ApiDavFilter extends HttpFilter {
 
         final String markup = buffer.toString();
 
-        response.addHeader("Lock-Token", "<" + token + ">");
+        response.addHeader(HEADER_LOCK_TOKEN, "<" + token + ">");
         response.setContentType(MediaType.TEXT_XML.toString());
         response.setContentLength(markup.length());
         response.getOutputStream().write(markup.getBytes());
@@ -912,7 +924,7 @@ public class ApiDavFilter extends HttpFilter {
                 throws IOException {
             if (response.isCommitted())
                 return;
-            response.setHeader("Location", this.location);
+            response.setHeader(HEADER_LOCATION, this.location);
             super.forceResponseStatus(response);
         }
     }
@@ -935,7 +947,7 @@ public class ApiDavFilter extends HttpFilter {
                 throws IOException {
             if (response.isCommitted())
                 return;
-            response.setHeader("Etag", "\"" + this.identifier + "\"");
+            response.setHeader(HEADER_ETAG, "\"" + this.identifier + "\"");
             super.forceResponseStatus(response);
         }
     }
@@ -972,7 +984,7 @@ public class ApiDavFilter extends HttpFilter {
                 throws IOException {
             if (response.isCommitted())
                 return;
-            response.setHeader("Allow", String.join(", ", this.allow));
+            response.setHeader(HEADER_ALLOW, String.join(", ", this.allow));
             super.forceResponseStatus(response);
         }
     }
