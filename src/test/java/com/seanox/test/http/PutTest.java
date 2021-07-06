@@ -75,7 +75,7 @@ public class PutTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(FILE_READONLY_URI)
-                        .contentType(CONTENT_TYPE_XLSX)
+                        .contentType(CONTENT_TYPE_PPTX)
                         .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_STATISTIC_PPTX)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
                 .andExpect(MockMvcResultMatchers.content().string(""));

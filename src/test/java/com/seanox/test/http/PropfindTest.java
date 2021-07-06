@@ -31,18 +31,25 @@ import java.net.URI;
 /**
  * Test the sequence for PROPFIND for files and folders.
  *
- * PropfindTest 1.0.0 20210705
+ * PropfindTest 1.0.0 20210706
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210706
  */
 public class PropfindTest extends AbstractApiTest {
 
     @Test
     void test_file()
             throws Exception {
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(FILE_URI)
+                        .contentType(CONTENT_TYPE_XLSX)
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
