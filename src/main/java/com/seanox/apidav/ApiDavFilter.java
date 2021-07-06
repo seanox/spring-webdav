@@ -266,8 +266,7 @@ public class ApiDavFilter extends HttpFilter {
 
         final Sitemap.Entry entry = sitemap.locate(pathInfo);
         if (Objects.isNull(entry)) {
-            if (METHOD_PUT.equals(method)
-                    || METHOD_LOCK.equals(method))
+            if (METHOD_PUT.equals(method))
                 throw new ForbiddenState();
             throw new NotFoundState();
         }
@@ -538,15 +537,25 @@ public class ApiDavFilter extends HttpFilter {
 
     private void doOptions(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        Sitemap.Entry entry = null;
+        try {entry = this.locateSitemapEntry(sitemap, request);
+        } catch (State state) {
+        }
 
         response.setHeader("DAV", "1, 2");
         response.setHeader("MS-Author-Via", "DAV");
-        response.setHeader("Allow", String.join(", ", ApiDavFilter.METHOD_OPTIONS, ApiDavFilter.METHOD_HEAD,
-                ApiDavFilter.METHOD_GET, ApiDavFilter.METHOD_PROPFIND));
+        response.setHeader("Allow", String.join(", ",
+                ApiDavFilter.METHOD_OPTIONS,
+                ApiDavFilter.METHOD_HEAD,
+                ApiDavFilter.METHOD_GET,
+                ApiDavFilter.METHOD_PROPFIND));
         if (Objects.nonNull(entry)
                 && !entry.isReadOnly()) {
-            response.setHeader("Allow", response.getHeader("Allow") + ", " + ApiDavFilter.METHOD_PUT);
+            response.setHeader("Allow", response.getHeader("Allow")
+                    + ", " + String.join(", ",
+                    ApiDavFilter.METHOD_LOCK,
+                    ApiDavFilter.METHOD_PUT,
+                    ApiDavFilter.METHOD_UNLOCK));
         }
 
         throw new SuccessState();
@@ -619,9 +628,9 @@ public class ApiDavFilter extends HttpFilter {
         if (Objects.isNull(file.getLastModified())
                 && Objects.nonNull(file.getCreationDate()))
             response.setHeader("Last-Modified", DateTime.formatDate(file.getCreationDate(), DATETIME_FORMAT_LAST_MODIFIED));
-        if (Objects.isNull(file.getContentLength()))
+        if (Objects.nonNull(file.getContentLength()))
             response.setContentLengthLong(file.getContentLength());
-        if (Objects.isNull(file.getContentType()))
+        if (Objects.nonNull(file.getContentType()))
             response.setContentType(file.getContentType());
         throw new SuccessState();
     }
@@ -655,8 +664,6 @@ public class ApiDavFilter extends HttpFilter {
 
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
 
-        if (entry.isFolder())
-            throw new NotFoundState();
         if (entry.isReadOnly())
             throw new ForbiddenState();
 
@@ -682,7 +689,9 @@ public class ApiDavFilter extends HttpFilter {
     private void doLock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
 
-        this.locateSitemapEntry(sitemap, request);
+        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        if (entry.isReadOnly())
+            throw new ForbiddenState();
 
         // Lock and token are more a simulation not real.
         // Only Exclusive Write Locks are supported.
@@ -745,7 +754,11 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private void doUnlock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
-        this.locateSitemapEntry(sitemap, request);
+
+        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        if (entry.isReadOnly())
+            throw new ForbiddenState();
+
         throw new NoContentState();
     }
 
