@@ -33,6 +33,8 @@ package com.seanox.apidav;
  */
 public class AdapterException extends RuntimeException {
 
+    private static final long serialVersionUID = -6019281634314244220L;
+
     public AdapterException(final String message) {
         super(message);
     }

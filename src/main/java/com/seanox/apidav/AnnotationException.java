@@ -23,6 +23,8 @@ package com.seanox.apidav;
 
 class AnnotationException extends Exception {
 
+    private static final long serialVersionUID = -8434311329163778177L;
+
     AnnotationException(final String message) {
         super(message);
     }
