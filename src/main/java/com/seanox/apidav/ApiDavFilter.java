@@ -54,11 +54,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -83,13 +86,6 @@ public class ApiDavFilter extends HttpFilter {
     private static final String METHOD_UNLOCK    = "UNLOCK";
     private static final String METHOD_DELETE    = "DELETE";
 
-    private static final String SITEMAP_PROPERTY_SESSION_ATTRIBUTE  = "session.attribute";
-    private static final String SITEMAP_PROPERTY_REQUEST_SESSION_ID = "request.session.id";
-    private static final String SITEMAP_PROPERTY_REQUEST_HEADER     = "request.header";
-    private static final String SITEMAP_PROPERTY_REQUEST_ATTRIBUTE  = "request.attribute";
-    private static final String SITEMAP_PROPERTY_USER_REMOTE        = "user.remote";
-    private static final String SITEMAP_PROPERTY_USER_PRINCIPAL     = "user.principal";
-
     private static final String HEADER_ALLOW            = "Allow";
     private static final String HEADER_CONTENT_LOCATION = "Content-Location";
     private static final String HEADER_DAV              = "DAV";
@@ -104,40 +100,40 @@ public class ApiDavFilter extends HttpFilter {
     private static final String HEADER_MS_AUTHOR_VIA    = "MS-Author-Via";
     private static final String HEADER_TIMEOUT          = "Timeout";
 
-    private static final String XML_TAG_ACTIVELOCK          = "activelock";
-    private static final String XML_TAG_ALLPROP             = "allprop";
-    private static final String XML_TAG_COLLECTION          = "collection";
-    private static final String XML_TAG_CREATIONDATE        = "creationdate";
-    private static final String XML_TAG_DEPTH               = "depth";
-    private static final String XML_TAG_DISPLAYNAME         = "displayname";
-    private static final String XML_TAG_EXCLUSIVE           = "exclusive";
-    private static final String XML_TAG_GETCONTENTLENGTH    = "getcontentlength";
-    private static final String XML_TAG_GETCONTENTTYPE      = "getcontenttype";
-    private static final String XML_TAG_GETETAG             = "getetag";
-    private static final String XML_TAG_GETLASTMODIFIED     = "getlastmodified";
-    private static final String XML_TAG_HREF                = "href";
-    private static final String XML_TAG_ISARCHIVE           = "isarchive";
-    private static final String XML_TAG_ISCOLLECTION        = "iscollection";
-    private static final String XML_TAG_ISHIDDEN            = "ishidden";
-    private static final String XML_TAG_ISREADONLY          = "isreadonly";
-    private static final String XML_TAG_ISSYSTEM            = "issystem";
-    private static final String XML_TAG_LOCKDISCOVERY       = "lockdiscovery";
-    private static final String XML_TAG_LOCKENTRY           = "lockentry";
-    private static final String XML_TAG_LOCKROOT            = "lockroot";
-    private static final String XML_TAG_LOCKSCOPE           = "lockscope";
-    private static final String XML_TAG_LOCKTOKEN           = "locktoken";
-    private static final String XML_TAG_LOCKTYPE            = "locktype";
-    private static final String XML_TAG_MULTISTATUS         = "multistatus";
-    private static final String XML_TAG_PROP                = "prop";
-    private static final String XML_TAG_PROPNAME            = "propname";
-    private static final String XML_TAG_PROPSTAT            = "propstat";
-    private static final String XML_TAG_RESOURCETYPE        = "resourcetype";
-    private static final String XML_TAG_RESPONSE            = "response";
-    private static final String XML_TAG_STATUS              = "status";
-    private static final String XML_TAG_SUPPORTEDLOCK       = "supportedlock";
-    private static final String XML_TAG_TIMEOUT             = "timeout";
-    private static final String XML_TAG_WIN32FILEATTRIBUTES = "Win32FileAttributes";
-    private static final String XML_TAG_WRITE               = "write";
+    private static final String XML_ACTIVELOCK          = "activelock";
+    private static final String XML_ALLPROP             = "allprop";
+    private static final String XML_COLLECTION          = "collection";
+    private static final String XML_CREATIONDATE        = "creationdate";
+    private static final String XML_DEPTH               = "depth";
+    private static final String XML_DISPLAYNAME         = "displayname";
+    private static final String XML_EXCLUSIVE           = "exclusive";
+    private static final String XML_GETCONTENTLENGTH    = "getcontentlength";
+    private static final String XML_GETCONTENTTYPE      = "getcontenttype";
+    private static final String XML_GETETAG             = "getetag";
+    private static final String XML_GETLASTMODIFIED     = "getlastmodified";
+    private static final String XML_HREF                = "href";
+    private static final String XML_ISARCHIVE           = "isarchive";
+    private static final String XML_ISCOLLECTION        = "iscollection";
+    private static final String XML_ISHIDDEN            = "ishidden";
+    private static final String XML_ISREADONLY          = "isreadonly";
+    private static final String XML_ISSYSTEM            = "issystem";
+    private static final String XML_LOCKDISCOVERY       = "lockdiscovery";
+    private static final String XML_LOCKENTRY           = "lockentry";
+    private static final String XML_LOCKROOT            = "lockroot";
+    private static final String XML_LOCKSCOPE           = "lockscope";
+    private static final String XML_LOCKTOKEN           = "locktoken";
+    private static final String XML_LOCKTYPE            = "locktype";
+    private static final String XML_MULTISTATUS         = "multistatus";
+    private static final String XML_PROP                = "prop";
+    private static final String XML_PROPNAME            = "propname";
+    private static final String XML_PROPSTAT            = "propstat";
+    private static final String XML_RESOURCETYPE        = "resourcetype";
+    private static final String XML_RESPONSE            = "response";
+    private static final String XML_STATUS              = "status";
+    private static final String XML_SUPPORTEDLOCK       = "supportedlock";
+    private static final String XML_TIMEOUT             = "timeout";
+    private static final String XML_WIN32FILEATTRIBUTES = "Win32FileAttributes";
+    private static final String XML_WRITE               = "write";
 
     /**
      * Constant for max. depth with infinite processing depth
@@ -398,8 +394,8 @@ public class ApiDavFilter extends HttpFilter {
                   final int type, final Properties<String> properties)
             throws IOException {
 
-        xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESPONSE, XmlWriter.ElementType.OPENING);
-        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_HREF, UriUtils.encodePath(contextUrl + entry.getPath(), StandardCharsets.UTF_8.name()));
+        xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESPONSE, XmlWriter.ElementType.OPENING);
+        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, UriUtils.encodePath(contextUrl + entry.getPath(), StandardCharsets.UTF_8.name()));
 
         final String displayName = UriUtils.encodePath(entry.getName(), StandardCharsets.UTF_8.name());
 
@@ -426,76 +422,76 @@ public class ApiDavFilter extends HttpFilter {
 
         switch (type) {
             case WEBDAV_FIND_ALL_PROP:
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.OPENING);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.OPENING);
 
-                xmlWriter.writePropertyData(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_DISPLAYNAME, displayName);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISCOLLECTION, isCollection);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_CREATIONDATE, creationDate);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETLASTMODIFIED, lastModified);
+                xmlWriter.writePropertyData(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_DISPLAYNAME, displayName);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISCOLLECTION, isCollection);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_CREATIONDATE, creationDate);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, lastModified);
 
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISREADONLY, isReadOnly);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISHIDDEN,  isHidden);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISSYSTEM, isSystem);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISARCHIVE, isArchive);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISREADONLY, isReadOnly);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISHIDDEN,  isHidden);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISSYSTEM, isSystem);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISARCHIVE, isArchive);
 
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_WIN32FILEATTRIBUTES, win32FileAttributes);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_WIN32FILEATTRIBUTES, win32FileAttributes);
 
                 if (entry.isFolder()) {
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESOURCETYPE, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_COLLECTION, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESOURCETYPE, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_COLLECTION, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.CLOSING);
                 } else {
-                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETCONTENTTYPE, contentType);
-                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETCONTENTLENGTH, contentLength);
-                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETETAG, etag);
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTTYPE, contentType);
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTLENGTH, contentLength);
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETETAG, etag);
 
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_SUPPORTEDLOCK, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "DAV:", XML_TAG_LOCKENTRY, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKSCOPE, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_EXCLUSIVE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKSCOPE, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKTYPE, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_WRITE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKTYPE, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKENTRY, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_SUPPORTEDLOCK, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_SUPPORTEDLOCK, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, "DAV:", XML_LOCKENTRY, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_EXCLUSIVE, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_WRITE, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKENTRY, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_SUPPORTEDLOCK, XmlWriter.ElementType.CLOSING);
                 }
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.CLOSING);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_STATUS, new SuccessState().getStatusLine());
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_STATUS, new SuccessState().getStatusLine());
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.CLOSING);
 
                 break;
 
             case WEBDAV_FIND_PROPERTY_NAMES:
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.OPENING);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.OPENING);
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_DISPLAYNAME, XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISCOLLECTION, XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_CREATIONDATE, XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETLASTMODIFIED, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_DISPLAYNAME, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISCOLLECTION, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_CREATIONDATE, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, XmlWriter.ElementType.EMPTY);
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISREADONLY, XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISHIDDEN, XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISSYSTEM, XmlWriter.ElementType.EMPTY);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISARCHIVE, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISREADONLY, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISHIDDEN, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISSYSTEM, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISARCHIVE, XmlWriter.ElementType.EMPTY);
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_WIN32FILEATTRIBUTES, XmlWriter.ElementType.EMPTY);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_WIN32FILEATTRIBUTES, XmlWriter.ElementType.EMPTY);
 
                 if (entry.isFolder()) {
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESOURCETYPE, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.EMPTY);
                 } else {
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETCONTENTTYPE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETCONTENTLENGTH, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETETAG, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTTYPE, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTLENGTH, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETETAG, XmlWriter.ElementType.EMPTY);
                 }
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.CLOSING);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_STATUS, new SuccessState().getStatusLine());
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_STATUS, new SuccessState().getStatusLine());
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.CLOSING);
 
                 break;
 
@@ -503,71 +499,71 @@ public class ApiDavFilter extends HttpFilter {
 
                 List<String> list = new ArrayList<>();
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.OPENING);
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.OPENING);
 
                 for (String property : properties.keySet()) {
 
-                    if (property.equals(XML_TAG_DISPLAYNAME)) {
-                        xmlWriter.writePropertyData(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_DISPLAYNAME, displayName);
-                    } else if (property.equals(XML_TAG_ISCOLLECTION)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISCOLLECTION, isCollection);
-                    } else if (property.equals(XML_TAG_CREATIONDATE)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_CREATIONDATE, creationDate);
-                    } else if (property.equals(XML_TAG_GETLASTMODIFIED)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETLASTMODIFIED, lastModified);
+                    if (property.equals(XML_DISPLAYNAME)) {
+                        xmlWriter.writePropertyData(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_DISPLAYNAME, displayName);
+                    } else if (property.equals(XML_ISCOLLECTION)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISCOLLECTION, isCollection);
+                    } else if (property.equals(XML_CREATIONDATE)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_CREATIONDATE, creationDate);
+                    } else if (property.equals(XML_GETLASTMODIFIED)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, lastModified);
 
-                    } else if (property.equals(XML_TAG_ISREADONLY)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISREADONLY, isReadOnly);
-                    } else if (property.equals(XML_TAG_ISHIDDEN)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISHIDDEN, isHidden);
-                    } else if (property.equals(XML_TAG_ISSYSTEM)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISSYSTEM, isSystem);
-                    } else if (property.equals(XML_TAG_ISARCHIVE)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ISARCHIVE, isArchive);
+                    } else if (property.equals(XML_ISREADONLY)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISREADONLY, isReadOnly);
+                    } else if (property.equals(XML_ISHIDDEN)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISHIDDEN, isHidden);
+                    } else if (property.equals(XML_ISSYSTEM)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISSYSTEM, isSystem);
+                    } else if (property.equals(XML_ISARCHIVE)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISARCHIVE, isArchive);
 
-                    } else if (property.equals(XML_TAG_WIN32FILEATTRIBUTES)) {
-                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_WIN32FILEATTRIBUTES, win32FileAttributes);
+                    } else if (property.equals(XML_WIN32FILEATTRIBUTES)) {
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_WIN32FILEATTRIBUTES, win32FileAttributes);
                     } else {
                         if (entry.isFolder()
-                                && property.equals(XML_TAG_RESOURCETYPE)) {
-                            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESOURCETYPE, XmlWriter.ElementType.OPENING);
-                            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_COLLECTION, XmlWriter.ElementType.EMPTY);
-                            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESOURCETYPE, XmlWriter.ElementType.CLOSING);
+                                && property.equals(XML_RESOURCETYPE)) {
+                            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_COLLECTION, XmlWriter.ElementType.EMPTY);
+                            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.CLOSING);
                         } else if (!entry.isFolder()
-                                && property.equals(XML_TAG_GETCONTENTLENGTH)) {
-                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETCONTENTLENGTH, contentLength);
+                                && property.equals(XML_GETCONTENTLENGTH)) {
+                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTLENGTH, contentLength);
                         } else if (!entry.isFolder()
-                                && property.equals(XML_TAG_GETCONTENTTYPE)) {
-                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETCONTENTTYPE, contentType);
+                                && property.equals(XML_GETCONTENTTYPE)) {
+                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTTYPE, contentType);
                         } else if (!entry.isFolder()
-                                && property.equals(XML_TAG_GETETAG)) {
-                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_GETETAG, etag);
+                                && property.equals(XML_GETETAG)) {
+                            xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETETAG, etag);
                         } else list.add(property);
                     }
                 }
 
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.CLOSING);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_STATUS, new SuccessState().getStatusLine());
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_STATUS, new SuccessState().getStatusLine());
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.CLOSING);
 
                 Iterator<String> iterator = list.iterator();
                 if (iterator.hasNext()) {
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.OPENING);
 
                     while (iterator.hasNext())
                         xmlWriter.writeElement(null, iterator.next(), XmlWriter.ElementType.EMPTY);
 
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_STATUS, new NotFoundState().getStatusLine());
-                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROPSTAT, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_STATUS, new NotFoundState().getStatusLine());
+                    xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROPSTAT, XmlWriter.ElementType.CLOSING);
                 }
 
                 break;
         }
 
-        xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_RESPONSE, XmlWriter.ElementType.CLOSING);
+        xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESPONSE, XmlWriter.ElementType.CLOSING);
     }
 
     private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Sitemap.Entry entry,
@@ -622,7 +618,7 @@ public class ApiDavFilter extends HttpFilter {
             final Document document = ApiDavFilter.readXmlRequest(request);
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             final XmlWriter xmlWriter = new XmlWriter(buffer);
-            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,XML_TAG_MULTISTATUS, XmlWriter.ElementType.OPENING);
+            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,XML_MULTISTATUS, XmlWriter.ElementType.OPENING);
 
             final int depth = ApiDavFilter.getDepth(request);
 
@@ -632,13 +628,13 @@ public class ApiDavFilter extends HttpFilter {
                 final Set<Node> nodeSet = IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
                         .filter(streamNode -> streamNode.getNodeType() == Node.ELEMENT_NODE).collect(Collectors.toSet());
 
-                if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_TAG_ALLPROP))) {
+                if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_ALLPROP))) {
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
-                } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_TAG_PROP))) {
-                    final Node propNode = nodeSet.stream().filter(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_TAG_PROP)).findFirst().get();
+                } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROP))) {
+                    final Node propNode = nodeSet.stream().filter(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROP)).findFirst().get();
                     properties.putAll(ApiDavFilter.getPropertiesFromNode(propNode));
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_BY_PROPERTY, properties, depth);
-                } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_TAG_PROPNAME))) {
+                } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROPNAME))) {
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_PROPERTY_NAMES, properties, depth);
                 } else {
                     ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
@@ -646,7 +642,7 @@ public class ApiDavFilter extends HttpFilter {
 
             } else ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
 
-            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_MULTISTATUS, XmlWriter.ElementType.CLOSING);
+            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_MULTISTATUS, XmlWriter.ElementType.CLOSING);
             xmlWriter.flush();
 
             response.setStatus(new MultiStatusState().getStatusCode());
@@ -761,37 +757,37 @@ public class ApiDavFilter extends HttpFilter {
 
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         final XmlWriter xmlWriter = new XmlWriter(buffer);
-        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, WEBDAV_DEFAULT_XML_NAMESPACE_URI, XML_TAG_PROP, XmlWriter.ElementType.OPENING);
-            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKDISCOVERY, XmlWriter.ElementType.OPENING);
-                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ACTIVELOCK, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKTYPE, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_WRITE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKTYPE, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKSCOPE, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_EXCLUSIVE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKSCOPE, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_DEPTH, XmlWriter.ElementType.OPENING);
+        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, WEBDAV_DEFAULT_XML_NAMESPACE_URI, XML_PROP, XmlWriter.ElementType.OPENING);
+            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKDISCOVERY, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_WRITE, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_EXCLUSIVE, XmlWriter.ElementType.EMPTY);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_DEPTH, XmlWriter.ElementType.OPENING);
                         xmlWriter.writeText("Infinity");
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_DEPTH, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_DEPTH, XmlWriter.ElementType.CLOSING);
 
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_TIMEOUT, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TIMEOUT, XmlWriter.ElementType.OPENING);
                         xmlWriter.writeText(timeout);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_TIMEOUT, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TIMEOUT, XmlWriter.ElementType.CLOSING);
 
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKTOKEN, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_HREF, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTOKEN, XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
                             xmlWriter.writeText(token);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_HREF, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKTOKEN, XmlWriter.ElementType.CLOSING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTOKEN, XmlWriter.ElementType.CLOSING);
 
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKROOT, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_HREF, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
                             xmlWriter.writeText(this.locateSitemapPath(request));
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_HREF, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKROOT, XmlWriter.ElementType.CLOSING);
-                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_ACTIVELOCK, XmlWriter.ElementType.CLOSING);
-            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_LOCKDISCOVERY, XmlWriter.ElementType.CLOSING);
-        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TAG_PROP, XmlWriter.ElementType.CLOSING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.CLOSING);
+            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKDISCOVERY, XmlWriter.ElementType.CLOSING);
+        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
         xmlWriter.flush();
 
         final String markup = buffer.toString();
@@ -823,20 +819,65 @@ public class ApiDavFilter extends HttpFilter {
         // callbacks, which must then be processed in relation to the request.
 
         final Properties<Object> properties = new Properties<>();
+
         final HttpSession session = request.getSession(false);
-        if (Objects.nonNull(session))
-            session.getAttributeNames().asIterator()
-                    .forEachRemaining(attribute -> properties.put(SITEMAP_PROPERTY_SESSION_ATTRIBUTE + "." + attribute, session.getAttribute(attribute)));
-        if (Objects.nonNull(request.getRequestedSessionId()))
-            properties.put(SITEMAP_PROPERTY_REQUEST_SESSION_ID, request.getRequestedSessionId());
-        request.getHeaderNames().asIterator()
-                .forEachRemaining(header -> properties.put(SITEMAP_PROPERTY_REQUEST_HEADER + "." + header, request.getHeader(header)));
-        request.getAttributeNames().asIterator()
-                .forEachRemaining(attribute -> properties.put(SITEMAP_PROPERTY_REQUEST_ATTRIBUTE + "." + attribute, request.getAttribute(attribute)));
+        if (Objects.nonNull(session)) {
+            final Map<String, Object> sessionMap = new HashMap<>();
+            properties.put("session", sessionMap);
+            sessionMap.put("id", session.getId());
+            if (session.getAttributeNames().hasMoreElements()) {
+                final Map<String, Object> sessionAttributeMap = new HashMap<>();
+                sessionMap.put("attributes", sessionAttributeMap);
+                session.getAttributeNames().asIterator()
+                        .forEachRemaining(attribute -> sessionAttributeMap.put(attribute, session.getAttribute(attribute)));
+            }
+        }
+
+        final Map<String, Object> requestMap = new HashMap<>();
+        properties.put("request", requestMap);
+        if (Objects.nonNull(request.getRequestedSessionId())) {
+            final Map<String, Object> requestSessionMap = new HashMap<>();
+            requestMap.put("session", requestSessionMap);
+            requestSessionMap.put("id", request.getRequestedSessionId());
+        }
+        if (request.getHeaderNames().hasMoreElements()) {
+            final Map<String, Object> requestHeaderMap = new HashMap<>();
+            requestMap.put("headers", requestHeaderMap);
+            request.getHeaderNames().asIterator()
+                    .forEachRemaining(header -> requestHeaderMap.put(header, request.getHeader(header)));
+        }
+        if (request.getAttributeNames().hasMoreElements()) {
+            final Map<String, Object> requestAttributeMap = new HashMap<>();
+            requestMap.put("attributes", requestAttributeMap);
+            request.getAttributeNames().asIterator()
+                    .forEachRemaining(attribute -> requestAttributeMap.put(attribute, request.getAttribute(attribute)));
+        }
+
+        if (Objects.nonNull(request.getRemoteUser())
+                || Objects.nonNull(request.getUserPrincipal())) {
+            final Map<String, Object> userMap = new HashMap<>();
+            properties.put("user", userMap);
+            if (Objects.nonNull(request.getRemoteUser()))
+                userMap.put("remote", request.getRemoteUser());
+            if (Objects.nonNull(request.getUserPrincipal()))
+                userMap.put("principal", request.getUserPrincipal());
+        }
+
+        final ServletContext servletContext = this.getServletContext();
+        final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+
+        final Map<String, Object> userMap = new HashMap<>();
+        properties.put("context", userMap);
         if (Objects.nonNull(request.getRemoteUser()))
-            properties.put(SITEMAP_PROPERTY_USER_REMOTE, request.getRemoteUser());
+            userMap.put("servlet", servletContext);
         if (Objects.nonNull(request.getUserPrincipal()))
-            properties.put(SITEMAP_PROPERTY_USER_PRINCIPAL, request.getUserPrincipal());
+            userMap.put("application", applicationContext);
+
+        final List<String> beanNameFilter = Arrays.asList("session", "request", "user", "context");
+        for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
+                .filter(Predicate.not(beanNameFilter::contains))
+                .collect(Collectors.toSet()))
+            properties.put(beanName, applicationContext.getBean(beanName));
 
         final Sitemap sitemap;
         try {sitemap = this.sitemap.share(properties);
