@@ -44,7 +44,7 @@ public class MetaInputStream extends InputStream {
     public int read()
             throws IOException {
         if (Objects.isNull(this.input))
-            this.input = request.getInputStream();
+            this.input = this.request.getInputStream();
         return this.input.read();
     }
 
@@ -52,7 +52,7 @@ public class MetaInputStream extends InputStream {
     public int read(byte[] bytes)
             throws IOException {
         if (Objects.isNull(this.input))
-            this.input = request.getInputStream();
+            this.input = this.request.getInputStream();
         return this.input.read(bytes);
     }
 
@@ -60,7 +60,7 @@ public class MetaInputStream extends InputStream {
     public int read(byte[] bytes, int offset, int lenght)
             throws IOException {
         if (Objects.isNull(this.input))
-            this.input = request.getInputStream();
+            this.input = this.request.getInputStream();
         return this.input.read(bytes, offset, lenght);
     }
 
@@ -68,7 +68,7 @@ public class MetaInputStream extends InputStream {
     public byte[] readAllBytes()
             throws IOException {
         if (Objects.isNull(this.input))
-            this.input = request.getInputStream();
+            this.input = this.request.getInputStream();
         return this.input.readAllBytes();
     }
 }
