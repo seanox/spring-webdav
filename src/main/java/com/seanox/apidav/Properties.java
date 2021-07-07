@@ -23,8 +23,6 @@ package com.seanox.apidav;
 
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
-import java.util.Map;
-
 /**
  * Case-insensitive properties based on a {@link java.util.Map}.
  *
@@ -39,6 +37,8 @@ import java.util.Map;
  */
 public class Properties<V> extends LinkedCaseInsensitiveMap<V> {
 
+    private static final long serialVersionUID = -4516866265247165421L;
+
     public Properties() {
         super();
     }
@@ -50,6 +50,6 @@ public class Properties<V> extends LinkedCaseInsensitiveMap<V> {
 
     @Override
     public Properties<V> clone() {
-        return new Properties<V>(this);
+        return new Properties<>(this);
     }
 }
