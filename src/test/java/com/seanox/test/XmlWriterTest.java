@@ -28,7 +28,17 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class XmlWriterTest {
+/**
+ * Test of the XmlWriter functions.
+ *
+ * XmlWriterTest 1.0.0 20210707
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210707
+ */
+public class XmlWriterTest extends AbstractTest {
 
     @Test
     void test_1()

@@ -29,11 +29,18 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;
 import java.nio.file.InvalidPathException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
-public class SitemapTest {
+/**
+ * Test of the Sitemap functions.
+ *
+ * SitemapTest 1.0.0 20210707
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210707
+ */
+public class SitemapTest extends AbstractTest {
 
     @Test
     void testNormalizePath_1() {
@@ -95,116 +102,76 @@ public class SitemapTest {
         Assertions.assertEquals("/a/b/c/d/e", SitemapAdapter.normalizePath("a/b/c/\\\\\\/d/e"));
     }
 
-    private static Collection<Annotation> collectApiAnnotations(String methodRegExFilter) {
-        final Collection<Annotation> annotations = new ArrayList<>();
-        Arrays.stream(SitemapTest.class.getDeclaredMethods())
-                .filter(method ->
-                        method.getName().matches(methodRegExFilter))
-                .sorted((method, compare) -> method.getName().compareToIgnoreCase(compare.getName()))
-                .forEach(method -> annotations.addAll(Arrays.asList(method.getDeclaredAnnotations())));
-        return annotations;
-    }
-
     @ApiDavMapping(path="a")
-    private void map_1_1() {
-    }
     @ApiDavMapping(path="/a")
-    private void map_1_2() {
-    }
     @Test
     void testMap_1() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
-            for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_1_.*"))
+            for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a", throwable.getMessage());
     }
 
     @ApiDavMapping(path="/a/b/c")
-    private void map_2_1() {
-    }
     @ApiDavMapping(path="/a/b/c/d/e")
-    private void map_2_2() {
-    }
     @Test
     void testMap_2() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
-            for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_2_.*"))
+            for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c/d", throwable.getMessage());
     }
 
     @ApiDavMapping(path="/a/b/c/d/e")
-    private void map_3_1() {
-    }
     @ApiDavMapping(path="/a/b/c")
-    private void map_3_2() {
-    }
     @Test
     void testMap_3() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
-            for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_3_.*"))
+            for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
 
     @ApiDavMapping(path="/a/b/c/d/e")
-    private void map_4_1() {
-    }
     @ApiDavMapping(path="/a/b/C")
-    private void map_4_2() {
-    }
     @Test
     void testMap_4() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
-            for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_4_.*"))
+            for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
 
     @ApiDavMapping(path="/a/B/c/d/e")
-    private void map_5_1() {
-    }
     @ApiDavMapping(path="/A/b/c")
-    private void map_5_2() {
-    }
     @Test
     void testMap_5() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
-            for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_5_.*"))
+            for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
                 SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/B/c", throwable.getMessage());
     }
 
     @ApiDavMapping(path="/customer/list.xlsx")
-    private void map_6_1() {
-    }
     @ApiDavMapping(path="/customer/reports/statistic.xlsx")
-    private void map_6_2() {
-    }
     @ApiDavMapping(path="/customer/reports/turnover.xlsx")
-    private void map_6_3() {
-    }
     @ApiDavMapping(path="/marketing/newsletter.pptx")
-    private void map_6_4() {
-    }
     @ApiDavMapping(path="/marketing/sales.pptx")
-    private void map_6_5() {
-    }
     @Test
     void testMap_6()
             throws Exception {
         final Object sitemap = SitemapAdapter.createInstance();
-        for (Annotation annotation : SitemapTest.collectApiAnnotations("^map_6_.*"))
+        for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
             SitemapAdapter.map(sitemap, new Annotation[] {annotation});
         final String output = sitemap.toString().replaceAll("\\R", "\n");
         final String pattern = "+ customer\n" +

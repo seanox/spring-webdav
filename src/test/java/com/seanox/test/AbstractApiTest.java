@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.test.http;
+package com.seanox.test;
 
 import com.seanox.api.Application;
 import com.seanox.apidav.ApiDavFilter;
@@ -45,7 +45,7 @@ import java.io.IOException;
  * @version 1.0.0 20210705
  */
 @SpringBootTest(classes= Application.class)
-public abstract class AbstractApiTest {
+public abstract class AbstractApiTest extends AbstractTest {
 
     public final static String ROOT_URI = "/";
     public final static String FILE_URI = "/personal/budget.xlsx";
