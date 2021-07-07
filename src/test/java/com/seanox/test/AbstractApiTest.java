@@ -74,10 +74,10 @@ public abstract class AbstractApiTest extends AbstractTest {
     @BeforeEach
     protected void startApi()
             throws ServletException {
-        final MockFilterConfig mockFilterConfig = new MockFilterConfig(webApplicationContext.getServletContext());
+        final MockFilterConfig mockFilterConfig = new MockFilterConfig(this.webApplicationContext.getServletContext());
         final ApiDavFilter apiDavFilter = new ApiDavFilter();
         apiDavFilter.init(mockFilterConfig);
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext)
                 .addFilters(apiDavFilter)
                 .build();
     }
