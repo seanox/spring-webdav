@@ -45,34 +45,34 @@ import java.io.IOException;
  * @version 1.0.0 20210705
  */
 @SpringBootTest(classes= Application.class)
-abstract class AbstractApiTest {
+public abstract class AbstractApiTest {
 
-    final static String ROOT_URI = "/";
-    final static String FILE_URI = "/personal/budget.xlsx";
-    final static String FILE_READONLY_URI = "/personal/reports/sales.pptx";
-    final static String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
-    final static String FOLDER_URI = "/personal/";
-    final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
+    public final static String ROOT_URI = "/";
+    public final static String FILE_URI = "/personal/budget.xlsx";
+    public final static String FILE_READONLY_URI = "/personal/reports/sales.pptx";
+    public final static String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
+    public final static String FOLDER_URI = "/personal/";
+    public final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
 
-    final static String FILE_REDIRECT_URI = "/personal/budget.xlsx/";
-    final static String FILE_PARENT_URI = "/personal/";
-    final static String FOLDER_REDIRECT_URI = "/personal";
+    public final static String FILE_REDIRECT_URI = "/personal/budget.xlsx/";
+    public final static String FILE_PARENT_URI = "/personal/";
+    public final static String FOLDER_REDIRECT_URI = "/personal";
 
-    final static String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    final static String CONTENT_TYPE_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    public final static String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    public final static String CONTENT_TYPE_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
 
-    final static String TEMPLATE_BUDGET_XLSX = "/templates/budget.xlsx";
-    final static String TEMPLATE_EMPTY_XLSX = "/templates/empty.xlsx";
-    final static String TEMPLATE_STATISTIC_PPTX = "/templates/statistic.pptx";
-    final static String TEMPLATE_SALES_PPTX = "/templates/sales.pptx";
+    public final static String TEMPLATE_BUDGET_XLSX = "/templates/budget.xlsx";
+    public final static String TEMPLATE_EMPTY_XLSX = "/templates/empty.xlsx";
+    public final static String TEMPLATE_STATISTIC_PPTX = "/templates/statistic.pptx";
+    public final static String TEMPLATE_SALES_PPTX = "/templates/sales.pptx";
 
-    MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     @Autowired
-    WebApplicationContext webApplicationContext;
+    protected WebApplicationContext webApplicationContext;
 
     @BeforeEach
-    void startApi()
+    protected void startApi()
             throws ServletException {
         final MockFilterConfig mockFilterConfig = new MockFilterConfig(webApplicationContext.getServletContext());
         final ApiDavFilter apiDavFilter = new ApiDavFilter();
@@ -82,7 +82,7 @@ abstract class AbstractApiTest {
                 .build();
     }
 
-    static byte[] readTemplate(String template)
+    protected static byte[] readTemplate(String template)
             throws IOException {
         return AbstractApiTest.class.getResourceAsStream(template).readAllBytes();
     }
