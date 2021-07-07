@@ -29,27 +29,29 @@ import java.io.IOException;
 
 /**
  * The package extras contains mainly test and no demos.
- * Therefore, the tests must be enabled manually with @Component attributes.
  *
- * DeepHiddenFolderStructureController 1.0.0 20210628
+ * DeepHiddenFolderStructureController 1.0.0 20210707
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210628
+ * @version 1.0.0 20210707
  */
-// __/TEST-ONLY/ @Component
+@Component
 public class DeepHiddenFolderStructureController {
 
     // The directory structure shows only substructures with visible content.
     // If a directory has no visible content, this structure is not displayed.
     // However, the paths to the data exist.
     // Expected behavior:
-    // - Explorer displays only \extras\deep-hidden\c\c-1\c-2\c-3\c2.txt
-    // - Z:\extras\deep-hidden\a\a-1\a-2\a-3\a2.txt can be used
-    // - Z:\extras\deep-hidden\a\a-1\a-2\a-3 can be used, but is empty
-    // - Z:\extras\deep-hidden\a\a-1\a-2 can be used, but is empty
-    // - Z:\extras\deep-hidden\a\a-1\a-2 can be used, but is empty
+    // - Explorer displays only /extras/deep-hidden/c/c-1/c-2/c-3/c2.txt
+    // - /extras/deep-hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+    // - /extras/deep-hidden/a/a-1/a-2/a-3 can be used, but is empty
+    // - /extras/deep-hidden/a/a-1/a-2 can be used, but is empty
+    // - /extras/deep-hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+    // - /extras/deep-hidden/b/b-1/b-2/b-3 can be used, but is empty
+    // - /extras/deep-hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
+    // - /extras/deep-hidden/c/c-1/c-2/c-3 can be used and is not empty
 
     @ApiDavMapping(path="/extras/deep-hidden/a/a-1/a-2/a-3/a1.txt", isHidden=true)
     public void testA_1(MetaOutputStream outputStream) throws IOException {
