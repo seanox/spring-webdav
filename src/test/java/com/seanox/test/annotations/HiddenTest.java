@@ -21,7 +21,7 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.test.http.AbstractApiTest;
+import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
