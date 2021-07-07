@@ -59,8 +59,6 @@ class MarketingController {
     @ApiDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
     void getMarketingNewsletter(MetaOutputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
-        output.setContentLength((long)marketingNewsletter.getData().length);
-        output.setLastModified(marketingNewsletter.getLastModified());
         output.write(marketingNewsletter.getData());
     }
     @ApiDavInputMapping(path=MARKETING_NEWSLETTER_DOTX)
@@ -82,8 +80,6 @@ class MarketingController {
     @ApiDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
     void getMarketingFlyer(MetaOutputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
-        output.setContentLength((long)marketingFlyer.getData().length);
-        output.setLastModified(marketingFlyer.getLastModified());
         output.write(marketingFlyer.getData());
     }
     @ApiDavInputMapping(path=MARKETING_FLYER_PPTX)

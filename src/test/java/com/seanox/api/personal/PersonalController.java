@@ -80,8 +80,6 @@ class PersonalController {
     @ApiDavMapping(path=PERSONAL_BUDGET_XLSX, isReadOnly=false)
     void getPersonalBudget(MetaOutputStream output) throws IOException {
         final PersonalBudget personalBudget = this.personalService.readPersonalBudget();
-        output.setContentLength((long)personalBudget.getData().length);
-        output.setLastModified(personalBudget.getLastModified());
         output.write(personalBudget.getData());
     }
     @ApiDavInputMapping(path=PERSONAL_BUDGET_XLSX)
@@ -107,8 +105,6 @@ class PersonalController {
     @ApiDavMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX)
     void getPersonalReportStatistic(MetaOutputStream output) throws IOException  {
         final PersonalReportStatistic personalReportStatistic = this.personalService.readPersonalReportStatistic();
-        output.setContentLength((long)personalReportStatistic.getData().length);
-        output.setLastModified(personalReportStatistic.getLastModified());
         output.write(personalReportStatistic.getData());
     }
     @ApiDavAttributeMapping(path=PERSONAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
@@ -128,8 +124,6 @@ class PersonalController {
     @ApiDavMapping(path=PERSONAL_REPORTS_SALES_PPTX)
     void getPersonalReportSales(MetaOutputStream output) throws IOException  {
         final PersonalReportSales personalReportSales = this.personalService.readPersonalReportSales();
-        output.setContentLength((long)personalReportSales.getData().length);
-        output.setLastModified(personalReportSales.getLastModified());
         output.write(personalReportSales.getData());
     }
     @ApiDavAttributeMapping(path=PERSONAL_REPORTS_SALES_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
