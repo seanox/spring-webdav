@@ -863,7 +863,7 @@ public class ApiDavFilter extends HttpFilter {
                 userMap.put("principal", request.getUserPrincipal());
         }
 
-        final ServletContext servletContext = this.getServletContext();
+        final ServletContext servletContext = request.getServletContext();
         final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 
         final Map<String, Object> userMap = new HashMap<>();
