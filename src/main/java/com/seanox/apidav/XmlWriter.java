@@ -31,12 +31,12 @@ import java.util.Objects;
 /**
  * Writer for the output of XML data.<br>
  * <br>
- * XmlWriter 1.1.0 20210704<br>
+ * XmlWriter 1.1.0 20210708<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210704
+ * @version 1.1.0 20210708
  */
 class XmlWriter implements Closeable {
 
@@ -69,7 +69,7 @@ class XmlWriter implements Closeable {
          * @param open  Opening character sequence
          * @param close Closing character sequence
          */
-        ElementType(String open, String close) {
+        ElementType(final String open, final String close) {
             this.open  = open;
             this.close = close;
         }
@@ -236,6 +236,7 @@ class XmlWriter implements Closeable {
     @Override
     public void close()
             throws IOException {
+        this.output.flush();
         this.output.close();
     }
 }
