@@ -43,7 +43,7 @@ public class Properties<V> extends LinkedCaseInsensitiveMap<V> {
         super();
     }
 
-    public Properties(Properties<V> properties) {
+    public Properties(final Properties<V> properties) {
         super();
         this.putAll(properties);
     }

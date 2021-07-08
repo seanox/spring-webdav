@@ -33,6 +33,8 @@ package com.seanox.apidav;
  */
 class SitemapConverterException extends RuntimeException {
 
+    private static final long serialVersionUID = -6090180787140846978L;
+
     SitemapConverterException(final Exception cause) {
         super(cause);
     }
