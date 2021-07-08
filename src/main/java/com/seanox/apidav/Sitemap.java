@@ -67,13 +67,12 @@ class Sitemap {
 
     private final TreeMap<String, Entry> tree;
     private final Properties<Object> data;
-    private final Properties<Object> meta;
+    private final Properties<Map<Attribute, Object>> meta;
     private final List<Annotation[]> trace;
 
     private static final Date CREATION_DATE = Sitemap.getBuildDate();
 
     Sitemap() {
-
         this.tree  = new TreeMap<>();
         this.data  = new Properties<>();
         this.meta  = new Properties<>();
@@ -510,7 +509,7 @@ class Sitemap {
 
                 } else if (annotation instanceof Annotation.Meta) {
                     final Annotation.Meta metaAnnotation = (Annotation.Meta)annotation;
-                    this.metaCallback = new Callback(metaAnnotation.getObject(), metaAnnotation.getMethod());
+                    this.metaCallback = new MetaCallback(metaAnnotation.getObject(), metaAnnotation.getMethod());
                 }
             }
         }
@@ -543,7 +542,7 @@ class Sitemap {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final HashMap<Object, Object> metaMap = (HashMap<Object, Object>)Sitemap.this.meta.get(this.getPathUnique());
+            final Map<Attribute, Object> metaMap = Sitemap.this.meta.get(this.getPathUnique());
             if (metaMap.containsKey(attribute))
                 return (T)metaMap.get(attribute);
 
@@ -556,8 +555,8 @@ class Sitemap {
                     throw new SitemapCallbackException(exception);
                 }
             } else if (Objects.nonNull(this.metaCallback)) {
-                if (!metaMap.containsKey(Meta.class))
-                    try {metaMap.put(Meta.class, this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
+                if (!metaMap.containsKey(this.metaCallback))
+                    try {metaMap.put(this.metaCallback, this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -579,7 +578,6 @@ class Sitemap {
                         result = Boolean.valueOf(metaAttributes.isReadOnly());
                     else if (Annotation.Attribute.AttributeType.Permitted.equals(attributeType))
                         result = Boolean.valueOf(metaAttributes.isPermitted());
-                    // TODO: And in the other cases (e.g. for input)?
                 }
             } else if (attribute instanceof Expression) {
                 result = ((Expression)attribute).eval();
@@ -587,8 +585,10 @@ class Sitemap {
                 result = ((Static)attribute).value;
             }
 
-            if (Objects.nonNull(result)
-                    && !fallback.getClass().equals(result.getClass())) {
+            if (Objects.isNull(result))
+                result = fallback;
+
+            if (!fallback.getClass().equals(result.getClass())) {
 
                 Class<?> type = result.getClass();
                 try {type = (Class<?>)type.getDeclaredField("TYPE").get(null);
@@ -614,7 +614,8 @@ class Sitemap {
         }
 
         Long getContentLength() {
-            return this.eval(Annotation.Attribute.AttributeType.ContentLength, this.contentLength, Defaults.contentLength);
+            final Long contentLength = this.eval(Annotation.Attribute.AttributeType.ContentLength, this.contentLength, Defaults.contentLength);
+            return contentLength.longValue() >= 0 ? contentLength : null;
         }
 
         @Override
@@ -687,7 +688,7 @@ class Sitemap {
             this.method = method;
         }
 
-        private Object[] composeArguments(Object... arguments) {
+        Object[] composeArguments(Object... arguments) {
 
             final Map<Class<?>, Object> placeholder = new HashMap<>();
             Arrays.stream(arguments).forEach(argument -> {
@@ -704,9 +705,33 @@ class Sitemap {
         Object invoke(Object... arguments)
                 throws InvocationTargetException, IllegalAccessException {
             this.method.setAccessible(true);
-            final List<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
+            final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
             argumentList.add(Sitemap.this.data.clone());
             return this.method.invoke(this.object, this.composeArguments(argumentList.toArray(new Object[0])));
+        }
+    }
+
+    class MetaCallback extends Callback {
+
+        private Meta meta;
+
+        MetaCallback(Object object, Method method) {
+            super(object, method);
+        }
+
+        @Override
+        Object invoke(Object... arguments)
+                throws InvocationTargetException, IllegalAccessException {
+
+            if (Objects.nonNull(this.meta))
+                return this.meta;
+
+            final Meta meta = Meta.builder().build();
+            final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
+            argumentList.add(meta);
+            super.invoke(this.composeArguments(argumentList.toArray(new Object[0])));
+            this.meta = meta.clone();
+            return this.meta;
         }
     }
 }
