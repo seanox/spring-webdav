@@ -543,9 +543,9 @@ class Sitemap {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final HashMap<Object, T> metaMap = (HashMap<Object, T>)Sitemap.this.meta.get(this.getPathUnique());
+            final HashMap<Object, Object> metaMap = (HashMap<Object, Object>)Sitemap.this.meta.get(this.getPathUnique());
             if (metaMap.containsKey(attribute))
-                return metaMap.get(attribute);
+                return (T)metaMap.get(attribute);
 
             Object result = fallback;
             if (attribute instanceof Callback) {
@@ -557,7 +557,7 @@ class Sitemap {
                 }
             } else if (Objects.nonNull(this.metaCallback)) {
                 if (!metaMap.containsKey(Meta.class))
-                    try {metaMap.put(Meta.class, (T)this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
+                    try {metaMap.put(Meta.class, this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -596,7 +596,7 @@ class Sitemap {
                 }
 
                 final Class<?> source = fallback.getClass();
-                try {result = (T)source.getMethod("valueOf", type).invoke(null, result);
+                try {result = source.getMethod("valueOf", type).invoke(null, result);
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
                         exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -604,7 +604,7 @@ class Sitemap {
                 }
             }
 
-            metaMap.put(attribute, (T)result);
+            metaMap.put(attribute, result);
 
             return (T)result;
         }
