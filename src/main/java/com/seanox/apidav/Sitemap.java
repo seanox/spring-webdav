@@ -56,12 +56,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210706
+ * Sitemap 1.0.0 20210708
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210706
+ * @version 1.0.0 20210708
  */
 class Sitemap {
 
@@ -198,20 +198,20 @@ class Sitemap {
         if (path.isBlank()) {
             if (mappingAnnotation.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
-            else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+            throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         if (!path.startsWith("/")) {
             if (mappingAnnotation.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
-            else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+            throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         final String name = path.replaceAll("^.*/(?=[^/]*$)", "");
         if (name.isBlank()) {
             if (mappingAnnotation.getPath().isBlank())
                 throw new SitemapException("Invalid mapping path");
-            else throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+            throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         final File file = new File(path, annotations);
@@ -282,7 +282,7 @@ class Sitemap {
     }
 
     static class Defaults {
-        static final Long    contentLength = null;
+        static final Long    contentLength = Long.valueOf(-1);
         static final String  contentType   = "application/octet-stream";
         static final Date    lastModified  = Sitemap.getBuildDate();
         static final Date    creationDate  = Sitemap.getBuildDate();
@@ -543,13 +543,13 @@ class Sitemap {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final HashMap<Object, Object> metaMap = (HashMap<Object, Object>)Sitemap.this.meta.get(this.getPathUnique());
+            final HashMap<Object, T> metaMap = (HashMap<Object, T>)Sitemap.this.meta.get(this.getPathUnique());
             if (metaMap.containsKey(attribute))
-                return (T)metaMap.get(attribute);
+                return metaMap.get(attribute);
 
-            T result = fallback;
+            Object result = fallback;
             if (attribute instanceof Callback) {
-                try {result = (T)((Callback)attribute).invoke(attributeType.attribute, Sitemap.File.this);
+                try {result = ((Callback)attribute).invoke(attributeType.attribute, Sitemap.File.this);
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
                         exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -557,7 +557,7 @@ class Sitemap {
                 }
             } else if (Objects.nonNull(this.metaCallback)) {
                 if (!metaMap.containsKey(Meta.class))
-                    try {metaMap.put(Meta.class, this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
+                    try {metaMap.put(Meta.class, (T)this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -566,30 +566,47 @@ class Sitemap {
                 final Meta metaAttributes = (Meta)metaMap.get(Meta.class);
                 if (Objects.nonNull(metaAttributes)) {
                     if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeType))
-                        result = (T)metaAttributes.getContentLength();
+                        result = metaAttributes.getContentLength();
                     else if (Annotation.Attribute.AttributeType.ContentType.equals(attributeType))
-                        result = (T)metaAttributes.getContentType();
+                        result = metaAttributes.getContentType();
                     else if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeType))
-                        result = (T)metaAttributes.getCreationDate();
+                        result = metaAttributes.getCreationDate();
                     else if (Annotation.Attribute.AttributeType.LastModified.equals(attributeType))
-                        result = (T)metaAttributes.getLastModified();
+                        result = metaAttributes.getLastModified();
                     else if (Annotation.Attribute.AttributeType.Hidden.equals(attributeType))
-                        result = (T)Boolean.valueOf(metaAttributes.isHidden());
+                        result = Boolean.valueOf(metaAttributes.isHidden());
                     else if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeType))
-                        result = (T)Boolean.valueOf(metaAttributes.isReadOnly());
+                        result = Boolean.valueOf(metaAttributes.isReadOnly());
                     else if (Annotation.Attribute.AttributeType.Permitted.equals(attributeType))
-                        result = (T)Boolean.valueOf(metaAttributes.isPermitted());
+                        result = Boolean.valueOf(metaAttributes.isPermitted());
                     // TODO: And in the other cases (e.g. for input)?
                 }
             } else if (attribute instanceof Expression) {
-                result = (T)((Expression)attribute).eval();
+                result = ((Expression)attribute).eval();
             } else if (attribute instanceof Static) {
-                result = (T)((Static)attribute).value;
+                result = ((Static)attribute).value;
             }
 
-            metaMap.put(attribute, result);
+            if (Objects.nonNull(result)
+                    && !fallback.getClass().equals(result.getClass())) {
 
-            return result;
+                Class<?> type = result.getClass();
+                try {type = (Class<?>)type.getDeclaredField("TYPE").get(null);
+                } catch (Exception exception) {
+                }
+
+                final Class<?> source = fallback.getClass();
+                try {result = (T)source.getMethod("valueOf", type).invoke(null, result);
+                } catch (Exception exception) {
+                    while (exception instanceof InvocationTargetException)
+                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                    throw new SitemapConverterException(exception);
+                }
+            }
+
+            metaMap.put(attribute, (T)result);
+
+            return (T)result;
         }
 
         String getContentType() {
@@ -610,6 +627,7 @@ class Sitemap {
             return this.eval(Annotation.Attribute.AttributeType.LastModified, this.lastModified, Defaults.lastModified);
         }
 
+        @Override
         boolean isReadOnly() {
             if (!this.isPermitted()
                     || Objects.isNull(this.writeCallback))
@@ -618,6 +636,7 @@ class Sitemap {
             return Objects.nonNull(result) && result.booleanValue();
         }
 
+        @Override
         boolean isHidden() {
             if (!this.isPermitted())
                 return true;

@@ -22,18 +22,18 @@
 package com.seanox.apidav;
 
 /**
- * ConverterException
+ * SitemaoConverterException
  *
- * ConverterException 1.0.0 20210708
+ * SitemaoConverterException 1.0.0 20210708
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210708
  */
-class ConverterException extends RuntimeException {
+class SitemapConverterException extends RuntimeException {
 
-    ConverterException(final Exception cause) {
+    SitemapConverterException(final Exception cause) {
         super(cause);
     }
 }
