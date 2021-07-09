@@ -100,9 +100,9 @@ public class HiddenTest extends AbstractApiTest {
         final PropfindResult propfindResult = new PropfindResult();
         propfindResult.uri = xpath.compile("/multistatus/response/href").evaluate(xmlDocument);
         propfindResult.status = mvcResult.getResponse().getStatus();
-        propfindResult.isFolder = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/iscollection").evaluate(xmlDocument));
+        propfindResult.isFolder = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/iscollection").evaluate(xmlDocument)).booleanValue();
         propfindResult.isFile = !propfindResult.isFolder;
-        propfindResult.isHidden = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/ishidden").evaluate(xmlDocument));
+        propfindResult.isHidden = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/ishidden").evaluate(xmlDocument)).booleanValue();
         propfindResult.isEmpty = !propfindResult.isFile;
         propfindResult.childs = ((Number)xpath.compile("count(/multistatus/response) -1").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
         return propfindResult;
@@ -126,18 +126,18 @@ public class HiddenTest extends AbstractApiTest {
 
         propfindResult = this.propfind(FILE_C2);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFile);
-        Assertions.assertEquals(false, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFile);
+        Assertions.assertFalse(propfindResult.isHidden);
 
         propfindResult = this.propfind(FILE_A2);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFile);
-        Assertions.assertEquals(true, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFile);
+        Assertions.assertTrue(propfindResult.isHidden);
 
         propfindResult = this.propfind(FILE_B1);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFile);
-        Assertions.assertEquals(true, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFile);
+        Assertions.assertTrue(propfindResult.isHidden);
     }
 
     @Test
@@ -150,29 +150,29 @@ public class HiddenTest extends AbstractApiTest {
 
         propfindResult = this.propfind(FOLDER_C3);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFolder);
-        Assertions.assertEquals(false, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFolder);
+        Assertions.assertFalse(propfindResult.isHidden);
         Assertions.assertEquals(1, propfindResult.childs);
 
         Assertions.assertEquals(302, this.propfind(FOLDER_A3_REDIRECT).status);
         propfindResult = this.propfind(FOLDER_A3);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFolder);
-        Assertions.assertEquals(true, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFolder);
+        Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
 
         Assertions.assertEquals(302, this.propfind(FOLDER_A2_REDIRECT).status);
         propfindResult = this.propfind(FOLDER_A2);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFolder);
-        Assertions.assertEquals(true, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFolder);
+        Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
 
         Assertions.assertEquals(302, this.propfind(FOLDER_B3_REDIRECT).status);
         propfindResult = this.propfind(FOLDER_B3);
         Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertEquals(true, propfindResult.isFolder);
-        Assertions.assertEquals(true, propfindResult.isHidden);
+        Assertions.assertTrue(propfindResult.isFolder);
+        Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
     }
 }
