@@ -45,13 +45,13 @@ import java.util.Objects;
  */
 public class AbstractTest {
 
-    protected static Class<? extends Annotation>[] apiAnnotationClasses = new Class[] {
+    protected static Class<?>[] apiAnnotationClasses = new Class[] {
             ApiDavMapping.class, ApiDavMapping.ApiDavMappings.class,
             ApiDavInputMapping.class, ApiDavInputMapping.ApiDavInputMappings.class,
             ApiDavAttributeMapping.class, ApiDavAttributeMapping.ApiDavAttributeMappings.class
     };
 
-    protected static Class<? extends Annotation>[] apiAnnotationRetentionClasses = new Class[] {
+    protected static Class<?>[] apiAnnotationRetentionClasses = new Class[] {
             ApiDavMapping.ApiDavMappings.class,
             ApiDavInputMapping.ApiDavInputMappings.class,
             ApiDavAttributeMapping.ApiDavAttributeMappings.class
