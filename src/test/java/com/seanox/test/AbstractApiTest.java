@@ -37,34 +37,34 @@ import java.io.IOException;
 /**
  * General implementation for the execution of API tests.
  *
- * AbstractApiTest 1.0.0 20210705
+ * AbstractApiTest 1.0.0 20210710
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210710
  */
 @SpringBootTest(classes= Application.class)
 public abstract class AbstractApiTest extends AbstractTest {
 
-    public final static String ROOT_URI = "/";
-    public final static String FILE_URI = "/personal/budget.xlsx";
-    public final static String FILE_READONLY_URI = "/personal/reports/sales.pptx";
-    public final static String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
-    public final static String FOLDER_URI = "/personal/";
-    public final static String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
+    public static final String ROOT_URI = "/";
+    public static final String FILE_URI = "/personal/budget.xlsx";
+    public static final String FILE_READONLY_URI = "/personal/reports/sales.pptx";
+    public static final String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
+    public static final String FOLDER_URI = "/personal/";
+    public static final String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
 
-    public final static String FILE_REDIRECT_URI = "/personal/budget.xlsx/";
-    public final static String FILE_PARENT_URI = "/personal/";
-    public final static String FOLDER_REDIRECT_URI = "/personal";
+    public static final String FILE_REDIRECT_URI = "/personal/budget.xlsx/";
+    public static final String FILE_PARENT_URI = "/personal/";
+    public static final String FOLDER_REDIRECT_URI = "/personal";
 
-    public final static String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    public final static String CONTENT_TYPE_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    public static final String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    public static final String CONTENT_TYPE_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
 
-    public final static String TEMPLATE_BUDGET_XLSX = "/templates/budget.xlsx";
-    public final static String TEMPLATE_EMPTY_XLSX = "/templates/empty.xlsx";
-    public final static String TEMPLATE_STATISTIC_PPTX = "/templates/statistic.pptx";
-    public final static String TEMPLATE_SALES_PPTX = "/templates/sales.pptx";
+    public static final String TEMPLATE_BUDGET_XLSX = "/templates/budget.xlsx";
+    public static final String TEMPLATE_EMPTY_XLSX = "/templates/empty.xlsx";
+    public static final String TEMPLATE_STATISTIC_PPTX = "/templates/statistic.pptx";
+    public static final String TEMPLATE_SALES_PPTX = "/templates/sales.pptx";
 
     protected MockMvc mockMvc;
 
