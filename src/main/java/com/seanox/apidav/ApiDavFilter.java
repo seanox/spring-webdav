@@ -69,7 +69,11 @@ import java.util.stream.IntStream;
 
 public class ApiDavFilter extends HttpFilter {
 
+    private static final long serialVersionUID = 7637895578410477411L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiDavFilter.class);
+
+    private Properties<Object> properties;
 
     private Sitemap sitemap;
 
@@ -209,7 +213,7 @@ public class ApiDavFilter extends HttpFilter {
             final Collection<Annotation> annotations = new ArrayList<>();
             for (final String beanName : applicationContext.getBeanDefinitionNames()) {
                 final Object object = applicationContext.getBean(beanName);
-                for (final Class source: ApiDavFilter.getClassHierarchy(object)) {
+                for (final Class<?> source: ApiDavFilter.getClassHierarchy(object)) {
                     for (final Method method : source.getDeclaredMethods()) {
                         for (final java.lang.annotation.Annotation annotation : method.getDeclaredAnnotations()) {
                             // TODO: Check for uniqueness of annotations, multiple occurrences cause exception
@@ -399,10 +403,10 @@ public class ApiDavFilter extends HttpFilter {
 
         final String displayName = UriUtils.encodePath(entry.getName(), StandardCharsets.UTF_8.name());
 
-        final String creationDate  = DateTime.formatDate(entry.getCreationDate(), DATETIME_FORMAT_CREATION_DATE);
-        final String lastModified  = DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED);
-        final String contentType   = entry.isFolder() ? "" : ((Sitemap.File)entry).getContentType();
-        final String contentLength = entry.isFolder() ? "" : String.valueOf(((Sitemap.File)entry).getContentLength());
+        final String creationDate  = Objects.nonNull(entry.getCreationDate()) ? DateTime.formatDate(entry.getCreationDate(), DATETIME_FORMAT_CREATION_DATE) : "";
+        final String lastModified  = Objects.nonNull(entry.getLastModified()) ? DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED) : "";
+        final String contentType   = entry.isFile() ? ((Sitemap.File)entry).getContentType() : null;
+        final String contentLength = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentLength()) ? ((Sitemap.File)entry).getContentLength().toString() : null;
         final String isCollection  = String.valueOf(entry.isFolder());
 
         final String isReadOnly = String.valueOf(entry.isReadOnly());
@@ -442,8 +446,10 @@ public class ApiDavFilter extends HttpFilter {
                     xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_COLLECTION, XmlWriter.ElementType.EMPTY);
                     xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.CLOSING);
                 } else {
-                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTTYPE, contentType);
-                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTLENGTH, contentLength);
+                    if (Objects.nonNull(contentType))
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTTYPE, contentType);
+                    if (Objects.nonNull(contentLength))
+                        xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTLENGTH, contentLength);
                     xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETETAG, etag);
 
                     xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_SUPPORTEDLOCK, XmlWriter.ElementType.OPENING);
@@ -531,10 +537,12 @@ public class ApiDavFilter extends HttpFilter {
                             xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_COLLECTION, XmlWriter.ElementType.EMPTY);
                             xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESOURCETYPE, XmlWriter.ElementType.CLOSING);
                         } else if (!entry.isFolder()
-                                && property.equals(XML_GETCONTENTLENGTH)) {
+                                && property.equals(XML_GETCONTENTLENGTH)
+                                && Objects.nonNull(contentLength)) {
                             xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTLENGTH, contentLength);
                         } else if (!entry.isFolder()
-                                && property.equals(XML_GETCONTENTTYPE)) {
+                                && property.equals(XML_GETCONTENTTYPE)
+                                && Objects.nonNull(contentType)) {
                             xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETCONTENTTYPE, contentType);
                         } else if (!entry.isFolder()
                                 && property.equals(XML_GETETAG)) {
@@ -617,33 +625,34 @@ public class ApiDavFilter extends HttpFilter {
             final Properties<String> properties = new Properties<>();
             final Document document = ApiDavFilter.readXmlRequest(request);
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            final XmlWriter xmlWriter = new XmlWriter(buffer);
-            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,XML_MULTISTATUS, XmlWriter.ElementType.OPENING);
+            try (final XmlWriter xmlWriter = new XmlWriter(buffer)) {
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,XML_MULTISTATUS, XmlWriter.ElementType.OPENING);
 
-            final int depth = ApiDavFilter.getDepth(request);
+                final int depth = ApiDavFilter.getDepth(request);
 
-            if (Objects.nonNull(document)) {
-                final Element root = document.getDocumentElement();
-                final NodeList nodeList = root.getChildNodes();
-                final Set<Node> nodeSet = IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
-                        .filter(streamNode -> streamNode.getNodeType() == Node.ELEMENT_NODE).collect(Collectors.toSet());
+                if (Objects.nonNull(document)) {
+                    final Element root = document.getDocumentElement();
+                    final NodeList nodeList = root.getChildNodes();
+                    final Set<Node> nodeSet = IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
+                            .filter(streamNode -> streamNode.getNodeType() == Node.ELEMENT_NODE).collect(Collectors.toSet());
 
-                if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_ALLPROP))) {
-                    ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
-                } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROP))) {
-                    final Node propNode = nodeSet.stream().filter(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROP)).findFirst().get();
-                    properties.putAll(ApiDavFilter.getPropertiesFromNode(propNode));
-                    ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_BY_PROPERTY, properties, depth);
-                } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROPNAME))) {
-                    ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_PROPERTY_NAMES, properties, depth);
-                } else {
-                    ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
-                }
+                    if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_ALLPROP))) {
+                        ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
+                    } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROP))) {
+                        final Node propNode = nodeSet.stream().filter(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROP)).findFirst().get();
+                        properties.putAll(ApiDavFilter.getPropertiesFromNode(propNode));
+                        ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_BY_PROPERTY, properties, depth);
+                    } else if (nodeSet.stream().anyMatch(streamNode -> streamNode.getLocalName().equalsIgnoreCase(XML_PROPNAME))) {
+                        ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_PROPERTY_NAMES, properties, depth);
+                    } else {
+                        ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
+                    }
 
-            } else ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
+                } else ApiDavFilter.collectProperties(xmlWriter, contextPath, entry, WEBDAV_FIND_ALL_PROP, properties, depth);
 
-            xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_MULTISTATUS, XmlWriter.ElementType.CLOSING);
-            xmlWriter.flush();
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_MULTISTATUS, XmlWriter.ElementType.CLOSING);
+                xmlWriter.flush();
+            }
 
             response.setStatus(new MultiStatusState().getStatusCode());
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -658,8 +667,7 @@ public class ApiDavFilter extends HttpFilter {
         throw new MultiStatusState();
     }
 
-    private void doHead(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+    private void doHead(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
 
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
 
@@ -756,39 +764,40 @@ public class ApiDavFilter extends HttpFilter {
             timeout = String.format("Second-%s", 60 *60 *24 *7);
 
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        final XmlWriter xmlWriter = new XmlWriter(buffer);
-        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, WEBDAV_DEFAULT_XML_NAMESPACE_URI, XML_PROP, XmlWriter.ElementType.OPENING);
-            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKDISCOVERY, XmlWriter.ElementType.OPENING);
-                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.OPENING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_WRITE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_EXCLUSIVE, XmlWriter.ElementType.EMPTY);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_DEPTH, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeText("Infinity");
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_DEPTH, XmlWriter.ElementType.CLOSING);
-
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TIMEOUT, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeText(timeout);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TIMEOUT, XmlWriter.ElementType.CLOSING);
-
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTOKEN, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
-                            xmlWriter.writeText(token);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTOKEN, XmlWriter.ElementType.CLOSING);
-
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.OPENING);
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
-                            xmlWriter.writeText(this.locateSitemapPath(request));
-                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
-                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.CLOSING);
-                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.CLOSING);
-            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKDISCOVERY, XmlWriter.ElementType.CLOSING);
-        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
-        xmlWriter.flush();
+        try (final XmlWriter xmlWriter = new XmlWriter(buffer)) {
+            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, WEBDAV_DEFAULT_XML_NAMESPACE_URI, XML_PROP, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKDISCOVERY, XmlWriter.ElementType.OPENING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.OPENING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_WRITE, XmlWriter.ElementType.EMPTY);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTYPE, XmlWriter.ElementType.CLOSING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_EXCLUSIVE, XmlWriter.ElementType.EMPTY);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKSCOPE, XmlWriter.ElementType.CLOSING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_DEPTH, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeText("Infinity");
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_DEPTH, XmlWriter.ElementType.CLOSING);
+    
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TIMEOUT, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeText(timeout);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_TIMEOUT, XmlWriter.ElementType.CLOSING);
+    
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTOKEN, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
+                                xmlWriter.writeText(token);
+                            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKTOKEN, XmlWriter.ElementType.CLOSING);
+    
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.OPENING);
+                            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
+                                xmlWriter.writeText(this.locateSitemapPath(request));
+                            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
+                        xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.CLOSING);
+                    xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.CLOSING);
+                xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKDISCOVERY, XmlWriter.ElementType.CLOSING);
+            xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_PROP, XmlWriter.ElementType.CLOSING);
+            xmlWriter.flush();
+        }
 
         final String markup = buffer.toString();
 
@@ -804,7 +813,6 @@ public class ApiDavFilter extends HttpFilter {
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
         if (entry.isReadOnly())
             throw new ForbiddenState();
-
         throw new NoContentState();
     }
 
@@ -818,7 +826,36 @@ public class ApiDavFilter extends HttpFilter {
         // The values of the annotations can contain values, expressions and
         // callbacks, which must then be processed in relation to the request.
 
-        final Properties<Object> properties = new Properties<>();
+        if (Objects.isNull(this.properties)) {
+            synchronized (this) {
+                if (Objects.isNull(this.properties)) {
+
+                    // Beans are cached so that not every request has to scan.
+                    // Only beans with simple name without dot(s). The others
+                    // should be internal things, but this assumption is not
+                    // valid. Order of initialization is unknown, this is done
+                    // with the first request.
+
+                    final ServletContext servletContext = request.getServletContext();
+                    final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+
+                    this.properties = new Properties<>();
+                    for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
+                            .filter(Predicate.not(entry -> entry.contains(".")))
+                            .collect(Collectors.toSet()))
+                        this.properties.put(beanName, applicationContext.getBean(beanName));
+
+                    final Map<String, Object> contextMap = new HashMap<>();
+                    this.properties.put("context", contextMap);
+                    if (Objects.nonNull(request.getRemoteUser()))
+                        contextMap.put("servlet", servletContext);
+                    if (Objects.nonNull(request.getUserPrincipal()))
+                        contextMap.put("application", applicationContext);
+                }
+            }
+        }
+
+        final Properties<Object> properties = this.properties.clone();
 
         final HttpSession session = request.getSession(false);
         if (Objects.nonNull(session)) {
@@ -862,22 +899,6 @@ public class ApiDavFilter extends HttpFilter {
             if (Objects.nonNull(request.getUserPrincipal()))
                 userMap.put("principal", request.getUserPrincipal());
         }
-
-        final ServletContext servletContext = request.getServletContext();
-        final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
-
-        final Map<String, Object> userMap = new HashMap<>();
-        properties.put("context", userMap);
-        if (Objects.nonNull(request.getRemoteUser()))
-            userMap.put("servlet", servletContext);
-        if (Objects.nonNull(request.getUserPrincipal()))
-            userMap.put("application", applicationContext);
-
-        final List<String> beanNameFilter = Arrays.asList("session", "request", "user", "context");
-        for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
-                .filter(Predicate.not(beanNameFilter::contains))
-                .collect(Collectors.toSet()))
-            properties.put(beanName, applicationContext.getBean(beanName));
 
         final Sitemap sitemap;
         try {sitemap = this.sitemap.share(properties);
@@ -923,13 +944,6 @@ public class ApiDavFilter extends HttpFilter {
                     ApiDavFilter.METHOD_HEAD, ApiDavFilter.METHOD_GET, ApiDavFilter.METHOD_PUT,
                     ApiDavFilter.METHOD_LOCK, ApiDavFilter.METHOD_UNLOCK);
 
-        } catch (State state) {
-            try {state.forceResponseStatus(response);
-            } finally {
-                LOGGER.info("{} {} {} ({} ms)", state.getStatusCode(),
-                        request.getMethod(), request.getRequestURI(),
-                        System.currentTimeMillis() -timing);
-            }
         } catch (Exception exception) {
             if (!(exception instanceof State)) {
                 LOGGER.error("Unexpected exception has occurred", exception);
@@ -946,6 +960,8 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private abstract static class State extends RuntimeException {
+
+        private static final long serialVersionUID = -3285926540309442308L;
 
         abstract int getStatusCode();
 
@@ -965,6 +981,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class SuccessState extends State {
+        
+        private static final long serialVersionUID = -1771577635432317281L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_OK;
@@ -972,6 +991,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class NoContentState extends State {
+
+        private static final long serialVersionUID = 3712271737420787168L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_NO_CONTENT;
@@ -979,6 +1001,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class MultiStatusState extends State {
+
+        private static final long serialVersionUID = 384634503420067272L;
+
         @Override
         int getStatusCode() {
             return 207;
@@ -986,6 +1011,8 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class FoundState extends State {
+
+        private static final long serialVersionUID = 7992253504529221105L;
 
         final String location;
 
@@ -1010,6 +1037,8 @@ public class ApiDavFilter extends HttpFilter {
 
     private static class NotModifiedState extends State {
 
+        private static final long serialVersionUID = -6789559753321086790L;
+
         final String identifier;
 
         @Override
@@ -1032,6 +1061,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class ForbiddenState extends State {
+
+        private static final long serialVersionUID = 2028565954023402465L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_FORBIDDEN;
@@ -1039,6 +1071,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class NotFoundState extends State {
+
+        private static final long serialVersionUID = -3676678322498170899L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_NOT_FOUND;
@@ -1046,6 +1081,8 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class MethodNotAllowedState extends State {
+
+        private static final long serialVersionUID = 7242353961612090064L;
 
         final String[] allow;
 
@@ -1069,6 +1106,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class NotAcceptableState extends State {
+
+        private static final long serialVersionUID = -3888539558816130805L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_NOT_ACCEPTABLE;
@@ -1076,6 +1116,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class PreconditionFailedState extends State {
+
+        private static final long serialVersionUID = -4196618688975724595L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_PRECONDITION_FAILED;
@@ -1083,6 +1126,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class UnprocessableEntityState extends State {
+
+        private static final long serialVersionUID = -6604759761612191353L;
+
         @Override
         int getStatusCode() {
             return 422;
@@ -1090,6 +1136,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class LockedState extends State {
+
+        private static final long serialVersionUID = 836006924606414263L;
+
         @Override
         int getStatusCode() {
             return 423;
@@ -1097,6 +1146,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class InternalServerErrorState extends State {
+
+        private static final long serialVersionUID = 3019539164953304989L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
