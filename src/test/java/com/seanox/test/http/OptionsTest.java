@@ -31,12 +31,12 @@ import java.net.URI;
 /**
  * Test the sequence for OPTIONS for files and folders.
  *
- * OptionsTest 1.0.0 20210705
+ * OptionsTest 1.0.0 20210710
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210710
  */
 public class OptionsTest extends AbstractApiTest {
 
@@ -49,21 +49,21 @@ public class OptionsTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
                 .andExpect(MockMvcResultMatchers.content().string(""));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FOLDER_URI)))
+                        .request("OPTIONS", URI.create(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
                 .andExpect(MockMvcResultMatchers.content().string(""));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_PARENT_URI)))
+                        .request("OPTIONS", URI.create(FILE_PARENT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"))
                 .andExpect(MockMvcResultMatchers.content().string(""));
@@ -78,13 +78,13 @@ public class OptionsTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FOLDER_NOT_EXISTS_URI)))
+                        .request("OPTIONS", URI.create(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
     }
@@ -98,13 +98,13 @@ public class OptionsTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_READONLY_URI)))
+                        .request("OPTIONS", URI.create(FILE_READONLY_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
     }
@@ -118,13 +118,13 @@ public class OptionsTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_URI)))
+                        .request("OPTIONS", URI.create(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND, LOCK, PUT, UNLOCK"));
     }
@@ -138,13 +138,13 @@ public class OptionsTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_NOT_EXISTS_URI)))
+                        .request("OPTIONS", URI.create(FILE_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
     }

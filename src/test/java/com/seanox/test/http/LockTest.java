@@ -36,12 +36,12 @@ import java.nio.charset.StandardCharsets;
  * Test the sequence for LOCK and UNLOCK file and folders.
  * There are no real locks, but the behavior is supposed to be correct.
  *
- * LockTest 1.0.0 20210706
+ * LockTest 1.0.0 20210710
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210706
+ * @version 1.0.0 20210710
  */
 public class LockTest extends AbstractApiTest {
 
@@ -54,19 +54,19 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FOLDER_URI)))
+                        .request("OPTIONS", URI.create(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FOLDER_URI))
+                        .request("LOCK", URI.create(FOLDER_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -79,7 +79,7 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FOLDER_URI))
+                        .request("LOCK", URI.create(FOLDER_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -93,14 +93,14 @@ public class LockTest extends AbstractApiTest {
         // Even with an apparently valid token, the function remains forbidden.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FOLDER_URI))
+                        .request("LOCK", URI.create(FOLDER_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
 
         // Even with an apparently valid token, the function remains forbidden.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("UNLOCK", new URI(FOLDER_URI))
+                        .request("UNLOCK", URI.create(FOLDER_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
@@ -114,19 +114,19 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FOLDER_NOT_EXISTS_URI)))
+                        .request("OPTIONS", URI.create(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FOLDER_NOT_EXISTS_URI))
+                        .request("LOCK", URI.create(FOLDER_NOT_EXISTS_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -139,7 +139,7 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FOLDER_NOT_EXISTS_URI))
+                        .request("LOCK", URI.create(FOLDER_NOT_EXISTS_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -153,14 +153,14 @@ public class LockTest extends AbstractApiTest {
         // Even with an apparently valid token, the function remains not found.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FOLDER_NOT_EXISTS_URI))
+                        .request("LOCK", URI.create(FOLDER_NOT_EXISTS_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         // Even with an apparently valid token, the function remains forbidden.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("UNLOCK", new URI(FOLDER_NOT_EXISTS_URI))
+                        .request("UNLOCK", URI.create(FOLDER_NOT_EXISTS_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -174,19 +174,19 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_READONLY_URI)))
+                        .request("OPTIONS", URI.create(FILE_READONLY_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_READONLY_URI))
+                        .request("LOCK", URI.create(FILE_READONLY_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -199,7 +199,7 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_READONLY_URI))
+                        .request("LOCK", URI.create(FILE_READONLY_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -213,14 +213,14 @@ public class LockTest extends AbstractApiTest {
         // Even with an apparently valid token, the function remains forbidden.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_READONLY_URI))
+                        .request("LOCK", URI.create(FILE_READONLY_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
 
         // Even with an apparently valid token, the function remains forbidden.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("UNLOCK", new URI(FILE_READONLY_URI))
+                        .request("UNLOCK", URI.create(FILE_READONLY_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
@@ -234,13 +234,13 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_URI)))
+                        .request("OPTIONS", URI.create(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND, LOCK, PUT, UNLOCK"));
 
@@ -248,7 +248,7 @@ public class LockTest extends AbstractApiTest {
         // but there is no real lock.
         final MvcResult mvcResult3 = this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -272,7 +272,7 @@ public class LockTest extends AbstractApiTest {
         // because there is no real lock.
         final MvcResult mvcResult4 = this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -296,7 +296,7 @@ public class LockTest extends AbstractApiTest {
         // The token is only checked for the correct format.
         final MvcResult mvcResult5 = this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .header("If", "<" + lockToken4 + ">"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers
@@ -312,7 +312,7 @@ public class LockTest extends AbstractApiTest {
         // Simple response 204 No Content
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("UNLOCK", new URI(FILE_URI))
+                        .request("UNLOCK", URI.create(FILE_URI))
                         .header("Lock-Token", "<" + lockToken4 + ">"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Lock-Token"));
@@ -349,13 +349,13 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .header("If-None-Match", etag2))
                 .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .header("If-None-Match", etag1))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -363,13 +363,13 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .header("If-Match", etag2))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_URI))
+                        .request("LOCK", URI.create(FILE_URI))
                         .header("If-Match", etag1))
                 .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
     }
@@ -383,19 +383,19 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(ROOT_URI)))
+                        .request("OPTIONS", URI.create(ROOT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("OPTIONS", new URI(FILE_NOT_EXISTS_URI)))
+                        .request("OPTIONS", URI.create(FILE_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().string("Allow", "OPTIONS, HEAD, GET, PROPFIND"));
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_NOT_EXISTS_URI))
+                        .request("LOCK", URI.create(FILE_NOT_EXISTS_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -408,7 +408,7 @@ public class LockTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_NOT_EXISTS_URI))
+                        .request("LOCK", URI.create(FILE_NOT_EXISTS_URI))
                         .contentType(MediaType.TEXT_XML)
                         .characterEncoding(StandardCharsets.UTF_8.toString())
                         .content("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
@@ -422,14 +422,14 @@ public class LockTest extends AbstractApiTest {
         // Even with an apparently valid token, the function remains not found.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("LOCK", new URI(FILE_NOT_EXISTS_URI))
+                        .request("LOCK", URI.create(FILE_NOT_EXISTS_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         // Even with an apparently valid token, the function remains forbidden.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("UNLOCK", new URI(FILE_NOT_EXISTS_URI))
+                        .request("UNLOCK", URI.create(FILE_NOT_EXISTS_URI))
                         .header("If", "<0000-0000-0000-0000>"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }

@@ -32,12 +32,12 @@ import java.net.URI;
 /**
  * Test the sequence for PROPFIND for files and folders.
  *
- * PropfindTest 1.0.0 20210706
+ * PropfindTest 1.0.0 20210710
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210706
+ * @version 1.0.0 20210710
  */
 public class PropfindTest extends AbstractApiTest {
 
@@ -54,7 +54,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FILE_URI))
+                        .request("PROPFIND", URI.create(FILE_URI))
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(207))
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
@@ -86,7 +86,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FILE_READONLY_URI))
+                        .request("PROPFIND", URI.create(FILE_READONLY_URI))
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(207))
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
@@ -118,7 +118,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FILE_NOT_EXISTS_URI))
+                        .request("PROPFIND", URI.create(FILE_NOT_EXISTS_URI))
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(404));
     }
@@ -129,7 +129,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FILE_REDIRECT_URI))
+                        .request("PROPFIND", URI.create(FILE_REDIRECT_URI))
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(302));
     }
@@ -140,7 +140,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FILE_PARENT_URI))
+                        .request("PROPFIND", URI.create(FILE_PARENT_URI))
                         .header("Depth", "1"))
                 .andExpect(MockMvcResultMatchers.status().is(207))
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
@@ -167,7 +167,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FOLDER_REDIRECT_URI))
+                        .request("PROPFIND", URI.create(FOLDER_REDIRECT_URI))
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(302));
     }
@@ -178,7 +178,7 @@ public class PropfindTest extends AbstractApiTest {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(FOLDER_NOT_EXISTS_URI))
+                        .request("PROPFIND", URI.create(FOLDER_NOT_EXISTS_URI))
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(404));
     }

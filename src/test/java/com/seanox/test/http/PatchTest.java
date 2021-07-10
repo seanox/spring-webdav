@@ -34,12 +34,12 @@ import java.net.URI;
  *     Expectation:
  * If an Entry found in the SiteMap, the requests are responded with METHOD NOT ALLOWED
  *
- * PatchTest 1.0.0 20210705
+ * PatchTest 1.0.0 20210710
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210710
  */
 public class PatchTest extends AbstractApiTest {
 
@@ -53,23 +53,23 @@ public class PatchTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FILE_URI)))
+                        .request(method, URI.create(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FILE_REDIRECT_URI)))
+                        .request(method, URI.create(FILE_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FOLDER_URI)))
+                        .request(method, URI.create(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FOLDER_REDIRECT_URI)))
+                        .request(method, URI.create(FOLDER_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FOLDER_NOT_EXISTS_URI)))
+                        .request(method, URI.create(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
     }
 }

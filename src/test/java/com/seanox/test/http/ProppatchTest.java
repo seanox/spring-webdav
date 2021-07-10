@@ -34,12 +34,12 @@ import java.net.URI;
  *     Expectation:
  * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
  *
- * ProppatchTest 1.0.0 20210705
+ * ProppatchTest 1.0.0 20210710
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210710
  */
 public class ProppatchTest extends AbstractApiTest {
 
@@ -53,25 +53,25 @@ public class ProppatchTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FILE_URI)))
+                        .request(method, URI.create(FILE_URI)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FILE_REDIRECT_URI)))
+                        .request(method, URI.create(FILE_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(MockMvcResultMatchers.redirectedUrl(FILE_URI));
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FOLDER_URI)))
+                        .request(method, URI.create(FOLDER_URI)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FOLDER_REDIRECT_URI)))
+                        .request(method, URI.create(FOLDER_REDIRECT_URI)))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(MockMvcResultMatchers.redirectedUrl(FOLDER_URI));
         this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request(method, new URI(FOLDER_NOT_EXISTS_URI)))
+                        .request(method, URI.create(FOLDER_NOT_EXISTS_URI)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
