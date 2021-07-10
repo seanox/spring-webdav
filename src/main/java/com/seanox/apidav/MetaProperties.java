@@ -22,6 +22,7 @@
 package com.seanox.apidav;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,37 +30,40 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * Meta data collector as an alternative to single attributes.
+ * MetaProperties readonly collector as an alternative to single attributes.
  *
- * Meta 1.1.0 20210708<br>
+ * MetaProperties 1.0.0 20210710<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210708
+ * @version 1.0.0 20210710
  */
 @Getter(AccessLevel.PUBLIC)
-@Setter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PROTECTED)
 @Builder(access=AccessLevel.PACKAGE)
-public final class Meta implements Cloneable {
+@AllArgsConstructor(access=AccessLevel.PACKAGE)
+class MetaProperties implements Cloneable {
 
-    private final Long contentLength;
-    private final String contentType;
-    private final Date lastModified;
-    private final Date creationDate;
-    private final boolean isReadOnly;
-    private final boolean isHidden;
-    private final boolean isPermitted;
+    private String path;
+    private String contentType;
+    private Long contentLength;
+    private Date creationDate;
+    private Date lastModified;
+    private boolean isReadOnly;
+    private boolean isHidden;
+    private boolean isPermitted;
 
     @Override
-    protected Meta clone() {
-        try {return (Meta)super.clone();
+    protected MetaProperties clone() {
+        try {return (MetaProperties)super.clone();
         } catch (CloneNotSupportedException exception) {
-            return Meta.builder()
-                    .contentLength(this.contentLength)
+            return MetaProperties.builder()
+                    .path(this.path)
                     .contentType(this.contentType)
-                    .lastModified(this.lastModified)
+                    .contentLength(this.contentLength)
                     .creationDate(this.creationDate)
+                    .lastModified(this.lastModified)
                     .isReadOnly(this.isReadOnly)
                     .isHidden(this.isHidden)
                     .isPermitted(this.isPermitted)
