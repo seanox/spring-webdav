@@ -28,6 +28,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -56,18 +57,18 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210708
- * Copyright (C) 2021 Seanox Software Solutions
+ * Sitemap 1.0.0 20210710<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210708
+ * @version 1.0.0 20210710
  */
 class Sitemap {
 
     private final TreeMap<String, Entry> tree;
     private final Properties<Object> data;
-    private final Properties<Map<Attribute, Object>> meta;
+    private final Properties<Map<Variant, Object>> meta;
     private final List<Annotation[]> trace;
 
     private static final Date CREATION_DATE = Sitemap.getBuildDate();
@@ -280,14 +281,24 @@ class Sitemap {
         return builder.toString().trim();
     }
 
-    static class Defaults {
-        static final Long    contentLength = Long.valueOf(-1);
-        static final String  contentType   = "application/octet-stream";
-        static final Date    lastModified  = Sitemap.getBuildDate();
-        static final Date    creationDate  = Sitemap.getBuildDate();
-        static final Boolean isReadOnly    = Boolean.TRUE;
-        static final Boolean isHidden      = Boolean.FALSE;
-        static final Boolean isPermitted   = Boolean.TRUE;
+    private static class Defaults {
+        private static final String  contentType   = "application/octet-stream";
+        private static final Long    contentLength = Long.valueOf(-1);
+        private static final Date    creationDate  = Sitemap.getBuildDate();
+        private static final Date    lastModified  = Sitemap.getBuildDate();
+        private static final Boolean isReadOnly    = Boolean.TRUE;
+        private static final Boolean isHidden      = Boolean.FALSE;
+        private static final Boolean isPermitted   = Boolean.TRUE;
+
+        private static final MetaData MetaDataTemplate = new MetaData(
+                null,
+                Defaults.contentType,
+                Defaults.contentLength,
+                Defaults.creationDate,
+                Defaults.lastModified,
+                Defaults.isReadOnly,
+                Defaults.isHidden,
+                Defaults.isPermitted);
     }
 
     abstract class Entry {
@@ -400,30 +411,30 @@ class Sitemap {
 
     class File extends Entry {
 
-        private Attribute accept;
-        private Attribute contentLength;
-        private Attribute contentLengthMax;
-        private Attribute contentType;
-        private Attribute lastModified;
-        private Attribute creationDate;
-        private Attribute isReadOnly;
-        private Attribute isHidden;
-        private Attribute isPermitted;
-        private Attribute isAccepted;
+        private Variant accept;
+        private Variant contentLength;
+        private Variant contentLengthMax;
+        private Variant contentType;
+        private Variant lastModified;
+        private Variant creationDate;
+        private Variant isReadOnly;
+        private Variant isHidden;
+        private Variant isPermitted;
+        private Variant isAccepted;
 
         @Getter(AccessLevel.PACKAGE) private Callback readCallback;
         @Getter(AccessLevel.PACKAGE) private Callback writeCallback;
         @Getter(AccessLevel.PACKAGE) private Callback metaCallback;
 
-        private File(final String path, Annotation... annotations) {
+        File(final String path, Annotation... annotations) {
 
             super(path);
 
             for (final Annotation annotation : annotations) {
                 if (annotation instanceof Annotation.Attribute) {
                     final Annotation.Attribute attributeAnnotation = (Annotation.Attribute)annotation;
-                    final Callback callback = new Callback(attributeAnnotation.getObject(), attributeAnnotation.getMethod());
                     final Annotation.Attribute.AttributeType attributeType = attributeAnnotation.attributeType;
+                    final Callback callback = new Callback(attributeAnnotation.getObject(), attributeAnnotation.getMethod());
 
                     if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeType))
                         this.isReadOnly = callback;
@@ -475,7 +486,7 @@ class Sitemap {
                     this.readCallback = new Callback(mappingAnnotation.getObject(), mappingAnnotation.getMethod());
 
                     if (mappingAnnotation.getContentLength() >= 0)
-                        this.contentLengthMax = new Static(Long.valueOf(mappingAnnotation.getContentLength()));
+                        this.contentLength = new Static(Long.valueOf(mappingAnnotation.getContentLength()));
                     if (Objects.nonNull(mappingAnnotation.getContentType())
                             && !mappingAnnotation.getContentType().isBlank())
                         this.contentType = new Static(mappingAnnotation.getContentType());
@@ -514,6 +525,19 @@ class Sitemap {
             }
         }
 
+        MetaProperties getProperties() {
+            return MetaProperties.builder()
+                    .uri(URI.create(this.getPath()))
+                    .contentType(this.getContentType())
+                    .contentLength(this.getContentLength())
+                    .creationDate(this.getCreationDate())
+                    .lastModified(this.getLastModified())
+                    .isReadOnly(this.isReadOnly())
+                    .isHidden(this.isHidden())
+                    .isPermitted(this.isPermitted())
+                    .build();
+        }
+
         // The attributes use a sitemap instance related (and thus request
         // related) attribute cache. This avoids that expressions and callbacks
         // are called more than once by the getter. The construct may not be
@@ -535,66 +559,71 @@ class Sitemap {
         // A lot of logic can be called and therefore the cache for the
         // attributes.
 
-        private <T> T eval(final Annotation.Attribute.AttributeType attributeType, final Attribute attribute, final T fallback) {
-
-            if (Objects.isNull(attribute))
-                return fallback;
+        private <T> T eval(final Annotation.Target target, final Variant attribute, final T fallback) {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final Map<Attribute, Object> metaMap = Sitemap.this.meta.get(this.getPathUnique());
-            if (metaMap.containsKey(attribute))
+            final Map<Variant, Object> metaMap = Sitemap.this.meta.get(this.getPathUnique());
+            if (Objects.nonNull(attribute)
+                    && metaMap.containsKey(attribute))
                 return (T)metaMap.get(attribute);
 
             Object result = fallback;
-            if (attribute instanceof Callback) {
-                try {result = ((Callback)attribute).invoke(attributeType.attribute, Sitemap.File.this);
+            if (Objects.nonNull(attribute)
+                    && attribute instanceof Callback) {
+                try {result = ((Callback) attribute).invoke(URI.create(Sitemap.File.this.getPath()));
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
-                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                        exception = (Exception) ((InvocationTargetException) exception).getTargetException();
                     throw new SitemapCallbackException(exception);
                 }
-            } else if (Objects.nonNull(this.metaCallback)) {
-                if (!metaMap.containsKey(this.metaCallback))
-                    try {metaMap.put(this.metaCallback, this.metaCallback.invoke(attributeType.attribute, Sitemap.File.this));
+            } else if (Objects.nonNull(this.metaCallback)
+                    && Arrays.asList(Annotation.Target.ContentLength, Annotation.Target.ContentType,
+                            Annotation.Target.CreationDate, Annotation.Target.LastModified,
+                            Annotation.Target.ReadOnly, Annotation.Target.Hidden, Annotation.Target.Permitted).contains(target)) {
+                if (!metaMap.containsKey(this.metaCallback)) {
+                    try {metaMap.put(this.metaCallback, this.metaCallback.invoke(URI.create(Sitemap.File.this.getPath())));
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
-                            exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                            exception = (Exception) ((InvocationTargetException) exception).getTargetException();
                         throw new SitemapCallbackException(exception);
                     }
-                final Meta metaAttributes = (Meta)metaMap.get(Meta.class);
-                if (Objects.nonNull(metaAttributes)) {
-                    if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeType))
-                        result = metaAttributes.getContentLength();
-                    else if (Annotation.Attribute.AttributeType.ContentType.equals(attributeType))
-                        result = metaAttributes.getContentType();
-                    else if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeType))
-                        result = metaAttributes.getCreationDate();
-                    else if (Annotation.Attribute.AttributeType.LastModified.equals(attributeType))
-                        result = metaAttributes.getLastModified();
-                    else if (Annotation.Attribute.AttributeType.Hidden.equals(attributeType))
-                        result = Boolean.valueOf(metaAttributes.isHidden());
-                    else if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeType))
-                        result = Boolean.valueOf(metaAttributes.isReadOnly());
-                    else if (Annotation.Attribute.AttributeType.Permitted.equals(attributeType))
-                        result = Boolean.valueOf(metaAttributes.isPermitted());
                 }
-            } else if (attribute instanceof Expression) {
-                result = ((Expression)attribute).eval();
-            } else if (attribute instanceof Static) {
-                result = ((Static)attribute).value;
+                final MetaProperties metaProperties = (MetaProperties) metaMap.get(this.metaCallback);
+                if (Annotation.Target.ContentLength.equals(target))
+                    result = metaProperties.getContentLength();
+                else if (Annotation.Target.ContentType.equals(target))
+                    result = metaProperties.getContentType();
+                else if (Annotation.Target.CreationDate.equals(target))
+                    result = metaProperties.getCreationDate();
+                else if (Annotation.Target.LastModified.equals(target))
+                    result = metaProperties.getLastModified();
+                else if (Annotation.Target.Hidden.equals(target))
+                    result = Boolean.valueOf(metaProperties.isHidden());
+                else if (Annotation.Target.ReadOnly.equals(target))
+                    result = Boolean.valueOf(metaProperties.isReadOnly());
+                else if (Annotation.Target.Permitted.equals(target))
+                    result = Boolean.valueOf(metaProperties.isPermitted());
+
+            } else {
+
+                if (Objects.isNull(attribute))
+                    return (T)result;
+
+                if (attribute instanceof Expression)
+                    result = ((Expression)attribute).eval();
+                else if (attribute instanceof Static)
+                    result = ((Static)attribute).value;
             }
 
             if (Objects.isNull(result))
-                result = fallback;
+                return (T)result;
 
             if (!fallback.getClass().equals(result.getClass())) {
-
                 Class<?> type = result.getClass();
                 try {type = (Class<?>)type.getDeclaredField("TYPE").get(null);
                 } catch (Exception exception) {
                 }
-
                 final Class<?> source = fallback.getClass();
                 try {result = source.getMethod("valueOf", type).invoke(null, result);
                 } catch (Exception exception) {
@@ -610,22 +639,22 @@ class Sitemap {
         }
 
         String getContentType() {
-            return this.eval(Annotation.Attribute.AttributeType.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
+            return this.eval(Annotation.Target.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
         }
 
         Long getContentLength() {
-            final Long contentLength = this.eval(Annotation.Attribute.AttributeType.ContentLength, this.contentLength, Defaults.contentLength);
+            final Long contentLength = this.eval(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
             return contentLength.longValue() >= 0 ? contentLength : null;
         }
 
         @Override
         Date getCreationDate() {
-            return this.eval(Annotation.Attribute.AttributeType.CreationDate, this.creationDate, Defaults.creationDate);
+            return this.eval(Annotation.Target.CreationDate, this.creationDate, Defaults.creationDate);
         }
 
         @Override
         Date getLastModified() {
-            return this.eval(Annotation.Attribute.AttributeType.LastModified, this.lastModified, Defaults.lastModified);
+            return this.eval(Annotation.Target.LastModified, this.lastModified, Defaults.lastModified);
         }
 
         @Override
@@ -633,7 +662,7 @@ class Sitemap {
             if (!this.isPermitted()
                     || Objects.isNull(this.writeCallback))
                 return true;
-            final Boolean result = this.eval(Annotation.Attribute.AttributeType.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
+            final Boolean result = this.eval(Annotation.Target.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
@@ -641,20 +670,20 @@ class Sitemap {
         boolean isHidden() {
             if (!this.isPermitted())
                 return true;
-            final Boolean result = this.eval(Annotation.Attribute.AttributeType.Hidden, this.isHidden, Defaults.isHidden);
+            final Boolean result = this.eval(Annotation.Target.Hidden, this.isHidden, Defaults.isHidden);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
         boolean isPermitted() {
-            final Boolean result = this.eval(Annotation.Attribute.AttributeType.Permitted, this.isPermitted, Defaults.isPermitted);
+            final Boolean result = this.eval(Annotation.Target.Permitted, this.isPermitted, Defaults.isPermitted);
             return Objects.nonNull(result) && result.booleanValue();
         }
     }
 
-    abstract class Attribute {
+    private abstract class Variant {
     }
 
-    class Static extends Attribute {
+    private class Static extends Variant {
 
         private final Object value;
 
@@ -663,7 +692,7 @@ class Sitemap {
         }
     }
 
-    class Expression extends Attribute {
+    private class Expression extends Variant {
 
         private final org.springframework.expression.Expression expression;
 
@@ -678,17 +707,17 @@ class Sitemap {
         }
     }
 
-    class Callback extends Attribute {
+    class Callback extends Variant {
 
         @Getter(AccessLevel.PACKAGE) private final Object object;
         @Getter(AccessLevel.PACKAGE) private final Method method;
 
-        Callback(Object object, Method method) {
+        Callback(final Object object, final Method method) {
             this.object = object;
             this.method = method;
         }
 
-        Object[] composeArguments(Object... arguments) {
+        Object[] composeArguments(final Object... arguments) {
 
             final Map<Class<?>, Object> placeholder = new HashMap<>();
             Arrays.stream(arguments).forEach(argument -> {
@@ -702,7 +731,7 @@ class Sitemap {
             return compose.toArray(new Object[0]);
         }
 
-        Object invoke(Object... arguments)
+        Object invoke(final Object... arguments)
                 throws InvocationTargetException, IllegalAccessException {
             this.method.setAccessible(true);
             final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
@@ -711,27 +740,21 @@ class Sitemap {
         }
     }
 
-    class MetaCallback extends Callback {
+    private class MetaCallback extends Callback {
 
-        private Meta meta;
-
-        MetaCallback(Object object, Method method) {
+        private MetaCallback(final Object object, final Method method) {
             super(object, method);
         }
 
         @Override
-        Object invoke(Object... arguments)
+        Object invoke(final Object... arguments)
                 throws InvocationTargetException, IllegalAccessException {
 
-            if (Objects.nonNull(this.meta))
-                return this.meta;
-
-            final Meta meta = Meta.builder().build();
+            final MetaProperties meta = Defaults.MetaDataTemplate.clone();
             final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
             argumentList.add(meta);
-            super.invoke(this.composeArguments(argumentList.toArray(new Object[0])));
-            this.meta = meta.clone();
-            return this.meta;
+            super.invoke(argumentList.toArray(new Object[0]));
+            return meta.clone();
         }
     }
 }
