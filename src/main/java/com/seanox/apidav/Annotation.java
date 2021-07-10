@@ -61,7 +61,14 @@ abstract class Annotation {
     }
 
     enum AnnotationType {
-        Mapping, Input, Attribute, Meta
+        Mapping, Input, Meta, Attribute
+    }
+
+    enum Target {
+        ReadOnly, Hidden, Permitted,
+        ContentType, ContentLength, CreationDate, LastModified,
+        Accept, ContentLengthMax, Accepted,
+        Read, Write, Meta
     }
 
     @Getter(AccessLevel.PACKAGE)
@@ -71,23 +78,23 @@ abstract class Annotation {
 
         enum AttributeType {
 
-            ReadOnly(ApiDavAttribute.ReadOnly),
-            Hidden(ApiDavAttribute.Hidden),
-            Permitted(ApiDavAttribute.Permitted),
+            ReadOnly(Target.ReadOnly),
+            Hidden(Target.Hidden),
+            Permitted(Target.Permitted),
 
-            ContentType(ApiDavAttribute.ContentType),
-            ContentLength(ApiDavAttribute.ContentLength),
-            CreationDate(ApiDavAttribute.CreationDate),
-            LastModified(ApiDavAttribute.LastModified),
+            ContentType(Target.ContentType),
+            ContentLength(Target.ContentLength),
+            CreationDate(Target.CreationDate),
+            LastModified(Target.LastModified),
 
-            Accept(ApiDavAttribute.Accept),
-            ContentLengthMax(ApiDavAttribute.ContentLengthMax),
-            Accepted(ApiDavAttribute.Accepted);
+            Accept(Target.Accept),
+            ContentLengthMax(Target.ContentLengthMax),
+            Accepted(Target.Accepted);
 
-            final ApiDavAttribute attribute;
+            final Target target;
 
-            AttributeType(ApiDavAttribute attribute) {
-                this.attribute = attribute;
+            AttributeType(Target target) {
+                this.target = target;
             }
         }
 
@@ -97,7 +104,7 @@ abstract class Annotation {
             this.attributeType = attribute;
         }
 
-        static Annotation.Attribute create(final ApiDavAttributeMapping apiDavAttribute, final Object object, final Method method) {
+        static Attribute create(final ApiDavAttributeMapping apiDavAttribute, final Object object, final Method method) {
             return Annotation.Attribute.builder()
                     .path(apiDavAttribute.path())
                     .type(AnnotationType.Attribute)
@@ -126,11 +133,11 @@ abstract class Annotation {
         private final long   contentLengthMax;
         private final String accept;
 
-        private final Collection<Annotation.Attribute.AttributeExpression> expressions;
+        private final Collection<Attribute.AttributeExpression> expressions;
 
         @Builder(access=AccessLevel.PRIVATE)
         Input(final String path, final AnnotationType type, final Object object, final Method method,
-                final long contentLengthMax, final String accept, Annotation.Attribute.AttributeExpression... expressions) {
+                final long contentLengthMax, final String accept, Attribute.AttributeExpression... expressions) {
             super(path, type, object, method);
 
             this.contentLengthMax = contentLengthMax;
@@ -151,8 +158,8 @@ abstract class Annotation {
                             .map(attributeExpression -> {
                                 final SpelExpressionParser parser = new SpelExpressionParser();
                                 final Expression expression = parser.parseExpression(attributeExpression.phrase());
-                                return new Annotation.Attribute.AttributeExpression(attributeExpression.attribute().attributeType, expression);})
-                            .toArray(Annotation.Attribute.AttributeExpression[]::new))
+                                return new Attribute.AttributeExpression(attributeExpression.attribute().attributeType, expression);})
+                            .toArray(Attribute.AttributeExpression[]::new))
                     .build();
         }
     }
@@ -168,12 +175,12 @@ abstract class Annotation {
         private final boolean isHidden;
         private final boolean isPermitted;
 
-        private final Collection<Annotation.Attribute.AttributeExpression> expressions;
+        private final Collection<Attribute.AttributeExpression> expressions;
 
         @Builder(access=AccessLevel.PRIVATE)
         Mapping(final String path, final AnnotationType type, final Object object, final Method method,
                 final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
-                final boolean isReadOnly, final boolean isHidden, final boolean isPermitted, Annotation.Attribute.AttributeExpression... expressions) {
+                final boolean isReadOnly, final boolean isHidden, final boolean isPermitted, Attribute.AttributeExpression... expressions) {
             super(path, type, object, method);
 
             this.contentLength = contentLength;
