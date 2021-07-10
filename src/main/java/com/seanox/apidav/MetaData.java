@@ -24,6 +24,7 @@ package com.seanox.apidav;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+import java.net.URI;
 import java.util.Date;
 
 /**
@@ -39,10 +40,10 @@ import java.util.Date;
 @Getter(AccessLevel.PUBLIC)
 public class MetaData extends MetaProperties implements Cloneable {
 
-    MetaData(final String path, final String contentType, final Long contentLength,
-            final Date creationDate, final Date lastModified,
-            final boolean isReadOnly, final boolean isHidden, final boolean isPermitted) {
-        super(path, contentType, contentLength, creationDate, lastModified, isReadOnly, isHidden, isPermitted);
+    MetaData(final URI uri, final String contentType, final Long contentLength,
+             final Date creationDate, final Date lastModified,
+             final boolean isReadOnly, final boolean isHidden, final boolean isPermitted) {
+        super(uri, contentType, contentLength, creationDate, lastModified, isReadOnly, isHidden, isPermitted);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class MetaData extends MetaProperties implements Cloneable {
     @Override
     public MetaData clone() {
         return new MetaData(
-                this.getPath(),
+                this.getUri(),
                 this.getContentType(),
                 this.getContentLength(),
                 this.getCreationDate(),

@@ -27,6 +27,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.net.URI;
 import java.util.Date;
 
 /**
@@ -45,7 +46,7 @@ import java.util.Date;
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
 class MetaProperties implements Cloneable {
 
-    private String path;
+    private URI uri;
     private String contentType;
     private Long contentLength;
     private Date creationDate;
@@ -59,7 +60,7 @@ class MetaProperties implements Cloneable {
         try {return (MetaProperties)super.clone();
         } catch (CloneNotSupportedException exception) {
             return MetaProperties.builder()
-                    .path(this.path)
+                    .uri(this.uri)
                     .contentType(this.contentType)
                     .contentLength(this.contentLength)
                     .creationDate(this.creationDate)
