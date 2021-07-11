@@ -34,5 +34,18 @@ import com.seanox.test.AbstractApiTest;
  * @version 1.0.0 20210711
  */
 public class ContentTypeTest extends AbstractApiTest {
+
+    // Supported types of data definition:
+    // - {@link ApiDavMapping}
+    // - {@link ApiDavMetaMapping}
+    // - {@link ApiDavAttribute}
+    // Supported data types of definition:
+    // - static value via {@link ApiDavMapping} + {@link ApiDavMetaMapping}
+    // - Spring Expression Language via {@link ApiDavMapping}
+    // - callback via {@link ApiDavAttribute}
+    // Expected data type:
+    // - String
+    // - null is supported (suppresses output in Response header and PROPFIND response)
+
     // TODO:
 }
