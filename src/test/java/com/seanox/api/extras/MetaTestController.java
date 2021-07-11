@@ -37,11 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 /**
- * Example for the integration of apiDAV into a RestController.
- *
- * In general, a managed bean is required.
- * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
- * The methods and annotations for apiDAV combine well with @RestController.
+ * Test of the annotation {@link ApiDavMetaMapping} functions.
  *
  * MetaTestController 1.0.0 20210711
  * Copyright (C) 2021 Seanox Software Solutions
@@ -289,7 +285,7 @@ public class MetaTestController {
     void testC8(MetaData metaData) throws ParseException {
         metaData.setContentType(null);
         metaData.setContentLength(null);
-        metaData.setCreationDate(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2000-01-01 00:00:00"));
+        metaData.setCreationDate(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("2000-01-01 00:00:00 GMT"));
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
         metaData.setHidden(false);
@@ -300,7 +296,7 @@ public class MetaTestController {
         metaData.setContentType(null);
         metaData.setContentLength(null);
         metaData.setCreationDate(null);
-        metaData.setLastModified(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2000-01-01 00:00:00"));
+        metaData.setLastModified(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("2000-01-01 00:00:00 GMT"));
         metaData.setReadOnly(false);
         metaData.setHidden(false);
         metaData.setPermitted(true);
