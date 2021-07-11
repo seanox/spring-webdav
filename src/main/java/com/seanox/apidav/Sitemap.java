@@ -57,12 +57,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210710<br>
+ * Sitemap 1.0.0 20210711<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210710
+ * @version 1.0.0 20210711
  */
 class Sitemap {
 
@@ -520,7 +520,7 @@ class Sitemap {
 
                 } else if (annotation instanceof Annotation.Meta) {
                     final Annotation.Meta metaAnnotation = (Annotation.Meta)annotation;
-                    this.metaCallback = new MetaCallback(metaAnnotation.getObject(), metaAnnotation.getMethod());
+                    this.metaCallback = new Callback(metaAnnotation.getObject(), metaAnnotation.getMethod());
                 }
             }
         }
@@ -582,12 +582,16 @@ class Sitemap {
                             Annotation.Target.CreationDate, Annotation.Target.LastModified,
                             Annotation.Target.ReadOnly, Annotation.Target.Hidden, Annotation.Target.Permitted).contains(target)) {
                 if (!metaMap.containsKey(this.metaCallback)) {
-                    try {metaMap.put(this.metaCallback, this.metaCallback.invoke(URI.create(Sitemap.File.this.getPath())));
+                    final MetaProperties meta = Defaults.MetaDataTemplate.clone();
+                    meta.setUri(URI.create(Sitemap.File.this.getPath()));
+                    meta.setContentType(Sitemap.probeContentType(Sitemap.File.this.getPath()));
+                    try {this.metaCallback.invoke(meta, meta.getUri());
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception) ((InvocationTargetException) exception).getTargetException();
                         throw new SitemapCallbackException(exception);
                     }
+                    metaMap.put(this.metaCallback, meta.clone());
                 }
                 final MetaProperties metaProperties = (MetaProperties) metaMap.get(this.metaCallback);
                 if (Annotation.Target.ContentLength.equals(target))
@@ -737,24 +741,6 @@ class Sitemap {
             final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
             argumentList.add(Sitemap.this.data.clone());
             return this.method.invoke(this.object, this.composeArguments(argumentList.toArray(new Object[0])));
-        }
-    }
-
-    private class MetaCallback extends Callback {
-
-        private MetaCallback(final Object object, final Method method) {
-            super(object, method);
-        }
-
-        @Override
-        Object invoke(final Object... arguments)
-                throws InvocationTargetException, IllegalAccessException {
-
-            final MetaProperties meta = Defaults.MetaDataTemplate.clone();
-            final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
-            argumentList.add(meta);
-            super.invoke(argumentList.toArray(new Object[0]));
-            return meta.clone();
         }
     }
 }
