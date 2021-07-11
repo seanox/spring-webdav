@@ -366,7 +366,7 @@ class Sitemap {
         }
 
         Date getLastModified() {
-            return CREATION_DATE;
+            return this.getCreationDate();
         }
 
         String getIdentifier() {
@@ -623,7 +623,7 @@ class Sitemap {
             if (Objects.isNull(result))
                 return null;
 
-            if (!fallback.getClass().equals(result.getClass())) {
+            if (!target.type.equals(result.getClass())) {
                 Class<?> type = result.getClass();
                 try {type = (Class<?>)type.getDeclaredField("TYPE").get(null);
                 } catch (Exception exception) {
@@ -658,7 +658,7 @@ class Sitemap {
 
         @Override
         Date getLastModified() {
-            return this.eval(Annotation.Target.LastModified, this.lastModified, Defaults.lastModified);
+            return this.eval(Annotation.Target.LastModified, this.lastModified, this.getCreationDate());
         }
 
         @Override
