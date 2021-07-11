@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * AttributeHiddenTestController
+ * Test the function of the hidden attribute.
  *
  * AttributeHiddenTestController 1.0.0 20210707
  * Copyright (C) 2021 Seanox Software Solutions

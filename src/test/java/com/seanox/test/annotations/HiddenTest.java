@@ -37,7 +37,8 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 
 /**
- * Test bases on DeepHiddenFolderStructureController.
+ * Test the function of the hidden attribute.
+ *
  * The directory structure shows only substructures with visible content.
  * If a directory has no visible content, this structure is not displayed.
  * However, the paths to the data exist.
@@ -108,7 +109,7 @@ public class HiddenTest extends AbstractApiTest {
         return propfindResult;
     }
 
-    private static class PropfindResult {
+    static class PropfindResult {
         String  uri;
         int     status;
         boolean isFile;
