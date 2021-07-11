@@ -32,6 +32,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 /**
@@ -181,5 +183,156 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_B5)
     void testB5(Object... objects) {
         testB5Result = MAPPING_B5 + " " + Objects.isNull(objects);
+    }
+
+    // Function of all attributes is tested.
+    // Test by the way of multiple @ApiDavMapping annotation.
+
+    public static final String MAPPING_C1 = "/extras/meta/c1.txt";
+    public static final String MAPPING_C2 = "/extras/meta/c2.txt";
+    public static final String MAPPING_C3 = "/extras/meta/c3.txt";
+    public static final String MAPPING_C4 = "/extras/meta/c4.txt";
+    public static final String MAPPING_C5 = "/extras/meta/c5.txt";
+    public static final String MAPPING_C6 = "/extras/meta/c6.txt";
+    public static final String MAPPING_C7 = "/extras/meta/c7.txt";
+    public static final String MAPPING_C8 = "/extras/meta/c8.txt";
+    public static final String MAPPING_C9 = "/extras/meta/c9.txt";
+    public static final String MAPPING_CA = "/extras/meta/cA.txt";
+    public static final String MAPPING_CB = "/extras/meta/cB.txt";
+    public static final String MAPPING_CC = "/extras/meta/cC.txt";
+    @ApiDavMapping(path=MAPPING_C1)
+    @ApiDavMapping(path=MAPPING_C2)
+    @ApiDavMapping(path=MAPPING_C3)
+    @ApiDavMapping(path=MAPPING_C4)
+    @ApiDavMapping(path=MAPPING_C5)
+    @ApiDavMapping(path=MAPPING_C6)
+    @ApiDavMapping(path=MAPPING_C7)
+    @ApiDavMapping(path=MAPPING_C8)
+    @ApiDavMapping(path=MAPPING_C9)
+    @ApiDavMapping(path=MAPPING_CA)
+    @ApiDavMapping(path=MAPPING_CB)
+    @ApiDavMapping(path=MAPPING_CC)
+    void testCX(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
+        outputStream.write(metaProperties.getUri().toString().getBytes());
+    }
+    @ApiDavMetaMapping(path=MAPPING_C1)
+    void testC1(MetaData metaData) {
+        metaData.setContentType(null);
+        metaData.setContentLength(null);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(false);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C2)
+    void testC2(MetaData metaData) {
+        metaData.setContentType("TesT");
+        metaData.setContentLength(null);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C3)
+    void testC3(MetaData metaData) {
+        metaData.setContentType(null);
+        metaData.setContentLength(-100l);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C4)
+    void testC4(MetaData metaData) {
+        metaData.setContentType(null);
+        metaData.setContentLength(-1l);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C5)
+    void testC5(MetaData metaData) {
+        metaData.setContentType(null);
+        metaData.setContentLength(0l);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C6)
+    void testC6(MetaData metaData) {
+        metaData.setContentType(null);
+        metaData.setContentLength(1l);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C7)
+    void testC7(MetaData metaData) {
+        metaData.setContentType(null);
+        metaData.setContentLength(100l);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C8)
+    void testC8(MetaData metaData) throws ParseException {
+        metaData.setContentType(null);
+        metaData.setContentLength(null);
+        metaData.setCreationDate(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2000-01-01 00:00:00"));
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_C9)
+    void testC9(MetaData metaData) throws ParseException {
+        metaData.setContentType(null);
+        metaData.setContentLength(null);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2000-01-01 00:00:00"));
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_CA)
+    void testCA(MetaData metaData) throws ParseException {
+        metaData.setContentType(null);
+        metaData.setContentLength(null);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(true);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_CB)
+    void testCB(MetaData metaData) throws ParseException {
+        metaData.setContentType(null);
+        metaData.setContentLength(null);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(true);
+        metaData.setPermitted(true);
+    }
+    @ApiDavMetaMapping(path=MAPPING_CC)
+    void testCC(MetaData metaData) throws ParseException {
+        metaData.setContentType(null);
+        metaData.setContentLength(null);
+        metaData.setCreationDate(null);
+        metaData.setLastModified(null);
+        metaData.setReadOnly(false);
+        metaData.setHidden(false);
+        metaData.setPermitted(true);
     }
 }
