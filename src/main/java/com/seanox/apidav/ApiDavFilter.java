@@ -404,8 +404,8 @@ public class ApiDavFilter extends HttpFilter {
 
         final String displayName = UriUtils.encodePath(entry.getName(), StandardCharsets.UTF_8.name());
 
-        final String creationDate  = Objects.nonNull(entry.getCreationDate()) ? DateTime.formatDate(entry.getCreationDate(), DATETIME_FORMAT_CREATION_DATE) : "";
-        final String lastModified  = Objects.nonNull(entry.getLastModified()) ? DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED) : "";
+        final String creationDate  = Objects.nonNull(entry.getCreationDate()) ? DateTime.formatDate(entry.getCreationDate(), DATETIME_FORMAT_CREATION_DATE) : null;
+        final String lastModified  = Objects.nonNull(entry.getLastModified()) ? DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED) : null;
         final String contentType   = entry.isFile() ? ((Sitemap.File)entry).getContentType() : null;
         final String contentLength = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentLength()) ? ((Sitemap.File)entry).getContentLength().toString() : null;
         final String isCollection  = String.valueOf(entry.isFolder());
@@ -432,8 +432,10 @@ public class ApiDavFilter extends HttpFilter {
 
                 xmlWriter.writePropertyData(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_DISPLAYNAME, displayName);
                 xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISCOLLECTION, isCollection);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_CREATIONDATE, creationDate);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, lastModified);
+                if (Objects.nonNull(creationDate))
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_CREATIONDATE, creationDate);
+                if (Objects.nonNull(lastModified))
+                    xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, lastModified);
 
                 xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISREADONLY, isReadOnly);
                 xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISHIDDEN,  isHidden);
@@ -515,9 +517,11 @@ public class ApiDavFilter extends HttpFilter {
                         xmlWriter.writePropertyData(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_DISPLAYNAME, displayName);
                     } else if (property.equals(XML_ISCOLLECTION)) {
                         xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISCOLLECTION, isCollection);
-                    } else if (property.equals(XML_CREATIONDATE)) {
+                    } else if (property.equals(XML_CREATIONDATE)
+                            && Objects.nonNull(creationDate)) {
                         xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_CREATIONDATE, creationDate);
-                    } else if (property.equals(XML_GETLASTMODIFIED)) {
+                    } else if (property.equals(XML_GETLASTMODIFIED)
+                            && Objects.nonNull(lastModified)) {
                         xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, lastModified);
 
                     } else if (property.equals(XML_ISREADONLY)) {
