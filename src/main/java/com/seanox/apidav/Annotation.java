@@ -65,10 +65,16 @@ abstract class Annotation {
     }
 
     enum Target {
-        ReadOnly, Hidden, Permitted,
-        ContentType, ContentLength, CreationDate, LastModified,
-        Accept, ContentLengthMax, Accepted,
-        Read, Write, Meta
+        ReadOnly(Boolean.TYPE), Hidden(Boolean.TYPE), Permitted(Boolean.TYPE),
+        ContentType(String.class), ContentLength(Long.class), CreationDate(Date.class), LastModified(Date.class),
+        Accept(String.class), ContentLengthMax(Long.class), Accepted(Boolean.TYPE),
+        Read(Void.class), Write(Void.class), Meta(Void.class);
+
+        final Class<?> type;
+
+        Target(Class<?> type) {
+            this.type = type;
+        }
     }
 
     @Getter(AccessLevel.PACKAGE)
