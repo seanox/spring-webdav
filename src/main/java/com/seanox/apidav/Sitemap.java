@@ -621,7 +621,7 @@ class Sitemap {
             }
 
             if (Objects.isNull(result))
-                return (T)result;
+                return null;
 
             if (!fallback.getClass().equals(result.getClass())) {
                 Class<?> type = result.getClass();
