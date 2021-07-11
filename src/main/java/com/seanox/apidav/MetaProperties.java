@@ -33,18 +33,18 @@ import java.util.Date;
 /**
  * MetaProperties readonly collector as an alternative to single attributes.
  *
- * MetaProperties 1.0.0 20210710<br>
+ * MetaProperties 1.0.0 20210711<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210710
+ * @version 1.0.0 20210711
  */
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PROTECTED)
 @Builder(access=AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
-class MetaProperties implements Cloneable {
+public class MetaProperties implements Cloneable {
 
     private URI uri;
     private String contentType;
@@ -56,7 +56,7 @@ class MetaProperties implements Cloneable {
     private boolean isPermitted;
 
     @Override
-    protected MetaProperties clone() {
+    public MetaProperties clone() {
         try {return (MetaProperties)super.clone();
         } catch (CloneNotSupportedException exception) {
             return MetaProperties.builder()

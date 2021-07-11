@@ -48,6 +48,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -704,7 +705,7 @@ public class ApiDavFilter extends HttpFilter {
                 .contentLength(file.getContentLength())
                 .lastModified(file.getLastModified())
                 .build();
-        try {readCallback.invoke(file, metaOutputStream);
+        try {readCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaOutputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -730,7 +731,7 @@ public class ApiDavFilter extends HttpFilter {
                 .contentType(file.getContentType())
                 .contentLength(file.getContentLength())
                 .build();
-        try {writeCallback.invoke(file, metaInputStream);
+        try {writeCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaInputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
