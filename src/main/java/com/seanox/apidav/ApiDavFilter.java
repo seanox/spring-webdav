@@ -252,7 +252,7 @@ public class ApiDavFilter extends HttpFilter {
                     .sorted((annotation, compare) -> annotation.getPath().compareToIgnoreCase(compare.getPath()))
                     .forEach(annotation -> mappingPaths.add(annotation.getPath().toLowerCase()));
             for (final Annotation annotation : annotations)
-                if (!mappingPaths.contains(annotation.getPath()))
+                if (!mappingPaths.contains(annotation.getPath().toLowerCase()))
                     throw new AnnotationException("Mapping annotation missing for path: " + annotation.getPath());
 
             for (final String mappingPath : mappingPaths)

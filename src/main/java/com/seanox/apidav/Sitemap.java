@@ -374,8 +374,8 @@ class Sitemap {
             if (Objects.isNull(date))
                 date = this.getCreationDate();
             if (Objects.isNull(date))
-                return null;
-            return Long.toString(this.getLastModified().getTime(), 36).toUpperCase();
+                date = CREATION_DATE;
+            return Long.toString(date.getTime(), 36).toUpperCase();
         }
 
         boolean isHidden() {
@@ -648,7 +648,7 @@ class Sitemap {
 
         Long getContentLength() {
             final Long contentLength = this.eval(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
-            return contentLength.longValue() >= 0 ? contentLength : null;
+            return Objects.nonNull(contentLength) && contentLength.longValue() >= 0 ? contentLength : null;
         }
 
         @Override
