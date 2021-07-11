@@ -42,45 +42,45 @@ import java.net.URI;
  * If a directory has no visible content, this structure is not displayed.
  * However, the paths to the data exist.
  *     Expected behavior:
- * - Explorer displays only /extras/deep-hidden/c/c-1/c-2/c-3/c2.txt
- * - /extras/deep-hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
- * - /extras/deep-hidden/a/a-1/a-2/a-3 can be used, but is empty
- * - /extras/deep-hidden/a/a-1/a-1 can be used, but is empty
- * - /extras/deep-hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
- * - /extras/deep-hidden/b/b-1/b-2/b-3 can be used, but is empty
- * - /extras/deep-hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
- * - /extras/deep-hidden/c/c-1/c-2/c-3 can be used and is not empty
+ * - Explorer displays only /extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt
+ * - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+ * - /extras/attributes/hidden/a/a-1/a-2/a-3 can be used, but is empty
+ * - /extras/attributes/hidden/a/a-1/a-1 can be used, but is empty
+ * - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+ * - /extras/attributes/hidden/b/b-1/b-2/b-3 can be used, but is empty
+ * - /extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
+ * - /extras/attributes/hidden/c/c-1/c-2/c-3 can be used and is not empty
  *
- * HiddenTest 1.0.0 20210707
+ * HiddenTest 1.0.0 20210709
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210707
+ * @version 1.0.0 20210709
  */
 public class HiddenTest extends AbstractApiTest {
 
     // Visible
-    private static final String FILE_C2 = "/extras/deep-hidden/c/c-1/c-2/c-3/c2.txt";
-    private static final String FOLDER_C3_REDIRECT = "/extras/deep-hidden/c/c-1/c-2/c-3";
-    private static final String FOLDER_C3 = "/extras/deep-hidden/c/c-1/c-2/c-3/";
+    private static final String FILE_C2 = "/extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt";
+    private static final String FOLDER_C3_REDIRECT = "/extras/attributes/hidden/c/c-1/c-2/c-3";
+    private static final String FOLDER_C3 = "/extras/attributes/hidden/c/c-1/c-2/c-3/";
 
     // Hidden
-    private static final String FILE_A2 = "/extras/deep-hidden/a/a-1/a-2/a-3/a2.txt";
-    private static final String FOLDER_A3_REDIRECT = "/extras/deep-hidden/a/a-1/a-2/a-3";
-    private static final String FOLDER_A3 = "/extras/deep-hidden/a/a-1/a-2/a-3/";
-    private static final String FOLDER_A2_REDIRECT = "/extras/deep-hidden/a/a-1/a-2";
-    private static final String FOLDER_A2 = "/extras/deep-hidden/a/a-1/a-2/";
-    private static final String FOLDER_B3_REDIRECT = "/extras/deep-hidden/b/b-1/b-2/b-3";
-    private static final String FOLDER_B3 = "/extras/deep-hidden/b/b-1/b-2/b-3/";
-    private static final String FILE_B1 = "/extras/deep-hidden/b/b-1/b-2/b-3/b1.txt";
+    private static final String FILE_A2 = "/extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt";
+    private static final String FOLDER_A3_REDIRECT = "/extras/attributes/hidden/a/a-1/a-2/a-3";
+    private static final String FOLDER_A3 = "/extras/attributes/hidden/a/a-1/a-2/a-3/";
+    private static final String FOLDER_A2_REDIRECT = "/extras/attributes/hidden/a/a-1/a-2";
+    private static final String FOLDER_A2 = "/extras/attributes/hidden/a/a-1/a-2/";
+    private static final String FOLDER_B3_REDIRECT = "/extras/attributes/hidden/b/b-1/b-2/b-3";
+    private static final String FOLDER_B3 = "/extras/attributes/hidden/b/b-1/b-2/b-3/";
+    private static final String FILE_B1 = "/extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt";
 
     PropfindResult propfind(final String uri)
             throws Exception {
 
         final MvcResult mvcResult = this.mockMvc.perform(
                 MockMvcRequestBuilders
-                        .request("PROPFIND", new URI(uri))
+                        .request("PROPFIND", URI.create(uri))
                         .header("Depth", "1"))
                 .andReturn();
 
@@ -119,57 +119,78 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFile()
+    void testFile_01()
             throws Exception {
 
-        PropfindResult propfindResult;
-
-        propfindResult = this.propfind(FILE_C2);
+        final PropfindResult propfindResult = this.propfind(FILE_C2);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFile);
         Assertions.assertFalse(propfindResult.isHidden);
+    }
 
-        propfindResult = this.propfind(FILE_A2);
-        Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertTrue(propfindResult.isFile);
-        Assertions.assertTrue(propfindResult.isHidden);
+    @Test
+    void testFile_02()
+            throws Exception {
 
-        propfindResult = this.propfind(FILE_B1);
+        final PropfindResult propfindResult = this.propfind(FILE_A2);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFile);
         Assertions.assertTrue(propfindResult.isHidden);
     }
 
     @Test
-    void testFolder()
+    void testFile_03()
             throws Exception {
 
-        PropfindResult propfindResult;
+        final PropfindResult propfindResult = this.propfind(FILE_B1);
+        Assertions.assertEquals(207, propfindResult.status);
+        Assertions.assertTrue(propfindResult.isFile);
+        Assertions.assertTrue(propfindResult.isHidden);
+    }
+
+    @Test
+    void testFolder_01()
+            throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_C3_REDIRECT).status);
-
-        propfindResult = this.propfind(FOLDER_C3);
+        final PropfindResult propfindResult = this.propfind(FOLDER_C3);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertFalse(propfindResult.isHidden);
         Assertions.assertEquals(1, propfindResult.childs);
+    }
+
+    @Test
+    void testFolder_02()
+            throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_A3_REDIRECT).status);
-        propfindResult = this.propfind(FOLDER_A3);
+        final PropfindResult propfindResult = this.propfind(FOLDER_A3);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
+    }
+
+    @Test
+    void testFolder_03()
+            throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_A2_REDIRECT).status);
-        propfindResult = this.propfind(FOLDER_A2);
+        final PropfindResult propfindResult = this.propfind(FOLDER_A2);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
 
+    }
+
+    @Test
+    void testFolder_04()
+            throws Exception {
+
         Assertions.assertEquals(302, this.propfind(FOLDER_B3_REDIRECT).status);
-        propfindResult = this.propfind(FOLDER_B3);
+        final PropfindResult propfindResult = this.propfind(FOLDER_B3);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertTrue(propfindResult.isHidden);

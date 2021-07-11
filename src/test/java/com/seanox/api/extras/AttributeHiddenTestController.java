@@ -28,9 +28,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * The package extras contains mainly test and no demos.
+ * AttributeHiddenTestController
  *
- * DeepHiddenFolderStructureController 1.0.0 20210707
+ * AttributeHiddenTestController 1.0.0 20210707
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
@@ -38,43 +38,43 @@ import java.io.IOException;
  * @version 1.0.0 20210707
  */
 @Component
-public class DeepHiddenFolderStructureController {
+public class AttributeHiddenTestController {
 
     // The directory structure shows only substructures with visible content.
     // If a directory has no visible content, this structure is not displayed.
     // However, the paths to the data exist.
     // Expected behavior:
-    // - Explorer displays only /extras/deep-hidden/c/c-1/c-2/c-3/c2.txt
-    // - /extras/deep-hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
-    // - /extras/deep-hidden/a/a-1/a-2/a-3 can be used, but is empty
-    // - /extras/deep-hidden/a/a-1/a-2 can be used, but is empty
-    // - /extras/deep-hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
-    // - /extras/deep-hidden/b/b-1/b-2/b-3 can be used, but is empty
-    // - /extras/deep-hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
-    // - /extras/deep-hidden/c/c-1/c-2/c-3 can be used and is not empty
+    // - Explorer displays only /extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt
+    // - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+    // - /extras/attributes/hidden/a/a-1/a-2/a-3 can be used, but is empty
+    // - /extras/attributes/hidden/a/a-1/a-2 can be used, but is empty
+    // - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+    // - /extras/attributes/hidden/b/b-1/b-2/b-3 can be used, but is empty
+    // - /extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
+    // - /extras/attributes/hidden/c/c-1/c-2/c-3 can be used and is not empty
 
-    @ApiDavMapping(path="/extras/deep-hidden/a/a-1/a-2/a-3/a1.txt", isHidden=true)
-    public void testA_1(MetaOutputStream outputStream) throws IOException {
+    @ApiDavMapping(path="/extras/attributes/hidden/a/a-1/a-2/a-3/a1.txt", isHidden=true)
+    void testA1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a1.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/deep-hidden/a/a-1/a-2/a-3/a2.txt", isHidden=true)
-    public void testA_2(MetaOutputStream outputStream) throws IOException {
+    @ApiDavMapping(path="/extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt", isHidden=true)
+    void testA2(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a2.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/deep-hidden/b/b-1/b-2/b-3/b1.txt", isHidden=true)
-    public void testA_3(MetaOutputStream outputStream) throws IOException {
+    @ApiDavMapping(path="/extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt", isHidden=true)
+    void testB1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("b1.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/deep-hidden/c/c-1/c-2/c-3/c1.txt", isHidden=true)
-    public void testA_4(MetaOutputStream outputStream) throws IOException {
+    @ApiDavMapping(path="/extras/attributes/hidden/c/c-1/c-2/c-3/c1.txt", isHidden=true)
+    void testC1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c1.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/deep-hidden/c/c-1/c-2/c-3/c2.txt", isHidden=false)
-    public void testA_5(MetaOutputStream outputStream) throws IOException {
+    @ApiDavMapping(path="/extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt", isHidden=false)
+    void testC2(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c2.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/deep-hidden/d/d-1/d-2/d-3/d.txt", isHidden=true)
-    public void testA_6(MetaOutputStream outputStream) throws IOException {
-        outputStream.write(("d.txt").getBytes());
+    @ApiDavMapping(path="/extras/attributes/hidden/d/d-1/d-2/d-3/d1.txt", isHidden=true)
+    void testD1(MetaOutputStream outputStream) throws IOException {
+        outputStream.write(("d1.txt").getBytes());
     }
 }
