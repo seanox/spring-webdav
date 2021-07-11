@@ -169,8 +169,7 @@ public class MetaTestController {
                 meta1.getUri(),
                 Objects.nonNull(uri1), Objects.nonNull(uri2), uri1 == uri2,
                 Objects.nonNull(properties1), Objects.nonNull(properties2), properties1 == properties2,
-                Objects.nonNull(metaProperties),
-                Objects.isNull(string), Objects.isNull(outputStream), Objects.isNull(inputStream));
+                Objects.isNull(metaProperties), Objects.isNull(string), Objects.isNull(outputStream), Objects.isNull(inputStream));
     }
 
     String testB5Result;

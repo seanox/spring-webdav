@@ -42,12 +42,12 @@ import java.net.URI;
 /**
  * Test of the annotation {@link ApiDavMetaMapping} functions.
  *
- * MetaTest 1.0.0 20210707
+ * MetaTest 1.0.0 20210711
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210707
+ * @version 1.0.0 20210711
  */
 public class MetaTest extends AbstractApiTest {
 
@@ -174,5 +174,76 @@ public class MetaTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Content-Type"))
                 .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_A5 + " null"));
+    }
+
+    @Test
+    void testFile_A6()
+            throws Exception {
+
+        final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A6);
+        Assertions.assertEquals(207, propfindResult.status);
+        Assertions.assertEquals("text/plain", propfindResult.contentType);
+        Assertions.assertEquals(1, propfindResult.contentTypeCount);
+
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(MetaTestController.MAPPING_A6))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.header().exists("Content-Type"))
+                .andExpect(MockMvcResultMatchers.header().string("Content-Type", "text/plain"))
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_A6 + " text/plain"));
+    }
+
+    // Following placeholders for methods parameters are supported: Properties, URI, MetaData
+    // Order and number are not fixed.
+
+    @Test
+    void testFile_B1()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(MetaTestController.MAPPING_B1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B1 + " true true true"));
+    }
+
+    @Test
+    void testFile_B2()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(MetaTestController.MAPPING_B2))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B2 + " true"));
+    }
+
+    @Test
+    void testFile_B3()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(MetaTestController.MAPPING_B3))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B3 + " true true true"));
+    }
+
+    @Test
+    void testFile_B4()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(MetaTestController.MAPPING_B4))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B4 + " true true true true true true true true true true"));
+    }
+
+    @Test
+    void testFile_B5()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(MetaTestController.MAPPING_B5))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B5 + " true"));
     }
 }
