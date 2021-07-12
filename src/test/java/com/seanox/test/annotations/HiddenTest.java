@@ -37,7 +37,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 
 /**
- * Test the function of the hidden attribute.
+ * Test the function of the Hidden attribute.
  *
  * The directory structure shows only substructures with visible content.
  * If a directory has no visible content, this structure is not displayed.
@@ -52,12 +52,12 @@ import java.net.URI;
  * - /extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
  * - /extras/attributes/hidden/c/c-1/c-2/c-3 can be used and is not empty
  *
- * HiddenTest 1.0.0 20210709
+ * HiddenTest 1.0.0 20210712
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210709
+ * @version 1.0.0 20210712
  */
 public class HiddenTest extends AbstractApiTest {
 

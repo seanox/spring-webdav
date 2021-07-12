@@ -33,19 +33,19 @@ import java.lang.annotation.Annotation;
 /**
  * Test of the annotation {@link ApiDavMapping} functions.
  *
- * MappingTest 1.0.0 20210707
+ * MappingTest 1.0.0 20210712
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210707
+ * @version 1.0.0 20210712
  */
 public class MappingTest extends AbstractTest {
 
     @ApiDavMapping(path="a")
     @ApiDavMapping(path="/a")
     @Test
-    void testMap_1() {
+    void test_1() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
@@ -57,7 +57,7 @@ public class MappingTest extends AbstractTest {
     @ApiDavMapping(path="/a/b/c")
     @ApiDavMapping(path="/a/b/c/d/e")
     @Test
-    void testMap_2() {
+    void test_2() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
@@ -69,7 +69,7 @@ public class MappingTest extends AbstractTest {
     @ApiDavMapping(path="/a/b/c/d/e")
     @ApiDavMapping(path="/a/b/c")
     @Test
-    void testMap_3() {
+    void test_3() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
@@ -81,7 +81,7 @@ public class MappingTest extends AbstractTest {
     @ApiDavMapping(path="/a/b/c/d/e")
     @ApiDavMapping(path="/a/b/C")
     @Test
-    void testMap_4() {
+    void test_4() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
@@ -93,7 +93,7 @@ public class MappingTest extends AbstractTest {
     @ApiDavMapping(path="/a/B/c/d/e")
     @ApiDavMapping(path="/A/b/c")
     @Test
-    void testMap_5() {
+    void test_5() {
         final Object sitemap = SitemapAdapter.createInstance();
         Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
@@ -108,7 +108,7 @@ public class MappingTest extends AbstractTest {
     @ApiDavMapping(path="/marketing/newsletter.pptx")
     @ApiDavMapping(path="/marketing/sales.pptx")
     @Test
-    void testMap_6()
+    void test_6()
             throws Exception {
         final Object sitemap = SitemapAdapter.createInstance();
         for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())

@@ -43,12 +43,12 @@ import java.net.URI;
 /**
  * Test of the annotation {@link ApiDavMetaMapping} functions.
  *
- * MetaTest 1.0.0 20210711
+ * MetaTest 1.0.0 20210712
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210712
  */
 public class MetaTest extends AbstractApiTest {
 
@@ -90,7 +90,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_A1()
+    void test_A1()
             throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A1);
@@ -108,7 +108,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_A2()
+    void test_A2()
             throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A2);
@@ -126,7 +126,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_A3()
+    void test_A3()
             throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A3);
@@ -144,7 +144,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_A4()
+    void test_A4()
             throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A4);
@@ -161,7 +161,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_A5()
+    void test_A5()
             throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A5);
@@ -178,7 +178,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_A6()
+    void test_A6()
             throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A6);
@@ -199,7 +199,7 @@ public class MetaTest extends AbstractApiTest {
     // Order and number are not fixed.
 
     @Test
-    void testMeta_B1()
+    void test_B1()
             throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -209,7 +209,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_B2()
+    void test_B2()
             throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -219,7 +219,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_B3()
+    void test_B3()
             throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -229,7 +229,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_B4()
+    void test_B4()
             throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -239,7 +239,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void testMeta_B5()
+    void test_B5()
             throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -248,147 +248,20 @@ public class MetaTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B5 + " true"));
     }
 
-    String createMetaFingeprint(String uri)
-            throws Exception {
-
-        final MvcResult mvcResultGet = this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .get(uri))
-                .andReturn();
-        final MetaFingeprint metaFingeprint = new MetaFingeprint();
-        metaFingeprint.uri = uri;
-        metaFingeprint.statusGet = mvcResultGet.getResponse().getStatus();
-        if (mvcResultGet.getResponse().getStatus() != HttpServletResponse.SC_OK)
-            return metaFingeprint.toString();
-        if (mvcResultGet.getResponse().containsHeader("Content-Type"))
-            metaFingeprint.contentTypeCount++;
-        if (mvcResultGet.getResponse().containsHeader("Content-Length"))
-            metaFingeprint.contentLengthCount++;
-        if (mvcResultGet.getResponse().containsHeader("Last-Modified"))
-            metaFingeprint.lastModifiedCount++;
-
-        final MvcResult mvcResultPropfind = this.mockMvc.perform(
-                MockMvcRequestBuilders
-                        .request("PROPFIND", URI.create(uri)))
-                .andReturn();
-
-        final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        final DocumentBuilder builder = builderFactory.newDocumentBuilder();
-        final Document xmlDocument = builder.parse(new ByteArrayInputStream(mvcResultPropfind.getResponse().getContentAsString().getBytes()));
-        final XPath xpath = XPathFactory.newInstance().newXPath();
-
-        metaFingeprint.statusPropfind = mvcResultPropfind.getResponse().getStatus();
-        metaFingeprint.contentTypeCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontenttype)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-        metaFingeprint.contentTypeCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontenttype[text()='TesT'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
-        metaFingeprint.contentLengthCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontentlength)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-        metaFingeprint.creationDateCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/creationdate)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-        metaFingeprint.lastModifiedCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getlastmodified)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-        metaFingeprint.isReadOnlyCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/isreadonly)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-        metaFingeprint.isReadOnlyCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/isreadonly[text()='true'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
-        metaFingeprint.isHiddenCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/ishidden)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-        metaFingeprint.isHiddenCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/ishidden[text()='true'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
-
-        String fingeprint = metaFingeprint.toString() + " ";
-        fingeprint += xpath.compile("/multistatus/response/propstat/prop/getcontentlength").evaluate(xmlDocument);
-        fingeprint += xpath.compile("/multistatus/response/propstat/prop/creationdate").evaluate(xmlDocument);
-        fingeprint += xpath.compile("/multistatus/response/propstat/prop/getlastmodified").evaluate(xmlDocument);
-
-        return fingeprint.trim();
-    }
-
-    static class MetaFingeprint {
-
-        private String uri;
-        private int statusGet;
-        private int statusPropfind;
-        private int contentTypeCount;
-        private int contentLengthCount;
-        private int creationDateCount;
-        private int lastModifiedCount;
-        private int isReadOnlyCount;
-        private int isHiddenCount;
-
-        @Override
-        public String toString() {
-            return statusGet + "/" + statusPropfind + ":" + uri + " "
-                    + contentTypeCount
-                    + contentLengthCount
-                    + creationDateCount
-                    + lastModifiedCount
-                    + isReadOnlyCount
-                    + isHiddenCount;
-        }
-    }
-
     @Test
-    void testMeta_C1()
+    void test_CX()
             throws Exception {
-        Assertions.assertEquals("404/0:/extras/meta/c1.txt 000000", this.createMetaFingeprint(MetaTestController.MAPPING_C1));
-    }
-
-    @Test
-    void testMeta_C2()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c2.txt 700061", this.createMetaFingeprint(MetaTestController.MAPPING_C2));
-    }
-
-    @Test
-    void testMeta_C3()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c3.txt 000061", this.createMetaFingeprint(MetaTestController.MAPPING_C3));
-    }
-
-    @Test
-    void testMeta_C4()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c4.txt 000061", this.createMetaFingeprint(MetaTestController.MAPPING_C4));
-    }
-
-    @Test
-    void testMeta_C5()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c5.txt 020061 0", this.createMetaFingeprint(MetaTestController.MAPPING_C5));
-    }
-
-    @Test
-    void testMeta_C6()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c6.txt 020061 1", this.createMetaFingeprint(MetaTestController.MAPPING_C6));
-    }
-
-    @Test
-    void testMeta_C7()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c7.txt 020061 100", this.createMetaFingeprint(MetaTestController.MAPPING_C7));
-    }
-
-    @Test
-    void testMeta_C8()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c8.txt 001061 2000-01-01T00:00:00Z", this.createMetaFingeprint(MetaTestController.MAPPING_C8));
-    }
-
-    @Test
-    void testMeta_C9()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/c9.txt 000261 Sat, 01 Jan 2000 00:00:00 GMT", this.createMetaFingeprint(MetaTestController.MAPPING_C9));
-    }
-
-    @Test
-    void testMeta_CA()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/cA.txt 000061", this.createMetaFingeprint(MetaTestController.MAPPING_CA));
-    }
-
-    @Test
-    void testMeta_CB()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/cB.txt 000066", this.createMetaFingeprint(MetaTestController.MAPPING_CB));
-    }
-
-    @Test
-    void testMeta_CC()
-            throws Exception {
-        Assertions.assertEquals("200/207:/extras/meta/cC.txt 000061", this.createMetaFingeprint(MetaTestController.MAPPING_CC));
+        Assertions.assertEquals("404/404/404 /extras/meta/c1.txt 000000 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C1, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c2.txt 300061 TesT/TesT/TesT null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C2, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c3.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C3, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c4.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C4, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c5.txt 030061 null/null 0/0/0 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C5, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c6.txt 030061 null/null 1/1/1 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C6, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c7.txt 030061 null/null 100/100/100 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C7, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c8.txt 001161 null/null null/null 2000-01-01T00:00:00Z Sat, 01 Jan 2000 00:00:00 GMT/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C8, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c9.txt 000361 null/null null/null Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT", this.createAttributeFingeprint(MetaTestController.MAPPING_C9, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/cA.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CA, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/cB.txt 000066 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CB, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/cC.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CC, AttributeFingeprintType.Meta));
     }
 }
