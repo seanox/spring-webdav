@@ -23,6 +23,8 @@ package com.seanox.apidav;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.io.IOException;
@@ -57,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210711<br>
+ * Sitemap 1.0.0 20210712<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210712
  */
 class Sitemap {
 
@@ -575,7 +577,9 @@ class Sitemap {
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
                         exception = (Exception) ((InvocationTargetException) exception).getTargetException();
-                    throw new SitemapCallbackException(exception);
+                    final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
+                    LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".CallbackException").error(message);
+                    return null;
                 }
             } else if (Objects.nonNull(this.metaCallback)
                     && Arrays.asList(Annotation.Target.ContentLength, Annotation.Target.ContentType,
@@ -589,7 +593,9 @@ class Sitemap {
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception) ((InvocationTargetException) exception).getTargetException();
-                        throw new SitemapCallbackException(exception);
+                        final String message = String.format("MetaMapping: %s %s", exception.getClass().getName(), exception.getMessage());
+                        LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".CallbackException").error(message);
+                        return null;
                     }
                     metaMap.put(this.metaCallback, meta.clone());
                 }
@@ -633,7 +639,9 @@ class Sitemap {
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
                         exception = (Exception)((InvocationTargetException)exception).getTargetException();
-                    throw new SitemapConverterException(exception);
+                    final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
+                    LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".ConverterException").error(message);
+                    return null;
                 }
             }
 
@@ -643,7 +651,8 @@ class Sitemap {
         }
 
         String getContentType() {
-            return this.eval(Annotation.Target.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
+            final String contentType = this.eval(Annotation.Target.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
+            return Objects.nonNull(contentType) && !contentType.isBlank() ? contentType : null;
         }
 
         Long getContentLength() {
