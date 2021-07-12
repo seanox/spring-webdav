@@ -406,7 +406,7 @@ public class ApiDavFilter extends HttpFilter {
 
         final String creationDate  = Objects.nonNull(entry.getCreationDate()) ? DateTime.formatDate(entry.getCreationDate(), DATETIME_FORMAT_CREATION_DATE) : null;
         final String lastModified  = Objects.nonNull(entry.getLastModified()) ? DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED) : null;
-        final String contentType   = entry.isFile() ? ((Sitemap.File)entry).getContentType() : null;
+        final String contentType   = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentType()) ? ((Sitemap.File)entry).getContentType() : null;
         final String contentLength = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentLength()) ? ((Sitemap.File)entry).getContentLength().toString() : null;
         final String isCollection  = String.valueOf(entry.isFolder());
 
