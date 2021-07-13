@@ -31,7 +31,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.w3c.dom.Document;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -43,12 +42,12 @@ import java.net.URI;
 /**
  * Test of the annotation {@link ApiDavMetaMapping} functions.
  *
- * MetaTest 1.0.0 20210712
+ * MetaTest 1.0.0 20210713
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210712
+ * @version 1.0.0 20210713
  */
 public class MetaTest extends AbstractApiTest {
 
@@ -258,7 +257,7 @@ public class MetaTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/meta/c5.txt 030061 null/null 0/0/0 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C5, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/c6.txt 030061 null/null 1/1/1 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C6, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/c7.txt 030061 null/null 100/100/100 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C7, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c8.txt 001161 null/null null/null 2000-01-01T00:00:00Z Sat, 01 Jan 2000 00:00:00 GMT/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C8, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c8.txt 001061 null/null null/null 2000-01-01T00:00:00Z null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C8, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/c9.txt 000361 null/null null/null Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT", this.createAttributeFingeprint(MetaTestController.MAPPING_C9, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/cA.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CA, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/cB.txt 000066 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CB, AttributeFingeprintType.Meta));

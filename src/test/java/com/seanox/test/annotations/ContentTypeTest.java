@@ -21,17 +21,20 @@
  */
 package com.seanox.test.annotations;
 
+import com.seanox.api.extras.ContentTypeTestController;
 import com.seanox.test.AbstractApiTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test the function of the ContentType attribute.
  *
- * ContentTypeTest 1.0.0 20210711
+ * ContentTypeTest 1.0.0 20210713
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210713
  */
 public class ContentTypeTest extends AbstractApiTest {
 
@@ -46,6 +49,22 @@ public class ContentTypeTest extends AbstractApiTest {
     // Expected data type:
     // - String
     // - null is supported (suppresses output in Response header and PROPFIND response)
+    // - empty strings and (convert) exception suppress output
+    // - default: application/octet-stream
 
     // TODO:
+
+    @Test
+    void test_CX()
+            throws Exception {
+        Assertions.assertEquals("200/200/207 /extras/contentType/c1.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C1, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c2.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C2, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c3.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C3, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c4.txt 301361 a\t\r\nz/a\t\r\nz/a\t\nz", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C4, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c5.txt 301361 Test C5/Test C5/Test C5", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C5, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c6.txt 301361 a\u00A9z/a\u00A9z/a\u00A9z", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C6, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c7.txt 301361 Test C7/Test C7/Test C7", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C7, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c8.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C8, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c9.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C9, AttributeFingeprintType.ContentType));
+    }
 }
