@@ -102,4 +102,11 @@ public class MetaOutputStream extends OutputStream {
         if (Objects.isNull(this.output))
             this.output = this.response.getOutputStream();
     }
+
+    @Override
+    public void close()
+            throws IOException {
+        this.flush();
+        super.close();
+    }
 }
