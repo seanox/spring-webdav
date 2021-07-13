@@ -28,9 +28,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * Test the function of the hidden attribute.
+ * Test the function of the Hidden attribute.
  *
- * AttributeHiddenTestController 1.0.0 20210707
+ * HiddenTestController 1.0.0 20210707
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
@@ -38,7 +38,7 @@ import java.io.IOException;
  * @version 1.0.0 20210707
  */
 @Component
-public class AttributeHiddenTestController {
+public class HiddenTestController {
 
     // The directory structure shows only substructures with visible content.
     // If a directory has no visible content, this structure is not displayed.
