@@ -684,9 +684,6 @@ public class ApiDavFilter extends HttpFilter {
             response.setHeader(HEADER_ETAG, "\"" + file.getIdentifier() + "\"");
         if (Objects.nonNull(file.getLastModified()))
             response.setDateHeader(HEADER_LAST_MODIFIED, file.getLastModified().getTime());
-        if (Objects.isNull(file.getLastModified())
-                && Objects.nonNull(file.getCreationDate()))
-            response.setDateHeader(HEADER_LAST_MODIFIED, file.getCreationDate().getTime());
         if (Objects.nonNull(file.getContentLength()))
             response.setContentLengthLong(file.getContentLength());
         if (Objects.nonNull(file.getContentType()))
@@ -694,7 +691,8 @@ public class ApiDavFilter extends HttpFilter {
         throw new SuccessState();
     }
 
-    private void doGet(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+    private void doGet(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
 
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
 
@@ -703,18 +701,20 @@ public class ApiDavFilter extends HttpFilter {
 
         final Sitemap.File file = ((Sitemap.File)entry);
         final Sitemap.Callback readCallback = file.getReadCallback();
-        final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
+
+        try (final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
                 .response(response)
                 .contentType(file.getContentType())
                 .contentLength(file.getContentLength())
                 .lastModified(file.getLastModified())
-                .build();
-        try {readCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaOutputStream);
-        } catch (Exception exception) {
-            while (exception instanceof InvocationTargetException)
-                exception = (Exception)((InvocationTargetException)exception).getTargetException();
-            LOGGER.error("GET callback failed", exception);
-            throw new InternalServerErrorState();
+                .build()) {
+            try {readCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaOutputStream);
+            } catch (Exception exception) {
+                while (exception instanceof InvocationTargetException)
+                    exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                LOGGER.error("GET callback failed", exception);
+                throw new InternalServerErrorState();
+            }
         }
         throw new SuccessState();
     }
