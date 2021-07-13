@@ -43,16 +43,17 @@ import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 /**
  * General implementation for the execution of API tests.
  *
- * AbstractApiTest 1.0.0 20210712
+ * AbstractApiTest 1.0.0 20210713
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210712
+ * @version 1.0.0 20210713
  */
 @SpringBootTest(classes= Application.class)
 public abstract class AbstractApiTest extends AbstractTest {
@@ -146,7 +147,7 @@ public abstract class AbstractApiTest extends AbstractTest {
         if (mvcResultPropfind.getResponse().getStatus() == 207) {
             final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            final Document xmlDocument = builder.parse(new ByteArrayInputStream(mvcResultPropfind.getResponse().getContentAsString().getBytes()));
+            final Document xmlDocument = builder.parse(new ByteArrayInputStream(mvcResultPropfind.getResponse().getContentAsString(StandardCharsets.UTF_8).getBytes(StandardCharsets.UTF_8)));
             final XPath xpath = XPathFactory.newInstance().newXPath();
 
             attributeFingeprint.contentTypeCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontenttype)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
@@ -219,7 +220,7 @@ public abstract class AbstractApiTest extends AbstractTest {
         }
     }
 
-    public static enum AttributeFingeprintType {
+    public enum AttributeFingeprintType {
         Meta,
         ContentType,
         ContentLength,
