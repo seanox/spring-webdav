@@ -23,7 +23,6 @@ package com.seanox.apidav;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
@@ -424,8 +423,8 @@ class Sitemap {
         private Variant isPermitted;
         private Variant isAccepted;
 
-        @Getter(AccessLevel.PACKAGE) private Callback readCallback;
-        @Getter(AccessLevel.PACKAGE) private Callback writeCallback;
+        @Getter(AccessLevel.PACKAGE) private Callback inputCallback;
+        @Getter(AccessLevel.PACKAGE) private Callback outputCallback;
         @Getter(AccessLevel.PACKAGE) private Callback metaCallback;
 
         File(final String path, Annotation... annotations) {
@@ -463,7 +462,7 @@ class Sitemap {
 
                 } else if (annotation instanceof Annotation.Input) {
                     final Annotation.Input inputAnnotation = (Annotation.Input)annotation;
-                    this.writeCallback = new Callback(inputAnnotation.getObject(), inputAnnotation.getMethod());
+                    this.inputCallback = new Callback(inputAnnotation.getObject(), inputAnnotation.getMethod());
 
                     if (Objects.nonNull(inputAnnotation.getAccept())
                             && !inputAnnotation.getAccept().isBlank())
@@ -485,7 +484,7 @@ class Sitemap {
 
                 } else if (annotation instanceof Annotation.Mapping) {
                     final Annotation.Mapping mappingAnnotation = (Annotation.Mapping)annotation;
-                    this.readCallback = new Callback(mappingAnnotation.getObject(), mappingAnnotation.getMethod());
+                    this.outputCallback = new Callback(mappingAnnotation.getObject(), mappingAnnotation.getMethod());
 
                     if (mappingAnnotation.getContentLength() >= 0)
                         this.contentLength = new Static(Long.valueOf(mappingAnnotation.getContentLength()));
@@ -673,7 +672,7 @@ class Sitemap {
         @Override
         boolean isReadOnly() {
             if (!this.isPermitted()
-                    || Objects.isNull(this.writeCallback))
+                    || Objects.isNull(this.inputCallback))
                 return true;
             final Boolean result = this.eval(Annotation.Target.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
             return Objects.nonNull(result) && result.booleanValue();
