@@ -53,19 +53,29 @@ public class MetaInputStream extends InputStream {
 
     private IOException exception;
 
+    private void advanceAccess()
+            throws IOException {
+
+        if (Objects.isNull(this.input)) {
+            this.input = this.request.getInputStream();
+            if (Objects.nonNull(contentLengthMax)
+                    && contentLengthMax.longValue() >= 0)
+                this.limit = contentLengthMax.longValue();
+        }
+
+        if (Objects.nonNull(this.exception))
+            throw this.exception;
+    }
+
     @Override
     public int read()
             throws IOException {
 
-        if (Objects.isNull(this.input))
-            this.input = this.request.getInputStream();
+        this.advanceAccess();
 
         if (Objects.isNull(contentLengthMax)
                 || contentLengthMax.longValue() < 0)
             return this.input.read();
-
-        if (Objects.nonNull(this.exception))
-            throw this.exception;
 
         try {
             final int digit = this.input.read();
@@ -87,15 +97,11 @@ public class MetaInputStream extends InputStream {
     public int read(byte[] bytes)
             throws IOException {
 
-        if (Objects.isNull(this.input))
-            this.input = this.request.getInputStream();
+        this.advanceAccess();
 
         if (Objects.isNull(contentLengthMax)
                 || contentLengthMax.longValue() < 0)
             return this.input.read(bytes);
-
-        if (Objects.nonNull(this.exception))
-            throw this.exception;
 
         try {
             final int total = this.input.read(bytes);
@@ -117,15 +123,11 @@ public class MetaInputStream extends InputStream {
     public int read(byte[] bytes, int offset, int length)
             throws IOException {
 
-        if (Objects.isNull(this.input))
-            this.input = this.request.getInputStream();
+        this.advanceAccess();
 
         if (Objects.isNull(contentLengthMax)
                 || contentLengthMax.longValue() < 0)
             return this.input.read(bytes, offset, length);
-
-        if (Objects.nonNull(this.exception))
-            throw this.exception;
 
         try {
             final int total = this.input.read(bytes, offset, length);
@@ -147,17 +149,13 @@ public class MetaInputStream extends InputStream {
     public byte[] readAllBytes()
             throws IOException {
 
-        if (Objects.isNull(this.input))
-            this.input = this.request.getInputStream();
+        this.advanceAccess();
 
         if (Objects.isNull(contentLengthMax)
                 || contentLengthMax.longValue() < 0)
             return this.input.readAllBytes();
 
-        if (Objects.nonNull(this.exception))
-            throw this.exception;
-
-        try {return this.input.readNBytes((int) this.limit);
+        try {return this.input.readNBytes((int)this.limit);
         } catch (IOException exception) {
             this.exception = exception;
             throw exception;

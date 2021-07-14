@@ -700,7 +700,7 @@ public class ApiDavFilter extends HttpFilter {
             throw new NotFoundState();
 
         final Sitemap.File file = ((Sitemap.File)entry);
-        final Sitemap.Callback readCallback = file.getReadCallback();
+        final Sitemap.Callback outputCallback = file.getOutputCallback();
 
         try (final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
                 .response(response)
@@ -708,7 +708,7 @@ public class ApiDavFilter extends HttpFilter {
                 .contentLength(file.getContentLength())
                 .lastModified(file.getLastModified())
                 .build()) {
-            try {readCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaOutputStream);
+            try {outputCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaOutputStream);
             } catch (Exception exception) {
                 while (exception instanceof InvocationTargetException)
                     exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -729,13 +729,14 @@ public class ApiDavFilter extends HttpFilter {
         response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
 
         final Sitemap.File file = ((Sitemap.File)entry);
-        final Sitemap.Callback writeCallback = file.getWriteCallback();
+        final Sitemap.Callback inputCallback = file.getInputCallback();
         final MetaInputStream metaInputStream = MetaInputStream.builder()
                 .request(request)
                 .contentType(file.getContentType())
                 .contentLength(file.getContentLength())
+             //TODO   .contentLengthMax(file.getContentLengthMax())
                 .build();
-        try {writeCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaInputStream);
+        try {inputCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaInputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
