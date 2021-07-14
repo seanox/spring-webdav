@@ -734,12 +734,14 @@ public class ApiDavFilter extends HttpFilter {
                 .request(request)
                 .contentType(file.getContentType())
                 .contentLength(file.getContentLength())
-             //TODO   .contentLengthMax(file.getContentLengthMax())
+                .contentLengthMax(file.getContentLengthMax())
                 .build();
         try {inputCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaInputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
+            if (exception instanceof MetaInputStream.MetaInputStreamLimitException)
+                throw new PayloadTooLargeState();
             LOGGER.error("PUT callback failed", exception);
             throw new InternalServerErrorState();
         }
@@ -1128,6 +1130,14 @@ public class ApiDavFilter extends HttpFilter {
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_PRECONDITION_FAILED;
+        }
+    }
+
+    private static class PayloadTooLargeState extends State {
+
+        @Override
+        int getStatusCode() {
+            return 413;
         }
     }
 
