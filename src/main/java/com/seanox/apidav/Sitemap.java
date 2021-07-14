@@ -283,13 +283,15 @@ class Sitemap {
     }
 
     private static class Defaults {
-        private static final String  contentType   = "application/octet-stream";
-        private static final Long    contentLength = Long.valueOf(-1);
-        private static final Date    creationDate  = Sitemap.getBuildDate();
-        private static final Date    lastModified  = Sitemap.getBuildDate();
-        private static final Boolean isReadOnly    = Boolean.TRUE;
-        private static final Boolean isHidden      = Boolean.FALSE;
-        private static final Boolean isPermitted   = Boolean.TRUE;
+        private static final String  contentType      = "application/octet-stream";
+        private static final Long    contentLength    = Long.valueOf(-1);
+        private static final Date    creationDate     = Sitemap.getBuildDate();
+        private static final Date    lastModified     = Sitemap.getBuildDate();
+        private static final Boolean isReadOnly       = Boolean.TRUE;
+        private static final Boolean isHidden         = Boolean.FALSE;
+        private static final Boolean isPermitted      = Boolean.TRUE;
+
+        private static final Long    contentLengthMax = null;
 
         private static final MetaData MetaDataTemplate = new MetaData(
                 null,
@@ -337,7 +339,7 @@ class Sitemap {
         Folder getParent() {
             if (Objects.isNull(this.parent))
                 return null;
-            return (Folder)Sitemap.this.tree.get(this.parent);
+            return (Folder)Sitemap.this.tree.get(this.getParentPathUnique());
         }
 
         String getParentPath() {
@@ -656,6 +658,11 @@ class Sitemap {
 
         Long getContentLength() {
             final Long contentLength = this.eval(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
+            return Objects.nonNull(contentLength) && contentLength.longValue() >= 0 ? contentLength : null;
+        }
+
+        Long getContentLengthMax() {
+            final Long contentLength = this.eval(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
             return Objects.nonNull(contentLength) && contentLength.longValue() >= 0 ? contentLength : null;
         }
 
