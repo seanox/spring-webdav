@@ -43,38 +43,38 @@ import java.net.URI;
  * If a directory has no visible content, this structure is not displayed.
  * However, the paths to the data exist.
  *     Expected behavior:
- * - Explorer displays only /extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt
- * - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
- * - /extras/attributes/hidden/a/a-1/a-2/a-3 can be used, but is empty
- * - /extras/attributes/hidden/a/a-1/a-1 can be used, but is empty
- * - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
- * - /extras/attributes/hidden/b/b-1/b-2/b-3 can be used, but is empty
- * - /extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
- * - /extras/attributes/hidden/c/c-1/c-2/c-3 can be used and is not empty
+ * - Explorer displays only /extras/hidden/c/c-1/c-2/c-3/c2.txt
+ * - /extras/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+ * - /extras/hidden/a/a-1/a-2/a-3 can be used, but is empty
+ * - /extras/hidden/a/a-1/a-1 can be used, but is empty
+ * - /extras/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+ * - /extras/hidden/b/b-1/b-2/b-3 can be used, but is empty
+ * - /extras/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
+ * - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
  *
- * HiddenTest 1.0.0 20210712
+ * HiddenTest 1.0.0 20210714
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210712
+ * @version 1.0.0 20210714
  */
 public class HiddenTest extends AbstractApiTest {
 
     // Visible
-    private static final String FILE_C2 = "/extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt";
-    private static final String FOLDER_C3_REDIRECT = "/extras/attributes/hidden/c/c-1/c-2/c-3";
-    private static final String FOLDER_C3 = "/extras/attributes/hidden/c/c-1/c-2/c-3/";
+    private static final String FILE_C2 = "/extras/hidden/c/c-1/c-2/c-3/c2.txt";
+    private static final String FOLDER_C3_REDIRECT = "/extras/hidden/c/c-1/c-2/c-3";
+    private static final String FOLDER_C3 = "/extras/hidden/c/c-1/c-2/c-3/";
 
     // Hidden
-    private static final String FILE_A2 = "/extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt";
-    private static final String FOLDER_A3_REDIRECT = "/extras/attributes/hidden/a/a-1/a-2/a-3";
-    private static final String FOLDER_A3 = "/extras/attributes/hidden/a/a-1/a-2/a-3/";
-    private static final String FOLDER_A2_REDIRECT = "/extras/attributes/hidden/a/a-1/a-2";
-    private static final String FOLDER_A2 = "/extras/attributes/hidden/a/a-1/a-2/";
-    private static final String FOLDER_B3_REDIRECT = "/extras/attributes/hidden/b/b-1/b-2/b-3";
-    private static final String FOLDER_B3 = "/extras/attributes/hidden/b/b-1/b-2/b-3/";
-    private static final String FILE_B1 = "/extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt";
+    private static final String FILE_A2 = "/extras/hidden/a/a-1/a-2/a-3/a2.txt";
+    private static final String FOLDER_A3_REDIRECT = "/extras/hidden/a/a-1/a-2/a-3";
+    private static final String FOLDER_A3 = "/extras/hidden/a/a-1/a-2/a-3/";
+    private static final String FOLDER_A2_REDIRECT = "/extras/hidden/a/a-1/a-2";
+    private static final String FOLDER_A2 = "/extras/hidden/a/a-1/a-2/";
+    private static final String FOLDER_B3_REDIRECT = "/extras/hidden/b/b-1/b-2/b-3";
+    private static final String FOLDER_B3 = "/extras/hidden/b/b-1/b-2/b-3/";
+    private static final String FILE_B1 = "/extras/hidden/b/b-1/b-2/b-3/b1.txt";
 
     PropfindResult propfind(final String uri)
             throws Exception {

@@ -30,12 +30,12 @@ import java.io.IOException;
 /**
  * Test the function of the Hidden attribute.
  *
- * HiddenTestController 1.0.0 20210707
+ * HiddenTestController 1.0.0 202107014
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210707
+ * @version 1.0.0 202107014
  */
 @Component
 public class HiddenTestController {
@@ -44,36 +44,36 @@ public class HiddenTestController {
     // If a directory has no visible content, this structure is not displayed.
     // However, the paths to the data exist.
     // Expected behavior:
-    // - Explorer displays only /extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt
-    // - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
-    // - /extras/attributes/hidden/a/a-1/a-2/a-3 can be used, but is empty
-    // - /extras/attributes/hidden/a/a-1/a-2 can be used, but is empty
-    // - /extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
-    // - /extras/attributes/hidden/b/b-1/b-2/b-3 can be used, but is empty
-    // - /extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
-    // - /extras/attributes/hidden/c/c-1/c-2/c-3 can be used and is not empty
+    // - Explorer displays only /extras/hidden/c/c-1/c-2/c-3/c2.txt
+    // - /extras/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+    // - /extras/hidden/a/a-1/a-2/a-3 can be used, but is empty
+    // - /extras/hidden/a/a-1/a-2 can be used, but is empty
+    // - /extras/hidden/a/a-1/a-2/a-3/a2.txt can be used, shows the file name
+    // - /extras/hidden/b/b-1/b-2/b-3 can be used, but is empty
+    // - /extras/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
+    // - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
 
-    @ApiDavMapping(path="/extras/attributes/hidden/a/a-1/a-2/a-3/a1.txt", isHidden=true)
+    @ApiDavMapping(path="/extras/hidden/a/a-1/a-2/a-3/a1.txt", isHidden=true)
     void testA1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a1.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/attributes/hidden/a/a-1/a-2/a-3/a2.txt", isHidden=true)
+    @ApiDavMapping(path="/extras/hidden/a/a-1/a-2/a-3/a2.txt", isHidden=true)
     void testA2(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a2.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/attributes/hidden/b/b-1/b-2/b-3/b1.txt", isHidden=true)
+    @ApiDavMapping(path="/extras/hidden/b/b-1/b-2/b-3/b1.txt", isHidden=true)
     void testB1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("b1.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/attributes/hidden/c/c-1/c-2/c-3/c1.txt", isHidden=true)
+    @ApiDavMapping(path="/extras/hidden/c/c-1/c-2/c-3/c1.txt", isHidden=true)
     void testC1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c1.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/attributes/hidden/c/c-1/c-2/c-3/c2.txt", isHidden=false)
+    @ApiDavMapping(path="/extras/hidden/c/c-1/c-2/c-3/c2.txt", isHidden=false)
     void testC2(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c2.txt").getBytes());
     }
-    @ApiDavMapping(path="/extras/attributes/hidden/d/d-1/d-2/d-3/d1.txt", isHidden=true)
+    @ApiDavMapping(path="/extras/hidden/d/d-1/d-2/d-3/d1.txt", isHidden=true)
     void testD1(MetaOutputStream outputStream) throws IOException {
         outputStream.write(("d1.txt").getBytes());
     }
