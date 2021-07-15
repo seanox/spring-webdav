@@ -669,7 +669,7 @@ class Sitemap {
 
         String getAccept() {
             final String accept = this.eval(Annotation.Target.Accept, this.accept, Defaults.accept);
-            return Objects.nonNull(contentLength) && !accept.isBlank() ? accept : null;
+            return Objects.nonNull(accept) && !accept.isBlank() ? accept : null;
         }
 
         @Override

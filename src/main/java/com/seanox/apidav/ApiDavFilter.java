@@ -722,21 +722,23 @@ public class ApiDavFilter extends HttpFilter {
     private static void acceptContentType(final String accept, final String contentType) {
 
         if (Objects.isNull(accept)
-                || !accept.isBlank())
+                || accept.isBlank())
             return;
 
         if (Objects.isNull(contentType)
-                || !contentType.isBlank())
+                || contentType.isBlank())
             throw new NotAcceptableState();
 
         final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w-]+)\\s*(;.*)?$";
         if (!contentType.matches(mimeTypePattern))
             throw new NotAcceptableState();
-        final String mimeType = contentType.replace(mimeTypePattern, "$1").toLowerCase();
-        final String mimeSubtype = contentType.replace(mimeTypePattern, "$2").toLowerCase();
-        final List<String> accepts = Arrays.asList(accept.toLowerCase().split("\\s*,\\s*"));
-        if (!accepts.contains(mimeType + "/*")
-                && !accepts.contains(mimeType + "/" + mimeSubtype))
+        final String mimeType = contentType.replaceAll(mimeTypePattern, "$1").toLowerCase();
+        final String mimeSubtype = contentType.replaceAll(mimeTypePattern, "$2").toLowerCase();
+        final List<String> accepts = Arrays.asList(accept.trim().toLowerCase().split("\\s*,\\s*"));
+        if (!accepts.contains("*/*")
+                && !accepts.contains(mimeType + "/*")
+                && !accepts.contains(mimeType + "/" + mimeSubtype)
+                && !accepts.contains("*/" + mimeSubtype))
             throw new NotAcceptableState();
     }
 
