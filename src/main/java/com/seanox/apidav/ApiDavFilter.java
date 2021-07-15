@@ -719,6 +719,27 @@ public class ApiDavFilter extends HttpFilter {
         throw new SuccessState();
     }
 
+    private static void acceptContentType(final String accept, final String contentType) {
+
+        if (Objects.isNull(accept)
+                || !accept.isBlank())
+            return;
+
+        if (Objects.isNull(contentType)
+                || !contentType.isBlank())
+            throw new NotAcceptableState();
+
+        final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w-]+)\\s*(;.*)?$";
+        if (!contentType.matches(mimeTypePattern))
+            throw new NotAcceptableState();
+        final String mimeType = contentType.replace(mimeTypePattern, "$1").toLowerCase();
+        final String mimeSubtype = contentType.replace(mimeTypePattern, "$2").toLowerCase();
+        final List<String> accepts = Arrays.asList(accept.toLowerCase().split("\\s*,\\s*"));
+        if (!accepts.contains(mimeType + "/*")
+                && !accepts.contains(mimeType + "/" + mimeSubtype))
+            throw new NotAcceptableState();
+    }
+
     private void doPut(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
 
         final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
@@ -729,6 +750,7 @@ public class ApiDavFilter extends HttpFilter {
         response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
 
         final Sitemap.File file = ((Sitemap.File)entry);
+        ApiDavFilter.acceptContentType(file.getAccept(), request.getContentType());
         final Sitemap.Callback inputCallback = file.getInputCallback();
         final MetaInputStream metaInputStream = MetaInputStream.builder()
                 .request(request)
