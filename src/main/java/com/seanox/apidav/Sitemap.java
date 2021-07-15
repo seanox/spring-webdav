@@ -58,8 +58,8 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210712<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
+ * Sitemap 1.0.0 20210712
+ * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
@@ -289,8 +289,10 @@ class Sitemap {
         private static final Date    lastModified     = Sitemap.getBuildDate();
         private static final Boolean isReadOnly       = Boolean.TRUE;
         private static final Boolean isHidden         = Boolean.FALSE;
+        private static final Boolean isAccepted       = Boolean.TRUE;
         private static final Boolean isPermitted      = Boolean.TRUE;
 
+        private static final String  accept           = "*/*";
         private static final Long    contentLengthMax = null;
 
         private static final MetaData MetaDataTemplate = new MetaData(
@@ -301,8 +303,9 @@ class Sitemap {
                 Defaults.lastModified,
                 Defaults.isReadOnly,
                 Defaults.isHidden,
+                Defaults.isAccepted,
                 Defaults.isPermitted);
-    }
+        }
 
     abstract class Entry {
 
@@ -422,8 +425,8 @@ class Sitemap {
         private Variant creationDate;
         private Variant isReadOnly;
         private Variant isHidden;
-        private Variant isPermitted;
         private Variant isAccepted;
+        private Variant isPermitted;
 
         @Getter(AccessLevel.PACKAGE) private Callback inputCallback;
         @Getter(AccessLevel.PACKAGE) private Callback outputCallback;
@@ -443,6 +446,8 @@ class Sitemap {
                         this.isReadOnly = callback;
                     else if (Annotation.Attribute.AttributeType.Hidden.equals(attributeType))
                         this.isHidden = callback;
+                    else if (Annotation.Attribute.AttributeType.Accepted.equals(attributeType))
+                        this.isAccepted = callback;
                     else if (Annotation.Attribute.AttributeType.Permitted.equals(attributeType))
                         this.isPermitted = callback;
 
@@ -455,19 +460,11 @@ class Sitemap {
                     else if (Annotation.Attribute.AttributeType.LastModified.equals(attributeType))
                         this.lastModified = callback;
 
-                    else if (Annotation.Attribute.AttributeType.Accept.equals(attributeType))
-                        this.accept = callback;
-                    else if (Annotation.Attribute.AttributeType.ContentLengthMax.equals(attributeType))
-                        this.contentLengthMax = callback;
-                    else if (Annotation.Attribute.AttributeType.Accepted.equals(attributeType))
-                        this.isAccepted = callback;
-
                 } else if (annotation instanceof Annotation.Input) {
                     final Annotation.Input inputAnnotation = (Annotation.Input)annotation;
                     this.inputCallback = new Callback(inputAnnotation.getObject(), inputAnnotation.getMethod());
 
-                    if (Objects.nonNull(inputAnnotation.getAccept())
-                            && !inputAnnotation.getAccept().isBlank())
+                    if (!inputAnnotation.getAccept().isBlank())
                         this.accept = new Static(inputAnnotation.getAccept());
                     if (inputAnnotation.getContentLengthMax() >= 0)
                         this.contentLengthMax = new Static(Long.valueOf(inputAnnotation.getContentLengthMax()));
@@ -479,8 +476,6 @@ class Sitemap {
                                 this.accept = expression;
                             if (Annotation.Attribute.AttributeType.ContentLengthMax.equals(attributeExpression.type))
                                 this.contentLengthMax = expression;
-                            if (Annotation.Attribute.AttributeType.Accepted.equals(attributeExpression.type))
-                                this.isAccepted = expression;
                         }
                     }
 
@@ -499,6 +494,7 @@ class Sitemap {
                         this.lastModified = new Static(mappingAnnotation.getLastModified());
                     this.isReadOnly = new Static(Boolean.valueOf(mappingAnnotation.isReadOnly()));
                     this.isHidden = new Static(Boolean.valueOf(mappingAnnotation.isHidden()));
+                    this.isAccepted = new Static(Boolean.valueOf(mappingAnnotation.isAccepted()));
                     this.isPermitted = new Static(Boolean.valueOf(mappingAnnotation.isPermitted()));
 
                     if (Objects.nonNull(mappingAnnotation.getExpressions())) {
@@ -516,6 +512,8 @@ class Sitemap {
                                 this.isReadOnly = expression;
                             if (Annotation.Attribute.AttributeType.Hidden.equals(attributeExpression.type))
                                 this.isHidden = expression;
+                            if (Annotation.Attribute.AttributeType.Accepted.equals(attributeExpression.type))
+                                this.isAccepted = expression;
                             if (Annotation.Attribute.AttributeType.Permitted.equals(attributeExpression.type))
                                 this.isPermitted = expression;
                         }
@@ -537,6 +535,7 @@ class Sitemap {
                     .lastModified(this.getLastModified())
                     .isReadOnly(this.isReadOnly())
                     .isHidden(this.isHidden())
+                    .isAccepted(this.isAccepted())
                     .isPermitted(this.isPermitted())
                     .build();
         }
@@ -613,6 +612,8 @@ class Sitemap {
                     result = Boolean.valueOf(metaProperties.isHidden());
                 else if (Annotation.Target.ReadOnly.equals(target))
                     result = Boolean.valueOf(metaProperties.isReadOnly());
+                else if (Annotation.Target.Accepted.equals(target))
+                    result = Boolean.valueOf(metaProperties.isAccepted());
                 else if (Annotation.Target.Permitted.equals(target))
                     result = Boolean.valueOf(metaProperties.isPermitted());
 
@@ -662,8 +663,13 @@ class Sitemap {
         }
 
         Long getContentLengthMax() {
-            final Long contentLength = this.eval(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
-            return Objects.nonNull(contentLength) && contentLength.longValue() >= 0 ? contentLength : null;
+            final Long contentLengthMax = this.eval(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
+            return Objects.nonNull(contentLengthMax) && contentLengthMax.longValue() >= 0 ? contentLengthMax : null;
+        }
+
+        String getAccept() {
+            final String accept = this.eval(Annotation.Target.Accept, this.accept, Defaults.accept);
+            return Objects.nonNull(contentLength) && !accept.isBlank() ? accept : null;
         }
 
         @Override
@@ -690,6 +696,11 @@ class Sitemap {
             if (!this.isPermitted())
                 return true;
             final Boolean result = this.eval(Annotation.Target.Hidden, this.isHidden, Defaults.isHidden);
+            return Objects.nonNull(result) && result.booleanValue();
+        }
+
+        boolean isAccepted() {
+            final Boolean result = this.eval(Annotation.Target.Accepted, this.isAccepted, Defaults.isAccepted);
             return Objects.nonNull(result) && result.booleanValue();
         }
 

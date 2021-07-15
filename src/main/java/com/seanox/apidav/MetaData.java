@@ -30,20 +30,20 @@ import java.util.Date;
 /**
  * MetaData writable collector as an alternative to single attributes.
  *
- * MetaData 1.0.0 20210710<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
+ * MetaData 1.0.0 20210715
+ * Copyright (C) 2021 Seanox Software Solutions
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210710
+ * @version 1.0.0 20210715
  */
 @Getter(AccessLevel.PUBLIC)
 public class MetaData extends MetaProperties implements Cloneable {
 
     MetaData(final URI uri, final String contentType, final Long contentLength,
              final Date creationDate, final Date lastModified,
-             final boolean isReadOnly, final boolean isHidden, final boolean isPermitted) {
-        super(uri, contentType, contentLength, creationDate, lastModified, isReadOnly, isHidden, isPermitted);
+             final boolean isReadOnly, final boolean isHidden, final boolean isAccepted, final boolean isPermitted) {
+        super(uri, contentType, contentLength, creationDate, lastModified, isReadOnly, isHidden, isAccepted, isPermitted);
     }
 
     @Override
@@ -77,6 +77,11 @@ public class MetaData extends MetaProperties implements Cloneable {
     }
 
     @Override
+    public void setAccepted(final boolean isAccepted) {
+        super.setAccepted(isAccepted);
+    }
+
+    @Override
     public void setPermitted(final boolean isPermitted) {
         super.setPermitted(isPermitted);
     }
@@ -91,6 +96,7 @@ public class MetaData extends MetaProperties implements Cloneable {
                 this.getLastModified(),
                 this.isReadOnly(),
                 this.isHidden(),
+                this.isAccepted(),
                 this.isPermitted());
     }
 }

@@ -33,12 +33,12 @@ import java.util.Date;
 /**
  * MetaProperties readonly collector as an alternative to single attributes.
  *
- * MetaProperties 1.0.0 20210711<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
+ * MetaProperties 1.0.0 20210715
+ * Copyright (C) 2021 Seanox Software Solutions
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210715
  */
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PROTECTED)
@@ -53,6 +53,7 @@ public class MetaProperties implements Cloneable {
     private Date lastModified;
     private boolean isReadOnly;
     private boolean isHidden;
+    private boolean isAccepted;
     private boolean isPermitted;
 
     @Override
@@ -67,6 +68,7 @@ public class MetaProperties implements Cloneable {
                     .lastModified(this.lastModified)
                     .isReadOnly(this.isReadOnly)
                     .isHidden(this.isHidden)
+                    .isAccepted(this.isAccepted)
                     .isPermitted(this.isPermitted)
                     .build();
         }
