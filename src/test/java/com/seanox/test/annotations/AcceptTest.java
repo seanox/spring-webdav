@@ -21,7 +21,11 @@
  */
 package com.seanox.test.annotations;
 
+import com.seanox.api.extras.AcceptTestController;
 import com.seanox.test.AbstractApiTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Test the function of the Accept attribute.
@@ -34,5 +38,178 @@ import com.seanox.test.AbstractApiTest;
  * @version 1.0.0 20210711
  */
 public class AcceptTest extends AbstractApiTest {
+
+    private static final String CONTENT_TYPE_TEXT_A = "TexT/A";
+    private static final String CONTENT_TYPE_TEXT_B = "text/b";
+    private static final String CONTENT_TYPE_TEXT_C = "TexT/C";
+
+    private static final String CONTENT_TYPE_XXX_A = "XXX/a";
+    private static final String CONTENT_TYPE_XXX_B = "XxX/B";
+    private static final String CONTENT_TYPE_XXX_C = "XXX/c";
+
+    private static final String CONTENT_TYPE_OTHER_A = "other/a";
+
+    @Test
+    void test_A1()
+            throws Exception {
+        final String mapping = AcceptTestController.MAPPING_A1;
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_B).content("TB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_C).content("TC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_A).content("XA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_B).content("XB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_C).content("XC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    void test_A2()
+            throws Exception {
+        final String mapping = AcceptTestController.MAPPING_A2;
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_B).content("TB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_C).content("TC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_A).content("XA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_B).content("XB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_C).content("XC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    void test_A3()
+            throws Exception {
+        final String mapping = AcceptTestController.MAPPING_A3;
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_B).content("TB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_C).content("TC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_A).content("XA"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_B).content("XB"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_C).content("XC"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+    }
+
+    @Test
+    void test_A4()
+            throws Exception {
+        final String mapping = AcceptTestController.MAPPING_A4;
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_B).content("TB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_C).content("TC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_A).content("XA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_B).content("XB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_C).content("XC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+    }
+
+    @Test
+    void test_A5()
+            throws Exception {
+        final String mapping = AcceptTestController.MAPPING_A5;
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_B).content("TB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_C).content("TC"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_A).content("XA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_B).content("XB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_C).content("XC"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+    }
+
+    @Test
+    void test_A6()
+            throws Exception {
+        final String mapping = AcceptTestController.MAPPING_A6;
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_C).content("TC"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_A).content("XA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_B).content("XB"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_XXX_C).content("XC"))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
     // TODO:
 }
