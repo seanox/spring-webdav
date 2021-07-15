@@ -40,11 +40,12 @@ public class LastModifiedTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link ApiDavMapping}
+    // - {@link ApiDavMapping} + {@link ApiDavMappingAttributeExpression}
     // - {@link ApiDavMetaMapping}
     // - {@link ApiDavAttribute}
     // Supported data types of definition:
-    // - static value via {@link ApiDavMapping} + {@link ApiDavMetaMapping}
-    // - Spring Expression Language via {@link ApiDavMapping}
+    // - static value via {@link ApiDavMapping}, {@link ApiDavMetaMapping}
+    // - Spring Expression Language via {@link ApiDavMappingAttributeExpression}
     // - callback via {@link ApiDavAttribute}
     // Expected data type:
     // - Date, string in format yyyy-MM-dd hh:mm:ss only an effect in the annotations,

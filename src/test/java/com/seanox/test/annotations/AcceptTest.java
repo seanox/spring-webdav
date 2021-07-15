@@ -30,14 +30,25 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Test the function of the Accept attribute.
  *
- * AcceptTest 1.0.0 20210711
+ * AcceptTest 1.0.0 20210715
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210715
  */
 public class AcceptTest extends AbstractApiTest {
+
+    // Supported types of data definition:
+    // - {@link ApiDavInputMapping}
+    // - {@link ApiDavInputMappingAttribute} + {@link ApiDavInputMappingAttributeExpression}
+    // Supported data types of definition:
+    // - static value via {@link ApiDavInputMapping}
+    // - Spring Expression Language via {@link ApiDavInputMappingAttributeExpression}
+    // Expected data type:
+    // - String pattern: */* mimetype/* mimetype/mimesubtype */mimesubtype
+    // - empty string has effect like default (*/*)
+    // - default: */*
 
     private static final String CONTENT_TYPE_TEXT_A = "TexT/A";
     private static final String CONTENT_TYPE_TEXT_B = "text/b";

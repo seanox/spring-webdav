@@ -39,6 +39,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  */
 public class ContentLengthMaxTest extends AbstractApiTest {
 
+    // Supported types of data definition:
+    // - {@link ApiDavInputMapping}
+    // - {@link ApiDavInputMappingAttribute} + {@link ApiDavInputMappingAttributeExpression}
+    // Supported data types of definition:
+    // - static value via {@link ApiDavInputMapping}
+    // - Spring Expression Language via {@link ApiDavInputMappingAttributeExpression}
+    // Expected data type:
+    // - long
+    // - value less than 0 has effect like default (null)
+
     private static final String CONTENT_0  = "";
     private static final String CONTENT_1  = "A";
     private static final String CONTENT_10 = "ABCDEFGHIJ";
