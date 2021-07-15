@@ -86,6 +86,7 @@ abstract class Annotation {
 
             ReadOnly(Target.ReadOnly),
             Hidden(Target.Hidden),
+            Accepted(Target.Accepted),
             Permitted(Target.Permitted),
 
             ContentType(Target.ContentType),
@@ -94,8 +95,7 @@ abstract class Annotation {
             LastModified(Target.LastModified),
 
             Accept(Target.Accept),
-            ContentLengthMax(Target.ContentLengthMax),
-            Accepted(Target.Accepted);
+            ContentLengthMax(Target.ContentLengthMax);
 
             final Target target;
 
@@ -179,6 +179,7 @@ abstract class Annotation {
         private final Date    lastModified;
         private final boolean isReadOnly;
         private final boolean isHidden;
+        private final boolean isAccepted;
         private final boolean isPermitted;
 
         private final Collection<Attribute.AttributeExpression> expressions;
@@ -186,7 +187,8 @@ abstract class Annotation {
         @Builder(access=AccessLevel.PRIVATE)
         Mapping(final String path, final AnnotationType type, final Object object, final Method method,
                 final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
-                final boolean isReadOnly, final boolean isHidden, final boolean isPermitted, Attribute.AttributeExpression... expressions) {
+                final boolean isReadOnly, final boolean isHidden, final boolean isAccepted, final boolean isPermitted,
+                final Attribute.AttributeExpression... expressions) {
             super(path, type, object, method);
 
             this.contentLength = contentLength;
@@ -195,6 +197,7 @@ abstract class Annotation {
             this.lastModified  = lastModified;
             this.isReadOnly    = isReadOnly;
             this.isHidden      = isHidden;
+            this.isAccepted    = isAccepted;
             this.isPermitted   = isPermitted;
             this.expressions   = Objects.nonNull(expressions) ? Arrays.asList(expressions) : null;
         }
@@ -226,6 +229,7 @@ abstract class Annotation {
                     .lastModified(lastModified)
                     .isReadOnly(apiDavMapping.isReadOnly())
                     .isHidden(apiDavMapping.isHidden())
+                    .isAccepted(apiDavMapping.isAccepted())
                     .isPermitted(apiDavMapping.isPermitted())
                     .expressions(Arrays.stream(apiDavMapping.attributeExpressions())
                             .map(attributeExpression -> {

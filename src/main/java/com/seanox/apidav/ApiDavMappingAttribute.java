@@ -30,6 +30,7 @@ public enum ApiDavMappingAttribute {
 
     ReadOnly(Annotation.Attribute.AttributeType.ReadOnly),
     Hidden(Annotation.Attribute.AttributeType.Hidden),
+    Accepted(Annotation.Attribute.AttributeType.Accepted),
     Permitted(Annotation.Attribute.AttributeType.Permitted);
 
     final Annotation.Attribute.AttributeType type;

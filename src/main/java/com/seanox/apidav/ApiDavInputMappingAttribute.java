@@ -24,8 +24,7 @@ package com.seanox.apidav;
 public enum ApiDavInputMappingAttribute {
 
     Accept(Annotation.Attribute.AttributeType.Accept),
-    ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax),
-    Accepted(Annotation.Attribute.AttributeType.Accepted);
+    ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax);
 
     final Annotation.Attribute.AttributeType attributeType;
 

@@ -42,6 +42,7 @@ public @interface ApiDavMapping {
     String  creationDate()  default "";
     boolean isReadOnly()    default true;
     boolean isHidden()      default false;
+    boolean isAccepted()    default true;
     boolean isPermitted()   default true;
 
     ApiDavMappingAttributeExpression[] attributeExpressions() default {};
