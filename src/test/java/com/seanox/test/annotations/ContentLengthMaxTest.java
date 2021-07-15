@@ -120,4 +120,19 @@ public class ContentLengthMaxTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("50"));
     }
+
+    @Test
+    void test_A5()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A5)
+                        .content(CONTENT_51))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(ContentLengthMaxTestController.MAPPING_A5))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("51"));
+    }
 }

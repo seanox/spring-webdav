@@ -99,4 +99,18 @@ public class ContentLengthMaxTestController {
             throws IOException {
         this.a4 = inputStream.readAllBytes();
     }
+
+    public static final String MAPPING_A5 = "/extras/contentLengthMax/a5.txt";
+    private byte[] a5 = new byte[0];
+    @ApiDavMapping(path=MAPPING_A5, isReadOnly=false)
+    void test_A5(MetaOutputStream outputStream)
+            throws IOException {
+        outputStream.setLastModified(new Date());
+        outputStream.write(String.valueOf(this.a5.length).getBytes());
+    }
+    @ApiDavInputMapping(path=MAPPING_A5)
+    void test_A5(MetaInputStream inputStream)
+            throws IOException {
+        this.a5 = inputStream.readAllBytes();
+    }
 }
