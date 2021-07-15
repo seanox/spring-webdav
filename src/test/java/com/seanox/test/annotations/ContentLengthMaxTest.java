@@ -21,18 +21,103 @@
  */
 package com.seanox.test.annotations;
 
+import com.seanox.api.extras.ContentLengthMaxTestController;
 import com.seanox.test.AbstractApiTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Test the function of the ContentLengthMaxTest attribute.
  *
- * ContentLengthMaxTest 1.0.0 20210711
+ * ContentLengthMaxTest 1.0.0 20210715
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210715
  */
 public class ContentLengthMaxTest extends AbstractApiTest {
-    // TODO:
+
+    private static final String CONTENT_0  = "";
+    private static final String CONTENT_1  = "A";
+    private static final String CONTENT_10 = "ABCDEFGHIJ";
+    private static final String CONTENT_11 = "ABCDEFGHIJK";
+    private static final String CONTENT_50 = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWX";
+    private static final String CONTENT_51 = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXY";
+
+    @Test
+    void test_A1()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A1)
+                        .content(CONTENT_51))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(ContentLengthMaxTestController.MAPPING_A1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("51"));
+    }
+
+    @Test
+    void test_A2()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A2)
+                        .content(CONTENT_0))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A2)
+                        .content(CONTENT_1))
+                .andExpect(MockMvcResultMatchers.status().isPayloadTooLarge());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(ContentLengthMaxTestController.MAPPING_A2))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("0"));
+    }
+
+    @Test
+    void test_A3()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A3)
+                        .content(CONTENT_10))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A3)
+                        .content(CONTENT_11))
+                .andExpect(MockMvcResultMatchers.status().isPayloadTooLarge());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(ContentLengthMaxTestController.MAPPING_A3))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("10"));
+    }
+
+    @Test
+    void test_A4()
+            throws Exception {
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A4)
+                        .content(CONTENT_50))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .put(ContentLengthMaxTestController.MAPPING_A4)
+                        .content(CONTENT_51))
+                .andExpect(MockMvcResultMatchers.status().isPayloadTooLarge());
+        this.mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(ContentLengthMaxTestController.MAPPING_A4))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("50"));
+    }
 }
