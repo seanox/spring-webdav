@@ -2,6 +2,11 @@ logging:
   level:
     ROOT: info
 
-spring:
+server:
+  tomcat:
+    max-keep-alive-requests: 5
 
-example:
+spring:
+  devtools:
+    restart:
+      enabled: false
