@@ -24,6 +24,7 @@ package com.seanox.api.extras;
 import com.seanox.apidav.ApiDavAttributeMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -41,6 +42,7 @@ import java.util.Date;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210711
  */
+@Profile("test")
 @Component
 public class LastModifiedTestController {
 

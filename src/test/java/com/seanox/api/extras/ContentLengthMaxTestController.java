@@ -25,6 +25,7 @@ import com.seanox.apidav.ApiDavInputMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.MetaInputStream;
 import com.seanox.apidav.MetaOutputStream;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ import java.util.Date;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210715
  */
+@Profile("test")
 @Component
 public class ContentLengthMaxTestController {
 

@@ -27,6 +27,7 @@ import com.seanox.apidav.ApiDavMappingAttribute;
 import com.seanox.apidav.ApiDavMappingAttributeExpression;
 import com.seanox.apidav.MetaOutputStream;
 import com.seanox.apidav.Properties;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -41,6 +42,7 @@ import java.net.URI;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210716
  */
+@Profile("test")
 @Component
 public class AcceptedTestController {
 
