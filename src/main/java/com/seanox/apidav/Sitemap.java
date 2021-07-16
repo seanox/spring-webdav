@@ -58,30 +58,30 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210712
+ * Sitemap 1.0.0 20210716
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210712
+ * @version 1.0.0 20210716
  */
 class Sitemap {
 
     private final TreeMap<String, Entry> tree;
-    private final Properties<Object> data;
-    private final Properties<Map<Variant, Object>> meta;
     private final List<Annotation[]> trace;
+    private final Properties data;
+    private final Properties meta;
 
     private static final Date CREATION_DATE = Sitemap.getBuildDate();
 
     Sitemap() {
         this.tree  = new TreeMap<>();
-        this.data  = new Properties<>();
-        this.meta  = new Properties<>();
         this.trace = new ArrayList<>();
+        this.data  = new Properties();
+        this.meta  = new Properties();
     }
 
-    Sitemap share(Properties<Object> properties)
+    Sitemap share(Properties properties)
             throws SitemapException {
 
         // The trace is the basis for sharing, which is very complex due to the
@@ -565,7 +565,7 @@ class Sitemap {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final Map<Variant, Object> metaMap = Sitemap.this.meta.get(this.getPathUnique());
+            final Map<Variant, Object> metaMap = (Map<Variant, Object>)Sitemap.this.meta.get(this.getPathUnique());
             if (Objects.nonNull(attribute)
                     && metaMap.containsKey(attribute))
                 return (T)metaMap.get(attribute);

@@ -72,7 +72,7 @@ public class ApiDavFilter extends HttpFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiDavFilter.class);
 
-    private Properties<Object> properties;
+    private Properties properties;
 
     private Sitemap sitemap;
 
@@ -378,9 +378,9 @@ public class ApiDavFilter extends HttpFilter {
         return factory.newDocumentBuilder().parse(request.getInputStream());
     }
 
-    private static Properties<String> getPropertiesFromNode(final Node node) {
+    private static Properties getPropertiesFromNode(final Node node) {
 
-        final Properties<String> properties = new Properties<>();
+        final Properties properties = new Properties();
         final NodeList nodeList = node.getChildNodes();
         IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
                 .filter(streamNode -> streamNode.getNodeType() == Node.ELEMENT_NODE)
@@ -394,7 +394,7 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Sitemap.Entry entry,
-                  final int type, final Properties<String> properties)
+                  final int type, final Properties properties)
             throws IOException {
 
         xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESPONSE, XmlWriter.ElementType.OPENING);
@@ -578,7 +578,7 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Sitemap.Entry entry,
-                    final int type, final Properties<String> properties, final int depth)
+                    final int type, final Properties properties, final int depth)
             throws IOException {
 
         ApiDavFilter.collectProperties(xmlWriter, contextUrl, entry, type, properties);
@@ -625,7 +625,7 @@ public class ApiDavFilter extends HttpFilter {
         final String contextPath = this.locateRequestContextPath(request);
 
         try {
-            final Properties<String> properties = new Properties<>();
+            final Properties properties = new Properties();
             final Document document = ApiDavFilter.readXmlRequest(request);
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             try (final XmlWriter xmlWriter = new XmlWriter(buffer)) {
@@ -725,16 +725,19 @@ public class ApiDavFilter extends HttpFilter {
                 || accept.isBlank())
             return;
 
+        final List<String> accepts = Arrays.asList(accept.trim().toLowerCase().split("\\s*,\\s*"));
+
         if (Objects.isNull(contentType)
                 || contentType.isBlank())
-            throw new NotAcceptableState();
+            if (accepts.contains("*/*"))
+                return;
+            else new NotAcceptableState();
 
-        final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w-]+)\\s*(;.*)?$";
+        final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w\\.\\-]+)\\s*(;.*)?$";
         if (!contentType.matches(mimeTypePattern))
             throw new NotAcceptableState();
         final String mimeType = contentType.replaceAll(mimeTypePattern, "$1").toLowerCase();
         final String mimeSubtype = contentType.replaceAll(mimeTypePattern, "$2").toLowerCase();
-        final List<String> accepts = Arrays.asList(accept.trim().toLowerCase().split("\\s*,\\s*"));
         if (!accepts.contains("*/*")
                 && !accepts.contains(mimeType + "/*")
                 && !accepts.contains(mimeType + "/" + mimeSubtype)
@@ -873,7 +876,7 @@ public class ApiDavFilter extends HttpFilter {
                     // valid. Order of initialization is unknown, this is done
                     // with the first request.
 
-                    this.properties = new Properties<>();
+                    this.properties = new Properties();
                     for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
                             .filter(Predicate.not(entry -> entry.contains(".")))
                             .collect(Collectors.toSet()))
@@ -882,7 +885,7 @@ public class ApiDavFilter extends HttpFilter {
             }
         }
 
-        final Properties<Object> properties = this.properties.clone();
+        final Properties properties = this.properties.clone();
         properties.put("applicationContext", applicationContext);
         properties.put("servletContext", servletContext);
         properties.put("request", request);

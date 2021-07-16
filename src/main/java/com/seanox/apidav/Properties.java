@@ -26,30 +26,28 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 /**
  * Case-insensitive properties based on a {@link java.util.Map}.
  *
- * @param <V> Data type of value
- *
- * Properties 1.0.0 20210704
+ * Properties 1.0.0 20210716
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210704
+ * @version 1.0.0 20210716
  */
-public class Properties<V> extends LinkedCaseInsensitiveMap<V> {
+public class Properties extends LinkedCaseInsensitiveMap<Object> {
 
     private static final long serialVersionUID = -4516866265247165421L;
 
-    public Properties() {
+    Properties() {
         super();
     }
 
-    public Properties(final Properties<V> properties) {
+    Properties(final Properties properties) {
         super();
         this.putAll(properties);
     }
 
     @Override
-    public Properties<V> clone() {
-        return new Properties<>(this);
+    public Properties clone() {
+        return new Properties(this);
     }
 }
