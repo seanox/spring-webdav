@@ -55,10 +55,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -700,6 +698,8 @@ public class ApiDavFilter extends HttpFilter {
             throw new NotFoundState();
 
         final Sitemap.File file = ((Sitemap.File)entry);
+        if (!file.isAccepted())
+            throw new BadRequestState();
         final Sitemap.Callback outputCallback = file.getOutputCallback();
 
         try (final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
@@ -752,6 +752,8 @@ public class ApiDavFilter extends HttpFilter {
         response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
 
         final Sitemap.File file = ((Sitemap.File)entry);
+        if (!file.isAccepted())
+            throw new BadRequestState();
         ApiDavFilter.acceptContentType(file.getAccept(), request.getContentType());
         final Sitemap.Callback inputCallback = file.getInputCallback();
         final MetaInputStream metaInputStream = MetaInputStream.builder()
@@ -854,6 +856,9 @@ public class ApiDavFilter extends HttpFilter {
 
         final long timing = System.currentTimeMillis();
 
+        final ServletContext servletContext = request.getServletContext();
+        final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+
         // The sitemap is used as a request-based shared instance.
         // The values of the annotations can contain values, expressions and
         // callbacks, which must then be processed in relation to the request.
@@ -868,69 +873,24 @@ public class ApiDavFilter extends HttpFilter {
                     // valid. Order of initialization is unknown, this is done
                     // with the first request.
 
-                    final ServletContext servletContext = request.getServletContext();
-                    final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
-
                     this.properties = new Properties<>();
                     for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
                             .filter(Predicate.not(entry -> entry.contains(".")))
                             .collect(Collectors.toSet()))
                         this.properties.put(beanName, applicationContext.getBean(beanName));
-
-                    final Map<String, Object> contextMap = new HashMap<>();
-                    this.properties.put("context", contextMap);
-                    if (Objects.nonNull(request.getRemoteUser()))
-                        contextMap.put("servlet", servletContext);
-                    if (Objects.nonNull(request.getUserPrincipal()))
-                        contextMap.put("application", applicationContext);
                 }
             }
         }
 
         final Properties<Object> properties = this.properties.clone();
-
         final HttpSession session = request.getSession(false);
-        if (Objects.nonNull(session)) {
-            final Map<String, Object> sessionMap = new HashMap<>();
-            properties.put("session", sessionMap);
-            sessionMap.put("id", session.getId());
-            if (session.getAttributeNames().hasMoreElements()) {
-                final Map<String, Object> sessionAttributeMap = new HashMap<>();
-                sessionMap.put("attributes", sessionAttributeMap);
-                session.getAttributeNames().asIterator()
-                        .forEachRemaining(attribute -> sessionAttributeMap.put(attribute, session.getAttribute(attribute)));
-            }
-        }
-
-        final Map<String, Object> requestMap = new HashMap<>();
-        properties.put("request", requestMap);
-        if (Objects.nonNull(request.getRequestedSessionId())) {
-            final Map<String, Object> requestSessionMap = new HashMap<>();
-            requestMap.put("session", requestSessionMap);
-            requestSessionMap.put("id", request.getRequestedSessionId());
-        }
-        if (request.getHeaderNames().hasMoreElements()) {
-            final Map<String, Object> requestHeaderMap = new HashMap<>();
-            requestMap.put("headers", requestHeaderMap);
-            request.getHeaderNames().asIterator()
-                    .forEachRemaining(header -> requestHeaderMap.put(header, request.getHeader(header)));
-        }
-        if (request.getAttributeNames().hasMoreElements()) {
-            final Map<String, Object> requestAttributeMap = new HashMap<>();
-            requestMap.put("attributes", requestAttributeMap);
-            request.getAttributeNames().asIterator()
-                    .forEachRemaining(attribute -> requestAttributeMap.put(attribute, request.getAttribute(attribute)));
-        }
-
-        if (Objects.nonNull(request.getRemoteUser())
-                || Objects.nonNull(request.getUserPrincipal())) {
-            final Map<String, Object> userMap = new HashMap<>();
-            properties.put("user", userMap);
-            if (Objects.nonNull(request.getRemoteUser()))
-                userMap.put("remote", request.getRemoteUser());
-            if (Objects.nonNull(request.getUserPrincipal()))
-                userMap.put("principal", request.getUserPrincipal());
-        }
+        if (Objects.nonNull(session))
+            properties.put("session", session);
+        properties.put("request", request);
+        if (Objects.nonNull(servletContext))
+            properties.put("servletContext", servletContext);
+        if (Objects.nonNull(applicationContext))
+            properties.put("applicationContext", applicationContext);
 
         final Sitemap sitemap;
         try {sitemap = this.sitemap.share(properties);
@@ -1089,6 +1049,14 @@ public class ApiDavFilter extends HttpFilter {
                 return;
             response.setHeader(HEADER_ETAG, "\"" + this.identifier + "\"");
             super.forceResponseStatus(response);
+        }
+    }
+
+    private static class BadRequestState extends State {
+
+        @Override
+        int getStatusCode() {
+            return HttpServletResponse.SC_BAD_REQUEST;
         }
     }
 
