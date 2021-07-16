@@ -883,14 +883,12 @@ public class ApiDavFilter extends HttpFilter {
         }
 
         final Properties<Object> properties = this.properties.clone();
+        properties.put("applicationContext", applicationContext);
+        properties.put("servletContext", servletContext);
+        properties.put("request", request);
         final HttpSession session = request.getSession(false);
         if (Objects.nonNull(session))
             properties.put("session", session);
-        properties.put("request", request);
-        if (Objects.nonNull(servletContext))
-            properties.put("servletContext", servletContext);
-        if (Objects.nonNull(applicationContext))
-            properties.put("applicationContext", applicationContext);
 
         final Sitemap sitemap;
         try {sitemap = this.sitemap.share(properties);

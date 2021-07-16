@@ -67,8 +67,7 @@ abstract class Annotation {
     enum Target {
         ReadOnly(Boolean.TYPE), Hidden(Boolean.TYPE), Accepted(Boolean.TYPE), Permitted(Boolean.TYPE),
         ContentType(String.class), ContentLength(Long.class), CreationDate(Date.class), LastModified(Date.class),
-        Accept(String.class), ContentLengthMax(Long.class),
-        Read(Void.class), Write(Void.class), Meta(Void.class);
+        Accept(String.class), ContentLengthMax(Long.class);
 
         final Class<?> type;
 
