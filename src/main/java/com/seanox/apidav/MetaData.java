@@ -38,7 +38,7 @@ import java.util.Date;
  * @version 1.0.0 20210717
  */
 @Getter(AccessLevel.PUBLIC)
-public class MetaData extends MetaProperties implements Cloneable {
+public class MetaData extends MetaProperties {
 
     MetaData(final URI uri, final String contentType, final Long contentLength,
              final Date creationDate, final Date lastModified,
