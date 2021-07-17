@@ -24,6 +24,7 @@ package com.seanox.test;
 import com.seanox.api.Application;
 import com.seanox.apidav.ApiDavFilter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockFilterConfig;
@@ -44,18 +45,20 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * General implementation for the execution of API tests.
  *
- * AbstractApiTest 1.0.0 20210713
+ * AbstractApiTest 1.0.0 20210717
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210713
+ * @version 1.0.0 20210717
  */
 @SpringBootTest(classes= Application.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractApiTest extends AbstractTest {
 
     protected static final String ROOT_URI = "/";
@@ -85,6 +88,8 @@ public abstract class AbstractApiTest extends AbstractTest {
     @BeforeEach
     protected void startApi()
             throws ServletException {
+        if (Objects.nonNull(this.mockMvc))
+            return;
         final MockFilterConfig mockFilterConfig = new MockFilterConfig(this.webApplicationContext.getServletContext());
         final ApiDavFilter apiDavFilter = new ApiDavFilter();
         apiDavFilter.init(mockFilterConfig);
