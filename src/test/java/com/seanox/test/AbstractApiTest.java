@@ -214,14 +214,14 @@ public abstract class AbstractApiTest extends AbstractTest {
 
         @Override
         public String toString() {
-            return status
-                    + " " + uri + " "
-                    + contentTypeCount
-                    + contentLengthCount
-                    + creationDateCount
-                    + lastModifiedCount
-                    + isReadOnlyCount
-                    + isHiddenCount;
+            return this.status
+                    + " " + this.uri + " "
+                    + this.contentTypeCount
+                    + this.contentLengthCount
+                    + this.creationDateCount
+                    + this.lastModifiedCount
+                    + this.isReadOnlyCount
+                    + this.isHiddenCount;
         }
     }
 
