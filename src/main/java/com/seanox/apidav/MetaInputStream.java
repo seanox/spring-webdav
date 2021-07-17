@@ -58,9 +58,9 @@ public class MetaInputStream extends InputStream {
 
         if (Objects.isNull(this.input)) {
             this.input = this.request.getInputStream();
-            if (Objects.nonNull(contentLengthMax)
-                    && contentLengthMax.longValue() >= 0)
-                this.limit = contentLengthMax.longValue();
+            if (Objects.nonNull(this.contentLengthMax)
+                    && this.contentLengthMax.longValue() >= 0)
+                this.limit = this.contentLengthMax.longValue();
         }
 
         if (Objects.nonNull(this.exception))
@@ -73,8 +73,8 @@ public class MetaInputStream extends InputStream {
 
         this.advanceAccess();
 
-        if (Objects.isNull(contentLengthMax)
-                || contentLengthMax.longValue() < 0)
+        if (Objects.isNull(this.contentLengthMax)
+                || this.contentLengthMax.longValue() < 0)
             return this.input.read();
 
         try {
@@ -99,8 +99,8 @@ public class MetaInputStream extends InputStream {
 
         this.advanceAccess();
 
-        if (Objects.isNull(contentLengthMax)
-                || contentLengthMax.longValue() < 0)
+        if (Objects.isNull(this.contentLengthMax)
+                || this.contentLengthMax.longValue() < 0)
             return this.input.read(bytes);
 
         try {
@@ -125,8 +125,8 @@ public class MetaInputStream extends InputStream {
 
         this.advanceAccess();
 
-        if (Objects.isNull(contentLengthMax)
-                || contentLengthMax.longValue() < 0)
+        if (Objects.isNull(this.contentLengthMax)
+                || this.contentLengthMax.longValue() < 0)
             return this.input.read(bytes, offset, length);
 
         try {
@@ -151,8 +151,8 @@ public class MetaInputStream extends InputStream {
 
         this.advanceAccess();
 
-        if (Objects.isNull(contentLengthMax)
-                || contentLengthMax.longValue() < 0)
+        if (Objects.isNull(this.contentLengthMax)
+                || this.contentLengthMax.longValue() < 0)
             return this.input.readAllBytes();
 
         try {return this.input.readNBytes((int)this.limit);
@@ -169,6 +169,9 @@ public class MetaInputStream extends InputStream {
     }
 
     static class MetaInputStreamLimitException extends IOException {
+
+        private static final long serialVersionUID = 8486198748528435570L;
+
         MetaInputStreamLimitException() {
             super();
         }
