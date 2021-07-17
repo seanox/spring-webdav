@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -46,8 +47,8 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 /**
- * Sitemap for mapping a virtual file system.
- *
+ * Sitemap for mapping a virtual file system.<br>
+ * <br>
  * Rules (similar error behavior as mapping from RestController):
  * <ul>
  *   <li>Ambiguous mapping causes SitemapException</li>
@@ -58,14 +59,14 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210716
+ * Sitemap 1.0.0 20210717
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210716
+ * @author Seanox Software Solutions
+ * @version 1.0.0 20210717
  */
-class Sitemap {
+class Sitemap implements Serializable {
 
     private final TreeMap<String, Entry> tree;
     private final List<Annotation[]> trace;
@@ -305,7 +306,7 @@ class Sitemap {
                 Defaults.isHidden,
                 Defaults.isAccepted,
                 Defaults.isPermitted);
-        }
+    }
 
     abstract class Entry {
 
@@ -573,10 +574,10 @@ class Sitemap {
             Object result = fallback;
             if (Objects.nonNull(attribute)
                     && attribute instanceof Callback) {
-                try {result = ((Callback) attribute).invoke(URI.create(Sitemap.File.this.getPath()));
+                try {result = ((Callback)attribute).invoke(URI.create(Sitemap.File.this.getPath()));
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
-                        exception = (Exception) ((InvocationTargetException) exception).getTargetException();
+                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
                     final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
                     LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".CallbackException").error(message);
                     return null;
@@ -592,14 +593,14 @@ class Sitemap {
                     try {this.metaCallback.invoke(meta, meta.getUri());
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
-                            exception = (Exception) ((InvocationTargetException) exception).getTargetException();
+                            exception = (Exception)((InvocationTargetException)exception).getTargetException();
                         final String message = String.format("MetaMapping: %s %s", exception.getClass().getName(), exception.getMessage());
                         LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".CallbackException").error(message);
                         return null;
                     }
                     metaMap.put(this.metaCallback, meta.clone());
                 }
-                final MetaProperties metaProperties = (MetaProperties) metaMap.get(this.metaCallback);
+                final MetaProperties metaProperties = (MetaProperties)metaMap.get(this.metaCallback);
                 if (Annotation.Target.ContentLength.equals(target))
                     result = metaProperties.getContentLength();
                 else if (Annotation.Target.ContentType.equals(target))
@@ -756,7 +757,7 @@ class Sitemap {
             });
             final List<Object> compose = new ArrayList<>();
             Arrays.stream(this.method.getParameterTypes()).forEach(parameterType ->
-                compose.add(placeholder.get(parameterType))
+                    compose.add(placeholder.get(parameterType))
             );
             return compose.toArray(new Object[0]);
         }
