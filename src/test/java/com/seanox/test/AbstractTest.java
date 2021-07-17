@@ -30,18 +30,20 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * General implementation for the execution of tests.
  *
- * AbstractTest 1.0.0 20210705
+ * AbstractTest 1.0.0 20210717
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210705
+ * @version 1.0.0 20210717
  */
 public class AbstractTest {
 
@@ -91,5 +93,20 @@ public class AbstractTest {
                 .sorted((method, compare) -> method.getName().compareToIgnoreCase(compare.getName()))
                 .forEach(method -> annotations.addAll(Arrays.asList(AbstractTest.getDeclaredApiAnnotations(method))));
         return annotations;
+    }
+
+    public static String createObjectFingerprint(Object... objects) {
+        final Map<Object, String> repository = new HashMap<>();
+        final StringBuilder fingerprint = new StringBuilder();
+        for (final Object object : objects) {
+            if (Objects.nonNull(object)) {
+                if (!repository.containsKey(object)) {
+                    final int index = repository.size();
+                    fingerprint.append(Character.toString((char)65 +index));
+                    repository.put(object, Character.toString((char)97 +index));
+                } else fingerprint.append(repository.get(object));
+            } else fingerprint.append("-");
+        }
+        return fingerprint.toString();
     }
 }
