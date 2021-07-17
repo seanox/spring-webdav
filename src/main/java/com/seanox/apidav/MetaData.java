@@ -30,12 +30,12 @@ import java.util.Date;
 /**
  * MetaData writable collector as an alternative to single attributes.
  *
- * MetaData 1.0.0 20210715
+ * MetaData 1.0.0 20210717
  * Copyright (C) 2021 Seanox Software Solutions
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210715
+ * @version 1.0.0 20210717
  */
 @Getter(AccessLevel.PUBLIC)
 public class MetaData extends MetaProperties implements Cloneable {
@@ -88,15 +88,6 @@ public class MetaData extends MetaProperties implements Cloneable {
 
     @Override
     public MetaData clone() {
-        return new MetaData(
-                this.getUri(),
-                this.getContentType(),
-                this.getContentLength(),
-                this.getCreationDate(),
-                this.getLastModified(),
-                this.isReadOnly(),
-                this.isHidden(),
-                this.isAccepted(),
-                this.isPermitted());
+        return (MetaData)super.clone();
     }
 }
