@@ -68,6 +68,8 @@ import java.util.TreeMap;
  */
 class Sitemap implements Serializable {
 
+    private static final long serialVersionUID = 2047313581285550891L;
+
     private final TreeMap<String, Entry> tree;
     private final List<Annotation[]> trace;
     private final Properties data;
