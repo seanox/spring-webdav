@@ -25,12 +25,7 @@ import com.seanox.apidav.ApiDavAttributeMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
 import com.seanox.apidav.ApiDavMappingAttributeExpression;
-import com.seanox.apidav.MetaOutputStream;
-import com.seanox.apidav.Properties;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
-import java.net.URI;
 
 /**
  * Test of the annotation {@link AcceptedTestController} + accepted functions.
@@ -42,7 +37,6 @@ import java.net.URI;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210716
  */
-@Profile("test")
 @Component
 public class AcceptedTestController {
 
@@ -100,14 +94,14 @@ public class AcceptedTestController {
             @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
     @ApiDavMapping(path=MAPPING_CH, isReadOnly=false, attributeExpressions={
             @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    void test_CX(MetaOutputStream outputStream) {
+    void test_CX() {
     }
     @ApiDavAttributeMapping(path=MAPPING_C1, attribute=ApiDavMappingAttribute.Accepted)
-    void test_C1(URI uri, Properties properties) {
+    void test_C1() {
         return;
     }
     @ApiDavAttributeMapping(path=MAPPING_C2, attribute=ApiDavMappingAttribute.Accepted)
-    String test_C2(Properties properties) {
+    String test_C2() {
         return null;
     }
     @ApiDavAttributeMapping(path=MAPPING_C3, attribute=ApiDavMappingAttribute.Accepted)

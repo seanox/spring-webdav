@@ -25,7 +25,6 @@ import com.seanox.apidav.ApiDavInputMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.MetaInputStream;
 import com.seanox.apidav.MetaOutputStream;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -41,7 +40,6 @@ import java.util.Date;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210715
  */
-@Profile("test")
 @Component
 public class AcceptTestController {
 
@@ -51,7 +49,7 @@ public class AcceptTestController {
     void test_A1(MetaOutputStream outputStream)
             throws IOException {
         outputStream.setLastModified(new Date());
-        outputStream.write(a1.getBytes());
+        outputStream.write(this.a1.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_A1)
     void test_A1(MetaInputStream inputStream)
@@ -65,7 +63,7 @@ public class AcceptTestController {
     void test_A2(MetaOutputStream outputStream)
             throws IOException {
         outputStream.setLastModified(new Date());
-        outputStream.write(a2.getBytes());
+        outputStream.write(this.a2.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_A2, accept="")
     void test_A2(MetaInputStream inputStream)
@@ -79,7 +77,7 @@ public class AcceptTestController {
     void test_A3(MetaOutputStream outputStream)
             throws IOException {
         outputStream.setLastModified(new Date());
-        outputStream.write(a3.getBytes());
+        outputStream.write(this.a3.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_A3, accept="text/*")
     void test_A3(MetaInputStream inputStream)
@@ -93,7 +91,7 @@ public class AcceptTestController {
     void test_A4(MetaOutputStream outputStream)
             throws IOException {
         outputStream.setLastModified(new Date());
-        outputStream.write(a4.getBytes());
+        outputStream.write(this.a4.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_A4, accept="text/* , xxx/* ")
     void test_A4(MetaInputStream inputStream)
@@ -107,7 +105,7 @@ public class AcceptTestController {
     void test_A5(MetaOutputStream outputStream)
             throws IOException {
         outputStream.setLastModified(new Date());
-        outputStream.write(a5.getBytes());
+        outputStream.write(this.a5.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_A5, accept="text/a, text/b, xxx/* ")
     void test_A5(MetaInputStream inputStream)
@@ -121,7 +119,7 @@ public class AcceptTestController {
     void test_A6(MetaOutputStream outputStream)
             throws IOException {
         outputStream.setLastModified(new Date());
-        outputStream.write(a6.getBytes());
+        outputStream.write(this.a6.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_A6, accept="*/a,*/b")
     void test_A6(MetaInputStream inputStream)

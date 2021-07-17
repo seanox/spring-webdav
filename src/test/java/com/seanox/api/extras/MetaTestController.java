@@ -28,7 +28,6 @@ import com.seanox.apidav.MetaInputStream;
 import com.seanox.apidav.MetaOutputStream;
 import com.seanox.apidav.MetaProperties;
 import com.seanox.apidav.Properties;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -47,7 +46,6 @@ import java.util.Objects;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210711
  */
-@Profile("test")
 @Component
 public class MetaTestController {
 
@@ -90,7 +88,7 @@ public class MetaTestController {
 
     public static final String MAPPING_A4 = "/extras/meta/a4.txt";
     @ApiDavMapping(path=MAPPING_A4)
-    void testA4(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
+    void testA4(MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A4 + " " + outputStream.getContentType()).getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_A4)
@@ -123,49 +121,49 @@ public class MetaTestController {
     String testB1Result;
     public static final String MAPPING_B1 = "/extras/meta/b1.txt";
     @ApiDavMapping(path=MAPPING_B1)
-    void testB1(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
-        outputStream.write(testB1Result.getBytes());
+    void testB1(MetaOutputStream outputStream) throws IOException {
+        outputStream.write(this.testB1Result.getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_B1)
     void testB1(MetaData meta1, MetaData meta2) {
-        testB1Result = String.format("%s %s %s %s",
+        this.testB1Result = String.format("%s %s %s %s",
                 meta1.getUri(), Objects.nonNull(meta1), Objects.nonNull(meta2), meta1 == meta2);
     }
 
     String testB2Result;
     public static final String MAPPING_B2 = "/extras/meta/b2.txt";
     @ApiDavMapping(path=MAPPING_B2)
-    void testB2(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
-        outputStream.write(testB2Result.getBytes());
+    void testB2(MetaOutputStream outputStream) throws IOException {
+        outputStream.write(this.testB2Result.getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_B2)
-    void testB2(URI uri, MetaData meta1) {
-        testB2Result = String.format("%s %s",
+    void testB2(MetaData meta1) {
+        this.testB2Result = String.format("%s %s",
                 meta1.getUri(), Objects.nonNull(meta1));
     }
 
     String testB3Result;
     public static final String MAPPING_B3 = "/extras/meta/b3.txt";
     @ApiDavMapping(path=MAPPING_B3)
-    void testB3(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
-        outputStream.write(testB3Result.getBytes());
+    void testB3(MetaOutputStream outputStream) throws IOException {
+        outputStream.write(this.testB3Result.getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_B3)
     void testB3(Properties properties, URI uri, MetaData meta1) {
-        testB3Result = String.format("%s %s %s %s",
+        this.testB3Result = String.format("%s %s %s %s",
                 meta1.getUri(), Objects.nonNull(properties), Objects.nonNull(uri), Objects.nonNull(meta1));
     }
 
     String testB4Result;
     public static final String MAPPING_B4 = "/extras/meta/b4.txt";
     @ApiDavMapping(path=MAPPING_B4)
-    void testB4(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
-        outputStream.write(testB4Result.getBytes());
+    void testB4(MetaOutputStream outputStream) throws IOException {
+        outputStream.write(this.testB4Result.getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_B4)
     void testB4(URI uri1, Properties properties1, MetaData meta1, URI uri2, Properties properties2, String string,
                 MetaProperties metaProperties, MetaOutputStream outputStream, MetaInputStream inputStream) {
-        testB4Result = String.format("%s %s %s %s %s %s %s %s %s %s %s",
+        this.testB4Result = String.format("%s %s %s %s %s %s %s %s %s %s %s",
                 meta1.getUri(),
                 Objects.nonNull(uri1), Objects.nonNull(uri2), uri1 == uri2,
                 Objects.nonNull(properties1), Objects.nonNull(properties2), properties1 == properties2,
@@ -175,12 +173,12 @@ public class MetaTestController {
     String testB5Result;
     public static final String MAPPING_B5 = "/extras/meta/b5.txt";
     @ApiDavMapping(path=MAPPING_B5)
-    void testB5(MetaProperties metaProperties, MetaOutputStream outputStream) throws IOException {
-        outputStream.write(testB5Result.getBytes());
+    void testB5(MetaOutputStream outputStream) throws IOException {
+        outputStream.write(this.testB5Result.getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_B5)
     void testB5(Object... objects) {
-        testB5Result = MAPPING_B5 + " " + Objects.isNull(objects);
+        this.testB5Result = MAPPING_B5 + " " + Objects.isNull(objects);
     }
 
     // Function of all attributes is tested.
@@ -236,7 +234,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C3)
     void testC3(MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(-100l);
+        metaData.setContentLength(-100L);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -246,7 +244,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C4)
     void testC4(MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(-1l);
+        metaData.setContentLength(-1L);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -256,7 +254,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C5)
     void testC5(MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(0l);
+        metaData.setContentLength(0L);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -266,7 +264,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C6)
     void testC6(MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(1l);
+        metaData.setContentLength(1L);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -276,7 +274,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C7)
     void testC7(MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(100l);
+        metaData.setContentLength(100L);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -304,7 +302,7 @@ public class MetaTestController {
         metaData.setPermitted(true);
     }
     @ApiDavMetaMapping(path=MAPPING_CA)
-    void testCA(MetaData metaData) throws ParseException {
+    void testCA(MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);
         metaData.setCreationDate(null);
@@ -314,7 +312,7 @@ public class MetaTestController {
         metaData.setPermitted(true);
     }
     @ApiDavMetaMapping(path=MAPPING_CB)
-    void testCB(MetaData metaData) throws ParseException {
+    void testCB(MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);
         metaData.setCreationDate(null);
@@ -324,7 +322,7 @@ public class MetaTestController {
         metaData.setPermitted(true);
     }
     @ApiDavMetaMapping(path=MAPPING_CC)
-    void testCC(MetaData metaData) throws ParseException {
+    void testCC(MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);
         metaData.setCreationDate(null);
