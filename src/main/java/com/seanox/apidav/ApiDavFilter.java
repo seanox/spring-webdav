@@ -726,10 +726,11 @@ public class ApiDavFilter extends HttpFilter {
         final List<String> accepts = Arrays.asList(accept.trim().toLowerCase().split("\\s*,\\s*"));
 
         if (Objects.isNull(contentType)
-                || contentType.isBlank())
+                || contentType.isBlank()) {
             if (accepts.contains("*/*"))
                 return;
-            else throw new NotAcceptableState();
+            throw new NotAcceptableState();
+        }
 
         final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w.-]+)\\s*(;.*)?$";
         if (!contentType.matches(mimeTypePattern))
@@ -1051,6 +1052,8 @@ public class ApiDavFilter extends HttpFilter {
 
     private static class BadRequestState extends State {
 
+        private static final long serialVersionUID = 6236121705930514520L;
+
         @Override
         int getStatusCode() {
             return HttpServletResponse.SC_BAD_REQUEST;
@@ -1123,6 +1126,8 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static class PayloadTooLargeState extends State {
+
+        private static final long serialVersionUID = 1616244187380236731L;
 
         @Override
         int getStatusCode() {
