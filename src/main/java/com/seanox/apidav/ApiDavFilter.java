@@ -260,7 +260,6 @@ public class ApiDavFilter extends HttpFilter {
                 }
 
             LOGGER.info(this.getClass().getSimpleName() + " was established");
-            // TODO: Output of endpoints
             LOGGER.info("Sitemap");
             LOGGER.info("---");
             Arrays.stream(this.sitemap.toString().split("\\R")).forEach(LOGGER::info);
@@ -344,14 +343,12 @@ public class ApiDavFilter extends HttpFilter {
             }
             final String ifMatch = request.getHeader(HEADER_IF_MATCH);
             if (Objects.nonNull(ifMatch)
-                    && !ifMatch.isBlank()) {
-                if (!Arrays.asList(ifMatch.split("\\s*,\\s*")).contains("\"" + identifier + "\"")) {
-                    if (METHOD_PUT.equals(method)
-                            || METHOD_LOCK.equals(method)
-                            || METHOD_HEAD.equals(method)
-                            || METHOD_GET.equals(method))
-                        throw new PreconditionFailedState();
-                }
+                    && !Arrays.asList(ifMatch.split("\\s*,\\s*")).contains("\"" + identifier + "\"")) {
+                if (METHOD_PUT.equals(method)
+                        || METHOD_LOCK.equals(method)
+                        || METHOD_HEAD.equals(method)
+                        || METHOD_GET.equals(method))
+                    throw new PreconditionFailedState();
             }
         }
 
@@ -359,10 +356,9 @@ public class ApiDavFilter extends HttpFilter {
     }
 
     private static int getDepth(final HttpServletRequest request) {
-
         final String depth = request.getHeader(HEADER_DEPTH);
         if (Objects.isNull(depth)
-                || (!depth.equals("0") && depth.equals("1")))
+                || !depth.matches("[01]"))
             return WEBDAV_INFINITY;
         return request.getIntHeader(HEADER_DEPTH);
     }
@@ -572,6 +568,8 @@ public class ApiDavFilter extends HttpFilter {
                 }
 
                 break;
+
+            default:
         }
 
         xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESPONSE, XmlWriter.ElementType.CLOSING);
@@ -697,7 +695,7 @@ public class ApiDavFilter extends HttpFilter {
         if (entry.isFolder())
             throw new NotFoundState();
 
-        final Sitemap.File file = ((Sitemap.File)entry);
+        final Sitemap.File file = (Sitemap.File)entry;
         if (!file.isAccepted())
             throw new BadRequestState();
         final Sitemap.Callback outputCallback = file.getOutputCallback();
@@ -731,9 +729,9 @@ public class ApiDavFilter extends HttpFilter {
                 || contentType.isBlank())
             if (accepts.contains("*/*"))
                 return;
-            else new NotAcceptableState();
+            else throw new NotAcceptableState();
 
-        final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w\\.\\-]+)\\s*(;.*)?$";
+        final String mimeTypePattern = "^\\s*([\\w-]+)\\s*/\\s*([\\w.-]+)\\s*(;.*)?$";
         if (!contentType.matches(mimeTypePattern))
             throw new NotAcceptableState();
         final String mimeType = contentType.replaceAll(mimeTypePattern, "$1").toLowerCase();
@@ -754,7 +752,7 @@ public class ApiDavFilter extends HttpFilter {
 
         response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
 
-        final Sitemap.File file = ((Sitemap.File)entry);
+        final Sitemap.File file = (Sitemap.File)entry;
         if (!file.isAccepted())
             throw new BadRequestState();
         ApiDavFilter.acceptContentType(file.getAccept(), request.getContentType());
@@ -836,12 +834,12 @@ public class ApiDavFilter extends HttpFilter {
             xmlWriter.flush();
         }
 
-        final String markup = buffer.toString();
+        final String markup = buffer.toString(StandardCharsets.UTF_8);
 
         response.addHeader(HEADER_LOCK_TOKEN, "<" + token + ">");
         response.setContentType(MediaType.TEXT_XML.toString());
         response.setContentLength(markup.length());
-        response.getOutputStream().write(markup.getBytes());
+        response.getOutputStream().write(markup.getBytes(StandardCharsets.UTF_8));
         throw new SuccessState();
     }
 
@@ -867,22 +865,19 @@ public class ApiDavFilter extends HttpFilter {
         // callbacks, which must then be processed in relation to the request.
 
         if (Objects.isNull(this.properties)) {
-            synchronized (this) {
-                if (Objects.isNull(this.properties)) {
 
-                    // Beans are cached so that not every request has to scan.
-                    // Only beans with simple name without dot(s). The others
-                    // should be internal things, but this assumption is not
-                    // valid. Order of initialization is unknown, this is done
-                    // with the first request.
+            // Beans are cached so that not every request has to scan.
+            // Only beans with simple name without dot(s). The others should be
+            // internal things, but this assumption is not valid. Order of
+            // initialization is unknown, this is done with the first request.
 
-                    this.properties = new Properties();
-                    for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
-                            .filter(Predicate.not(entry -> entry.contains(".")))
-                            .collect(Collectors.toSet()))
-                        this.properties.put(beanName, applicationContext.getBean(beanName));
-                }
-            }
+            final Properties properties = new Properties();
+            for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
+                    .filter(Predicate.not(entry -> entry.contains(".")))
+                    .collect(Collectors.toSet()))
+                properties.put(beanName, applicationContext.getBean(beanName));
+            if (Objects.isNull(this.properties))
+                this.properties = properties;
         }
 
         final Properties properties = this.properties.clone();
@@ -931,6 +926,7 @@ public class ApiDavFilter extends HttpFilter {
                 case ApiDavFilter.METHOD_DELETE:
                     this.locateSitemapEntry(sitemap, request);
                     throw new ForbiddenState();
+                default:
             }
 
             throw new MethodNotAllowedState(ApiDavFilter.METHOD_OPTIONS, ApiDavFilter.METHOD_PROPFIND,
