@@ -59,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210717
+ * Sitemap 1.0.0 20210718
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.0.0 20210717
+ * @version 1.0.0 20210718
  */
 class Sitemap implements Serializable {
 
@@ -443,7 +443,7 @@ class Sitemap implements Serializable {
                 if (annotation instanceof Annotation.Attribute) {
                     final Annotation.Attribute attributeAnnotation = (Annotation.Attribute)annotation;
                     final Annotation.Attribute.AttributeType attributeType = attributeAnnotation.attributeType;
-                    final Callback callback = new Callback(attributeAnnotation.getObject(), attributeAnnotation.getMethod());
+                    final Callback callback = new Callback(attributeAnnotation.getOrigin(), attributeAnnotation.getObject(), attributeAnnotation.getMethod());
 
                     if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeType))
                         this.isReadOnly = callback;
@@ -465,7 +465,7 @@ class Sitemap implements Serializable {
 
                 } else if (annotation instanceof Annotation.Input) {
                     final Annotation.Input inputAnnotation = (Annotation.Input)annotation;
-                    this.inputCallback = new Callback(inputAnnotation.getObject(), inputAnnotation.getMethod());
+                    this.inputCallback = new Callback(inputAnnotation.getOrigin(), inputAnnotation.getObject(), inputAnnotation.getMethod());
 
                     if (!inputAnnotation.getAccept().isBlank())
                         this.accept = new Static(inputAnnotation.getAccept());
@@ -484,7 +484,7 @@ class Sitemap implements Serializable {
 
                 } else if (annotation instanceof Annotation.Mapping) {
                     final Annotation.Mapping mappingAnnotation = (Annotation.Mapping)annotation;
-                    this.outputCallback = new Callback(mappingAnnotation.getObject(), mappingAnnotation.getMethod());
+                    this.outputCallback = new Callback(mappingAnnotation.getOrigin(), mappingAnnotation.getObject(), mappingAnnotation.getMethod());
 
                     if (mappingAnnotation.getContentLength() >= 0)
                         this.contentLength = new Static(Long.valueOf(mappingAnnotation.getContentLength()));
@@ -524,7 +524,7 @@ class Sitemap implements Serializable {
 
                 } else if (annotation instanceof Annotation.Meta) {
                     final Annotation.Meta metaAnnotation = (Annotation.Meta)annotation;
-                    this.metaCallback = new Callback(metaAnnotation.getObject(), metaAnnotation.getMethod());
+                    this.metaCallback = new Callback(metaAnnotation.getOrigin(), metaAnnotation.getObject(), metaAnnotation.getMethod());
                 }
             }
         }
@@ -576,7 +576,7 @@ class Sitemap implements Serializable {
             Object result = fallback;
             if (Objects.nonNull(attribute)
                     && attribute instanceof Callback) {
-                try {result = ((Callback)attribute).invoke(URI.create(Sitemap.File.this.getPath()));
+                try {result = ((Callback)attribute).invoke(URI.create(Sitemap.File.this.getPath()), ((Callback)attribute).type);
                 } catch (Exception exception) {
                     while (exception instanceof InvocationTargetException)
                         exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -592,7 +592,7 @@ class Sitemap implements Serializable {
                     final MetaProperties meta = Defaults.MetaDataTemplate.clone();
                     meta.setUri(URI.create(Sitemap.File.this.getPath()));
                     meta.setContentType(Sitemap.probeContentType(Sitemap.File.this.getPath()));
-                    try {this.metaCallback.invoke(meta, meta.getUri());
+                    try {this.metaCallback.invoke(meta.getUri(), meta, this.metaCallback.type);
                     } catch (Exception exception) {
                         while (exception instanceof InvocationTargetException)
                             exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -742,10 +742,13 @@ class Sitemap implements Serializable {
 
     class Callback extends Variant {
 
+        private final Object type;
+
         @Getter(AccessLevel.PACKAGE) private final Object object;
         @Getter(AccessLevel.PACKAGE) private final Method method;
 
-        Callback(final Object object, final Method method) {
+        Callback(final Object type, final Object object, final Method method) {
+            this.type   = type;
             this.object = object;
             this.method = method;
         }

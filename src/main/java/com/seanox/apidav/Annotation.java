@@ -44,6 +44,7 @@ abstract class Annotation {
 
     private final String path;
     private final AnnotationType type;
+    private final Object origin;
     private final Object object;
     private final Method method;
 
@@ -98,14 +99,20 @@ abstract class Annotation {
 
             final Target target;
 
-            AttributeType(Target target) {
+            AttributeType(final Target target) {
                 this.target = target;
             }
         }
 
+        // Attribute as container can be used independently of ApiDav
+        // annotations. Outside of the ApiDavFilter all components should work
+        // without the ApiDav annotations, because otherwise the prefix
+        // ApiDav*** is always present and it slays you.
+        // ApiDav*** is intended and helpful for the end developer only.
+
         @Builder(access=AccessLevel.PRIVATE)
-        Attribute(final String path, final AnnotationType type, final Object object, final Method method, final AttributeType attribute) {
-            super(path, type, object, method);
+        Attribute(final String path, final AnnotationType type, final Object origin, final Object object, final Method method, final AttributeType attribute) {
+            super(path, type, origin, object, method);
             this.attributeType = attribute;
         }
 
@@ -113,6 +120,7 @@ abstract class Annotation {
             return Annotation.Attribute.builder()
                     .path(apiDavAttribute.path())
                     .type(AnnotationType.Attribute)
+                    .origin(apiDavAttribute.attribute())
                     .object(object)
                     .method(method)
 
@@ -123,7 +131,7 @@ abstract class Annotation {
         static class AttributeExpression {
 
             final AttributeType type;
-            final Expression expression;
+            final Expression    expression;
 
             AttributeExpression(final AttributeType type, final Expression expression) {
                 this.type = type;
@@ -141,9 +149,9 @@ abstract class Annotation {
         private final Collection<Attribute.AttributeExpression> expressions;
 
         @Builder(access=AccessLevel.PRIVATE)
-        Input(final String path, final AnnotationType type, final Object object, final Method method,
+        Input(final String path, final AnnotationType type, final Object origin, final Object object, final Method method,
                 final long contentLengthMax, final String accept, Attribute.AttributeExpression... expressions) {
-            super(path, type, object, method);
+            super(path, type, origin, object, method);
 
             this.contentLengthMax = contentLengthMax;
             this.accept           = accept;
@@ -154,6 +162,7 @@ abstract class Annotation {
             return Input.builder()
                     .path(apiDavInput.path())
                     .type(AnnotationType.Input)
+                    .origin(apiDavInput)
                     .object(object)
                     .method(method)
 
@@ -184,11 +193,11 @@ abstract class Annotation {
         private final Collection<Attribute.AttributeExpression> expressions;
 
         @Builder(access=AccessLevel.PRIVATE)
-        Mapping(final String path, final AnnotationType type, final Object object, final Method method,
+        Mapping(final String path, final AnnotationType type, final Object origin, final Object object, final Method method,
                 final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
                 final boolean isReadOnly, final boolean isHidden, final boolean isAccepted, final boolean isPermitted,
                 final Attribute.AttributeExpression... expressions) {
-            super(path, type, object, method);
+            super(path, type, origin, object, method);
 
             this.contentLength = contentLength;
             this.contentType   = contentType;
@@ -219,6 +228,7 @@ abstract class Annotation {
             return Mapping.builder()
                     .path(apiDavMapping.path())
                     .type(AnnotationType.Mapping)
+                    .origin(apiDavMapping)
                     .object(object)
                     .method(method)
 
@@ -244,14 +254,15 @@ abstract class Annotation {
     static class Meta extends Annotation {
 
         @Builder(access=AccessLevel.PRIVATE)
-        Meta(final String path, final AnnotationType type, final Object object, final Method method) {
-            super(path, type, object, method);
+        Meta(final String path, final AnnotationType type, final Object origin, final Object object, final Method method) {
+            super(path, type, origin, object, method);
         }
 
         static Meta create(final ApiDavMetaMapping apiDavMeta, final Object object, final Method method) {
             return Meta.builder()
                     .path(apiDavMeta.path())
                     .type(AnnotationType.Meta)
+                    .origin(apiDavMeta)
                     .object(object)
                     .method(method)
                     .build();
