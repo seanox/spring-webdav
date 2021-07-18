@@ -49,7 +49,7 @@ public class PutTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .put(FOLDER_URI)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
@@ -63,7 +63,7 @@ public class PutTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .put(FOLDER_NOT_EXISTS_URI)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
@@ -115,7 +115,7 @@ public class PutTest extends AbstractApiTest {
                 headResult1.getResponse().getHeader("Last-Modified"),
                 headResult2.getResponse().getHeader("Last-Modified"));
         Assertions.assertEquals(
-                AbstractApiTest.readTemplate(TEMPLATE_BUDGET_XLSX).length,
+                AbstractApiTest.readTemplate(TEMPLATES_COSTS_XLSX).length,
                 headResult1.getResponse().getContentLength());
         Assertions.assertNotEquals(
                 headResult1.getResponse().getHeader("Content-Length"),
@@ -141,7 +141,7 @@ public class PutTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .put(FILE_URI)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         final MvcResult headResult2 = this.mockMvc.perform(
@@ -159,7 +159,7 @@ public class PutTest extends AbstractApiTest {
                         .put(FILE_URI)
                         .header("If-None-Match", etag2)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
 
         this.mockMvc.perform(
@@ -167,7 +167,7 @@ public class PutTest extends AbstractApiTest {
                         .put(FILE_URI)
                         .header("If-None-Match", etag1)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         final MvcResult headResult3 = this.mockMvc.perform(
@@ -185,7 +185,7 @@ public class PutTest extends AbstractApiTest {
                         .put(FILE_URI)
                         .header("If-Match", etag1)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isPreconditionFailed());
 
         this.mockMvc.perform(
@@ -193,7 +193,7 @@ public class PutTest extends AbstractApiTest {
                         .put(FILE_URI)
                         .header("If-Match", etag3)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
@@ -206,7 +206,7 @@ public class PutTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .put(FOLDER_NOT_EXISTS_URI)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }

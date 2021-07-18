@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.api.finance.data;
+package com.seanox.api.financial.data;
 
 import lombok.Data;
 
@@ -28,7 +28,7 @@ import java.util.Date;
 /**
  * Example for a data object.
  *
- * FinanceBudget 1.0.0 20210629
+ * FinancialCosts 1.0.0 20210629
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
@@ -36,7 +36,7 @@ import java.util.Date;
  * @version 1.0.0 20210629
  */
 @Data
-public class FinanceBudget {
+public class FinancialCosts {
 
     private byte[] data;
     private Date lastModified;

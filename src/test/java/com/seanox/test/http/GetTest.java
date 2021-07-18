@@ -99,7 +99,7 @@ public class GetTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .put(FILE_URI)
                         .contentType(CONTENT_TYPE_XLSX)
-                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATE_BUDGET_XLSX)))
+                        .content(AbstractApiTest.readTemplate(AbstractApiTest.TEMPLATES_COSTS_XLSX)))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         final MvcResult headResult2 = this.mockMvc.perform(
