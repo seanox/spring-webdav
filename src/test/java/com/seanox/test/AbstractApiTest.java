@@ -62,15 +62,15 @@ import java.util.Objects;
 public abstract class AbstractApiTest extends AbstractTest {
 
     protected static final String ROOT_URI = "/";
-    protected static final String FILE_URI = "/personal/budget.xlsx";
-    protected static final String FILE_READONLY_URI = "/personal/reports/sales.pptx";
-    protected static final String FILE_NOT_EXISTS_URI = "/personal/reports/nothing.pptx";
-    protected static final String FOLDER_URI = "/personal/";
-    protected static final String FOLDER_NOT_EXISTS_URI = "/personal/nothing/";
+    protected static final String FILE_URI = "/finance/budget.xlsx";
+    protected static final String FILE_READONLY_URI = "/finance/reports/sales.pptx";
+    protected static final String FILE_NOT_EXISTS_URI = "/finance/reports/nothing.pptx";
+    protected static final String FOLDER_URI = "/finance/";
+    protected static final String FOLDER_NOT_EXISTS_URI = "/finance/nothing/";
 
-    protected static final String FILE_REDIRECT_URI = "/personal/budget.xlsx/";
-    protected static final String FILE_PARENT_URI = "/personal/";
-    protected static final String FOLDER_REDIRECT_URI = "/personal";
+    protected static final String FILE_REDIRECT_URI = "/finance/budget.xlsx/";
+    protected static final String FILE_PARENT_URI = "/finance/";
+    protected static final String FOLDER_REDIRECT_URI = "/finance";
 
     protected static final String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     protected static final String CONTENT_TYPE_PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
