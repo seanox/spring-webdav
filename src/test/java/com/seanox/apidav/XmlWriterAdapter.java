@@ -55,7 +55,7 @@ public class XmlWriterAdapter extends XmlWriter {
 
         final XmlWriter.ElementType elementType;
 
-        private ElementType(XmlWriter.ElementType elementType) {
+        ElementType(XmlWriter.ElementType elementType) {
             this.elementType = elementType;
         }
     }

@@ -69,7 +69,7 @@ public class Application extends SpringBootServletInitializer {
     private ApplicationConfiguration applicationConfiguration;
 
     public static void main(final String... options) {
-        SpringApplication springApplication = new SpringApplication(Application.class);
+        final SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.CONSOLE);
         springApplication.run(options);
     }

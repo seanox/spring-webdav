@@ -36,17 +36,17 @@ import java.lang.reflect.Method;
 public class AnnotationAdapter {
 
     public static Annotation.Attribute createAnnotationAttribute(final ApiDavAttributeMapping attributeAnnotation,
-                    final Object object, final Method method) {
+            final Object object, final Method method) {
         return Annotation.Attribute.create(attributeAnnotation, object, method);
     }
 
     public static Annotation.Input createAnnotationInput(final ApiDavInputMapping inputAnnotation,
-                    final Object object, final Method method) {
+            final Object object, final Method method) {
         return Annotation.Input.create(inputAnnotation, object, method);
     }
 
     public static Annotation.Mapping createAnnotationMapping(final ApiDavMapping mappingAnnotation,
-                    final Object object, final Method method) throws AnnotationException {
+            final Object object, final Method method) throws AnnotationException {
         return Annotation.Mapping.create(mappingAnnotation, object, method);
     }
 

@@ -77,22 +77,22 @@ class FinancialController {
     // In many cases this can be derived from the file name from the mapping.
 
     private static final String FINANCIAL_COSTS_XLSX ="/financial/costs.xlsx";
-    @ApiDavMapping(path= FINANCIAL_COSTS_XLSX, isReadOnly=false)
-    void getFinancialCosts(MetaOutputStream output) throws IOException {
+    @ApiDavMapping(path=FINANCIAL_COSTS_XLSX, isReadOnly=false)
+    void getFinancialCosts(final MetaOutputStream output) throws IOException {
         final FinancialCosts financialCosts = this.financialService.readFinancialCosts();
         output.write(financialCosts.getData());
     }
-    @ApiDavInputMapping(path= FINANCIAL_COSTS_XLSX)
-    void putFinancialCosts(MetaInputStream input) throws IOException {
+    @ApiDavInputMapping(path=FINANCIAL_COSTS_XLSX)
+    void putFinancialCosts(final MetaInputStream input) throws IOException {
         final FinancialCosts financialCosts = this.financialService.readFinancialCosts();
         financialCosts.setData(input.readAllBytes());
         this.financialService.saveFinancialCosts(financialCosts);
     }
-    @ApiDavAttributeMapping(path= FINANCIAL_COSTS_XLSX, attribute=ApiDavMappingAttribute.ContentLength)
+    @ApiDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getFinancialCostsContentLength() {
         return Long.valueOf(this.financialService.readFinancialCosts().getData().length);
     }
-    @ApiDavAttributeMapping(path= FINANCIAL_COSTS_XLSX, attribute=ApiDavMappingAttribute.LastModified)
+    @ApiDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute=ApiDavMappingAttribute.LastModified)
     Date getFinancialCostsLastModified() {
         return this.financialService.readFinancialCosts().getLastModified();
     }
@@ -102,8 +102,8 @@ class FinancialController {
 
 
     private static final String FINANCIAL_REPORTS_STATISTIC_PPTX="/financial/reports/statistic.pptx";
-    @ApiDavMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX)
-    void getFinancialReportStatistic(MetaOutputStream output) throws IOException  {
+    @ApiDavMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, isReadOnly=false)
+    void getFinancialReportStatistic(final MetaOutputStream output) throws IOException  {
         final FinancialReportStatistic financialReportStatistic = this.financialService.readFinancialReportStatistic();
         output.write(financialReportStatistic.getData());
     }
@@ -122,7 +122,7 @@ class FinancialController {
 
     private static final String FINANCIAL_REPORTS_SALES_PPTX="/financial/reports/sales.pptx";
     @ApiDavMapping(path=FINANCIAL_REPORTS_SALES_PPTX)
-    void getFinancialReportSales(MetaOutputStream output) throws IOException  {
+    void getFinancialReportSales(final MetaOutputStream output) throws IOException  {
         final FinancialReportSales financialReportSales = this.financialService.readFinancialReportSales();
         output.write(financialReportSales.getData());
     }

@@ -57,12 +57,12 @@ class MarketingController {
 
     private static final String MARKETING_NEWSLETTER_DOTX="/marketing/newsletter.docx";
     @ApiDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
-    void getMarketingNewsletter(MetaOutputStream output) throws IOException {
+    void getMarketingNewsletter(final MetaOutputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
         output.write(marketingNewsletter.getData());
     }
     @ApiDavInputMapping(path=MARKETING_NEWSLETTER_DOTX)
-    void putMarketingNewsletter(MetaInputStream output) throws IOException {
+    void putMarketingNewsletter(final MetaInputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
         marketingNewsletter.setData(output.readAllBytes());
         this.marketingService.saveMarketingNewsletter(marketingNewsletter);
@@ -78,22 +78,22 @@ class MarketingController {
 
     private static final String MARKETING_FLYER_PPTX="/marketing/flyer.pptx";
     @ApiDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
-    void getMarketingFlyer(MetaOutputStream output) throws IOException {
+    void getMarketingFlyer(final MetaOutputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
         output.write(marketingFlyer.getData());
     }
     @ApiDavInputMapping(path=MARKETING_FLYER_PPTX)
-    void putMarketingFlyer(MetaInputStream output) throws IOException {
+    void putMarketingFlyer(final MetaInputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
         marketingFlyer.setData(output.readAllBytes());
         this.marketingService.saveMarketingFlyer(marketingFlyer);
     }
     @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
     Long getMarketingFlyerLength() {
-        return Long.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
+        return Long.valueOf(this.marketingService.readMarketingFlyer().getData().length);
     }
     @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getMarketingFlyerLastModified() {
-        return this.marketingService.readMarketingNewsletter().getLastModified();
+        return this.marketingService.readMarketingFlyer().getLastModified();
     }
 }

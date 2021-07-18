@@ -37,11 +37,11 @@ import java.util.Objects;
 @SuppressWarnings("boxing")
 public class MetaInputStreamAdapter extends MetaInputStream {
 
-    public MetaInputStreamAdapter(InputStream input) {
+    public MetaInputStreamAdapter(final InputStream input) {
         super(null, null, null, null, input, 0, null);
     }
 
-    public MetaInputStreamAdapter(InputStream input, Long limit) {
+    public MetaInputStreamAdapter(final InputStream input, final Long limit) {
         super(null, null, null, limit, input, Objects.nonNull(limit) ? limit : 0, null);
     }
 
