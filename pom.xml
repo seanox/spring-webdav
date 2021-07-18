@@ -17,8 +17,16 @@
     API-WebDAV mapping for Spring Boot
     Use an API like a network drive, open files, edit and save them.
   </description>
+
+  <scm>
+    <connection>scm:git:git://github.com/seanox/apiDAV.git</connection>
+    <developerConnection>scm:git:git@github.com:seanox/apiDAV.git</developerConnection>
+    <url>https://github.com/seanox/apiDAV</url>
+  </scm>
+
   <properties>
     <java.version>11</java.version>
+    <encoding>UTF-8</encoding>
   </properties>
   
   <dependencies>
@@ -52,8 +60,41 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <target>${java.version}</target>
+          <source>${java.version}</source>
+          <encoding>${encoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <!--TODO: Gug - Here two Java processes are started, but only one can be terminated :-( -->
+        <configuration>
+          <executable>mvn</executable>
+          <arguments>
+            <argument>clean</argument>
+            <argument>package</argument>
+            <argument>-DskipTests</argument>
+            <argument>-Dexec.mainClass=com.seanox.api.Application</argument>
+            <argument>-Dexec.classpathScope=test</argument>
+            <argument>exec:java</argument>
+          </arguments>
+        </configuration>
       </plugin>
       <!-- test only -->
       <plugin>
@@ -105,9 +146,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <configuration>
-          <sourceEncoding>utf-8</sourceEncoding>
+          <targetJdk>${java.version}</targetJdk>
+          <sourceEncoding>${encoding}</sourceEncoding>
           <minimumTokens>100</minimumTokens>
-          <targetJdk>11</targetJdk>
           <linkXRef>false</linkXRef>
         </configuration>
       </plugin>
