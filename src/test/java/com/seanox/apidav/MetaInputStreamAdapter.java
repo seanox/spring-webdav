@@ -34,6 +34,7 @@ import java.util.Objects;
  * library com.seanox.apidav also works without @ComponentScan and therefore
  * another package is used for the tests of the package com.seanox.apidav.
  */
+@SuppressWarnings("boxing")
 public class MetaInputStreamAdapter extends MetaInputStream {
 
     public MetaInputStreamAdapter(InputStream input) {

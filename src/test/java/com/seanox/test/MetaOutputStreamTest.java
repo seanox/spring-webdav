@@ -19,6 +19,7 @@ import java.util.Objects;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210718
  */
+@SuppressWarnings("boxing")
 public class MetaOutputStreamTest extends AbstractTest {
 
     private static final byte[] BYTES = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").getBytes();
@@ -53,7 +54,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_A1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter();
         String string = "";
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
@@ -66,7 +67,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_A2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter();
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes);
         Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", new String(bytes, 0, size));
@@ -75,7 +76,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_A3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter();
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes, 1, 4);
         Assertions.assertEquals("\00ABC", new String(bytes, 0, size));
@@ -84,7 +85,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_A4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter();
         final String string = new String(metaInputStreamAdapter.readAllBytes());
         Assertions.assertEquals(new String(BYTES), string);
         Assertions.assertEquals(-1, metaInputStreamAdapter.read());
@@ -94,7 +95,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_B1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(null);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(null);
         String string = "";
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
@@ -107,7 +108,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_B2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(null);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(null);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes);
         Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", new String(bytes, 0, size));
@@ -116,7 +117,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_B3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(null);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(null);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes, 1, 4);
         Assertions.assertEquals("\00ABC", new String(bytes, 0, size));
@@ -125,7 +126,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_B4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(null);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(null);
         final String string = new String(metaInputStreamAdapter.readAllBytes());
         Assertions.assertEquals(new String(BYTES), string);
         Assertions.assertEquals(-1, metaInputStreamAdapter.read());
@@ -135,7 +136,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         String string = "";
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
@@ -148,7 +149,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes);
         Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", new String(bytes, 0, size));
@@ -157,7 +158,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes, 1, 4);
         Assertions.assertEquals("\00ABC", new String(bytes, 0, size));
@@ -166,7 +167,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         final String string = new String(metaInputStreamAdapter.readAllBytes());
         Assertions.assertEquals(new String(BYTES), string);
         Assertions.assertEquals(-1, metaInputStreamAdapter.read());
@@ -176,7 +177,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         String string = "";
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
@@ -189,7 +190,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes);
         Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", new String(bytes, 0, size));
@@ -198,7 +199,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes, 1, 4);
         Assertions.assertEquals("\00ABC", new String(bytes, 0, size));
@@ -207,7 +208,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
         final String string = new String(metaInputStreamAdapter.readAllBytes());
         Assertions.assertEquals(new String(BYTES), string);
         Assertions.assertEquals(-1, metaInputStreamAdapter.read());
@@ -217,7 +218,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_E1() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(LIMIT_OVERRUN);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(LIMIT_OVERRUN);
         Assertions.assertThrows(MetaInputStreamAdapter.geMetaInputStreamLimitExceptionClass(), () -> {
             for (int loop = 0; loop < LIMIT +3; loop++)
                 metaInputStreamAdapter.read();
@@ -227,7 +228,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_E2() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(LIMIT_OVERRUN);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(LIMIT_OVERRUN);
         Assertions.assertThrows(MetaInputStreamAdapter.geMetaInputStreamLimitExceptionClass(), () -> {
             final byte[] bytes = new byte[65535];
             final int size = metaInputStreamAdapter.read(bytes);
@@ -239,7 +240,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_E3() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(LIMIT_OVERRUN);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(LIMIT_OVERRUN);
         Assertions.assertThrows(MetaInputStreamAdapter.geMetaInputStreamLimitExceptionClass(), () -> {
             final byte[] bytes = new byte[65535];
             final int size = metaInputStreamAdapter.read(bytes, 1, 8);
@@ -251,7 +252,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_E4() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputStreamAdapter(LIMIT_OVERRUN);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(LIMIT_OVERRUN);
         Assertions.assertThrows(MetaInputStreamAdapter.geMetaInputStreamLimitExceptionClass(), () -> {
             final String string = new String(metaInputStreamAdapter.readAllBytes());
             Assertions.assertEquals(new String(BYTES), string);
@@ -294,7 +295,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_F1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter();
         Assertions.assertThrows(IOException.class, () -> {
             for (int loop = 0; loop < LIMIT +3; loop++)
                 metaInputStreamAdapter.read();
@@ -304,21 +305,21 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_F2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter();
         Assertions.assertThrows(IOException.class, () -> metaInputStreamAdapter.read(new byte[65535]));
         metaInputStreamAdapter.read();
     }
 
     @Test
     void test_F3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter();
         Assertions.assertThrows(IOException.class, () -> metaInputStreamAdapter.read(new byte[65535], 1, 4));
         metaInputStreamAdapter.read();
     }
 
     @Test
     void test_F4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter();
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter();
         Assertions.assertThrows(IOException.class, metaInputStreamAdapter::readAllBytes);
         metaInputStreamAdapter.read();
     }
@@ -327,7 +328,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_G1() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter(LIMIT);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter(LIMIT);
         Assertions.assertThrows(IOException.class, () -> {
             for (int loop = 0; loop < 5; loop++)
                 metaInputStreamAdapter.read();
@@ -337,21 +338,21 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_G2() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter(LIMIT);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter(LIMIT);
         Assertions.assertThrows(IOException.class, () -> metaInputStreamAdapter.read(new byte[65535]));
         Assertions.assertThrows(IOException.class, metaInputStreamAdapter::read);
     }
 
     @Test
     void test_G3() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter(LIMIT);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter(LIMIT);
         Assertions.assertThrows(IOException.class, () -> metaInputStreamAdapter.read(new byte[65535], 1, 4));
         Assertions.assertThrows(IOException.class, metaInputStreamAdapter::read);
     }
 
     @Test
     void test_G4() {
-        final MetaInputStreamAdapter metaInputStreamAdapter = createMetaInputExceptionStreamAdapter(LIMIT);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputExceptionStreamAdapter(LIMIT);
         Assertions.assertThrows(IOException.class, metaInputStreamAdapter::readAllBytes);
         Assertions.assertThrows(IOException.class, metaInputStreamAdapter::read);
     }

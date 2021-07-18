@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0.0 20210711
  */
 @Component
+@SuppressWarnings("boxing")
 public class ContentLengthTestController {
 
     // TODO:

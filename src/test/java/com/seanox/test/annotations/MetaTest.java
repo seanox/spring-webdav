@@ -63,7 +63,6 @@ public class MetaTest extends AbstractApiTest {
         if (mvcResult.getResponse().getStatus() != 200
                 && mvcResult.getResponse().getStatus() != 207) {
             final MetaTest.PropfindResult propfindResult = new MetaTest.PropfindResult();
-            propfindResult.uri = uri;
             propfindResult.status = mvcResult.getResponse().getStatus();
             return propfindResult;
         }
@@ -74,7 +73,6 @@ public class MetaTest extends AbstractApiTest {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         final MetaTest.PropfindResult propfindResult = new MetaTest.PropfindResult();
-        propfindResult.uri = xpath.compile("/multistatus/response/href").evaluate(xmlDocument);
         propfindResult.status = mvcResult.getResponse().getStatus();
         propfindResult.contentType = xpath.compile("/multistatus/response/propstat/prop/getcontenttype").evaluate(xmlDocument);
         propfindResult.contentTypeCount = ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontenttype)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
@@ -82,7 +80,6 @@ public class MetaTest extends AbstractApiTest {
     }
 
     private static class PropfindResult {
-        String uri;
         int    status;
         String contentType;
         int    contentTypeCount;

@@ -47,6 +47,7 @@ import java.util.Objects;
  * @version 1.0.0 20210718
  */
 @Component
+@SuppressWarnings("boxing")
 public class MetaTestController {
 
     // ContentType is set by meta callback.
@@ -112,7 +113,7 @@ public class MetaTestController {
         outputStream.write((MAPPING_A6 + " " + metaProperties.getContentType()).getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_A6)
-    void testA6(final MetaData meta) {
+    void testA6() {
     }
 
     // Following placeholders for methods parameters are supported: Properties, URI, MetaData

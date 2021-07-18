@@ -39,6 +39,7 @@ import java.net.URI;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210710
  */
+@SuppressWarnings("boxing")
 public class PropfindTest extends AbstractApiTest {
 
     @Test
