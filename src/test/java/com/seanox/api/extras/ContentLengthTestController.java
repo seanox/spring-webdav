@@ -30,21 +30,34 @@ import org.springframework.stereotype.Component;
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#ContentLength} functions.
  *
- * ContentLengthTestController 1.0.0 20210711
+ * ContentLengthTestController 1.0.0 20210718
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210718
  */
 @Component
 @SuppressWarnings("boxing")
 public class ContentLengthTestController {
 
-    // TODO:
+    // Test of {@link ApiDavMapping} + contentLength
 
-    void test_A() {
+    public static final String MAPPING_A1 = "/extras/contentLength/a1.txt";
+    public static final String MAPPING_A2 = "/extras/contentLength/a2.txt";
+    public static final String MAPPING_A3 = "/extras/contentLength/a3.txt";
+    public static final String MAPPING_A4 = "/extras/contentLength/a4.txt";
+    public static final String MAPPING_A5 = "/extras/contentLength/a5.txt";
+
+    @ApiDavMapping(path=MAPPING_A1, contentLength=-10)
+    @ApiDavMapping(path=MAPPING_A2, contentLength=-1)
+    @ApiDavMapping(path=MAPPING_A3, contentLength=0)
+    @ApiDavMapping(path=MAPPING_A4, contentLength=1)
+    @ApiDavMapping(path=MAPPING_A5, contentLength=10)
+    void test_AX() {
     }
+
+    // TODO:
 
     void test_B() {
     }

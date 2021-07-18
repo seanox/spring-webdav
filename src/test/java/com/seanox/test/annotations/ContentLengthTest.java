@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the ContentLength attribute.
  *
- * ContentLengthTest 1.0.0 20210713
+ * ContentLengthTest 1.0.0 20210718
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210713
+ * @version 1.0.0 20210718
  */
 public class ContentLengthTest extends AbstractApiTest {
 
@@ -52,6 +52,15 @@ public class ContentLengthTest extends AbstractApiTest {
     // - null is supported (suppresses output in Response header and PROPFIND response)
     // - value less than 0, empty strings and (convert) exception suppress output
     // - default: null
+
+    @Test
+    void test_AX() throws Exception {
+        Assertions.assertEquals("200/200/207 /extras/contentLength/a1.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_A1, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/a2.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_A2, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/a3.txt 331361 0/0/0", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_A3, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/a4.txt 331361 1/1/1", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_A4, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/a5.txt 331361 10/10/10", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_A5, AttributeFingeprintType.ContentLength));
+    }
 
     // TODO:
 
