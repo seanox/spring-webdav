@@ -24,8 +24,8 @@ Why use a frontend when the data can be edited directly in an Office application
 
 - Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
 - Declarative approach with annotations, also supports Spring Expression Language  
-- Supports MS Office (Excel, Word, PowerPoint, ...) but it does not create
-  or transform Office documents automatically
+- Supports WebDAV Class 1 + 2 and thus also MS Office (Excel, Word, PowerPoint, ...)
+  but it does not create or transform Office documents automatically
 - ...
 
 
