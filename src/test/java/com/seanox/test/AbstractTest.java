@@ -38,12 +38,12 @@ import java.util.Objects;
 /**
  * General implementation for the execution of tests.
  *
- * AbstractTest 1.0.0 20210717
+ * AbstractTest 1.0.0 20210718
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210717
+ * @version 1.0.0 20210718
  */
 public class AbstractTest {
 
@@ -59,7 +59,7 @@ public class AbstractTest {
             ApiDavAttributeMapping.ApiDavAttributeMappings.class
     };
 
-    private static Annotation[] getDeclaredApiAnnotations(Annotation annotation) {
+    private static Annotation[] getDeclaredApiAnnotations(final Annotation annotation) {
         final Class<? extends Annotation> annotationType = annotation.annotationType();
         if (Arrays.asList(AbstractTest.apiAnnotationClasses).contains(annotationType)
                 && !Arrays.asList(AbstractTest.apiAnnotationRetentionClasses).contains(annotationType))
@@ -73,7 +73,7 @@ public class AbstractTest {
         return new Annotation[0];
     }
 
-    private static Annotation[] getDeclaredApiAnnotations(Method method) {
+    private static Annotation[] getDeclaredApiAnnotations(final Method method) {
         Objects.requireNonNull(method);
         final List<Annotation> annotations = new ArrayList<>();
         for (Annotation annotation : method.getDeclaredAnnotations())
@@ -95,7 +95,7 @@ public class AbstractTest {
         return annotations;
     }
 
-    public static String createObjectFingerprint(Object... objects) {
+    public static String createObjectFingerprint(final Object... objects) {
         final Map<Object, String> repository = new HashMap<>();
         final StringBuilder fingerprint = new StringBuilder();
         for (final Object object : objects) {

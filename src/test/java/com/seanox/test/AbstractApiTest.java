@@ -50,12 +50,12 @@ import java.util.Objects;
 /**
  * General implementation for the execution of API tests.
  *
- * AbstractApiTest 1.0.0 20210717
+ * AbstractApiTest 1.0.0 20210718
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210717
+ * @version 1.0.0 20210718
  */
 @SpringBootTest(classes= Application.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -98,7 +98,7 @@ public abstract class AbstractApiTest extends AbstractTest {
                 .build();
     }
 
-    protected static byte[] readTemplate(String template)
+    protected static byte[] readTemplate(final String template)
             throws IOException {
         return AbstractApiTest.class.getResourceAsStream(template).readAllBytes();
     }
@@ -108,7 +108,7 @@ public abstract class AbstractApiTest extends AbstractTest {
         return this.createAttributeFingeprint(uri, null);
     }
 
-    protected String createAttributeFingeprint(final String uri, AttributeFingeprintType type)
+    protected String createAttributeFingeprint(final String uri, final AttributeFingeprintType type)
             throws Exception {
 
         final AttributeFingeprint attributeFingeprint = new AttributeFingeprint();
