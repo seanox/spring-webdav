@@ -57,7 +57,7 @@ import java.util.Objects;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210718
  */
-@SpringBootTest(classes= Application.class)
+@SpringBootTest(classes=Application.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class AbstractApiTest extends AbstractTest {
 

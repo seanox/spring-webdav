@@ -83,9 +83,7 @@ public class AbstractTest {
 
     public Collection<Annotation> collectApiAnnotationsFromCurrentMethod() {
         final StackTraceElement stackTraceElement = Arrays.stream(new Throwable().getStackTrace()).skip(1)
-                .filter(entry ->
-
-                        this.getClass().getName().equals(entry.getClassName())
+                .filter(entry -> this.getClass().getName().equals(entry.getClassName())
                         && !entry.getMethodName().contains("$")).findFirst().orElseThrow();
         final Collection<Annotation> annotations = new ArrayList<>();
         Arrays.stream(this.getClass().getDeclaredMethods())

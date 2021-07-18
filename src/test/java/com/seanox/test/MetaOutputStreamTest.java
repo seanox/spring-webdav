@@ -276,12 +276,12 @@ public class MetaOutputStreamTest extends AbstractTest {
         }
 
         @Override
-        public int read(final byte[] bytes, final int offset, final int lenght) throws IOException {
-            Objects.checkFromIndexSize(offset, lenght, bytes.length);
-            if (lenght == 0)
+        public int read(final byte[] bytes, final int offset, final int length) throws IOException {
+            Objects.checkFromIndexSize(offset, length, bytes.length);
+            if (length == 0)
                 return 0;
             int cursor = 0;
-            for (; cursor < lenght; cursor++) {
+            for (; cursor < length; cursor++) {
                 final int digit = read();
                 if (digit < -1)
                     break;
