@@ -71,23 +71,20 @@ public class SignaturesTestController {
     }
 
     @ApiDavMapping(path=MAPPING_A2)
-    void test_A2(final URI uri, final Properties properties, final MetaProperties metaProperties, final MetaOutputStream outputStream, final Object o1, final Object o2, final Object o3)
-            throws IOException {
+    void test_A2(final URI uri, final Properties properties, final MetaProperties metaProperties, final MetaOutputStream outputStream, final Object o1, final Object o2, final Object o3) throws IOException {
         final String result = "A2-" + AbstractTest.createObjectFingerprint(uri, properties, metaProperties, outputStream, o1, o2, o3);
         outputStream.write(result.getBytes());
     }
 
     @ApiDavMapping(path=MAPPING_A3)
-    void test_A3(final Object o1, final Object o2, final Object o3, final MetaOutputStream outputStream, final MetaProperties metaProperties, final Properties properties, final URI uri)
-            throws IOException {
+    void test_A3(final Object o1, final Object o2, final Object o3, final MetaOutputStream outputStream, final MetaProperties metaProperties, final Properties properties, final URI uri) throws IOException {
         final String result = "A3-" + AbstractTest.createObjectFingerprint(o1, o2, o3, outputStream, metaProperties, properties, uri);
         outputStream.write(result.getBytes());
     }
 
     @ApiDavMapping(path=MAPPING_A4)
     void test_A4(final URI uri1, final URI uri2, final Properties properties1, final Properties properties2, final MetaProperties metaProperties1, final MetaProperties metaProperties2,
-            final MetaData o1, final MetaProperties o2, MetaInputStream o3, final MetaOutputStream o4, final URI uri3, final Properties properties3)
-            throws IOException {
+            final MetaData o1, final MetaProperties o2, MetaInputStream o3, final MetaOutputStream o4, final URI uri3, final Properties properties3) throws IOException {
         final String result = "A4-" + AbstractTest.createObjectFingerprint(uri1, uri2, properties1, properties2, metaProperties1, metaProperties2, o1, o2, o3, o4, uri3, properties3);
         o4.write(result.getBytes());
     }
@@ -111,8 +108,7 @@ public class SignaturesTestController {
     @ApiDavMapping(path=MAPPING_B2, isReadOnly=false)
     @ApiDavMapping(path=MAPPING_B3, isReadOnly=false)
     @ApiDavMapping(path=MAPPING_B4, isReadOnly=false)
-    void test_BX(MetaOutputStream outputStream)
-            throws IOException {
+    void test_BX(MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultB.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_B1)
@@ -156,8 +152,7 @@ public class SignaturesTestController {
     @ApiDavMapping(path=MAPPING_C2)
     @ApiDavMapping(path=MAPPING_C3)
     @ApiDavMapping(path=MAPPING_C4)
-    void test_CX(final MetaOutputStream outputStream)
-            throws IOException {
+    void test_CX(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultC.getBytes());
     }
     @ApiDavMetaMapping(path=MAPPING_C1)
@@ -201,8 +196,7 @@ public class SignaturesTestController {
     @ApiDavMapping(path=MAPPING_D2)
     @ApiDavMapping(path=MAPPING_D3)
     @ApiDavMapping(path=MAPPING_D4)
-    void test_DX(MetaOutputStream outputStream)
-            throws IOException {
+    void test_DX(MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultD.getBytes());
     }
     @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.ContentType)

@@ -30,12 +30,12 @@ import java.io.IOException;
 /**
  * Test the function of the Hidden attribute.
  *
- * HiddenTestController 1.0.0 202107014
+ * HiddenTestController 1.0.0 20210718
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 202107014
+ * @version 1.0.0 20210718
  */
 @Component
 public class HiddenTestController {
@@ -54,27 +54,27 @@ public class HiddenTestController {
     // - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
 
     @ApiDavMapping(path="/extras/hidden/a/a-1/a-2/a-3/a1.txt", isHidden=true)
-    void testA1(MetaOutputStream outputStream) throws IOException {
+    void testA1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a1.txt").getBytes());
     }
     @ApiDavMapping(path="/extras/hidden/a/a-1/a-2/a-3/a2.txt", isHidden=true)
-    void testA2(MetaOutputStream outputStream) throws IOException {
+    void testA2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a2.txt").getBytes());
     }
     @ApiDavMapping(path="/extras/hidden/b/b-1/b-2/b-3/b1.txt", isHidden=true)
-    void testB1(MetaOutputStream outputStream) throws IOException {
+    void testB1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("b1.txt").getBytes());
     }
     @ApiDavMapping(path="/extras/hidden/c/c-1/c-2/c-3/c1.txt", isHidden=true)
-    void testC1(MetaOutputStream outputStream) throws IOException {
+    void testC1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c1.txt").getBytes());
     }
     @ApiDavMapping(path="/extras/hidden/c/c-1/c-2/c-3/c2.txt", isHidden=false)
-    void testC2(MetaOutputStream outputStream) throws IOException {
+    void testC2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c2.txt").getBytes());
     }
     @ApiDavMapping(path="/extras/hidden/d/d-1/d-2/d-3/d1.txt", isHidden=true)
-    void testD1(MetaOutputStream outputStream) throws IOException {
+    void testD1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("d1.txt").getBytes());
     }
 }
