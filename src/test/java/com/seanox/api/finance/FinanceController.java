@@ -76,7 +76,7 @@ class FinanceController {
     // The declaration of the ContentType is optional.
     // In many cases this can be derived from the file name from the mapping.
 
-    private static final String FINANCE_BUDGET_XLSX="/finance/budget.xlsx";
+    private static final String FINANCE_BUDGET_XLSX="/finance/costs.xlsx";
     @ApiDavMapping(path=FINANCE_BUDGET_XLSX, isReadOnly=false)
     void getFinanceBudget(MetaOutputStream output) throws IOException {
         final FinanceBudget financeBudget = this.financeService.readFinanceBudget();

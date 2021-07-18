@@ -47,7 +47,7 @@ class FinanceService {
     @PostConstruct
     private void initFinanceBudget() throws IOException {
         this.financeBudget = new FinanceBudget();
-        this.financeBudget.setData(FinanceService.class.getResourceAsStream("/templates/budget.xlsx").readAllBytes());
+        this.financeBudget.setData(FinanceService.class.getResourceAsStream("/templates/costs.xlsx").readAllBytes());
         this.financeBudget.setLastModified(new Date());
     }
     FinanceBudget readFinanceBudget() {
