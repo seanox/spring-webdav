@@ -43,8 +43,7 @@ import java.net.URI;
 public class PropfindTest extends AbstractApiTest {
 
     @Test
-    void test_file()
-            throws Exception {
+    void test_file() throws Exception {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -82,8 +81,7 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_readonly()
-            throws Exception {
+    void test_file_readonly() throws Exception {
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -114,9 +112,7 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_not_exists()
-            throws Exception {
-
+    void test_file_not_exists() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("PROPFIND", URI.create(FILE_NOT_EXISTS_URI))
@@ -125,9 +121,7 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_redirect()
-            throws Exception {
-
+    void test_file_redirect() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("PROPFIND", URI.create(FILE_REDIRECT_URI))
@@ -136,9 +130,7 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
-    void test_folder()
-            throws Exception {
-
+    void test_folder() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("PROPFIND", URI.create(FILE_PARENT_URI))
@@ -163,9 +155,7 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
-    void test_folder_redirect()
-            throws Exception {
-
+    void test_folder_redirect() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("PROPFIND", URI.create(FOLDER_REDIRECT_URI))
@@ -174,9 +164,7 @@ public class PropfindTest extends AbstractApiTest {
     }
 
     @Test
-    void test_folder_not_exists()
-            throws Exception {
-
+    void test_folder_not_exists() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("PROPFIND", URI.create(FOLDER_NOT_EXISTS_URI))

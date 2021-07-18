@@ -40,8 +40,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class HeadTest extends AbstractApiTest {
 
     @Test
-    void test_folder()
-            throws Exception {
+    void test_folder() throws Exception {
 
         // There are no file lists, so access to folders is not possible.
         // Unlike FORBIDDEN, 404 is used for things that are not allowed,
@@ -54,9 +53,7 @@ public class HeadTest extends AbstractApiTest {
     }
 
     @Test
-    void test_folder_not_exists()
-            throws Exception {
-
+    void test_folder_not_exists() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .head(FOLDER_NOT_EXISTS_URI))
@@ -64,9 +61,7 @@ public class HeadTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_readonly()
-            throws Exception {
-
+    void test_file_readonly() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .head(FILE_READONLY_URI))
@@ -74,9 +69,7 @@ public class HeadTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file()
-            throws Exception {
-
+    void test_file() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .head(FILE_URI))
@@ -84,8 +77,7 @@ public class HeadTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_etag()
-            throws Exception {
+    void test_file_etag() throws Exception {
 
         final MvcResult headResult1 = this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -140,9 +132,7 @@ public class HeadTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_not_exists()
-            throws Exception {
-
+    void test_file_not_exists() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .head(FILE_NOT_EXISTS_URI))
@@ -150,9 +140,7 @@ public class HeadTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_redirect()
-            throws Exception {
-
+    void test_file_redirect() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .head(FILE_REDIRECT_URI))

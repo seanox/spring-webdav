@@ -41,8 +41,7 @@ import java.net.URI;
 public class OptionsTest extends AbstractApiTest {
 
     @Test
-    void test_folder()
-            throws Exception {
+    void test_folder() throws Exception {
 
         // LOCK and UNLOCK for readonly files/folders are responded with status FORBIDDEN.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
@@ -70,8 +69,7 @@ public class OptionsTest extends AbstractApiTest {
     }
 
     @Test
-    void test_folder_not_exists()
-            throws Exception {
+    void test_folder_not_exists() throws Exception {
 
         // LOCK and UNLOCK for non-existing files/folders are responded with the status NOT FOUND.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
@@ -90,8 +88,7 @@ public class OptionsTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_readonly()
-            throws Exception {
+    void test_file_readonly() throws Exception {
 
         // LOCK and UNLOCK for readonly files/folders are responded with status FORBIDDEN.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.
@@ -110,8 +107,7 @@ public class OptionsTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file()
-            throws Exception {
+    void test_file() throws Exception {
 
         // LOCK and UNLOCK for writable files must work.
         // OPTIONS contain the LOCK and UNLOCK methods for writable files.
@@ -130,8 +126,7 @@ public class OptionsTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_not_exists()
-            throws Exception {
+    void test_file_not_exists() throws Exception {
 
         // LOCK and UNLOCK for non-existing files/folders are responded with the status NOT FOUND.
         // OPTIONS do not contain the LOCK and UNLOCK methods for readonly files/folders.

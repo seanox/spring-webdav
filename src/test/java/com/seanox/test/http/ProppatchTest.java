@@ -44,8 +44,7 @@ import java.net.URI;
 public class ProppatchTest extends AbstractApiTest {
 
     @Test
-    void testRequest()
-            throws Exception {
+    void testRequest() throws Exception {
         final String method = this.getClass().getSimpleName().replaceAll("(?<=[a-z])[A-Z].*$", "").toUpperCase();
         this.mockMvc.perform(
                 MockMvcRequestBuilders

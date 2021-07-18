@@ -41,8 +41,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class PutTest extends AbstractApiTest {
 
     @Test
-    void test_folder()
-            throws Exception {
+    void test_folder() throws Exception {
 
         // PUT for folders are responded with status FORBIDDEN.
         this.mockMvc.perform(
@@ -55,8 +54,7 @@ public class PutTest extends AbstractApiTest {
     }
 
     @Test
-    void test_folder_not_exists()
-            throws Exception {
+    void test_folder_not_exists() throws Exception {
 
         // PUT for folders are responded with status FORBIDDEN.
         this.mockMvc.perform(
@@ -69,8 +67,7 @@ public class PutTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_readonly()
-            throws Exception {
+    void test_file_readonly() throws Exception {
 
         // PUT readonly files are responded with status FORBIDDEN.
         this.mockMvc.perform(
@@ -83,8 +80,7 @@ public class PutTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file()
-            throws Exception {
+    void test_file() throws Exception {
 
         final MvcResult headResult1 = this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -126,8 +122,7 @@ public class PutTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_etag()
-            throws Exception {
+    void test_file_etag() throws Exception {
 
         final MvcResult headResult1 = this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -198,8 +193,7 @@ public class PutTest extends AbstractApiTest {
     }
 
     @Test
-    void test_file_not_exists()
-            throws Exception {
+    void test_file_not_exists() throws Exception {
 
         // PUT for for non-existing files are responded with status FORBIDDEN.
         this.mockMvc.perform(
