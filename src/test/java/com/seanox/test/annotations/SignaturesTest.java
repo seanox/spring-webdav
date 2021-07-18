@@ -43,32 +43,28 @@ public class SignaturesTest extends AbstractApiTest {
     // is used as a placeholder and filled when called.
 
     @Test
-    void test_A1()
-            throws Exception {
+    void test_A1() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A1))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
     @Test
-    void test_A2()
-            throws Exception {
+    void test_A2() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("A2-ABCD---"));
     }
     @Test
-    void test_A3()
-            throws Exception {
+    void test_A3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("A3----ABCD"));
     }
     @Test
-    void test_A4()
-            throws Exception {
+    void test_A4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -84,8 +80,7 @@ public class SignaturesTest extends AbstractApiTest {
     // - complete all double, the first two repeat at the end
 
     @Test
-    void test_B1()
-            throws Exception {
+    void test_B1() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(SignaturesTestController.MAPPING_B1))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -95,8 +90,7 @@ public class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string("B1"));
     }
     @Test
-    void test_B2()
-            throws Exception {
+    void test_B2() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(SignaturesTestController.MAPPING_B2))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -106,8 +100,7 @@ public class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string("B2-ABCD---"));
     }
     @Test
-    void test_B3()
-            throws Exception {
+    void test_B3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(SignaturesTestController.MAPPING_B3))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -117,8 +110,7 @@ public class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string("B3----ABCD"));
     }
     @Test
-    void test_B4()
-            throws Exception {
+    void test_B4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(SignaturesTestController.MAPPING_B4))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -137,32 +129,28 @@ public class SignaturesTest extends AbstractApiTest {
     // - complete all double, the first two repeat at the end
 
     @Test
-    void test_C1()
-            throws Exception {
+    void test_C1() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C1))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("C1"));
     }
     @Test
-    void test_C2()
-            throws Exception {
+    void test_C2() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("C2-ABC---"));
     }
     @Test
-    void test_C3()
-            throws Exception {
+    void test_C3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("C3----ABC"));
     }
     @Test
-    void test_C4()
-            throws Exception {
+    void test_C4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -178,32 +166,28 @@ public class SignaturesTest extends AbstractApiTest {
     // - complete all double, the first two repeat at the end
 
     @Test
-    void test_D1()
-            throws Exception {
+    void test_D1() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D1))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("D1"));
     }
     @Test
-    void test_D2()
-            throws Exception {
+    void test_D2() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("D2-ABC---"));
     }
     @Test
-    void test_D3()
-            throws Exception {
+    void test_D3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("D3----ABC"));
     }
     @Test
-    void test_D4()
-            throws Exception {
+    void test_D4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D4))
                 .andExpect(MockMvcResultMatchers.status().isOk())

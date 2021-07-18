@@ -56,8 +56,7 @@ public class ContentTypeTest extends AbstractApiTest {
     // TODO:
 
     @Test
-    void test_CX()
-            throws Exception {
+    void test_CX() throws Exception {
         Assertions.assertEquals("200/200/207 /extras/contentType/c1.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C1, AttributeFingeprintType.ContentType));
         Assertions.assertEquals("200/200/207 /extras/contentType/c2.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C2, AttributeFingeprintType.ContentType));
         Assertions.assertEquals("200/200/207 /extras/contentType/c3.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C3, AttributeFingeprintType.ContentType));

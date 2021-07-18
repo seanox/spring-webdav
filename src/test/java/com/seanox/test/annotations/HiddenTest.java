@@ -76,8 +76,7 @@ public class HiddenTest extends AbstractApiTest {
     private static final String FOLDER_B3 = "/extras/hidden/b/b-1/b-2/b-3/";
     private static final String FILE_B1 = "/extras/hidden/b/b-1/b-2/b-3/b1.txt";
 
-    PropfindResult propfind(final String uri)
-            throws Exception {
+    PropfindResult propfind(final String uri) throws Exception {
 
         final MvcResult mvcResult = this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -120,8 +119,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFile_01()
-            throws Exception {
+    void testFile_01() throws Exception {
 
         final PropfindResult propfindResult = this.propfind(FILE_C2);
         Assertions.assertEquals(207, propfindResult.status);
@@ -130,8 +128,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFile_02()
-            throws Exception {
+    void testFile_02() throws Exception {
 
         final PropfindResult propfindResult = this.propfind(FILE_A2);
         Assertions.assertEquals(207, propfindResult.status);
@@ -140,8 +137,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFile_03()
-            throws Exception {
+    void testFile_03() throws Exception {
 
         final PropfindResult propfindResult = this.propfind(FILE_B1);
         Assertions.assertEquals(207, propfindResult.status);
@@ -150,8 +146,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFolder_01()
-            throws Exception {
+    void testFolder_01() throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_C3_REDIRECT).status);
         final PropfindResult propfindResult = this.propfind(FOLDER_C3);
@@ -162,8 +157,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFolder_02()
-            throws Exception {
+    void testFolder_02() throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_A3_REDIRECT).status);
         final PropfindResult propfindResult = this.propfind(FOLDER_A3);
@@ -174,8 +168,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFolder_03()
-            throws Exception {
+    void testFolder_03() throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_A2_REDIRECT).status);
         final PropfindResult propfindResult = this.propfind(FOLDER_A2);
@@ -187,8 +180,7 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFolder_04()
-            throws Exception {
+    void testFolder_04() throws Exception {
 
         Assertions.assertEquals(302, this.propfind(FOLDER_B3_REDIRECT).status);
         final PropfindResult propfindResult = this.propfind(FOLDER_B3);

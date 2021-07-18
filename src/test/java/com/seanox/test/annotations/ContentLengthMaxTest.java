@@ -57,8 +57,7 @@ public class ContentLengthMaxTest extends AbstractApiTest {
     private static final String CONTENT_51 = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXY";
 
     @Test
-    void test_A1()
-            throws Exception {
+    void test_A1() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(ContentLengthMaxTestController.MAPPING_A1)
@@ -72,8 +71,7 @@ public class ContentLengthMaxTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A2()
-            throws Exception {
+    void test_A2() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(ContentLengthMaxTestController.MAPPING_A2)
@@ -92,8 +90,7 @@ public class ContentLengthMaxTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A3()
-            throws Exception {
+    void test_A3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(ContentLengthMaxTestController.MAPPING_A3)
@@ -112,8 +109,7 @@ public class ContentLengthMaxTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A4()
-            throws Exception {
+    void test_A4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(ContentLengthMaxTestController.MAPPING_A4)
@@ -132,8 +128,7 @@ public class ContentLengthMaxTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A5()
-            throws Exception {
+    void test_A5() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(ContentLengthMaxTestController.MAPPING_A5)

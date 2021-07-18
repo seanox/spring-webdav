@@ -108,8 +108,7 @@ public class MappingTest extends AbstractTest {
     @ApiDavMapping(path="/marketing/newsletter.pptx")
     @ApiDavMapping(path="/marketing/sales.pptx")
     @Test
-    void test_6()
-            throws Exception {
+    void test_6() throws Exception {
         final Object sitemap = SitemapAdapter.createInstance();
         for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
             SitemapAdapter.map(sitemap, new Annotation[] {annotation});

@@ -51,8 +51,7 @@ import java.net.URI;
  */
 public class MetaTest extends AbstractApiTest {
 
-    MetaTest.PropfindResult propfind(final String uri)
-            throws Exception {
+    MetaTest.PropfindResult propfind(final String uri) throws Exception {
 
         final MvcResult mvcResult = this.mockMvc.perform(
                 MockMvcRequestBuilders
@@ -86,8 +85,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A1()
-            throws Exception {
+    void test_A1() throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A1);
         Assertions.assertEquals(207, propfindResult.status);
@@ -104,8 +102,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A2()
-            throws Exception {
+    void test_A2() throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A2);
         Assertions.assertEquals(207, propfindResult.status);
@@ -122,8 +119,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A3()
-            throws Exception {
+    void test_A3() throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A3);
         Assertions.assertEquals(207, propfindResult.status);
@@ -140,8 +136,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A4()
-            throws Exception {
+    void test_A4() throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A4);
         Assertions.assertEquals(207, propfindResult.status);
@@ -157,8 +152,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A5()
-            throws Exception {
+    void test_A5() throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A5);
         Assertions.assertEquals(207, propfindResult.status);
@@ -174,8 +168,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A6()
-            throws Exception {
+    void test_A6() throws Exception {
 
         final MetaTest.PropfindResult propfindResult = this.propfind(MetaTestController.MAPPING_A6);
         Assertions.assertEquals(207, propfindResult.status);
@@ -195,8 +188,7 @@ public class MetaTest extends AbstractApiTest {
     // Order and number are not fixed.
 
     @Test
-    void test_B1()
-            throws Exception {
+    void test_B1() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B1))
@@ -205,8 +197,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_B2()
-            throws Exception {
+    void test_B2() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B2))
@@ -215,8 +206,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_B3()
-            throws Exception {
+    void test_B3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B3))
@@ -225,8 +215,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_B4()
-            throws Exception {
+    void test_B4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B4))
@@ -235,8 +224,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_B5()
-            throws Exception {
+    void test_B5() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B5))
@@ -245,8 +233,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     @Test
-    void test_CX()
-            throws Exception {
+    void test_CX() throws Exception {
         Assertions.assertEquals("404/404/404 /extras/meta/c1.txt 000000 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C1, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/c2.txt 300061 TesT/TesT/TesT null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C2, AttributeFingeprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/c3.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C3, AttributeFingeprintType.Meta));

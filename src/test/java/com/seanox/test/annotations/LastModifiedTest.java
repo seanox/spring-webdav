@@ -55,8 +55,7 @@ public class LastModifiedTest extends AbstractApiTest {
     // - default: timestamp from the build of the application
 
     @Test
-    void test_CX()
-            throws Exception {
+    void test_CX() throws Exception {
         Assertions.assertEquals("200/200/207 /extras/lastModified/c1.txt 301061 null/null", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_C1, AttributeFingeprintType.LastModified));
         Assertions.assertEquals("200/200/207 /extras/lastModified/c2.txt 301061 null/null", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_C2, AttributeFingeprintType.LastModified));
         Assertions.assertEquals("200/200/207 /extras/lastModified/c3.txt 301061 null/null", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_C3, AttributeFingeprintType.LastModified));

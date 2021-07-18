@@ -61,8 +61,7 @@ public class AcceptTest extends AbstractApiTest {
     private static final String CONTENT_TYPE_OTHER_A = "other/a";
 
     @Test
-    void test_A1()
-            throws Exception {
+    void test_A1() throws Exception {
         final String mapping = AcceptTestController.MAPPING_A1;
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
@@ -88,8 +87,7 @@ public class AcceptTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A2()
-            throws Exception {
+    void test_A2() throws Exception {
         final String mapping = AcceptTestController.MAPPING_A2;
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
@@ -115,8 +113,7 @@ public class AcceptTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A3()
-            throws Exception {
+    void test_A3() throws Exception {
         final String mapping = AcceptTestController.MAPPING_A3;
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
@@ -142,8 +139,7 @@ public class AcceptTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A4()
-            throws Exception {
+    void test_A4() throws Exception {
         final String mapping = AcceptTestController.MAPPING_A4;
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
@@ -169,8 +165,7 @@ public class AcceptTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A5()
-            throws Exception {
+    void test_A5() throws Exception {
         final String mapping = AcceptTestController.MAPPING_A5;
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))
@@ -196,8 +191,7 @@ public class AcceptTest extends AbstractApiTest {
     }
 
     @Test
-    void test_A6()
-            throws Exception {
+    void test_A6() throws Exception {
         final String mapping = AcceptTestController.MAPPING_A6;
         this.mockMvc.perform(
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_TEXT_A).content("TA"))

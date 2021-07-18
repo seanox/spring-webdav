@@ -56,8 +56,7 @@ public class ContentLengthTest extends AbstractApiTest {
     // TODO:
 
     @Test
-    void test_CX()
-            throws Exception {
+    void test_CX() throws Exception {
         Assertions.assertEquals("200/200/207 /extras/contentLength/c1.txt 331361 110/110/110", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_C1, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/c2.txt 331361 120/120/120", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_C2, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/c3.txt 331361 130/130/130", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_C3, AttributeFingeprintType.ContentLength));

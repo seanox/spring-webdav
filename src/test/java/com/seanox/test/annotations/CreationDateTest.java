@@ -55,8 +55,7 @@ public class CreationDateTest extends AbstractApiTest {
     // - default: timestamp from the build of the application
 
     @Test
-    void test_CX()
-            throws Exception {
+    void test_CX() throws Exception {
         Assertions.assertEquals("200/200/207 /extras/creationDate/c1.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C1, AttributeFingeprintType.CreationDate));
         Assertions.assertEquals("200/200/207 /extras/creationDate/c2.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C2, AttributeFingeprintType.CreationDate));
         Assertions.assertEquals("200/200/207 /extras/creationDate/c3.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C3, AttributeFingeprintType.CreationDate));
