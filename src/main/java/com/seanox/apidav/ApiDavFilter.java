@@ -212,10 +212,16 @@ public class ApiDavFilter extends HttpFilter {
             final Collection<Annotation> annotations = new ArrayList<>();
             for (final String beanName : applicationContext.getBeanDefinitionNames()) {
                 final Object object = applicationContext.getBean(beanName);
-                for (final Class<?> source: ApiDavFilter.getClassHierarchy(object)) {
+                for (final Class<?> source : ApiDavFilter.getClassHierarchy(object)) {
                     for (final Method method : source.getDeclaredMethods()) {
                         for (final java.lang.annotation.Annotation annotation : method.getDeclaredAnnotations()) {
                             // TODO: Check for uniqueness of annotations, multiple occurrences cause exception
+                            //       e.g @ApiDavAttributeMapping(path=MAPPING_D4, attribute=ApiDavMappingAttribute.ContentType)
+                            //           methodA...
+                            //           @ApiDavAttributeMapping(path=MAPPING_D4, attribute=ApiDavMappingAttribute.ContentType)
+                            //           methodB...
+                            //       the same for meta or input
+                            //       One annotation multiple targets/methods
                             if (annotation.annotationType().equals(ApiDavAttributeMapping.class))
                                 annotations.add(Annotation.Attribute.create((ApiDavAttributeMapping)annotation, object, method));
                             else if (annotation.annotationType().equals(ApiDavAttributeMapping.ApiDavAttributeMappings.class))
@@ -432,7 +438,7 @@ public class ApiDavFilter extends HttpFilter {
                     xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_GETLASTMODIFIED, lastModified);
 
                 xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISREADONLY, isReadOnly);
-                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISHIDDEN,  isHidden);
+                xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISHIDDEN, isHidden);
                 xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISSYSTEM, isSystem);
                 xmlWriter.writeProperty(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_ISARCHIVE, isArchive);
 
@@ -627,7 +633,7 @@ public class ApiDavFilter extends HttpFilter {
             final Document document = ApiDavFilter.readXmlRequest(request);
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             try (final XmlWriter xmlWriter = new XmlWriter(buffer)) {
-                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI,XML_MULTISTATUS, XmlWriter.ElementType.OPENING);
+                xmlWriter.writeElement(ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, ApiDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE_URI, XML_MULTISTATUS, XmlWriter.ElementType.OPENING);
 
                 final int depth = ApiDavFilter.getDepth(request);
 
@@ -666,6 +672,18 @@ public class ApiDavFilter extends HttpFilter {
         }
 
         throw new MultiStatusState();
+    }
+
+    private void doProppatch(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+
+        // PROPPATCH is not officially supported, it doesn't make sense.
+        // But MS Office / MS-WebDAV-MiniRedir does it sometimes and wants to
+        // change timestamps and file attributes.
+        // Lazy magic -- here simply PROPFIND is used and the requests are
+        // supplied with meta data. Not nice but works.
+
+        this.doPropfind(sitemap, request, response);
     }
 
     private void doHead(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
@@ -921,6 +939,7 @@ public class ApiDavFilter extends HttpFilter {
                 case ApiDavFilter.METHOD_UNLOCK:
                     this.doUnlock(sitemap, request, response);
                 case ApiDavFilter.METHOD_PROPPATCH:
+                    this.doProppatch(sitemap, request, response);
                 case ApiDavFilter.METHOD_MKCOL:
                 case ApiDavFilter.METHOD_COPY:
                 case ApiDavFilter.METHOD_MOVE:
