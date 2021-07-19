@@ -76,7 +76,6 @@ public class Application extends SpringBootServletInitializer {
 
     @Bean
     public FilterRegistrationBean someFilterRegistration() {
-
         final FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new ApiDavFilter());
         registration.addUrlPatterns("/*");
