@@ -43,13 +43,13 @@ public class MetaInputStream extends InputStream {
 
     private final HttpServletRequest request;
 
-    @Getter(AccessLevel.PUBLIC) private final String contentType;
-    @Getter(AccessLevel.PUBLIC) private final Long   contentLength;
-    @Getter(AccessLevel.PUBLIC) private final Long   contentLengthMax;
+    @Getter(AccessLevel.PUBLIC) private final String  contentType;
+    @Getter(AccessLevel.PUBLIC) private final Integer contentLength;
+    @Getter(AccessLevel.PUBLIC) private final Integer contentLengthMax;
 
     private InputStream input;
 
-    private long limit;
+    private int limit;
 
     private IOException exception;
 
@@ -59,8 +59,8 @@ public class MetaInputStream extends InputStream {
         if (Objects.isNull(this.input)) {
             this.input = this.request.getInputStream();
             if (Objects.nonNull(this.contentLengthMax)
-                    && this.contentLengthMax.longValue() >= 0)
-                this.limit = this.contentLengthMax.longValue();
+                    && this.contentLengthMax.intValue() >= 0)
+                this.limit = this.contentLengthMax.intValue();
         }
 
         if (Objects.nonNull(this.exception))
@@ -74,7 +74,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.longValue() < 0)
+                || this.contentLengthMax.intValue() < 0)
             return this.input.read();
 
         try {
@@ -100,7 +100,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.longValue() < 0)
+                || this.contentLengthMax.intValue() < 0)
             return this.input.read(bytes);
 
         try {
@@ -126,7 +126,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.longValue() < 0)
+                || this.contentLengthMax.intValue() < 0)
             return this.input.read(bytes, offset, length);
 
         try {
@@ -152,7 +152,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.longValue() < 0)
+                || this.contentLengthMax.intValue() < 0)
             return this.input.readAllBytes();
 
         try {return this.input.readNBytes((int)this.limit);

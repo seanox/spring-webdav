@@ -36,7 +36,7 @@ public @interface ApiDavMapping {
 
     String  path();
 
-    long    contentLength() default -1;
+    int     contentLength() default -1;
     String  contentType()   default "";
     String  lastModified()  default "";
     String  creationDate()  default "";

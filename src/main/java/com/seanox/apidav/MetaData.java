@@ -40,9 +40,9 @@ import java.util.Date;
 @Getter(AccessLevel.PUBLIC)
 public class MetaData extends MetaProperties {
 
-    MetaData(final URI uri, final String contentType, final Long contentLength,
-             final Date creationDate, final Date lastModified,
-             final boolean isReadOnly, final boolean isHidden, final boolean isAccepted, final boolean isPermitted) {
+    MetaData(final URI uri, final String contentType, final Integer contentLength,
+            final Date creationDate, final Date lastModified,
+            final boolean isReadOnly, final boolean isHidden, final boolean isAccepted, final boolean isPermitted) {
         super(uri, contentType, contentLength, creationDate, lastModified, isReadOnly, isHidden, isAccepted, isPermitted);
     }
 
@@ -52,7 +52,7 @@ public class MetaData extends MetaProperties {
     }
 
     @Override
-    public void setContentLength(final Long contentLength) {
+    public void setContentLength(final Integer contentLength) {
         super.setContentLength(contentLength);
     }
 

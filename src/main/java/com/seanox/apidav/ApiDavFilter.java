@@ -699,7 +699,7 @@ public class ApiDavFilter extends HttpFilter {
         if (Objects.nonNull(file.getLastModified()))
             response.setDateHeader(HEADER_LAST_MODIFIED, file.getLastModified().getTime());
         if (Objects.nonNull(file.getContentLength()))
-            response.setContentLengthLong(file.getContentLength());
+            response.setContentLength(file.getContentLength());
         if (Objects.nonNull(file.getContentType()))
             response.setContentType(file.getContentType());
         throw new SuccessState();

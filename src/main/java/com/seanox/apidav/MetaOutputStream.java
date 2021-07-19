@@ -36,13 +36,13 @@ public class MetaOutputStream extends OutputStream {
 
     private final HttpServletResponse response;
 
-    @Getter(AccessLevel.PUBLIC) private String contentType;
-    @Getter(AccessLevel.PUBLIC) private Long   contentLength;
-    @Getter(AccessLevel.PUBLIC) private Date   lastModified;
+    @Getter(AccessLevel.PUBLIC) private String  contentType;
+    @Getter(AccessLevel.PUBLIC) private Integer contentLength;
+    @Getter(AccessLevel.PUBLIC) private Date    lastModified;
 
     private OutputStream output;
 
-    public void setContentLength(Long contentLength) {
+    public void setContentLength(Integer contentLength) {
         if (this.response.isCommitted())
             return;
         this.contentLength = contentLength;
@@ -91,7 +91,7 @@ public class MetaOutputStream extends OutputStream {
                 this.response.setContentType(this.contentType);
             if (Objects.nonNull(this.contentLength)
                     && this.contentLength >= 0)
-                this.response.setContentLengthLong(this.contentLength);
+                this.response.setContentLength(this.contentLength);
             if (Objects.nonNull(this.lastModified))
                 this.response.setHeader("Last-Modified", DateTime.formatDate(this.lastModified, "E, dd MMM yyyy HH:mm:ss z"));
             final Date lastModified = this.getLastModified();

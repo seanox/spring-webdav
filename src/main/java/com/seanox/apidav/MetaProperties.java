@@ -48,7 +48,7 @@ public class MetaProperties implements Cloneable {
 
     private URI uri;
     private String contentType;
-    private Long contentLength;
+    private Integer contentLength;
     private Date creationDate;
     private Date lastModified;
     private boolean isReadOnly;

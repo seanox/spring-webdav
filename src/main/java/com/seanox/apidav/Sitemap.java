@@ -287,7 +287,7 @@ class Sitemap implements Serializable {
 
     private static class Defaults {
         private static final String  contentType      = "application/octet-stream";
-        private static final Long    contentLength    = Long.valueOf(-1);
+        private static final Integer contentLength    = Integer.valueOf(-1);
         private static final Date    creationDate     = Sitemap.getBuildDate();
         private static final Date    lastModified     = Sitemap.getBuildDate();
         private static final Boolean isReadOnly       = Boolean.TRUE;
@@ -296,7 +296,7 @@ class Sitemap implements Serializable {
         private static final Boolean isPermitted      = Boolean.TRUE;
 
         private static final String  accept           = "*/*";
-        private static final Long    contentLengthMax = null;
+        private static final Integer contentLengthMax = null;
 
         private static final MetaData MetaDataTemplate = new MetaData(
                 null,
@@ -470,7 +470,7 @@ class Sitemap implements Serializable {
                     if (!inputAnnotation.getAccept().isBlank())
                         this.accept = new Static(inputAnnotation.getAccept());
                     if (inputAnnotation.getContentLengthMax() >= 0)
-                        this.contentLengthMax = new Static(Long.valueOf(inputAnnotation.getContentLengthMax()));
+                        this.contentLengthMax = new Static(Integer.valueOf(inputAnnotation.getContentLengthMax()));
 
                     if (Objects.nonNull(inputAnnotation.getExpressions())) {
                         for (final Annotation.Attribute.AttributeExpression attributeExpression : inputAnnotation.getExpressions()) {
@@ -487,7 +487,7 @@ class Sitemap implements Serializable {
                     this.outputCallback = new Callback(mappingAnnotation.getOrigin(), mappingAnnotation.getObject(), mappingAnnotation.getMethod());
 
                     if (mappingAnnotation.getContentLength() >= 0)
-                        this.contentLength = new Static(Long.valueOf(mappingAnnotation.getContentLength()));
+                        this.contentLength = new Static(Integer.valueOf(mappingAnnotation.getContentLength()));
                     if (Objects.nonNull(mappingAnnotation.getContentType())
                             && !mappingAnnotation.getContentType().isBlank())
                         this.contentType = new Static(mappingAnnotation.getContentType());
@@ -660,14 +660,14 @@ class Sitemap implements Serializable {
             return Objects.nonNull(contentType) && !contentType.isBlank() ? contentType : null;
         }
 
-        Long getContentLength() {
-            final Long contentLength = this.eval(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
-            return Objects.nonNull(contentLength) && contentLength.longValue() >= 0 ? contentLength : null;
+        Integer getContentLength() {
+            final Integer contentLength = this.eval(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
+            return Objects.nonNull(contentLength) && contentLength.intValue() >= 0 ? contentLength : null;
         }
 
-        Long getContentLengthMax() {
-            final Long contentLengthMax = this.eval(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
-            return Objects.nonNull(contentLengthMax) && contentLengthMax.longValue() >= 0 ? contentLengthMax : null;
+        Integer getContentLengthMax() {
+            final Integer contentLengthMax = this.eval(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
+            return Objects.nonNull(contentLengthMax) && contentLengthMax.intValue() >= 0 ? contentLengthMax : null;
         }
 
         String getAccept() {

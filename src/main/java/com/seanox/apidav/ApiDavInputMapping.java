@@ -37,7 +37,7 @@ public @interface ApiDavInputMapping {
     String path();
 
     String accept()           default "";
-    long   contentLengthMax() default -1;
+    int    contentLengthMax() default -1;
 
     ApiDavInputMappingAttributeExpression[] attributeExpressions() default {};
 

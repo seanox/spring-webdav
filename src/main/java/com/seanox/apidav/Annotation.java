@@ -67,8 +67,8 @@ abstract class Annotation {
 
     enum Target {
         ReadOnly(Boolean.TYPE), Hidden(Boolean.TYPE), Accepted(Boolean.TYPE), Permitted(Boolean.TYPE),
-        ContentType(String.class), ContentLength(Long.class), CreationDate(Date.class), LastModified(Date.class),
-        Accept(String.class), ContentLengthMax(Long.class);
+        ContentType(String.class), ContentLength(Integer.class), CreationDate(Date.class), LastModified(Date.class),
+        Accept(String.class), ContentLengthMax(Integer.class);
 
         final Class<?> type;
 
@@ -143,14 +143,14 @@ abstract class Annotation {
     @Getter(AccessLevel.PACKAGE)
     static class Input extends Annotation {
 
-        private final long   contentLengthMax;
+        private final int    contentLengthMax;
         private final String accept;
 
         private final Collection<Attribute.AttributeExpression> expressions;
 
         @Builder(access=AccessLevel.PRIVATE)
         Input(final String path, final AnnotationType type, final Object origin, final Object object, final Method method,
-                final long contentLengthMax, final String accept, Attribute.AttributeExpression... expressions) {
+                final int contentLengthMax, final String accept, Attribute.AttributeExpression... expressions) {
             super(path, type, origin, object, method);
 
             this.contentLengthMax = contentLengthMax;
@@ -181,7 +181,7 @@ abstract class Annotation {
     @Getter(AccessLevel.PACKAGE)
     static class Mapping extends Annotation {
 
-        private final long    contentLength;
+        private final int     contentLength;
         private final String  contentType;
         private final Date    creationDate;
         private final Date    lastModified;
@@ -194,7 +194,7 @@ abstract class Annotation {
 
         @Builder(access=AccessLevel.PRIVATE)
         Mapping(final String path, final AnnotationType type, final Object origin, final Object object, final Method method,
-                final long contentLength, final String contentType, final Date creationDate, final Date lastModified,
+                final int contentLength, final String contentType, final Date creationDate, final Date lastModified,
                 final boolean isReadOnly, final boolean isHidden, final boolean isAccepted, final boolean isPermitted,
                 final Attribute.AttributeExpression... expressions) {
             super(path, type, origin, object, method);
