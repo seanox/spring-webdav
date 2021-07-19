@@ -40,12 +40,12 @@ import java.net.URI;
 /**
  * Test of the methods signatures.
  *
- * SignaturesTestController 1.0.0 20210718
+ * SignaturesTestController 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 @Component
 public class SignaturesTestController {
@@ -179,7 +179,7 @@ public class SignaturesTestController {
 
     // {@link ApiDavAttributeMapping}
     // URI, final Properties, ApiDavMappingAttribute
-    // expected data type from return value: depending on the attributes - Boolean, Long, String, Date
+    // expected data type from return value: depending on the attributes - Boolean, Integer, String, Date
     // - without
     // - complete +3 more object
     // - complete +3 more object, but sequence reversed

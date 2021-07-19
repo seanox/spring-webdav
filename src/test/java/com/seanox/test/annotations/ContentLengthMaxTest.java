@@ -30,12 +30,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Test the function of the ContentLengthMaxTest attribute.
  *
- * ContentLengthMaxTest 1.0.0 20210715
+ * ContentLengthMaxTest 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210715
+ * @version 1.0.0 20210719
  */
 public class ContentLengthMaxTest extends AbstractApiTest {
 
@@ -46,7 +46,7 @@ public class ContentLengthMaxTest extends AbstractApiTest {
     // - static value via {@link ApiDavInputMapping}
     // - Spring Expression Language via {@link ApiDavInputMappingAttributeExpression}
     // Expected data type:
-    // - long
+    // - int
     // - value less than 0 has effect like default (null)
 
     private static final String CONTENT_0  = "";

@@ -12,21 +12,21 @@ import java.util.Objects;
 /**
  * Test of the MetaOutputStream functions.
  *
- * MetaOutputStreamTest 1.0.0 20210718
+ * MetaOutputStreamTest 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 @SuppressWarnings("boxing")
 public class MetaOutputStreamTest extends AbstractTest {
 
     private static final byte[] BYTES = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").getBytes();
 
-    private static final long LIMIT_OVERRUN = BYTES.length /2;
+    private static final int LIMIT_OVERRUN = BYTES.length /2;
 
-    private static final long LIMIT = BYTES.length;
+    private static final int LIMIT = BYTES.length;
 
     // Modes: Normal and Limited
     // Test cases:
@@ -40,7 +40,7 @@ public class MetaOutputStreamTest extends AbstractTest {
         return new MetaInputStreamAdapter(new ByteArrayInputStream(BYTES));
     }
 
-    private static MetaInputStreamAdapter createMetaInputStreamAdapter(final Long limit) {
+    private static MetaInputStreamAdapter createMetaInputStreamAdapter(final Integer limit) {
         return new MetaInputStreamAdapter(new ByteArrayInputStream(BYTES), limit);
     }
 
@@ -48,7 +48,7 @@ public class MetaOutputStreamTest extends AbstractTest {
         return new MetaInputStreamAdapter(new InputExceptionStream());
     }
 
-    private static MetaInputStreamAdapter createMetaInputExceptionStreamAdapter(final Long limit) {
+    private static MetaInputStreamAdapter createMetaInputExceptionStreamAdapter(final Integer limit) {
         return new MetaInputStreamAdapter(new InputExceptionStream(), limit);
     }
 
@@ -136,7 +136,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         String string = "";
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
@@ -149,7 +149,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes);
         Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", new String(bytes, 0, size));
@@ -158,7 +158,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes, 1, 4);
         Assertions.assertEquals("\00ABC", new String(bytes, 0, size));
@@ -167,7 +167,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_C4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         final String string = new String(metaInputStreamAdapter.readAllBytes());
         Assertions.assertEquals(new String(BYTES), string);
         Assertions.assertEquals(-1, metaInputStreamAdapter.read());
@@ -177,7 +177,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D1() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         String string = "";
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
@@ -190,7 +190,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D2() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes);
         Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", new String(bytes, 0, size));
@@ -199,7 +199,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D3() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         final byte[] bytes = new byte[65535];
         final int size = metaInputStreamAdapter.read(bytes, 1, 4);
         Assertions.assertEquals("\00ABC", new String(bytes, 0, size));
@@ -208,7 +208,7 @@ public class MetaOutputStreamTest extends AbstractTest {
 
     @Test
     void test_D4() throws IOException {
-        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1L);
+        final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
         final String string = new String(metaInputStreamAdapter.readAllBytes());
         Assertions.assertEquals(new String(BYTES), string);
         Assertions.assertEquals(-1, metaInputStreamAdapter.read());

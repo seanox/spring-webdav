@@ -41,7 +41,7 @@ public class MetaInputStreamAdapter extends MetaInputStream {
         super(null, null, null, null, input, 0, null);
     }
 
-    public MetaInputStreamAdapter(final InputStream input, final Long limit) {
+    public MetaInputStreamAdapter(final InputStream input, final Integer limit) {
         super(null, null, null, limit, input, Objects.nonNull(limit) ? limit : 0, null);
     }
 

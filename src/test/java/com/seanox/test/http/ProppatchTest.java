@@ -30,16 +30,17 @@ import java.net.URI;
 
 /**
  * Test for HTTP method PROPPATCH.
- * PROPPATCH is not supported/allowed.
+ * PROPPATCH is not officially supported/allowed.
+ * But for MS Office it is answered with 207 PROPFIND.
  *     Expectation:
- * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
+ * If an Entry found in the SiteMap, the requests are responded with 207 PROPFIND.
  *
- * ProppatchTest 1.0.0 20210710
+ * ProppatchTest 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210710
+ * @version 1.0.0 20210719
  */
 public class ProppatchTest extends AbstractApiTest {
 
@@ -53,7 +54,7 @@ public class ProppatchTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, URI.create(FILE_URI)))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isMultiStatus());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, URI.create(FILE_REDIRECT_URI)))
@@ -62,7 +63,7 @@ public class ProppatchTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, URI.create(FOLDER_URI)))
-                .andExpect(MockMvcResultMatchers.status().isForbidden());
+                .andExpect(MockMvcResultMatchers.status().isMultiStatus());
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request(method, URI.create(FOLDER_REDIRECT_URI)))

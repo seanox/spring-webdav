@@ -30,12 +30,12 @@ import org.springframework.stereotype.Component;
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#ContentType} functions.
  *
- * ContentTypeTestController 1.0.0 20210711
+ * ContentTypeTestController 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210719
  */
 @Component
 public class ContentTypeTestController {
@@ -104,7 +104,7 @@ public class ContentTypeTestController {
         return new Exception("Test C8");
     }
     @ApiDavAttributeMapping(path=MAPPING_C9, attribute=ApiDavMappingAttribute.ContentType)
-    Long test_C9() {
+    Integer test_C9() {
         throw new RuntimeException("Test C9");
     }
 }

@@ -42,12 +42,12 @@ import java.util.Date;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * MarketingController 1.0.0 20210703
+ * MarketingController 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210703
+ * @version 1.0.0 20210719
  */
 @RequiredArgsConstructor
 @RestController
@@ -68,8 +68,8 @@ class MarketingController {
         this.marketingService.saveMarketingNewsletter(marketingNewsletter);
     }
     @ApiDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavMappingAttribute.ContentLength)
-    Long getMarketingNewsletterLength() {
-        return Long.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
+    Integer getMarketingNewsletterLength() {
+        return Integer.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
     }
     @ApiDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getMarketingNewsletterLastModified() {
@@ -89,8 +89,8 @@ class MarketingController {
         this.marketingService.saveMarketingFlyer(marketingFlyer);
     }
     @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
-    Long getMarketingFlyerLength() {
-        return Long.valueOf(this.marketingService.readMarketingFlyer().getData().length);
+    Integer getMarketingFlyerLength() {
+        return Integer.valueOf(this.marketingService.readMarketingFlyer().getData().length);
     }
     @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getMarketingFlyerLastModified() {

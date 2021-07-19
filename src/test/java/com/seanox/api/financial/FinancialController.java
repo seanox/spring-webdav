@@ -43,12 +43,12 @@ import java.util.Date;
  * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
  * The methods and annotations for apiDAV combine well with @RestController.
  *
- * FinancialController 1.0.0 20210703
+ * FinancialController 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210703
+ * @version 1.0.0 20210719
  */
 @RequiredArgsConstructor
 @RestController
@@ -89,8 +89,8 @@ class FinancialController {
         this.financialService.saveFinancialCosts(financialCosts);
     }
     @ApiDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute=ApiDavMappingAttribute.ContentLength)
-    Long getFinancialCostsContentLength() {
-        return Long.valueOf(this.financialService.readFinancialCosts().getData().length);
+    Integer getFinancialCostsContentLength() {
+        return Integer.valueOf(this.financialService.readFinancialCosts().getData().length);
     }
     @ApiDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute=ApiDavMappingAttribute.LastModified)
     Date getFinancialCostsLastModified() {
@@ -108,8 +108,8 @@ class FinancialController {
         output.write(financialReportStatistic.getData());
     }
     @ApiDavAttributeMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
-    Long getFinancialReportStatisticLength() {
-        return Long.valueOf(this.financialService.readFinancialReportStatistic().getData().length);
+    Integer getFinancialReportStatisticLength() {
+        return Integer.valueOf(this.financialService.readFinancialReportStatistic().getData().length);
     }
     @ApiDavAttributeMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getFinancialReportStatisticLastModified() {
@@ -127,8 +127,8 @@ class FinancialController {
         output.write(financialReportSales.getData());
     }
     @ApiDavAttributeMapping(path=FINANCIAL_REPORTS_SALES_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
-    Long getFinancialReportSalesLength() {
-        return Long.valueOf(this.financialService.readFinancialReportSales().getData().length);
+    Integer getFinancialReportSalesLength() {
+        return Integer.valueOf(this.financialService.readFinancialReportSales().getData().length);
     }
     @ApiDavAttributeMapping(path=FINANCIAL_REPORTS_SALES_PPTX, attribute=ApiDavMappingAttribute.LastModified)
     Date getFinancialReportSalesLastModified() {

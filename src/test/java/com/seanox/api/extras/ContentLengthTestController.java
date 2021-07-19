@@ -30,12 +30,12 @@ import org.springframework.stereotype.Component;
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#ContentLength} functions.
  *
- * ContentLengthTestController 1.0.0 20210718
+ * ContentLengthTestController 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 @Component
 @SuppressWarnings("boxing")
@@ -98,12 +98,12 @@ public class ContentLengthTestController {
     void test_CX() {
     }
     @ApiDavAttributeMapping(path=MAPPING_C1, attribute=ApiDavMappingAttribute.ContentLength)
-    Long test_C1() {
-        return 110L;
+    Integer test_C1() {
+        return 110;
     }
     @ApiDavAttributeMapping(path=MAPPING_C2, attribute=ApiDavMappingAttribute.ContentLength)
-    long test_C2() {
-        return 120L;
+    int test_C2() {
+        return 120;
     }
     @ApiDavAttributeMapping(path=MAPPING_C3, attribute=ApiDavMappingAttribute.ContentLength)
     String test_C3() {
@@ -119,34 +119,34 @@ public class ContentLengthTestController {
     }
     @ApiDavAttributeMapping(path=MAPPING_C6, attribute=ApiDavMappingAttribute.ContentLength)
     Object test_C6() {
-        return 160L;
+        return 160;
     }
     @ApiDavAttributeMapping(path=MAPPING_C7, attribute=ApiDavMappingAttribute.ContentLength)
     Object test_C7() {
         return "170";
     }
     @ApiDavAttributeMapping(path=MAPPING_C8, attribute=ApiDavMappingAttribute.ContentLength)
-    Long test_C8() {
+    Integer test_C8() {
         return null;
     }
     @ApiDavAttributeMapping(path=MAPPING_C9, attribute=ApiDavMappingAttribute.ContentLength)
-    Long test_C9() {
-        return 0L;
+    Integer test_C9() {
+        return 0;
     }
     @ApiDavAttributeMapping(path=MAPPING_CA, attribute=ApiDavMappingAttribute.ContentLength)
-    Long test_CA() {
-        return -1L;
+    Integer test_CA() {
+        return -1;
     }
     @ApiDavAttributeMapping(path=MAPPING_CB, attribute=ApiDavMappingAttribute.ContentLength)
-    Long test_CB() {
-        return -100L;
+    Integer test_CB() {
+        return -100;
     }
     @ApiDavAttributeMapping(path=MAPPING_CC, attribute=ApiDavMappingAttribute.ContentLength)
     Exception test_CC() {
         return new Exception("Test CC");
     }
     @ApiDavAttributeMapping(path=MAPPING_CD, attribute=ApiDavMappingAttribute.ContentLength)
-    Long test_CD() {
+    Integer test_CD() {
         throw new RuntimeException("Test CD");
     }
     @ApiDavAttributeMapping(path=MAPPING_CE, attribute=ApiDavMappingAttribute.ContentLength)

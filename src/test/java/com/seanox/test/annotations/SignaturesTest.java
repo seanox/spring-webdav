@@ -30,12 +30,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Test the function of the method signatures.
  *
- * SignaturesTest 1.0.0 20210718
+ * SignaturesTest 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 public class SignaturesTest extends AbstractApiTest {
 
@@ -159,7 +159,7 @@ public class SignaturesTest extends AbstractApiTest {
 
     // {@link ApiDavAttributeMapping}
     // URI, Properties, ApiDavMappingAttribute
-    // expected data type from return value: depending on the attributes - Boolean, Long, String, Date
+    // expected data type from return value: depending on the attributes - Boolean, Integer, String, Date
     // - without
     // - complete +3 more object
     // - complete +3 more object, but sequence reversed

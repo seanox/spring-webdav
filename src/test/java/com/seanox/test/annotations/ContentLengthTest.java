@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the ContentLength attribute.
  *
- * ContentLengthTest 1.0.0 20210718
+ * ContentLengthTest 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 public class ContentLengthTest extends AbstractApiTest {
 
@@ -48,7 +48,7 @@ public class ContentLengthTest extends AbstractApiTest {
     // - Spring Expression Language via {@link ApiDavMappingAttributeExpression}
     // - callback via {@link ApiDavAttribute}
     // Expected data type:
-    // - Long, long, string with long value
+    // - Integer, int, string with int value
     // - null is supported (suppresses output in Response header and PROPFIND response)
     // - value less than 0, empty strings and (convert) exception suppress output
     // - default: null

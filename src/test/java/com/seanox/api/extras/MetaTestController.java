@@ -39,12 +39,12 @@ import java.util.Objects;
 /**
  * Test of the annotation {@link ApiDavMetaMapping} functions.
  *
- * MetaTestController 1.0.0 20210718
+ * MetaTestController 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 @Component
 @SuppressWarnings("boxing")
@@ -235,7 +235,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C3)
     void testC3(final MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(-100L);
+        metaData.setContentLength(-100);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -245,7 +245,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C4)
     void testC4(final MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(-1L);
+        metaData.setContentLength(-1);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -255,7 +255,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C5)
     void testC5(final MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(0L);
+        metaData.setContentLength(0);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -265,7 +265,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C6)
     void testC6(final MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(1L);
+        metaData.setContentLength(1);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
@@ -275,7 +275,7 @@ public class MetaTestController {
     @ApiDavMetaMapping(path=MAPPING_C7)
     void testC7(final MetaData metaData) {
         metaData.setContentType(null);
-        metaData.setContentLength(100L);
+        metaData.setContentLength(100);
         metaData.setCreationDate(null);
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
