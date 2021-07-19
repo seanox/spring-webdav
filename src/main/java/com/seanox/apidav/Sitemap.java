@@ -59,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210718
+ * Sitemap 1.0.0 20210719
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210719
  */
 class Sitemap implements Serializable {
 
@@ -474,7 +474,7 @@ class Sitemap implements Serializable {
 
                     if (Objects.nonNull(inputAnnotation.getExpressions())) {
                         for (final Annotation.Attribute.AttributeExpression attributeExpression : inputAnnotation.getExpressions()) {
-                            final Expression expression = new Expression(attributeExpression.expression);
+                            final Expression expression = new Expression(attributeExpression);
                             if (Annotation.Attribute.AttributeType.Accept.equals(attributeExpression.type))
                                 this.accept = expression;
                             if (Annotation.Attribute.AttributeType.ContentLengthMax.equals(attributeExpression.type))
@@ -502,7 +502,7 @@ class Sitemap implements Serializable {
 
                     if (Objects.nonNull(mappingAnnotation.getExpressions())) {
                         for (final Annotation.Attribute.AttributeExpression attributeExpression : mappingAnnotation.getExpressions()) {
-                            final Expression expression = new Expression(attributeExpression.expression);
+                            final Expression expression = new Expression(attributeExpression);
                             if (Annotation.Attribute.AttributeType.ContentType.equals(attributeExpression.type))
                                 this.contentType = expression;
                             if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeExpression.type))
@@ -626,7 +626,15 @@ class Sitemap implements Serializable {
                     return (T)result;
 
                 if (attribute instanceof Expression)
-                    result = ((Expression)attribute).eval();
+                    try {result = ((Expression)attribute).eval();
+                    } catch (Exception exception) {
+                        while (exception instanceof InvocationTargetException)
+                            exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                        final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
+                        LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".ExpressionException").error(message);
+                        result = null;
+                    }
+
                 else if (attribute instanceof Static)
                     result = ((Static)attribute).value;
             }
@@ -728,12 +736,16 @@ class Sitemap implements Serializable {
     private class Expression extends Variant {
 
         private final org.springframework.expression.Expression expression;
+        private final java.lang.Exception exception;
 
-        Expression(final org.springframework.expression.Expression expression) {
-            this.expression = expression;
+        Expression(final Annotation.Attribute.AttributeExpression attributeExpression) {
+            this.expression = attributeExpression.expression;
+            this.exception  = attributeExpression.exception;
         }
 
-        Object eval() {
+        Object eval() throws Exception {
+            if (Objects.nonNull(this.exception))
+                throw exception;
             StandardEvaluationContext context = new StandardEvaluationContext();
             Sitemap.this.data.forEach(context::setVariable);
             return this.expression.getValue(context);

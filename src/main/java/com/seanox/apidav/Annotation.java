@@ -28,6 +28,7 @@ import lombok.Getter;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -130,12 +131,19 @@ abstract class Annotation {
 
         static class AttributeExpression {
 
-            final AttributeType type;
-            final Expression    expression;
+            AttributeType type;
+            Expression    expression;
+            Exception     exception;
 
-            AttributeExpression(final AttributeType type, final Expression expression) {
+            AttributeExpression(final AttributeType type, final String phrase) {
                 this.type = type;
-                this.expression = expression;
+                final SpelExpressionParser parser = new SpelExpressionParser();
+                try {this.expression = parser.parseExpression(phrase);
+                } catch (Exception exception) {
+                    while (exception instanceof InvocationTargetException)
+                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                    this.exception = exception;
+                }
             }
         }
     }
@@ -169,10 +177,7 @@ abstract class Annotation {
                     .contentLengthMax(apiDavInput.contentLengthMax())
                     .accept(apiDavInput.accept())
                     .expressions(Arrays.stream(apiDavInput.attributeExpressions())
-                            .map(attributeExpression -> {
-                                final SpelExpressionParser parser = new SpelExpressionParser();
-                                final Expression expression = parser.parseExpression(attributeExpression.phrase());
-                                return new Attribute.AttributeExpression(attributeExpression.attribute().attributeType, expression);})
+                            .map(attributeExpression -> new Attribute.AttributeExpression(attributeExpression.attribute().attributeType, attributeExpression.phrase()))
                             .toArray(Attribute.AttributeExpression[]::new))
                     .build();
         }
@@ -241,10 +246,7 @@ abstract class Annotation {
                     .isAccepted(apiDavMapping.isAccepted())
                     .isPermitted(apiDavMapping.isPermitted())
                     .expressions(Arrays.stream(apiDavMapping.attributeExpressions())
-                            .map(attributeExpression -> {
-                                final SpelExpressionParser parser = new SpelExpressionParser();
-                                final Expression expression = parser.parseExpression(attributeExpression.phrase());
-                                return new Attribute.AttributeExpression(attributeExpression.attribute().type, expression);})
+                            .map(attributeExpression -> new Attribute.AttributeExpression(attributeExpression.attribute().type, attributeExpression.phrase()))
                             .toArray(Attribute.AttributeExpression[]::new))
                     .build();
         }
