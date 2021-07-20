@@ -238,6 +238,8 @@ public class ContentLengthTestController {
     }
 
     // Test of priorities:
+    // (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
+
     public static final String MAPPING_D1 = "/extras/contentLength/d1.txt";
     public static final String MAPPING_D2 = "/extras/contentLength/d2.txt";
     public static final String MAPPING_D3 = "/extras/contentLength/d3.txt";
@@ -248,7 +250,7 @@ public class ContentLengthTestController {
     @ApiDavMapping(path=MAPPING_D1, contentLength=5, attributeExpressions={
             @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="6")
     })
-    void test_D1X(MetaOutputStream outputStream) {
+    void test_D1X(final MetaOutputStream outputStream) {
         outputStream.setContentLength(9);
     }
     @ApiDavMetaMapping(path=MAPPING_D1)

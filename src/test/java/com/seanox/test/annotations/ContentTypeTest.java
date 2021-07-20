@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the ContentType attribute.
  *
- * ContentTypeTest 1.0.0 20210713
+ * ContentTypeTest 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210713
+ * @version 1.0.0 20210720
  */
 public class ContentTypeTest extends AbstractApiTest {
 
@@ -66,5 +66,16 @@ public class ContentTypeTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/contentType/c7.txt 301361 Test C7/Test C7/Test C7", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C7, AttributeFingeprintType.ContentType));
         Assertions.assertEquals("200/200/207 /extras/contentType/c8.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C8, AttributeFingeprintType.ContentType));
         Assertions.assertEquals("200/200/207 /extras/contentType/c9.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C9, AttributeFingeprintType.ContentType));
+    }
+
+    @Test
+    void test_DX() throws Exception {
+        // Variations like 8/9/8 look strange, but they are correct.
+        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFIND.
+        Assertions.assertEquals("200/200/207 /extras/contentType/d1.txt 301361 8/9/8", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D1, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d2.txt 301361 8/8/8", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D2, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d3.txt 301361 7/7/7", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D3, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d4.txt 301361 6/6/6", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D4, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d5.txt 301361 5/5/5", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D5, AttributeFingeprintType.ContentType));
     }
 }

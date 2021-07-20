@@ -40,12 +40,12 @@ import java.net.URI;
 /**
  * Test of the methods signatures.
  *
- * SignaturesTestController 1.0.0 20210719
+ * SignaturesTestController 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210720
  */
 @Component
 public class SignaturesTestController {
@@ -108,7 +108,7 @@ public class SignaturesTestController {
     @ApiDavMapping(path=MAPPING_B2, isReadOnly=false)
     @ApiDavMapping(path=MAPPING_B3, isReadOnly=false)
     @ApiDavMapping(path=MAPPING_B4, isReadOnly=false)
-    void test_BX(MetaOutputStream outputStream) throws IOException {
+    void test_BX(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultB.getBytes());
     }
     @ApiDavInputMapping(path=MAPPING_B1)
@@ -196,7 +196,7 @@ public class SignaturesTestController {
     @ApiDavMapping(path=MAPPING_D2)
     @ApiDavMapping(path=MAPPING_D3)
     @ApiDavMapping(path=MAPPING_D4)
-    void test_DX(MetaOutputStream outputStream) throws IOException {
+    void test_DX(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultD.getBytes());
     }
     @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.ContentType)

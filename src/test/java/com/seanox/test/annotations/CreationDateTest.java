@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the CreationDate attribute.
  *
- * CreationDateTest 1.0.0 20210713
+ * CreationDateTest 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210713
+ * @version 1.0.0 20210720
  */
 public class CreationDateTest extends AbstractApiTest {
 
@@ -72,5 +72,16 @@ public class CreationDateTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/creationDate/cE.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CE, AttributeFingeprintType.CreationDate));
         Assertions.assertEquals("200/200/207 /extras/creationDate/cF.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CF, AttributeFingeprintType.CreationDate));
         Assertions.assertEquals("200/200/207 /extras/creationDate/cG.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CG, AttributeFingeprintType.CreationDate));
+    }
+
+    @Test
+    void test_DX() throws Exception {
+        // Variations like 8/9/8 look strange, but they are correct.
+        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFIND.
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d1.txt 300361", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D1, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d2.txt 301361 8/8/8", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D2, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d3.txt 301361 7/7/7", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D3, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d4.txt 301361 6/6/6", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D4, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 5/5/5", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D5, AttributeFingeprintType.CreationDate));
     }
 }

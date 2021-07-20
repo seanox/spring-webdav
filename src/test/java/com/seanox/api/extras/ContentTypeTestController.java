@@ -24,18 +24,22 @@ package com.seanox.api.extras;
 import com.seanox.apidav.ApiDavAttributeMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
+import com.seanox.apidav.ApiDavMappingAttributeExpression;
+import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.apidav.MetaData;
+import com.seanox.apidav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 /**
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#ContentType} functions.
  *
- * ContentTypeTestController 1.0.0 20210719
+ * ContentTypeTestController 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210720
  */
 @Component
 public class ContentTypeTestController {
@@ -107,4 +111,67 @@ public class ContentTypeTestController {
     Integer test_C9() {
         throw new RuntimeException("Test C9");
     }
+
+    // Test of priorities:
+    // (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
+
+    public static final String MAPPING_D1 = "/extras/contentType/d1.txt";
+    public static final String MAPPING_D2 = "/extras/contentType/d2.txt";
+    public static final String MAPPING_D3 = "/extras/contentType/d3.txt";
+    public static final String MAPPING_D4 = "/extras/contentType/d4.txt";
+    public static final String MAPPING_D5 = "/extras/contentType/d5.txt";
+    public static final String MAPPING_D6 = "/extras/contentType/d6.txt";
+
+    @ApiDavMapping(path=MAPPING_D1, contentType="5", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    })
+    void test_D1X(final MetaOutputStream outputStream) {
+        outputStream.setContentType("9");
+    }
+    @ApiDavMetaMapping(path=MAPPING_D1)
+    void test_D1(final MetaData metaData) {
+        metaData.setContentType("7");
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.ContentType)
+    String test_D1() {
+        return "8";
+    }
+
+    @ApiDavMapping(path=MAPPING_D2, contentType="5", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    })
+    void test_D2X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D2)
+    void test_D2(final MetaData metaData) {
+        metaData.setContentType("7");
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.ContentType)
+    String test_D2() {
+        return "8";
+    }
+
+    @ApiDavMapping(path=MAPPING_D3, contentType="5", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    })
+    void test_D3X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D3)
+    void test_D3(final MetaData metaData) {
+        metaData.setContentType("7");
+    }
+
+    @ApiDavMapping(path=MAPPING_D4, contentType="5", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    })
+    void test_D4X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D5, contentType="5")
+    void test_D5X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D6)
+    void test_D6X() {
+    }    
 }

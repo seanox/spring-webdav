@@ -107,7 +107,7 @@ public class ContentLengthTest extends AbstractApiTest {
     @Test
     void test_DX() throws Exception {
         // Variations like 8/9/8 look strange, but they are correct.
-        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFING.
+        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFIND.
         Assertions.assertEquals("200/200/207 /extras/contentLength/d1.txt 331361 8/9/8", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D1, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/d2.txt 331361 8/8/8", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D2, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/d3.txt 331361 7/7/7", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D3, AttributeFingeprintType.ContentLength));
