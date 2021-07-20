@@ -59,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210719
+ * Sitemap 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210720
  */
 class Sitemap implements Serializable {
 
@@ -84,7 +84,7 @@ class Sitemap implements Serializable {
         this.meta  = new Properties();
     }
 
-    Sitemap share(Properties properties)
+    Sitemap share(final Properties properties)
             throws SitemapException {
 
         // The trace is the basis for sharing, which is very complex due to the
@@ -435,9 +435,12 @@ class Sitemap implements Serializable {
         @Getter(AccessLevel.PACKAGE) private Callback outputCallback;
         @Getter(AccessLevel.PACKAGE) private Callback metaCallback;
 
-        File(final String path, Annotation... annotations) {
+        File(final String path, final Annotation... annotations) {
 
             super(path);
+
+            // Attribute: (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
+            // MetaDataOutputStream + Default are not controlled here.
 
             for (final Annotation annotation : annotations) {
                 if (annotation instanceof Annotation.Attribute) {
@@ -467,7 +470,8 @@ class Sitemap implements Serializable {
                     final Annotation.Input inputAnnotation = (Annotation.Input)annotation;
                     this.inputCallback = new Callback(inputAnnotation.getOrigin(), inputAnnotation.getObject(), inputAnnotation.getMethod());
 
-                    if (!inputAnnotation.getAccept().isBlank())
+                    if (Objects.nonNull(inputAnnotation.getAccept())
+                            && !inputAnnotation.getAccept().isBlank())
                         this.accept = new Static(inputAnnotation.getAccept());
                     if (inputAnnotation.getContentLengthMax() >= 0)
                         this.contentLengthMax = new Static(Integer.valueOf(inputAnnotation.getContentLengthMax()));
@@ -486,38 +490,55 @@ class Sitemap implements Serializable {
                     final Annotation.Mapping mappingAnnotation = (Annotation.Mapping)annotation;
                     this.outputCallback = new Callback(mappingAnnotation.getOrigin(), mappingAnnotation.getObject(), mappingAnnotation.getMethod());
 
-                    if (mappingAnnotation.getContentLength() >= 0)
-                        this.contentLength = new Static(Integer.valueOf(mappingAnnotation.getContentLength()));
                     if (Objects.nonNull(mappingAnnotation.getContentType())
-                            && !mappingAnnotation.getContentType().isBlank())
+                            && !mappingAnnotation.getContentType().isBlank()
+                            && !(this.contentType instanceof Callback))
                         this.contentType = new Static(mappingAnnotation.getContentType());
-                    if (Objects.nonNull(mappingAnnotation.getCreationDate()))
+                    if (mappingAnnotation.getContentLength() >= 0
+                            && !(this.contentLength instanceof Callback))
+                        this.contentLength = new Static(Integer.valueOf(mappingAnnotation.getContentLength()));
+                    if (Objects.nonNull(mappingAnnotation.getCreationDate())
+                            && !(this.creationDate instanceof Callback))
                         this.creationDate = new Static(mappingAnnotation.getCreationDate());
-                    if (Objects.nonNull(mappingAnnotation.getLastModified()))
+                    if (Objects.nonNull(mappingAnnotation.getLastModified())
+                            && !(this.lastModified instanceof Callback))
                         this.lastModified = new Static(mappingAnnotation.getLastModified());
-                    this.isReadOnly = new Static(Boolean.valueOf(mappingAnnotation.isReadOnly()));
-                    this.isHidden = new Static(Boolean.valueOf(mappingAnnotation.isHidden()));
-                    this.isAccepted = new Static(Boolean.valueOf(mappingAnnotation.isAccepted()));
-                    this.isPermitted = new Static(Boolean.valueOf(mappingAnnotation.isPermitted()));
+
+                    if (!(this.isReadOnly instanceof Callback))
+                        this.isReadOnly = new Static(Boolean.valueOf(mappingAnnotation.isReadOnly()));
+                    if (!(this.isHidden instanceof Callback))
+                        this.isHidden = new Static(Boolean.valueOf(mappingAnnotation.isHidden()));
+                    if (!(this.isAccepted instanceof Callback))
+                        this.isAccepted = new Static(Boolean.valueOf(mappingAnnotation.isAccepted()));
+                    if (!(this.isPermitted instanceof Callback))
+                        this.isPermitted = new Static(Boolean.valueOf(mappingAnnotation.isPermitted()));
 
                     if (Objects.nonNull(mappingAnnotation.getExpressions())) {
                         for (final Annotation.Attribute.AttributeExpression attributeExpression : mappingAnnotation.getExpressions()) {
                             final Expression expression = new Expression(attributeExpression);
-                            if (Annotation.Attribute.AttributeType.ContentType.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.ContentType.equals(attributeExpression.type)
+                                    && !(this.contentType instanceof Callback))
                                 this.contentType = expression;
-                            if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.ContentLength.equals(attributeExpression.type)
+                                    && !(this.contentLength instanceof Callback))
                                 this.contentLength = expression;
-                            if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.CreationDate.equals(attributeExpression.type)
+                                    && !(this.creationDate instanceof Callback))
                                 this.creationDate = expression;
-                            if (Annotation.Attribute.AttributeType.LastModified.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.LastModified.equals(attributeExpression.type)
+                                    && !(this.lastModified instanceof Callback))
                                 this.lastModified = expression;
-                            if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.ReadOnly.equals(attributeExpression.type)
+                                    && !(this.isReadOnly instanceof Callback))
                                 this.isReadOnly = expression;
-                            if (Annotation.Attribute.AttributeType.Hidden.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.Hidden.equals(attributeExpression.type)
+                                    && !(this.isHidden instanceof Callback))
                                 this.isHidden = expression;
-                            if (Annotation.Attribute.AttributeType.Accepted.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.Accepted.equals(attributeExpression.type)
+                                    && !(this.isAccepted instanceof Callback))
                                 this.isAccepted = expression;
-                            if (Annotation.Attribute.AttributeType.Permitted.equals(attributeExpression.type))
+                            if (Annotation.Attribute.AttributeType.Permitted.equals(attributeExpression.type)
+                                    && !(this.isPermitted instanceof Callback))
                                 this.isPermitted = expression;
                         }
                     }

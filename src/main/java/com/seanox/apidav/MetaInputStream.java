@@ -94,7 +94,7 @@ public class MetaInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] bytes)
+    public int read(final byte[] bytes)
             throws IOException {
 
         this.advanceAccess();
@@ -120,7 +120,7 @@ public class MetaInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] bytes, int offset, int length)
+    public int read(final byte[] bytes, final int offset, final int length)
             throws IOException {
 
         this.advanceAccess();

@@ -42,19 +42,19 @@ public class MetaOutputStream extends OutputStream {
 
     private OutputStream output;
 
-    public void setContentLength(Integer contentLength) {
+    public void setContentLength(final Integer contentLength) {
         if (this.response.isCommitted())
             return;
         this.contentLength = contentLength;
     }
 
-    public void setContentType(String contentType) {
+    public void setContentType(final String contentType) {
         if (this.response.isCommitted())
             return;
         this.contentType = contentType;
     }
 
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(final Date lastModified) {
         if (this.response.isCommitted())
             return;
         this.lastModified = lastModified;

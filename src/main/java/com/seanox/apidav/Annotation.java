@@ -49,14 +49,14 @@ abstract class Annotation {
     private final Object object;
     private final Method method;
 
-    static Date convertDateTime(String datetime)
+    private static Date convertDateTime(final String datetime)
             throws ParseException {
         if (datetime.isBlank())
             return null;
         return new SimpleDateFormat(DATE_FORMAT).parse(datetime.trim());
     }
 
-    static String convertText(String text) {
+    private static String convertText(final String text) {
         if (text.isBlank())
             return null;
         return text.trim();
@@ -73,7 +73,7 @@ abstract class Annotation {
 
         final Class<?> type;
 
-        Target(Class<?> type) {
+        Target(final Class<?> type) {
             this.type = type;
         }
     }
@@ -158,7 +158,7 @@ abstract class Annotation {
 
         @Builder(access=AccessLevel.PRIVATE)
         Input(final String path, final AnnotationType type, final Object origin, final Object object, final Method method,
-                final int contentLengthMax, final String accept, Attribute.AttributeExpression... expressions) {
+                final int contentLengthMax, final String accept, final Attribute.AttributeExpression... expressions) {
             super(path, type, origin, object, method);
 
             this.contentLengthMax = contentLengthMax;
@@ -175,7 +175,7 @@ abstract class Annotation {
                     .method(method)
 
                     .contentLengthMax(apiDavInput.contentLengthMax())
-                    .accept(apiDavInput.accept())
+                    .accept(Annotation.convertText(apiDavInput.accept()))
                     .expressions(Arrays.stream(apiDavInput.attributeExpressions())
                             .map(attributeExpression -> new Attribute.AttributeExpression(attributeExpression.attribute().attributeType, attributeExpression.phrase()))
                             .toArray(Attribute.AttributeExpression[]::new))
