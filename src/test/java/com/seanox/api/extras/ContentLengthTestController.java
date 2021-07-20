@@ -24,18 +24,22 @@ package com.seanox.api.extras;
 import com.seanox.apidav.ApiDavAttributeMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
+import com.seanox.apidav.ApiDavMappingAttributeExpression;
+import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.apidav.MetaData;
+import com.seanox.apidav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 /**
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#ContentLength} functions.
  *
- * ContentLengthTestController 1.0.0 20210719
+ * ContentLengthTestController 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210720
  */
 @Component
 @SuppressWarnings("boxing")
@@ -57,9 +61,84 @@ public class ContentLengthTestController {
     void test_AX() {
     }
 
-    // TODO:
+    // Test of {@link ApiDavMapping}
+    //     + {@link ApiDavMappingAttributeExpression}
+    //     + {@link ApiDavMappingAttribute.ContentLength}
 
-    void test_B() {
+    public static final String MAPPING_B1 = "/extras/contentLength/b1.txt";
+    public static final String MAPPING_B2 = "/extras/contentLength/b2.txt";
+    public static final String MAPPING_B3 = "/extras/contentLength/b3.txt";
+    public static final String MAPPING_B4 = "/extras/contentLength/b4.txt";
+    public static final String MAPPING_B5 = "/extras/contentLength/b5.txt";
+    public static final String MAPPING_B6 = "/extras/contentLength/b6.txt";
+    public static final String MAPPING_B7 = "/extras/contentLength/b7.txt";
+    public static final String MAPPING_B8 = "/extras/contentLength/b8.txt";
+    public static final String MAPPING_B9 = "/extras/contentLength/b9.txt";
+    public static final String MAPPING_BA = "/extras/contentLength/bA.txt";
+    public static final String MAPPING_BB = "/extras/contentLength/bB.txt";
+    public static final String MAPPING_BC = "/extras/contentLength/bC.txt";
+    public static final String MAPPING_BD = "/extras/contentLength/bD.txt";
+    public static final String MAPPING_BE = "/extras/contentLength/bE.txt";
+    public static final String MAPPING_BF = "/extras/contentLength/bF.txt";
+    public static final String MAPPING_BG = "/extras/contentLength/bG.txt";
+    public static final String MAPPING_BH = "/extras/contentLength/bH.txt";
+    public static final String MAPPING_BI = "/extras/contentLength/bI.txt";
+
+    @ApiDavMapping(path=MAPPING_B1, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(110)")
+    })
+    @ApiDavMapping(path=MAPPING_B2, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(120).intValue()")
+    })
+    @ApiDavMapping(path=MAPPING_B3, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="'130'")
+    })
+    @ApiDavMapping(path=MAPPING_B4, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="'-140'")
+    })
+    @ApiDavMapping(path=MAPPING_B5, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="'wrong text value'")
+    })
+    @ApiDavMapping(path=MAPPING_B6, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="null")
+    })
+    @ApiDavMapping(path=MAPPING_B7, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(0)")
+    })
+    @ApiDavMapping(path=MAPPING_B8, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(-1)")
+    })
+    @ApiDavMapping(path=MAPPING_B9, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(-100)")
+    })
+    @ApiDavMapping(path=MAPPING_BA, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="")
+    })
+    @ApiDavMapping(path=MAPPING_BB, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="''")
+    })
+    @ApiDavMapping(path=MAPPING_BC, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="' '")
+    })
+    @ApiDavMapping(path=MAPPING_BD, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="expression exception")
+    })
+    @ApiDavMapping(path=MAPPING_BE, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="-10")
+    })
+    @ApiDavMapping(path=MAPPING_BF, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="-1")
+    })
+    @ApiDavMapping(path=MAPPING_BG, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="0")
+    })
+    @ApiDavMapping(path=MAPPING_BH, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="1")
+    })
+    @ApiDavMapping(path=MAPPING_BI, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="10")
+    })
+    void test_BX() {
     }
 
     // Test of {@link ApiDavAttribute}
@@ -156,5 +235,66 @@ public class ContentLengthTestController {
     @ApiDavAttributeMapping(path=MAPPING_CF, attribute=ApiDavMappingAttribute.ContentLength)
     String test_CF() {
         return " ";
+    }
+
+    // Test of priorities:
+    public static final String MAPPING_D1 = "/extras/contentLength/d1.txt";
+    public static final String MAPPING_D2 = "/extras/contentLength/d2.txt";
+    public static final String MAPPING_D3 = "/extras/contentLength/d3.txt";
+    public static final String MAPPING_D4 = "/extras/contentLength/d4.txt";
+    public static final String MAPPING_D5 = "/extras/contentLength/d5.txt";
+    public static final String MAPPING_D6 = "/extras/contentLength/d6.txt";
+
+    @ApiDavMapping(path=MAPPING_D1, contentLength=5, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="6")
+    })
+    void test_D1X(MetaOutputStream outputStream) {
+        outputStream.setContentLength(9);
+    }
+    @ApiDavMetaMapping(path=MAPPING_D1)
+    void test_D1(final MetaData metaData) {
+        metaData.setContentLength(7);
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.ContentLength)
+    Integer test_D1() {
+        return 8;
+    }
+
+    @ApiDavMapping(path=MAPPING_D2, contentLength=5, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="6")
+    })
+    void test_D2X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D2)
+    void test_D2(final MetaData metaData) {
+        metaData.setContentLength(7);
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.ContentLength)
+    Integer test_D2() {
+        return 8;
+    }
+
+    @ApiDavMapping(path=MAPPING_D3, contentLength=5, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="6")
+    })
+    void test_D3X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D3)
+    void test_D3(final MetaData metaData) {
+        metaData.setContentLength(7);
+    }
+
+    @ApiDavMapping(path=MAPPING_D4, contentLength=5, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentLength, phrase="6")
+    })
+    void test_D4X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D5, contentLength=5)
+    void test_D5X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D6)
+    void test_D6X() {
     }
 }

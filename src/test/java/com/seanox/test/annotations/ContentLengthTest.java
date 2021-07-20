@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the ContentLength attribute.
  *
- * ContentLengthTest 1.0.0 20210719
+ * ContentLengthTest 1.0.0 20210720
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210720
  */
 public class ContentLengthTest extends AbstractApiTest {
 
@@ -62,7 +62,28 @@ public class ContentLengthTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/contentLength/a5.txt 331361 10/10/10", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_A5, AttributeFingeprintType.ContentLength));
     }
 
-    // TODO:
+    @Test
+    void test_BX() throws Exception {
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b1.txt 331361 110/110/110", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B1, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b2.txt 331361 120/120/120", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B2, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b3.txt 331361 130/130/130", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B3, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b4.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B4, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b5.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B5, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b6.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B6, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b7.txt 331361 0/0/0", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B7, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b8.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B8, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/b9.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_B9, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bA.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BA, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bB.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BB, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bC.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BC, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bD.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BD, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bE.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BE, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bF.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BF, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bD.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BD, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bG.txt 331361 0/0/0", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BG, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bH.txt 331361 1/1/1", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BH, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/bI.txt 331361 10/10/10", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_BI, AttributeFingeprintType.ContentLength));
+    }
 
     @Test
     void test_CX() throws Exception {
@@ -81,5 +102,16 @@ public class ContentLengthTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/contentLength/cD.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_CD, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/cE.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_CE, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/cF.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_CF, AttributeFingeprintType.ContentLength));
+    }
+
+    @Test
+    void test_DX() throws Exception {
+        // Variations like 8/9/8 look strange, but they are correct.
+        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFING.
+        Assertions.assertEquals("200/200/207 /extras/contentLength/d1.txt 331361 8/9/8", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D1, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/d2.txt 331361 8/8/8", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D2, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/d3.txt 331361 7/7/7", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D3, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/d4.txt 331361 6/6/6", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D4, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/d5.txt 331361 5/5/5", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D5, AttributeFingeprintType.ContentLength));
     }
 }
