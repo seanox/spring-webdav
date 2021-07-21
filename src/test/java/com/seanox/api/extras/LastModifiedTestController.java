@@ -24,6 +24,11 @@ package com.seanox.api.extras;
 import com.seanox.apidav.ApiDavAttributeMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
+import com.seanox.apidav.ApiDavMappingAttributeExpression;
+import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.apidav.DateTimeAdapter;
+import com.seanox.apidav.MetaData;
+import com.seanox.apidav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -34,15 +39,17 @@ import java.util.Date;
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#LastModified} functions.
  *
- * LastModifiedTestController 1.0.0 20210711
+ * LastModifiedTestController 1.0.0 20210721
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210721
  */
 @Component
 public class LastModifiedTestController {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DateTimeAdapter.DATETIME_FORMAT);
 
     // TODO:
 
@@ -127,23 +134,23 @@ public class LastModifiedTestController {
     }
     @ApiDavAttributeMapping(path=MAPPING_CA, attribute=ApiDavMappingAttribute.LastModified)
     Date test_CA() throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("2456-01-02 03:04:05 GMT");
+        return DATE_FORMAT.parse("2456-01-02 03:04:05 GMT");
     }
     @ApiDavAttributeMapping(path=MAPPING_CB, attribute=ApiDavMappingAttribute.LastModified)
     Date test_CB() throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("1956-01-02 03:04:05 GMT");
+        return DATE_FORMAT.parse("1956-01-02 03:04:05 GMT");
     }
     @ApiDavAttributeMapping(path=MAPPING_CC, attribute=ApiDavMappingAttribute.LastModified)
     Object test_CC() throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("2456-01-02 03:04:05 GMT");
+        return DATE_FORMAT.parse("2456-01-02 03:04:05 GMT");
     }
     @ApiDavAttributeMapping(path=MAPPING_CD, attribute=ApiDavMappingAttribute.LastModified)
     Object test_CD() throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("1956-01-02 03:04:05 GMT");
+        return DATE_FORMAT.parse("1956-01-02 03:04:05 GMT");
     }
     @ApiDavAttributeMapping(path=MAPPING_CE, attribute=ApiDavMappingAttribute.LastModified)
     Object test_CE() throws ParseException {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("1956-01-02 03:04:05 GMT");
+        return DATE_FORMAT.parse("1956-01-02 03:04:05 GMT");
     }
     @ApiDavAttributeMapping(path=MAPPING_CF, attribute=ApiDavMappingAttribute.LastModified)
     Exception test_CF() {
@@ -152,5 +159,68 @@ public class LastModifiedTestController {
     @ApiDavAttributeMapping(path=MAPPING_CG, attribute=ApiDavMappingAttribute.LastModified)
     Date test_CG() {
         throw new RuntimeException("2987-06-07 01:02");
+    }
+
+    // Test of priorities:
+    // (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
+
+    public static final String MAPPING_D1 = "/extras/lastModified/d1.txt";
+    public static final String MAPPING_D2 = "/extras/lastModified/d2.txt";
+    public static final String MAPPING_D3 = "/extras/lastModified/d3.txt";
+    public static final String MAPPING_D4 = "/extras/lastModified/d4.txt";
+    public static final String MAPPING_D5 = "/extras/lastModified/d5.txt";
+    public static final String MAPPING_D6 = "/extras/lastModified/d6.txt";
+
+    @ApiDavMapping(path=MAPPING_D1, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    })
+    void test_D1X(final MetaOutputStream outputStream) throws ParseException {
+        outputStream.setLastModified(DATE_FORMAT.parse("2009-01-01 00:00:00 GMT"));
+    }
+    @ApiDavMetaMapping(path=MAPPING_D1)
+    void test_D1(final MetaData metaData) throws ParseException {
+        metaData.setLastModified(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.LastModified)
+    Date test_D1() throws ParseException {
+        return DATE_FORMAT.parse("2008-01-01 00:00:00 GMT");
+    }
+
+    @ApiDavMapping(path=MAPPING_D2, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    })
+    void test_D2X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D2)
+    void test_D2(final MetaData metaData) throws ParseException {
+        metaData.setLastModified(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.LastModified)
+    Date test_D2() throws ParseException {
+        return DATE_FORMAT.parse("2008-01-01 00:00:00 GMT");
+    }
+
+    @ApiDavMapping(path=MAPPING_D3, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    })
+    void test_D3X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D3)
+    void test_D3(final MetaData metaData) throws ParseException {
+        metaData.setLastModified(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
+    }
+
+    @ApiDavMapping(path=MAPPING_D4, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    })
+    void test_D4X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D5, lastModified="2005-01-01 00:00:00 GMT")
+    void test_D5X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D6)
+    void test_D6X() {
     }
 }

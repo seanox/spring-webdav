@@ -26,8 +26,8 @@ import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
 import com.seanox.apidav.ApiDavMappingAttributeExpression;
 import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.apidav.DateTimeAdapter;
 import com.seanox.apidav.MetaData;
-import com.seanox.apidav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -38,17 +38,17 @@ import java.util.Date;
  * Test of the annotation {@link ApiDavAttributeMapping}
  *     + {@link ApiDavMappingAttribute#CreationDate} functions.
  *
- * CreationDateTestController 1.0.0 20210720
+ * CreationDateTestController 1.0.0 20210721
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210721
  */
 @Component
 public class CreationDateTestController {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DateTimeAdapter.DATETIME_FORMAT);
 
     // TODO:
 
@@ -173,15 +173,15 @@ public class CreationDateTestController {
     @ApiDavMapping(path=MAPPING_D1, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
             @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
-    void test_D1X(final MetaOutputStream outputStream) throws ParseException {
+    void test_D1X() throws ParseException {
     }
     @ApiDavMetaMapping(path=MAPPING_D1)
     void test_D1(final MetaData metaData) throws ParseException {
         metaData.setCreationDate(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
     }
     @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.CreationDate)
-    String test_D1() {
-        return "2008-01-01 00:00:00 GMT";
+    Date test_D1() throws ParseException {
+        return DATE_FORMAT.parse("2008-01-01 00:00:00 GMT");
     }
 
     @ApiDavMapping(path=MAPPING_D2, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
@@ -194,8 +194,8 @@ public class CreationDateTestController {
         metaData.setCreationDate(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
     }
     @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.CreationDate)
-    String test_D2() {
-        return "2008-01-01 00:00:00 GMT";
+    Date test_D2() throws ParseException {
+        return DATE_FORMAT.parse("2008-01-01 00:00:00 GMT");
     }
 
     @ApiDavMapping(path=MAPPING_D3, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={

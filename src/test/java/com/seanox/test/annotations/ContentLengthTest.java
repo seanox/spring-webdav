@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the ContentLength attribute.
  *
- * ContentLengthTest 1.0.0 20210720
+ * ContentLengthTest 1.0.0 20210721
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210721
  */
 public class ContentLengthTest extends AbstractApiTest {
 
@@ -113,5 +113,6 @@ public class ContentLengthTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/contentLength/d3.txt 331361 7/7/7", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D3, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/d4.txt 331361 6/6/6", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D4, AttributeFingeprintType.ContentLength));
         Assertions.assertEquals("200/200/207 /extras/contentLength/d5.txt 331361 5/5/5", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D5, AttributeFingeprintType.ContentLength));
+        Assertions.assertEquals("200/200/207 /extras/contentLength/d6.txt 301361 null/null", this.createAttributeFingeprint(ContentLengthTestController.MAPPING_D6, AttributeFingeprintType.ContentLength));
     }
 }

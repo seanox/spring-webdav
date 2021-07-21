@@ -26,15 +26,18 @@ import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Test the function of the LastModified attribute.
  *
- * LastModifiedTest 1.0.0 20210713
+ * LastModifiedTest 1.0.0 20210721
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210713
+ * @version 1.0.0 20210721
  */
 public class LastModifiedTest extends AbstractApiTest {
 
@@ -72,5 +75,19 @@ public class LastModifiedTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/lastModified/cE.txt 301361 Mon, 02 Jan 1956 03:04:05 GMT/Mon, 02 Jan 1956 03:04:05 GMT/Mon, 02 Jan 1956 03:04:05 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_CE, AttributeFingeprintType.LastModified));
         Assertions.assertEquals("200/200/207 /extras/lastModified/cF.txt 301061 null/null", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_CF, AttributeFingeprintType.LastModified));
         Assertions.assertEquals("200/200/207 /extras/lastModified/cG.txt 301061 null/null", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_CG, AttributeFingeprintType.LastModified));
+    }
+
+    @Test
+    void test_DX() throws Exception {
+        // Variations like 2008/2009/2008 look strange, but they are correct.
+        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFIND.
+        Assertions.assertEquals("200/200/207 /extras/lastModified/d1.txt 301361 Tue, 01 Jan 2008 00:00:00 GMT/Thu, 01 Jan 2009 00:00:00 GMT/Tue, 01 Jan 2008 00:00:00 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D1, AttributeFingeprintType.LastModified));
+        Assertions.assertEquals("200/200/207 /extras/lastModified/d2.txt 301361 Tue, 01 Jan 2008 00:00:00 GMT/Tue, 01 Jan 2008 00:00:00 GMT/Tue, 01 Jan 2008 00:00:00 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D2, AttributeFingeprintType.LastModified));
+        Assertions.assertEquals("200/200/207 /extras/lastModified/d3.txt 301361 Mon, 01 Jan 2007 00:00:00 GMT/Mon, 01 Jan 2007 00:00:00 GMT/Mon, 01 Jan 2007 00:00:00 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D3, AttributeFingeprintType.LastModified));
+        Assertions.assertEquals("200/200/207 /extras/lastModified/d4.txt 301361 Sun, 01 Jan 2006 00:00:00 GMT/Sun, 01 Jan 2006 00:00:00 GMT/Sun, 01 Jan 2006 00:00:00 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D4, AttributeFingeprintType.LastModified));
+        Assertions.assertEquals("200/200/207 /extras/lastModified/d5.txt 301361 Fri, 31 Dec 2004 23:00:00 GMT/Fri, 31 Dec 2004 23:00:00 GMT/Fri, 31 Dec 2004 23:00:00 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D5, AttributeFingeprintType.LastModified));
+        String timestampD6 = this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D6, AttributeFingeprintType.LastModified);
+        timestampD6 = timestampD6.replaceAll("\\s+\\d\\d:.*$", "");
+        Assertions.assertEquals(String.format(Locale.US, "200/200/207 /extras/lastModified/d6.txt 301361 %1$ta, %1$td %1$tb %1$tY", new Date()), timestampD6);
     }
 }

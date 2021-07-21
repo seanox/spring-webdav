@@ -29,12 +29,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test the function of the ContentType attribute.
  *
- * ContentTypeTest 1.0.0 20210720
+ * ContentTypeTest 1.0.0 20210721
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210721
  */
 public class ContentTypeTest extends AbstractApiTest {
 
@@ -77,5 +77,6 @@ public class ContentTypeTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/contentType/d3.txt 301361 7/7/7", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D3, AttributeFingeprintType.ContentType));
         Assertions.assertEquals("200/200/207 /extras/contentType/d4.txt 301361 6/6/6", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D4, AttributeFingeprintType.ContentType));
         Assertions.assertEquals("200/200/207 /extras/contentType/d5.txt 301361 5/5/5", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D5, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d6.txt 301361 text/plain/text/plain/text/plain", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D6, AttributeFingeprintType.ContentType));
     }
 }

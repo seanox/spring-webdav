@@ -22,19 +22,23 @@
 package com.seanox.test.annotations;
 
 import com.seanox.api.extras.CreationDateTestController;
+import com.seanox.apidav.DateTimeAdapter;
 import com.seanox.test.AbstractApiTest;
+import com.seanox.test.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
 
 /**
  * Test the function of the CreationDate attribute.
  *
- * CreationDateTest 1.0.0 20210720
+ * CreationDateTest 1.0.0 20210721
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210721
  */
 public class CreationDateTest extends AbstractApiTest {
 
@@ -76,12 +80,13 @@ public class CreationDateTest extends AbstractApiTest {
 
     @Test
     void test_DX() throws Exception {
-        // Variations like 8/9/8 look strange, but they are correct.
-        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFIND.
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d1.txt 300361", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D1, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d2.txt 301361 8/8/8", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D2, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d3.txt 301361 7/7/7", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D3, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d4.txt 301361 6/6/6", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D4, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 5/5/5", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D5, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d1.txt 301361 2008-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D1, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d2.txt 301361 2008-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D2, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d3.txt 301361 2007-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D3, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d4.txt 301361 2006-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D4, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 2004-12-31T23:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D5, AttributeFingeprintType.CreationDate));
+        String timestampD6 = this.createAttributeFingeprint(CreationDateTestController.MAPPING_D6, AttributeFingeprintType.CreationDate);
+        timestampD6 = timestampD6.replaceAll("T.*$", "");
+        Assertions.assertEquals(String.format("200/200/207 /extras/creationDate/d6.txt 301361 %1$tY-%1$tm-%1$td", new Date()), timestampD6);
     }
 }
