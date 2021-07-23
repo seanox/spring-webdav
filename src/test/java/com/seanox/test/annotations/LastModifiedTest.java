@@ -22,6 +22,7 @@
 package com.seanox.test.annotations;
 
 import com.seanox.api.extras.LastModifiedTestController;
+import com.seanox.apidav.DateTimeAdapter;
 import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ public class LastModifiedTest extends AbstractApiTest {
     // - Spring Expression Language via {@link ApiDavMappingAttributeExpression}
     // - callback via {@link ApiDavAttribute}
     // Expected data type:
-    // - Date, string in format yyyy-MM-dd hh:mm:ss only an effect in the annotations,
+    // - Date, string in format yyyy-MM-dd HH:mm:ss only an effect in the annotations,
     //   the callbacks support only Date as return value.
     // - null is supported (suppresses output in Response header and PROPFIND response)
     // - empty strings and (convert) exception suppress output
@@ -88,6 +89,6 @@ public class LastModifiedTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/lastModified/d5.txt 301361 Fri, 31 Dec 2004 23:00:00 GMT/Fri, 31 Dec 2004 23:00:00 GMT/Fri, 31 Dec 2004 23:00:00 GMT", this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D5, AttributeFingeprintType.LastModified));
         String timestampD6 = this.createAttributeFingeprint(LastModifiedTestController.MAPPING_D6, AttributeFingeprintType.LastModified);
         timestampD6 = timestampD6.replaceAll("\\s+\\d\\d:.*$", "");
-        Assertions.assertEquals(String.format(Locale.US, "200/200/207 /extras/lastModified/d6.txt 301361 %1$ta, %1$td %1$tb %1$tY", new Date()), timestampD6);
+        Assertions.assertEquals(String.format(Locale.US, "200/200/207 /extras/lastModified/d6.txt 301361 %1$ta, %1$td %1$tb %1$tY", DateTimeAdapter.getBuildDate()), timestampD6);
     }
 }

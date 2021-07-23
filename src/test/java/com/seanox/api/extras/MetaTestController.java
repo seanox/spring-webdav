@@ -23,6 +23,7 @@ package com.seanox.api.extras;
 
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.apidav.DateTimeAdapter;
 import com.seanox.apidav.MetaData;
 import com.seanox.apidav.MetaInputStream;
 import com.seanox.apidav.MetaOutputStream;
@@ -33,7 +34,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 /**
@@ -286,7 +286,7 @@ public class MetaTestController {
     void testC8(final MetaData metaData) throws ParseException {
         metaData.setContentType(null);
         metaData.setContentLength(null);
-        metaData.setCreationDate(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("2000-01-01 00:00:00 GMT"));
+        metaData.setCreationDate(DateTimeAdapter.parseDate("2000-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
         metaData.setLastModified(null);
         metaData.setReadOnly(false);
         metaData.setHidden(false);
@@ -297,7 +297,7 @@ public class MetaTestController {
         metaData.setContentType(null);
         metaData.setContentLength(null);
         metaData.setCreationDate(null);
-        metaData.setLastModified(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss Z").parse("2000-01-01 00:00:00 GMT"));
+        metaData.setLastModified(DateTimeAdapter.parseDate("2000-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
         metaData.setReadOnly(false);
         metaData.setHidden(false);
         metaData.setPermitted(true);

@@ -31,7 +31,6 @@ import com.seanox.apidav.MetaData;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -47,8 +46,6 @@ import java.util.Date;
  */
 @Component
 public class CreationDateTestController {
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DateTimeAdapter.DATETIME_FORMAT);
 
     // TODO:
 
@@ -133,23 +130,23 @@ public class CreationDateTestController {
     }
     @ApiDavAttributeMapping(path=MAPPING_CA, attribute=ApiDavMappingAttribute.CreationDate)
     Date test_CA() throws ParseException {
-        return DATE_FORMAT.parse("2456-01-02 03:04:05 GMT");
+        return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
     @ApiDavAttributeMapping(path=MAPPING_CB, attribute=ApiDavMappingAttribute.CreationDate)
     Date test_CB() throws ParseException {
-        return DATE_FORMAT.parse("1956-01-02 03:04:05 GMT");
+        return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
     @ApiDavAttributeMapping(path=MAPPING_CC, attribute=ApiDavMappingAttribute.CreationDate)
     Object test_CC() throws ParseException {
-        return DATE_FORMAT.parse("2456-01-02 03:04:05 GMT");
+        return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
     @ApiDavAttributeMapping(path=MAPPING_CD, attribute=ApiDavMappingAttribute.CreationDate)
     Object test_CD() throws ParseException {
-        return DATE_FORMAT.parse("1956-01-02 03:04:05 GMT");
+        return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
     @ApiDavAttributeMapping(path=MAPPING_CE, attribute=ApiDavMappingAttribute.CreationDate)
     Object test_CE() throws ParseException {
-        return DATE_FORMAT.parse("1956-01-02 03:04:05 GMT");
+        return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
     @ApiDavAttributeMapping(path=MAPPING_CF, attribute=ApiDavMappingAttribute.CreationDate)
     Exception test_CF() {
@@ -171,45 +168,45 @@ public class CreationDateTestController {
     public static final String MAPPING_D6 = "/extras/creationDate/d6.txt";
 
     @ApiDavMapping(path=MAPPING_D1, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D1X() throws ParseException {
     }
     @ApiDavMetaMapping(path=MAPPING_D1)
     void test_D1(final MetaData metaData) throws ParseException {
-        metaData.setCreationDate(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
+        metaData.setCreationDate(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
     @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.CreationDate)
     Date test_D1() throws ParseException {
-        return DATE_FORMAT.parse("2008-01-01 00:00:00 GMT");
+        return DateTimeAdapter.parseDate("2008-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
 
     @ApiDavMapping(path=MAPPING_D2, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D2X() {
     }
     @ApiDavMetaMapping(path=MAPPING_D2)
     void test_D2(final MetaData metaData) throws ParseException {
-        metaData.setCreationDate(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
+        metaData.setCreationDate(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
     @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.CreationDate)
     Date test_D2() throws ParseException {
-        return DATE_FORMAT.parse("2008-01-01 00:00:00 GMT");
+        return DateTimeAdapter.parseDate("2008-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
 
     @ApiDavMapping(path=MAPPING_D3, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D3X() {
     }
     @ApiDavMetaMapping(path=MAPPING_D3)
     void test_D3(final MetaData metaData) throws ParseException {
-        metaData.setCreationDate(DATE_FORMAT.parse("2007-01-01 00:00:00 GMT"));
+        metaData.setCreationDate(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
 
     @ApiDavMapping(path=MAPPING_D4, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D4X() {
     }

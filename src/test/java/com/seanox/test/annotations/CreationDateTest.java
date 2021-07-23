@@ -52,7 +52,7 @@ public class CreationDateTest extends AbstractApiTest {
     // - Spring Expression Language via {@link ApiDavMappingAttributeExpression}
     // - callback via {@link ApiDavAttribute}
     // Expected data type:
-    // - Date, string in format yyyy-MM-dd hh:mm:ss only an effect in the annotations,
+    // - Date, string in format yyyy-MM-dd HH:mm:ss only an effect in the annotations,
     //   the callbacks support only Date as return value.
     // - null is supported (suppresses output in Response header and PROPFIND response)
     // - empty strings and (convert) exception suppress output
@@ -87,6 +87,6 @@ public class CreationDateTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 2004-12-31T23:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D5, AttributeFingeprintType.CreationDate));
         String timestampD6 = this.createAttributeFingeprint(CreationDateTestController.MAPPING_D6, AttributeFingeprintType.CreationDate);
         timestampD6 = timestampD6.replaceAll("T.*$", "");
-        Assertions.assertEquals(String.format("200/200/207 /extras/creationDate/d6.txt 301361 %1$tY-%1$tm-%1$td", new Date()), timestampD6);
+        Assertions.assertEquals(String.format("200/200/207 /extras/creationDate/d6.txt 301361 %1$tY-%1$tm-%1$td", DateTimeAdapter.getBuildDate()), timestampD6);
     }
 }
