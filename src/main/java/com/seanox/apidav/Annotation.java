@@ -41,7 +41,7 @@ import java.util.Objects;
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
 abstract class Annotation {
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private final String path;
     private final AnnotationType type;
