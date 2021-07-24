@@ -43,6 +43,10 @@ import java.util.Date;
 @Component
 public class AcceptTestController {
 
+    // Test A for attributes + Variants of values (valid + invalid)
+    // TODO: Test B for expressions + Variants of values (valid + invalid)
+    // TODO: Test D of priorities, what is used when -- Expression, Static, (Default)
+
     public static final String MAPPING_A1 = "/extras/accept/a1.txt";
     private String a1 = "";
     @ApiDavMapping(path=MAPPING_A1, isReadOnly=false)

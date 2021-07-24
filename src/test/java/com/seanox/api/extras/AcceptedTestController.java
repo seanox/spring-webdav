@@ -40,7 +40,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AcceptedTestController {
 
-    // TODO:
+    // TODO: Test A for attributes + Variants of values (valid + invalid)
+    // TODO: Test B for expressions + Variants of values (valid + invalid)
+    // Test C for callbacks + Variants of values (valid + invalid)
+    // TODO: Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
 
     public static final String MAPPING_C1 = "/extras/accepted/c1.txt";
     public static final String MAPPING_C2 = "/extras/accepted/c2.txt";

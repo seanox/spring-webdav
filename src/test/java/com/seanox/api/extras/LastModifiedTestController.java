@@ -48,13 +48,10 @@ import java.util.Date;
 @Component
 public class LastModifiedTestController {
 
-    // TODO:
-
-    void test_A() {
-    }
-
-    void test_B() {
-    }
+    // TODO: Test A for attributes + Variants of values (valid + invalid)
+    // TODO: Test B for expressions + Variants of values (valid + invalid)
+    // Test C for callbacks + Variants of values (valid + invalid)
+    // Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
 
     // Test of {@link ApiDavAttribute}
 

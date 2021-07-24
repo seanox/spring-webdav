@@ -44,6 +44,10 @@ import java.util.Date;
 @Component
 public class ContentLengthMaxTestController {
 
+    // Test A for attributes + Variants of values (valid + invalid)
+    // TODO: Test B for expressions + Variants of values (valid + invalid)
+    // TODO: Test D of priorities, what is used when -- Expression, Static, (Default)
+
     public static final String MAPPING_A1 = "/extras/contentLengthMax/a1.txt";
     private byte[] a1 = new byte[0];
     @ApiDavMapping(path=MAPPING_A1, isReadOnly=false)

@@ -84,6 +84,9 @@ public class MetaTest extends AbstractApiTest {
         int    contentTypeCount;
     }
 
+    // ContentType is set by meta callback.
+    // After that, it must be possible to retrieve the value via different ways.
+
     @Test
     void test_A1() throws Exception {
 
@@ -231,6 +234,9 @@ public class MetaTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B5 + " true"));
     }
+
+    // Function of all attributes is tested.
+    // Test by the way of multiple @ApiDavMapping annotation.
 
     @Test
     void test_CX() throws Exception {

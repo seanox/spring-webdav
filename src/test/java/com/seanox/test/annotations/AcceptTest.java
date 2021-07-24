@@ -215,6 +215,4 @@ public class AcceptTest extends AbstractApiTest {
                 MockMvcRequestBuilders.put(mapping).contentType(CONTENT_TYPE_OTHER_A).content("OA"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
-
-    // TODO:
 }

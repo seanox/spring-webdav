@@ -53,8 +53,6 @@ public class ContentTypeTest extends AbstractApiTest {
     // - empty strings and (convert) exception suppress output
     // - default: application/octet-stream
 
-    // TODO:
-
     @Test
     void test_CX() throws Exception {
         Assertions.assertEquals("200/200/207 /extras/contentType/c1.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C1, AttributeFingeprintType.ContentType));

@@ -34,5 +34,4 @@ import com.seanox.test.AbstractApiTest;
  * @version 1.0.0 20210711
  */
 public class AcceptedTest extends AbstractApiTest {
-    // TODO:
 }
