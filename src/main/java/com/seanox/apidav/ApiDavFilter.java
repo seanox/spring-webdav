@@ -64,8 +64,23 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-// What is not allowed is handled as if it does not exist.
-
+/**
+ * TODO:
+ *
+ * Rules:
+ * <ul>
+ *   <li>
+ *     What is not allowed is handled as if it does not exist.
+ *   </li>
+ * </ul>
+ *
+ * ApiDavFilter 1.0.0 20210724
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210724
+ */
 public class ApiDavFilter extends HttpFilter {
 
     private static final long serialVersionUID = 7637895578410477411L;

@@ -28,7 +28,6 @@ import lombok.Getter;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +36,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * TODO:
+ *
+ * Annotation 1.0.0 20210723
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210723
+ */
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
 abstract class Annotation {
@@ -140,8 +149,6 @@ abstract class Annotation {
                 final SpelExpressionParser parser = new SpelExpressionParser();
                 try {this.expression = parser.parseExpression(phrase);
                 } catch (Exception exception) {
-                    while (exception instanceof InvocationTargetException)
-                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
                     this.exception = exception;
                 }
             }

@@ -31,6 +31,16 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * TODO:
+ *
+ * MetaOutputStream 1.0.0 20210720
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210720
+ */
 @Builder(access=AccessLevel.PACKAGE)
 public class MetaOutputStream extends OutputStream {
 
