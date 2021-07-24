@@ -25,17 +25,19 @@ import com.seanox.apidav.ApiDavAttributeMapping;
 import com.seanox.apidav.ApiDavMapping;
 import com.seanox.apidav.ApiDavMappingAttribute;
 import com.seanox.apidav.ApiDavMappingAttributeExpression;
+import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.apidav.MetaData;
 import org.springframework.stereotype.Component;
 
 /**
  * Test of the annotation {@link AcceptedTestController} + accepted functions.
  *
- * AcceptedTestController 1.0.0 20210716
+ * AcceptedTestController 1.0.0 20210724
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210716
+ * @version 1.0.0 20210724
  */
 @Component
 public class AcceptedTestController {
@@ -43,7 +45,7 @@ public class AcceptedTestController {
     // TODO: Test A for attributes + Variants of values (valid + invalid)
     // TODO: Test B for expressions + Variants of values (valid + invalid)
     // Test C for callbacks + Variants of values (valid + invalid)
-    // TODO: Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
+    // Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
 
     public static final String MAPPING_C1 = "/extras/accepted/c1.txt";
     public static final String MAPPING_C2 = "/extras/accepted/c2.txt";
@@ -166,5 +168,126 @@ public class AcceptedTestController {
     @ApiDavAttributeMapping(path=MAPPING_CH, attribute=ApiDavMappingAttribute.Accepted)
     Boolean test_CH() {
         throw new RuntimeException("Test CH");
+    }
+
+    // Test of priorities:
+    // (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
+
+    public static final String MAPPING_D1 = "/extras/accepted/d1.txt";
+    public static final String MAPPING_D2 = "/extras/accepted/d2.txt";
+    public static final String MAPPING_D3 = "/extras/accepted/d3.txt";
+    public static final String MAPPING_D4 = "/extras/accepted/d4.txt";
+    public static final String MAPPING_D5 = "/extras/accepted/d5.txt";
+    public static final String MAPPING_D6 = "/extras/accepted/d6.txt";
+
+    @ApiDavMapping(path=MAPPING_D1, isAccepted=false, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    })
+    void test_D1X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D1)
+    void test_D1(final MetaData metaData) {
+        metaData.setAccepted(false);
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.Accepted)
+    Boolean test_D1() {
+        return Boolean.FALSE;
+    }
+
+    @ApiDavMapping(path=MAPPING_D2, isAccepted=false, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    })
+    void test_D2X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D2)
+    void test_D2(final MetaData metaData) {
+        metaData.setAccepted(false);
+    }
+    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.Accepted)
+    Boolean test_D2() {
+        return true;
+    }
+
+    @ApiDavMapping(path=MAPPING_D3, isAccepted=false, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    })
+    void test_D3X() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_D3)
+    void test_D3(final MetaData metaData) {
+        metaData.setAccepted(true);
+    }
+
+    @ApiDavMapping(path=MAPPING_D4, isAccepted=false, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    })
+    void test_D4X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D5, isAccepted=true)
+    void test_D5X() {
+    }
+
+    @ApiDavMapping(path=MAPPING_D6)
+    void test_D6X() {
+    }
+
+    public static final String MAPPING_DA = "/extras/accepted/dA.txt";
+    public static final String MAPPING_DB = "/extras/accepted/dB.txt";
+    public static final String MAPPING_DC = "/extras/accepted/dC.txt";
+    public static final String MAPPING_DD = "/extras/accepted/dD.txt";
+    public static final String MAPPING_DE = "/extras/accepted/dE.txt";
+    public static final String MAPPING_DF = "/extras/accepted/dF.txt";
+
+    @ApiDavMapping(path=MAPPING_DA, isAccepted=true, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    })
+    void test_DAX() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_DA)
+    void test_DA(final MetaData metaData) {
+        metaData.setAccepted(true);
+    }
+    @ApiDavAttributeMapping(path=MAPPING_DA, attribute=ApiDavMappingAttribute.Accepted)
+    Boolean test_DA() {
+        return Boolean.TRUE;
+    }
+
+    @ApiDavMapping(path=MAPPING_DB, isAccepted=true, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    })
+    void test_DBX() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_DB)
+    void test_DB(final MetaData metaData) {
+        metaData.setAccepted(true);
+    }
+    @ApiDavAttributeMapping(path=MAPPING_DB, attribute=ApiDavMappingAttribute.Accepted)
+    Boolean test_DB() {
+        return false;
+    }
+
+    @ApiDavMapping(path=MAPPING_DC, isAccepted=true, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    })
+    void test_DCX() {
+    }
+    @ApiDavMetaMapping(path=MAPPING_DC)
+    void test_DC(final MetaData metaData) {
+        metaData.setAccepted(false);
+    }
+
+    @ApiDavMapping(path=MAPPING_DD, isAccepted=true, attributeExpressions={
+            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    })
+    void test_DDX() {
+    }
+
+    @ApiDavMapping(path=MAPPING_DE, isAccepted=false)
+    void test_DEX() {
+    }
+
+    @ApiDavMapping(path=MAPPING_DF)
+    void test_DFX() {
     }
 }
