@@ -59,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
  * </ul>
  *
- * Sitemap 1.0.0 20210720
+ * Sitemap 1.0.0 20210724
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210724
  */
 class Sitemap implements Serializable {
 
@@ -608,7 +608,7 @@ class Sitemap implements Serializable {
             } else if (Objects.nonNull(this.metaCallback)
                     && Arrays.asList(Annotation.Target.ContentLength, Annotation.Target.ContentType,
                             Annotation.Target.CreationDate, Annotation.Target.LastModified,
-                            Annotation.Target.ReadOnly, Annotation.Target.Hidden, Annotation.Target.Permitted).contains(target)) {
+                            Annotation.Target.ReadOnly, Annotation.Target.Hidden, Annotation.Target.Accepted, Annotation.Target.Permitted).contains(target)) {
                 if (!metaMap.containsKey(this.metaCallback)) {
                     final MetaProperties meta = Defaults.MetaDataTemplate.clone();
                     meta.setUri(URI.create(Sitemap.File.this.getPath()));

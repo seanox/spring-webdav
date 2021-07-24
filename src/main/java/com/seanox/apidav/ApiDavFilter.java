@@ -328,6 +328,10 @@ public class ApiDavFilter extends HttpFilter {
                 && pathInfo.endsWith("/"))
             throw new FoundState(request.getRequestURI().replaceAll("/+$", ""));
 
+        if (entry.isFile()
+                && !((Sitemap.File)entry).isAccepted())
+            throw new BadRequestState();
+
         if (!Arrays.asList(METHOD_HEAD, METHOD_GET, METHOD_LOCK, METHOD_PUT).contains(method))
             return entry;
 
@@ -714,8 +718,6 @@ public class ApiDavFilter extends HttpFilter {
             throw new NotFoundState();
 
         final Sitemap.File file = (Sitemap.File)entry;
-        if (!file.isAccepted())
-            throw new BadRequestState();
         final Sitemap.Callback outputCallback = file.getOutputCallback();
 
         try (final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
@@ -772,8 +774,6 @@ public class ApiDavFilter extends HttpFilter {
         response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
 
         final Sitemap.File file = (Sitemap.File)entry;
-        if (!file.isAccepted())
-            throw new BadRequestState();
         ApiDavFilter.acceptContentType(file.getAccept(), request.getContentType());
         final Sitemap.Callback inputCallback = file.getInputCallback();
         final MetaInputStream metaInputStream = MetaInputStream.builder()
