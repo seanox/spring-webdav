@@ -21,6 +21,7 @@
  */
 package com.seanox.test.annotations;
 
+import com.seanox.api.extras.HiddenTestController;
 import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -52,29 +53,29 @@ import java.net.URI;
  * - /extras/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
  * - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
  *
- * HiddenTest 1.0.0 20210714
+ * HiddenTest 1.0.0 20210724
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210714
+ * @version 1.0.0 20210724
  */
 public class HiddenTest extends AbstractApiTest {
 
     // Visible
-    private static final String FILE_C2 = "/extras/hidden/c/c-1/c-2/c-3/c2.txt";
-    private static final String FOLDER_C3_REDIRECT = "/extras/hidden/c/c-1/c-2/c-3";
-    private static final String FOLDER_C3 = "/extras/hidden/c/c-1/c-2/c-3/";
+    // HiddenTestController.MAPPING_A_FILE_C2
+    // HiddenTestController.MAPPING_A_FOLDER_C3_REDIRECT
+    // HiddenTestController.MAPPING_A_FOLDER_C3
 
     // Hidden
-    private static final String FILE_A2 = "/extras/hidden/a/a-1/a-2/a-3/a2.txt";
-    private static final String FOLDER_A3_REDIRECT = "/extras/hidden/a/a-1/a-2/a-3";
-    private static final String FOLDER_A3 = "/extras/hidden/a/a-1/a-2/a-3/";
-    private static final String FOLDER_A2_REDIRECT = "/extras/hidden/a/a-1/a-2";
-    private static final String FOLDER_A2 = "/extras/hidden/a/a-1/a-2/";
-    private static final String FOLDER_B3_REDIRECT = "/extras/hidden/b/b-1/b-2/b-3";
-    private static final String FOLDER_B3 = "/extras/hidden/b/b-1/b-2/b-3/";
-    private static final String FILE_B1 = "/extras/hidden/b/b-1/b-2/b-3/b1.txt";
+    // HiddenTestController.MAPPING_A_FILE_A2
+    // HiddenTestController.MAPPING_A_FOLDER_A3_REDIRECT
+    // HiddenTestController.MAPPING_A_FOLDER_A3
+    // HiddenTestController.MAPPING_A_FOLDER_A2_REDIRECT
+    // HiddenTestController.MAPPING_A_FOLDER_A2
+    // HiddenTestController.MAPPING_A_FOLDER_B3_REDIRECT
+    // HiddenTestController.MAPPING_A_FOLDER_B3
+    // HiddenTestController.MAPPING_A_FILE_B1
 
     PropfindResult propfind(final String uri) throws Exception {
 
@@ -119,71 +120,58 @@ public class HiddenTest extends AbstractApiTest {
     }
 
     @Test
-    void testFile_01() throws Exception {
-
-        final PropfindResult propfindResult = this.propfind(FILE_C2);
+    void testFile_A1() throws Exception {
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FILE_C2);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFile);
         Assertions.assertFalse(propfindResult.isHidden);
     }
-
     @Test
-    void testFile_02() throws Exception {
-
-        final PropfindResult propfindResult = this.propfind(FILE_A2);
+    void testFile_A2() throws Exception {
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FILE_A2);
+        Assertions.assertEquals(207, propfindResult.status);
+        Assertions.assertTrue(propfindResult.isFile);
+        Assertions.assertTrue(propfindResult.isHidden);
+    }
+    @Test
+    void testFile_A3() throws Exception {
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FILE_B1);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFile);
         Assertions.assertTrue(propfindResult.isHidden);
     }
 
     @Test
-    void testFile_03() throws Exception {
-
-        final PropfindResult propfindResult = this.propfind(FILE_B1);
-        Assertions.assertEquals(207, propfindResult.status);
-        Assertions.assertTrue(propfindResult.isFile);
-        Assertions.assertTrue(propfindResult.isHidden);
-    }
-
-    @Test
-    void testFolder_01() throws Exception {
-
-        Assertions.assertEquals(302, this.propfind(FOLDER_C3_REDIRECT).status);
-        final PropfindResult propfindResult = this.propfind(FOLDER_C3);
+    void testFolder_A1() throws Exception {
+        Assertions.assertEquals(302, this.propfind(HiddenTestController.MAPPING_A_FOLDER_C3_REDIRECT).status);
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FOLDER_C3);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertFalse(propfindResult.isHidden);
         Assertions.assertEquals(1, propfindResult.childs);
     }
-
     @Test
-    void testFolder_02() throws Exception {
-
-        Assertions.assertEquals(302, this.propfind(FOLDER_A3_REDIRECT).status);
-        final PropfindResult propfindResult = this.propfind(FOLDER_A3);
+    void testFolder_A2() throws Exception {
+        Assertions.assertEquals(302, this.propfind(HiddenTestController.MAPPING_A_FOLDER_A3_REDIRECT).status);
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FOLDER_A3);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
     }
-
     @Test
-    void testFolder_03() throws Exception {
-
-        Assertions.assertEquals(302, this.propfind(FOLDER_A2_REDIRECT).status);
-        final PropfindResult propfindResult = this.propfind(FOLDER_A2);
+    void testFolder_A3() throws Exception {
+        Assertions.assertEquals(302, this.propfind(HiddenTestController.MAPPING_A_FOLDER_A2_REDIRECT).status);
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FOLDER_A2);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertTrue(propfindResult.isHidden);
         Assertions.assertEquals(0, propfindResult.childs);
-
     }
-
     @Test
-    void testFolder_04() throws Exception {
-
-        Assertions.assertEquals(302, this.propfind(FOLDER_B3_REDIRECT).status);
-        final PropfindResult propfindResult = this.propfind(FOLDER_B3);
+    void testFolder_A4() throws Exception {
+        Assertions.assertEquals(302, this.propfind(HiddenTestController.MAPPING_A_FOLDER_B3_REDIRECT).status);
+        final PropfindResult propfindResult = this.propfind(HiddenTestController.MAPPING_A_FOLDER_B3);
         Assertions.assertEquals(207, propfindResult.status);
         Assertions.assertTrue(propfindResult.isFolder);
         Assertions.assertTrue(propfindResult.isHidden);
