@@ -103,7 +103,6 @@ public class AcceptedTestController {
     }
     @ApiDavAttributeMapping(path=MAPPING_C1, attribute=ApiDavMappingAttribute.Accepted)
     void test_C1() {
-        return;
     }
     @ApiDavAttributeMapping(path=MAPPING_C2, attribute=ApiDavMappingAttribute.Accepted)
     String test_C2() {
