@@ -33,6 +33,9 @@ package com.seanox.apidav;
  */
 public @interface ApiDavMappingAttributeExpression {
 
+    /** Attribute */
     ApiDavMappingAttribute attribute();
-    String                 phrase();
+
+    /** Expression as string/phrase */
+    String phrase();
 }

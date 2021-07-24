@@ -28,7 +28,8 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * MetaData writable collector as an alternative to single attributes.
+ * MetaData, a writable collector containing all relevant attributes for a
+ * virtual entity.
  *
  * MetaData 1.0.0 20210717
  * Copyright (C) 2021 Seanox Software Solutions

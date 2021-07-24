@@ -31,13 +31,13 @@ import java.io.InputStream;
 import java.util.Objects;
 
 /**
- * TODO: {@link IOException}
- *
+ * MetaInpoutStream is an {@link InputStream} with read-only meta information.<br>
+ * <br>
  * MetaInputStream can be limited with {@code ContentLengthMax}.
  * If the value of {@code ContentLengthMax} greater than or equal to {@code 0},
  * only the so defined amount of data can be read from the data stream.
- * Overwriting it will cause {@link MetaInputStreamLimitException}.
- *
+ * Overwriting it will cause {@link MetaInputStreamLimitException}.<br>
+ * <br>
  * Another special feature is the handling of an {@link IOException} that occur
  * when reading in limited mode. An {@link IOException} is the permanent one,
  * because it is not known how many bytes could be read, which can distort the

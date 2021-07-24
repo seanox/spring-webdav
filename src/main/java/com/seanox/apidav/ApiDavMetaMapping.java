@@ -28,7 +28,39 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO:
+ * ApiDavMetaMapping annotates a method for getting the meta data for a virtual
+ * entity. The method has no fixed signature and the data types of the
+ * arguments are considered as placeholders and filled accordingly.<br>
+ * <br>
+ * The following data types are supported:
+ * <ul>
+ *   <li>URI: Path of the virtual entity.</li>
+ *   <li>
+ *     Properties: Collector with relevant runtime, request and meta
+ *     information as a nested map. The keys in the map are case insensitive.
+ *   </li>
+ *   </li>
+ *     MetaData: Writable collector containing all relevant attributes for a
+ *     virtual entity.
+ *   </li>
+ * </ul>
+ * Expected return value: void<br>
+ * <br>
+ * Examples of implementation:<br>
+ * <pre>
+ *   @ApiDavMetaMapping(path="/example/file.txt")
+ *   void testA5(final MetaData meta) {
+ *       ...
+ *   }
+ * </pre>
+ * <pre>
+ *   @ApiDavMetaMapping(path="/example/file.txt")
+ *   void testA5(final URI uri, final Properties properties, final MetaData meta) {
+ *       ...
+ *   }
+ * </pre>
+ * A method can be used multiple times with this annotation for different
+ * virtual entities.
  *
  * ApiDavMetaMapping 1.0.0 20210703
  * Copyright (C) 2021 Seanox Software Solutions
@@ -42,6 +74,7 @@ import java.lang.annotation.Target;
 @Repeatable(ApiDavMetaMapping.ApiDavMetaMappings.class)
 public @interface ApiDavMetaMapping {
 
+    /** Referenced path of the virtual entity. */
     String path();
 
     @Retention(RetentionPolicy.RUNTIME)
