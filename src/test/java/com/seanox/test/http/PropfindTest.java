@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -30,10 +30,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.net.URI;
 
 /**
- * Test the sequence for PROPFIND for files and folders.
- *
- * PropfindTest 1.0.0 20210710
- * Copyright (C) 2021 Seanox Software Solutions
+ * Test the sequence for PROPFIND for files and folders.<br>
+ * <br>
+ * PropfindTest 1.0.0 20210710<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions

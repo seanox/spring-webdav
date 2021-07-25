@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -29,14 +29,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.net.URI;
 
 /**
- * Test for HTTP method PROPPATCH.
- * PROPPATCH is not officially supported/allowed.
- * But for MS Office it is answered with 207 PROPFIND.
- *     Expectation:
- * If an Entry found in the SiteMap, the requests are responded with 207 PROPFIND.
- *
- * ProppatchTest 1.0.0 20210719
- * Copyright (C) 2021 Seanox Software Solutions
+ * Test for HTTP method PROPPATCH.<br>
+ * PROPPATCH is not officially supported/allowed.<br>
+ * But for MS Office it is answered with 207 PROPFIND.<br>
+ * <br>
+ *     <dir>Expectation:</dir>
+ * If an Entry found in the SiteMap, the requests are responded with 207 PROPFIND.<br>
+ * <br>
+ * ProppatchTest 1.0.0 20210719<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
