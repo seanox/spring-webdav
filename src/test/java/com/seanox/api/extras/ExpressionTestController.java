@@ -21,14 +21,10 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.apidav.AnnotationAdapter;
-import com.seanox.apidav.ApiDavAttributeMapping;
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMappingAttribute;
-import com.seanox.apidav.ApiDavMappingAttributeExpression;
-import com.seanox.apidav.MetaOutputStream;
-import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Profile;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
+import com.seanox.webdav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -53,23 +49,23 @@ public class ExpressionTestController {
     public static final String MAPPING_A5 = "/extras/expression/a5.txt";
     public static final String MAPPING_A6 = "/extras/expression/a6.txt";
 
-    @ApiDavMapping(path=MAPPING_A1, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="")
+    @WebDavMapping(path=MAPPING_A1, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="")
     })
-    @ApiDavMapping(path=MAPPING_A2, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="a")
+    @WebDavMapping(path=MAPPING_A2, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="a")
     })
-    @ApiDavMapping(path=MAPPING_A3, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="1a")
+    @WebDavMapping(path=MAPPING_A3, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="1a")
     })
-    @ApiDavMapping(path=MAPPING_A4, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="a1")
+    @WebDavMapping(path=MAPPING_A4, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="a1")
     })
-    @ApiDavMapping(path=MAPPING_A5, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="#a1")
+    @WebDavMapping(path=MAPPING_A5, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="#a1")
     })
-    @ApiDavMapping(path=MAPPING_A6, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="#a1(")
+    @WebDavMapping(path=MAPPING_A6, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="#a1(")
     })
     public void test_AX(MetaOutputStream outputStream) throws IOException {
         outputStream.write(String.valueOf(outputStream.getContentType()).getBytes());

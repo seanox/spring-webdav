@@ -19,36 +19,34 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
-
-import org.springframework.util.LinkedCaseInsensitiveMap;
+package com.seanox.webdav;
 
 /**
- * Case-insensitive properties based on a {@link java.util.Map} /
- * {@link LinkedCaseInsensitiveMap}.<br>
+ * Testing private parts and/or components visible only in the package requires
+ * an adapter for access.<br>
  * <br>
- * Properties 1.0.0 20210716<br>
+ * Why are the tests not in com.seanox.webdav?<br>
+ * Spring Test is used for the tests. For this @ComponentScan must scan the
+ * package. For the release version, however, it should be ensured that the
+ * library com.seanox.webdav also works without @ComponentScan and therefore
+ * another package is used for the tests of the package com.seanox.webdav.<br>
+ * <br>
+ * AdapterException 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210716
+ * @version 1.0.0 20210725
  */
-public class Properties extends LinkedCaseInsensitiveMap<Object> {
+public class AdapterException extends RuntimeException {
 
-    private static final long serialVersionUID = -4516866265247165421L;
+    private static final long serialVersionUID = -6019281634314244220L;
 
-    Properties() {
-        super();
+    public AdapterException(final String message) {
+        super(message);
     }
 
-    Properties(final Properties properties) {
-        super();
-        this.putAll(properties);
-    }
-
-    @Override
-    public Properties clone() {
-        return new Properties(this);
+    public AdapterException(final Throwable cause) {
+        super(cause);
     }
 }

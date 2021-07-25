@@ -21,12 +21,14 @@
  */
 package com.seanox.api.extras;
 
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
 import org.springframework.stereotype.Component;
 
 /**
  * Test the function of the readOnly attribute for
- * {@link com.seanox.apidav.ApiDavMapping} and
- * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
+ * {@link WebDavMapping} and
+ * {@link WebDavInputMapping}.<br>
  * <br>
  * ReadOnlyTestController 1.0.0 20210724<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>

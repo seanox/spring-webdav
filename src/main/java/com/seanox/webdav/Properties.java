@@ -19,41 +19,36 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 /**
- * TODO:
- *
- * ApiDavInputMapping 1.0.0 20210719<br>
+ * Case-insensitive properties based on a {@link java.util.Map} /
+ * {@link LinkedCaseInsensitiveMap}.<br>
+ * <br>
+ * Properties 1.0.0 20210716<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210716
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Repeatable(ApiDavInputMapping.ApiDavInputMappings.class)
-public @interface ApiDavInputMapping {
+public class Properties extends LinkedCaseInsensitiveMap<Object> {
 
-    // Following values use the default values: -1, ""
+    private static final long serialVersionUID = -4516866265247165421L;
 
-    String path();
+    Properties() {
+        super();
+    }
 
-    String accept()           default "";
-    int    contentLengthMax() default -1;
+    Properties(final Properties properties) {
+        super();
+        this.putAll(properties);
+    }
 
-    ApiDavInputMappingAttributeExpression[] attributeExpressions() default {};
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface ApiDavInputMappings {
-        ApiDavInputMapping[] value();
+    @Override
+    public Properties clone() {
+        return new Properties(this);
     }
 }

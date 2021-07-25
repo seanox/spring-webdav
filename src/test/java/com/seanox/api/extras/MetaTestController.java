@@ -21,14 +21,14 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMetaMapping;
-import com.seanox.apidav.DateTimeAdapter;
-import com.seanox.apidav.MetaData;
-import com.seanox.apidav.MetaInputStream;
-import com.seanox.apidav.MetaOutputStream;
-import com.seanox.apidav.MetaProperties;
-import com.seanox.apidav.Properties;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMetaMapping;
+import com.seanox.webdav.DateTimeAdapter;
+import com.seanox.webdav.MetaData;
+import com.seanox.webdav.MetaInputStream;
+import com.seanox.webdav.MetaOutputStream;
+import com.seanox.webdav.MetaProperties;
+import com.seanox.webdav.Properties;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ import java.text.ParseException;
 import java.util.Objects;
 
 /**
- * Test of the annotation {@link ApiDavMetaMapping}.<br>
+ * Test of the annotation {@link WebDavMetaMapping}.<br>
  * <br>
  * MetaTestController 1.0.0 20210719<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -54,31 +54,31 @@ public class MetaTestController {
     // After that, it must be possible to retrieve the value via different ways.
 
     public static final String MAPPING_A1 = "/extras/meta/a1.txt";
-    @ApiDavMapping(path=MAPPING_A1)
+    @WebDavMapping(path=MAPPING_A1)
     void testA1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A1 + " " + outputStream.getContentType()).getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_A1)
+    @WebDavMetaMapping(path=MAPPING_A1)
     void testA1(final MetaData meta) {
         meta.setContentType("m1");
     }
 
     public static final String MAPPING_A2 = "/extras/meta/a2.txt";
-    @ApiDavMapping(path=MAPPING_A2)
+    @WebDavMapping(path=MAPPING_A2)
     void testA2(final MetaData metaData, final MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A2 + " " + metaData).getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_A2)
+    @WebDavMetaMapping(path=MAPPING_A2)
     void testA2(final MetaData meta) {
         meta.setContentType("m2");
     }
 
     public static final String MAPPING_A3 = "/extras/meta/a3.txt";
-    @ApiDavMapping(path=MAPPING_A3)
+    @WebDavMapping(path=MAPPING_A3)
     void testA3(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A3 + " " + metaProperties.getContentType()).getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_A3)
+    @WebDavMetaMapping(path=MAPPING_A3)
     void testA3(final MetaData meta) {
         meta.setContentType("m3");
     }
@@ -88,31 +88,31 @@ public class MetaTestController {
     // If the value null is used, the propfind must omit this attribute.
 
     public static final String MAPPING_A4 = "/extras/meta/a4.txt";
-    @ApiDavMapping(path=MAPPING_A4)
+    @WebDavMapping(path=MAPPING_A4)
     void testA4(final MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A4 + " " + outputStream.getContentType()).getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_A4)
+    @WebDavMetaMapping(path=MAPPING_A4)
     void testA4(final MetaData meta) {
         meta.setContentType(null);
     }
 
     public static final String MAPPING_A5 = "/extras/meta/a5.txt";
-    @ApiDavMapping(path=MAPPING_A5)
+    @WebDavMapping(path=MAPPING_A5)
     void testA5(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A5 + " " + metaProperties.getContentType()).getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_A5)
+    @WebDavMetaMapping(path=MAPPING_A5)
     void testA5(final MetaData meta) {
         meta.setContentType(null);
     }
 
     public static final String MAPPING_A6 = "/extras/meta/a6.txt";
-    @ApiDavMapping(path=MAPPING_A6)
+    @WebDavMapping(path=MAPPING_A6)
     void testA6(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
         outputStream.write((MAPPING_A6 + " " + metaProperties.getContentType()).getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_A6)
+    @WebDavMetaMapping(path=MAPPING_A6)
     void testA6() {
     }
 
@@ -121,11 +121,11 @@ public class MetaTestController {
 
     String testB1Result;
     public static final String MAPPING_B1 = "/extras/meta/b1.txt";
-    @ApiDavMapping(path=MAPPING_B1)
+    @WebDavMapping(path=MAPPING_B1)
     void testB1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.testB1Result.getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_B1)
+    @WebDavMetaMapping(path=MAPPING_B1)
     void testB1(final MetaData meta1, final MetaData meta2) {
         this.testB1Result = String.format("%s %s %s %s",
                 meta1.getUri(), Objects.nonNull(meta1), Objects.nonNull(meta2), meta1 == meta2);
@@ -133,11 +133,11 @@ public class MetaTestController {
 
     String testB2Result;
     public static final String MAPPING_B2 = "/extras/meta/b2.txt";
-    @ApiDavMapping(path=MAPPING_B2)
+    @WebDavMapping(path=MAPPING_B2)
     void testB2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.testB2Result.getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_B2)
+    @WebDavMetaMapping(path=MAPPING_B2)
     void testB2(final MetaData meta1) {
         this.testB2Result = String.format("%s %s",
                 meta1.getUri(), Objects.nonNull(meta1));
@@ -145,11 +145,11 @@ public class MetaTestController {
 
     String testB3Result;
     public static final String MAPPING_B3 = "/extras/meta/b3.txt";
-    @ApiDavMapping(path=MAPPING_B3)
+    @WebDavMapping(path=MAPPING_B3)
     void testB3(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.testB3Result.getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_B3)
+    @WebDavMetaMapping(path=MAPPING_B3)
     void testB3(final Properties properties, final URI uri, final MetaData meta1) {
         this.testB3Result = String.format("%s %s %s %s",
                 meta1.getUri(), Objects.nonNull(properties), Objects.nonNull(uri), Objects.nonNull(meta1));
@@ -157,11 +157,11 @@ public class MetaTestController {
 
     String testB4Result;
     public static final String MAPPING_B4 = "/extras/meta/b4.txt";
-    @ApiDavMapping(path=MAPPING_B4)
+    @WebDavMapping(path=MAPPING_B4)
     void testB4(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.testB4Result.getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_B4)
+    @WebDavMetaMapping(path=MAPPING_B4)
     void testB4(final URI uri1, final Properties properties1, final MetaData meta1, final URI uri2, final Properties properties2, final String string,
             final MetaProperties metaProperties, final MetaOutputStream outputStream, final MetaInputStream inputStream) {
         this.testB4Result = String.format("%s %s %s %s %s %s %s %s %s %s %s",
@@ -173,17 +173,17 @@ public class MetaTestController {
 
     String testB5Result;
     public static final String MAPPING_B5 = "/extras/meta/b5.txt";
-    @ApiDavMapping(path=MAPPING_B5)
+    @WebDavMapping(path=MAPPING_B5)
     void testB5(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.testB5Result.getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_B5)
+    @WebDavMetaMapping(path=MAPPING_B5)
     void testB5(final Object... objects) {
         this.testB5Result = MAPPING_B5 + " " + Objects.isNull(objects);
     }
 
     // Function of all attributes is tested.
-    // Test by the way of multiple @ApiDavMapping annotation.
+    // Test by the way of multiple @WebDavMapping annotation.
 
     public static final String MAPPING_C1 = "/extras/meta/c1.txt";
     public static final String MAPPING_C2 = "/extras/meta/c2.txt";
@@ -197,22 +197,22 @@ public class MetaTestController {
     public static final String MAPPING_CA = "/extras/meta/cA.txt";
     public static final String MAPPING_CB = "/extras/meta/cB.txt";
     public static final String MAPPING_CC = "/extras/meta/cC.txt";
-    @ApiDavMapping(path=MAPPING_C1)
-    @ApiDavMapping(path=MAPPING_C2)
-    @ApiDavMapping(path=MAPPING_C3)
-    @ApiDavMapping(path=MAPPING_C4)
-    @ApiDavMapping(path=MAPPING_C5)
-    @ApiDavMapping(path=MAPPING_C6)
-    @ApiDavMapping(path=MAPPING_C7)
-    @ApiDavMapping(path=MAPPING_C8)
-    @ApiDavMapping(path=MAPPING_C9)
-    @ApiDavMapping(path=MAPPING_CA)
-    @ApiDavMapping(path=MAPPING_CB)
-    @ApiDavMapping(path=MAPPING_CC)
+    @WebDavMapping(path=MAPPING_C1)
+    @WebDavMapping(path=MAPPING_C2)
+    @WebDavMapping(path=MAPPING_C3)
+    @WebDavMapping(path=MAPPING_C4)
+    @WebDavMapping(path=MAPPING_C5)
+    @WebDavMapping(path=MAPPING_C6)
+    @WebDavMapping(path=MAPPING_C7)
+    @WebDavMapping(path=MAPPING_C8)
+    @WebDavMapping(path=MAPPING_C9)
+    @WebDavMapping(path=MAPPING_CA)
+    @WebDavMapping(path=MAPPING_CB)
+    @WebDavMapping(path=MAPPING_CC)
     void testCX(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
         outputStream.write(metaProperties.getUri().toString().getBytes());
     }
-    @ApiDavMetaMapping(path=MAPPING_C1)
+    @WebDavMetaMapping(path=MAPPING_C1)
     void testC1(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);
@@ -222,7 +222,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(false);
     }
-    @ApiDavMetaMapping(path=MAPPING_C2)
+    @WebDavMetaMapping(path=MAPPING_C2)
     void testC2(final MetaData metaData) {
         metaData.setContentType("TesT");
         metaData.setContentLength(null);
@@ -232,7 +232,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C3)
+    @WebDavMetaMapping(path=MAPPING_C3)
     void testC3(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(-100);
@@ -242,7 +242,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C4)
+    @WebDavMetaMapping(path=MAPPING_C4)
     void testC4(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(-1);
@@ -252,7 +252,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C5)
+    @WebDavMetaMapping(path=MAPPING_C5)
     void testC5(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(0);
@@ -262,7 +262,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C6)
+    @WebDavMetaMapping(path=MAPPING_C6)
     void testC6(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(1);
@@ -272,7 +272,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C7)
+    @WebDavMetaMapping(path=MAPPING_C7)
     void testC7(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(100);
@@ -282,7 +282,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C8)
+    @WebDavMetaMapping(path=MAPPING_C8)
     void testC8(final MetaData metaData) throws ParseException {
         metaData.setContentType(null);
         metaData.setContentLength(null);
@@ -292,7 +292,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_C9)
+    @WebDavMetaMapping(path=MAPPING_C9)
     void testC9(final MetaData metaData) throws ParseException {
         metaData.setContentType(null);
         metaData.setContentLength(null);
@@ -302,7 +302,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_CA)
+    @WebDavMetaMapping(path=MAPPING_CA)
     void testCA(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);
@@ -312,7 +312,7 @@ public class MetaTestController {
         metaData.setHidden(false);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_CB)
+    @WebDavMetaMapping(path=MAPPING_CB)
     void testCB(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);
@@ -322,7 +322,7 @@ public class MetaTestController {
         metaData.setHidden(true);
         metaData.setPermitted(true);
     }
-    @ApiDavMetaMapping(path=MAPPING_CC)
+    @WebDavMetaMapping(path=MAPPING_CC)
     void testCC(final MetaData metaData) {
         metaData.setContentType(null);
         metaData.setContentLength(null);

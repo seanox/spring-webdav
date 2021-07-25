@@ -21,18 +21,18 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.apidav.ApiDavAttributeMapping;
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMappingAttribute;
-import com.seanox.apidav.ApiDavMappingAttributeExpression;
-import com.seanox.apidav.ApiDavMetaMapping;
-import com.seanox.apidav.MetaData;
-import com.seanox.apidav.MetaOutputStream;
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
+import com.seanox.webdav.WebDavMetaMapping;
+import com.seanox.webdav.MetaData;
+import com.seanox.webdav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 /**
  * Test the function of the ContentType attribute for
- * {@link com.seanox.apidav.ApiDavMapping}.<br>
+ * {@link WebDavMapping}.<br>
  * <br>
  * ContentTypeTestController 1.0.0 20210720<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -49,7 +49,7 @@ public class ContentTypeTestController {
     // Test C for callbacks + Variants of values (valid + invalid)
     // Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
 
-    // Test of {@link ApiDavAttribute}
+    // Test of {@link WebDavAttribute}
 
     public static final String MAPPING_C1 = "/extras/contentType/c1.txt";
     public static final String MAPPING_C2 = "/extras/contentType/c2.txt";
@@ -61,50 +61,50 @@ public class ContentTypeTestController {
     public static final String MAPPING_C8 = "/extras/contentType/c8.txt";
     public static final String MAPPING_C9 = "/extras/contentType/c9.txt";
 
-    @ApiDavMapping(path=MAPPING_C1)
-    @ApiDavMapping(path=MAPPING_C2)
-    @ApiDavMapping(path=MAPPING_C3)
-    @ApiDavMapping(path=MAPPING_C4)
-    @ApiDavMapping(path=MAPPING_C5)
-    @ApiDavMapping(path=MAPPING_C6)
-    @ApiDavMapping(path=MAPPING_C7)
-    @ApiDavMapping(path=MAPPING_C8)
-    @ApiDavMapping(path=MAPPING_C9)
+    @WebDavMapping(path=MAPPING_C1)
+    @WebDavMapping(path=MAPPING_C2)
+    @WebDavMapping(path=MAPPING_C3)
+    @WebDavMapping(path=MAPPING_C4)
+    @WebDavMapping(path=MAPPING_C5)
+    @WebDavMapping(path=MAPPING_C6)
+    @WebDavMapping(path=MAPPING_C7)
+    @WebDavMapping(path=MAPPING_C8)
+    @WebDavMapping(path=MAPPING_C9)
     void test_CX() {
     }
-    @ApiDavAttributeMapping(path=MAPPING_C1, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C1, attribute= WebDavMappingAttribute.ContentType)
     String test_C1() {
         return null;
     }
-    @ApiDavAttributeMapping(path=MAPPING_C2, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C2, attribute= WebDavMappingAttribute.ContentType)
     String test_C2() {
         return "";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C3, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C3, attribute= WebDavMappingAttribute.ContentType)
     String test_C3() {
         return " ";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C4, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C4, attribute= WebDavMappingAttribute.ContentType)
     String test_C4() {
         return "a\t\r\nz";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C5, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C5, attribute= WebDavMappingAttribute.ContentType)
     String test_C5() {
         return "Test C5";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C6, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C6, attribute= WebDavMappingAttribute.ContentType)
     String test_C6() {
         return "a\u00A9z";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C7, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C7, attribute= WebDavMappingAttribute.ContentType)
     Object test_C7() {
         return "Test C7";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C8, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C8, attribute= WebDavMappingAttribute.ContentType)
     Exception test_C8() {
         return new Exception("Test C8");
     }
-    @ApiDavAttributeMapping(path=MAPPING_C9, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C9, attribute= WebDavMappingAttribute.ContentType)
     Integer test_C9() {
         throw new RuntimeException("Test C9");
     }
@@ -119,56 +119,56 @@ public class ContentTypeTestController {
     public static final String MAPPING_D5 = "/extras/contentType/d5.txt";
     public static final String MAPPING_D6 = "/extras/contentType/d6.txt";
 
-    @ApiDavMapping(path=MAPPING_D1, contentType="5", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    @WebDavMapping(path=MAPPING_D1, contentType="5", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D1X(final MetaOutputStream outputStream) {
         outputStream.setContentType("9");
     }
-    @ApiDavMetaMapping(path=MAPPING_D1)
+    @WebDavMetaMapping(path=MAPPING_D1)
     void test_D1(final MetaData metaData) {
         metaData.setContentType("7");
     }
-    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.ContentType)
     String test_D1() {
         return "8";
     }
 
-    @ApiDavMapping(path=MAPPING_D2, contentType="5", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    @WebDavMapping(path=MAPPING_D2, contentType="5", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D2X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D2)
+    @WebDavMetaMapping(path=MAPPING_D2)
     void test_D2(final MetaData metaData) {
         metaData.setContentType("7");
     }
-    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.ContentType)
     String test_D2() {
         return "8";
     }
 
-    @ApiDavMapping(path=MAPPING_D3, contentType="5", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    @WebDavMapping(path=MAPPING_D3, contentType="5", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D3X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D3)
+    @WebDavMetaMapping(path=MAPPING_D3)
     void test_D3(final MetaData metaData) {
         metaData.setContentType("7");
     }
 
-    @ApiDavMapping(path=MAPPING_D4, contentType="5", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.ContentType, phrase="6")
+    @WebDavMapping(path=MAPPING_D4, contentType="5", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D4X() {
     }
 
-    @ApiDavMapping(path=MAPPING_D5, contentType="5")
+    @WebDavMapping(path=MAPPING_D5, contentType="5")
     void test_D5X() {
     }
 
-    @ApiDavMapping(path=MAPPING_D6)
+    @WebDavMapping(path=MAPPING_D6)
     void test_D6X() {
     }    
 }

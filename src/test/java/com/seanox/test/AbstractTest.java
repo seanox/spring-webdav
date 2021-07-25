@@ -21,9 +21,9 @@
  */
 package com.seanox.test;
 
-import com.seanox.apidav.ApiDavAttributeMapping;
-import com.seanox.apidav.ApiDavInputMapping;
-import com.seanox.apidav.ApiDavMapping;
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -48,15 +48,15 @@ import java.util.Objects;
 public class AbstractTest {
 
     protected static Class<?>[] apiAnnotationClasses = new Class[] {
-            ApiDavMapping.class, ApiDavMapping.ApiDavMappings.class,
-            ApiDavInputMapping.class, ApiDavInputMapping.ApiDavInputMappings.class,
-            ApiDavAttributeMapping.class, ApiDavAttributeMapping.ApiDavAttributeMappings.class
+            WebDavMapping.class, WebDavMapping.WebDavMappings.class,
+            WebDavInputMapping.class, WebDavInputMapping.WebDavInputMappings.class,
+            WebDavAttributeMapping.class, WebDavAttributeMapping.WebDavAttributeMappings.class
     };
 
     protected static Class<?>[] apiAnnotationRetentionClasses = new Class[] {
-            ApiDavMapping.ApiDavMappings.class,
-            ApiDavInputMapping.ApiDavInputMappings.class,
-            ApiDavAttributeMapping.ApiDavAttributeMappings.class
+            WebDavMapping.WebDavMappings.class,
+            WebDavInputMapping.WebDavInputMappings.class,
+            WebDavAttributeMapping.WebDavAttributeMappings.class
     };
 
     private static Annotation[] getDeclaredApiAnnotations(final Annotation annotation) {
@@ -64,12 +64,12 @@ public class AbstractTest {
         if (Arrays.asList(AbstractTest.apiAnnotationClasses).contains(annotationType)
                 && !Arrays.asList(AbstractTest.apiAnnotationRetentionClasses).contains(annotationType))
             return new Annotation[] {annotation};
-        if (annotation instanceof ApiDavMapping.ApiDavMappings)
-            return ((ApiDavMapping.ApiDavMappings)annotation).value();
-        if (annotation instanceof ApiDavInputMapping.ApiDavInputMappings)
-            return ((ApiDavInputMapping.ApiDavInputMappings)annotation).value();
-        if (annotation instanceof ApiDavAttributeMapping.ApiDavAttributeMappings)
-            return ((ApiDavAttributeMapping.ApiDavAttributeMappings)annotation).value();
+        if (annotation instanceof WebDavMapping.WebDavMappings)
+            return ((WebDavMapping.WebDavMappings)annotation).value();
+        if (annotation instanceof WebDavInputMapping.WebDavInputMappings)
+            return ((WebDavInputMapping.WebDavInputMappings)annotation).value();
+        if (annotation instanceof WebDavAttributeMapping.WebDavAttributeMappings)
+            return ((WebDavAttributeMapping.WebDavAttributeMappings)annotation).value();
         return new Annotation[0];
     }
 

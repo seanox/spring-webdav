@@ -21,7 +21,7 @@
  */
 package com.seanox.test;
 
-import com.seanox.apidav.XmlWriterAdapter;
+import com.seanox.webdav.XmlWriterAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

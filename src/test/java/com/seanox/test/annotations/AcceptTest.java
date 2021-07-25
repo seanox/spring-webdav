@@ -23,13 +23,14 @@ package com.seanox.test.annotations;
 
 import com.seanox.api.extras.AcceptTestController;
 import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavInputMapping;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Test the function of the accept attribute for
- * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
+ * {@link WebDavInputMapping}.<br>
  * <br>
  * AcceptTest 1.0.0 20210715<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -41,11 +42,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class AcceptTest extends AbstractApiTest {
 
     // Supported types of data definition:
-    // - {@link ApiDavInputMapping}
-    // - {@link ApiDavInputMappingAttribute} + {@link ApiDavInputMappingAttributeExpression}
+    // - {@link WebDavInputMapping}
+    // - {@link WebDavInputMappingAttribute} + {@link WebDavInputMappingAttributeExpression}
     // Supported data types of definition:
-    // - static value via {@link ApiDavInputMapping}
-    // - Spring Expression Language via {@link ApiDavInputMappingAttributeExpression}
+    // - static value via {@link WebDavInputMapping}
+    // - Spring Expression Language via {@link WebDavInputMappingAttributeExpression}
     // Expected data type:
     // - String pattern: */* mimetype/* mimetype/mimesubtype */mimesubtype
     // - empty string has effect like default (*/*)

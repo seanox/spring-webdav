@@ -9,7 +9,7 @@ TODO:
       expected data type from return value: void
     - Meta: Properties, URI, MetaData
       expected data type from return value: void
-    - Attributes: Properties, URI, ApiDavAttribute
+    - Attributes: Properties, URI, WebDavAttribute
       expected data type from return value: depending on the attributes - Boolean, Date, String
 
     

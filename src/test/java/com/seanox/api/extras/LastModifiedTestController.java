@@ -21,14 +21,14 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.apidav.ApiDavAttributeMapping;
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMappingAttribute;
-import com.seanox.apidav.ApiDavMappingAttributeExpression;
-import com.seanox.apidav.ApiDavMetaMapping;
-import com.seanox.apidav.DateTimeAdapter;
-import com.seanox.apidav.MetaData;
-import com.seanox.apidav.MetaOutputStream;
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
+import com.seanox.webdav.WebDavMetaMapping;
+import com.seanox.webdav.DateTimeAdapter;
+import com.seanox.webdav.MetaData;
+import com.seanox.webdav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -36,7 +36,7 @@ import java.util.Date;
 
 /**
  * Test the function of the LastModified attribute for
- * {@link com.seanox.apidav.ApiDavMapping}.<br>
+ * {@link WebDavMapping}.<br>
  * <br>
  * LastModifiedTestController 1.0.0 20210721<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -53,7 +53,7 @@ public class LastModifiedTestController {
     // Test C for callbacks + Variants of values (valid + invalid)
     // Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
 
-    // Test of {@link ApiDavAttribute}
+    // Test of {@link WebDavAttribute}
 
     public static final String MAPPING_C1 = "/extras/lastModified/c1.txt";
     public static final String MAPPING_C2 = "/extras/lastModified/c2.txt";
@@ -72,85 +72,85 @@ public class LastModifiedTestController {
     public static final String MAPPING_CF = "/extras/lastModified/cF.txt";
     public static final String MAPPING_CG = "/extras/lastModified/cG.txt";
 
-    @ApiDavMapping(path=MAPPING_C1)
-    @ApiDavMapping(path=MAPPING_C2)
-    @ApiDavMapping(path=MAPPING_C3)
-    @ApiDavMapping(path=MAPPING_C4)
-    @ApiDavMapping(path=MAPPING_C5)
-    @ApiDavMapping(path=MAPPING_C6)
-    @ApiDavMapping(path=MAPPING_C7)
-    @ApiDavMapping(path=MAPPING_C8)
-    @ApiDavMapping(path=MAPPING_C9)
-    @ApiDavMapping(path=MAPPING_CA)
-    @ApiDavMapping(path=MAPPING_CB)
-    @ApiDavMapping(path=MAPPING_CC)
-    @ApiDavMapping(path=MAPPING_CD)
-    @ApiDavMapping(path=MAPPING_CE)
-    @ApiDavMapping(path=MAPPING_CF)
-    @ApiDavMapping(path=MAPPING_CG)
+    @WebDavMapping(path=MAPPING_C1)
+    @WebDavMapping(path=MAPPING_C2)
+    @WebDavMapping(path=MAPPING_C3)
+    @WebDavMapping(path=MAPPING_C4)
+    @WebDavMapping(path=MAPPING_C5)
+    @WebDavMapping(path=MAPPING_C6)
+    @WebDavMapping(path=MAPPING_C7)
+    @WebDavMapping(path=MAPPING_C8)
+    @WebDavMapping(path=MAPPING_C9)
+    @WebDavMapping(path=MAPPING_CA)
+    @WebDavMapping(path=MAPPING_CB)
+    @WebDavMapping(path=MAPPING_CC)
+    @WebDavMapping(path=MAPPING_CD)
+    @WebDavMapping(path=MAPPING_CE)
+    @WebDavMapping(path=MAPPING_CF)
+    @WebDavMapping(path=MAPPING_CG)
     void test_CX() {
     }
-    @ApiDavAttributeMapping(path=MAPPING_C1, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C1, attribute= WebDavMappingAttribute.LastModified)
     String test_C1() {
         return null;
     }
-    @ApiDavAttributeMapping(path=MAPPING_C2, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C2, attribute= WebDavMappingAttribute.LastModified)
     String test_C2() {
         return "";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C3, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C3, attribute= WebDavMappingAttribute.LastModified)
     String test_C3() {
         return " ";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C4, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C4, attribute= WebDavMappingAttribute.LastModified)
     String test_C4() {
         return "1987-06-07 01:02:03";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C5, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C5, attribute= WebDavMappingAttribute.LastModified)
     String test_C5() {
         return "2987-06-07 01:02:03";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C6, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C6, attribute= WebDavMappingAttribute.LastModified)
     String test_C6() {
         return "2987-06-07 01:02";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C7, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C7, attribute= WebDavMappingAttribute.LastModified)
     String test_C7() {
         return "2987-06-07";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C8, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C8, attribute= WebDavMappingAttribute.LastModified)
     String test_C8() {
         return "xxx2987-06-07";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C9, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_C9, attribute= WebDavMappingAttribute.LastModified)
     Date test_C9() {
         return null;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CA, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CA, attribute= WebDavMappingAttribute.LastModified)
     Date test_CA() throws ParseException {
         return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @ApiDavAttributeMapping(path=MAPPING_CB, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CB, attribute= WebDavMappingAttribute.LastModified)
     Date test_CB() throws ParseException {
         return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @ApiDavAttributeMapping(path=MAPPING_CC, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CC, attribute= WebDavMappingAttribute.LastModified)
     Object test_CC() throws ParseException {
         return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @ApiDavAttributeMapping(path=MAPPING_CD, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CD, attribute= WebDavMappingAttribute.LastModified)
     Object test_CD() throws ParseException {
         return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @ApiDavAttributeMapping(path=MAPPING_CE, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CE, attribute= WebDavMappingAttribute.LastModified)
     Object test_CE() throws ParseException {
         return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @ApiDavAttributeMapping(path=MAPPING_CF, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CF, attribute= WebDavMappingAttribute.LastModified)
     Exception test_CF() {
         return new Exception("Test C8");
     }
-    @ApiDavAttributeMapping(path=MAPPING_CG, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_CG, attribute= WebDavMappingAttribute.LastModified)
     Date test_CG() {
         throw new RuntimeException("2987-06-07 01:02");
     }
@@ -165,56 +165,56 @@ public class LastModifiedTestController {
     public static final String MAPPING_D5 = "/extras/lastModified/d5.txt";
     public static final String MAPPING_D6 = "/extras/lastModified/d6.txt";
 
-    @ApiDavMapping(path=MAPPING_D1, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    @WebDavMapping(path=MAPPING_D1, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D1X(final MetaOutputStream outputStream) throws ParseException {
         outputStream.setLastModified(DateTimeAdapter.parseDate("2009-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
-    @ApiDavMetaMapping(path=MAPPING_D1)
+    @WebDavMetaMapping(path=MAPPING_D1)
     void test_D1(final MetaData metaData) throws ParseException {
         metaData.setLastModified(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
-    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.LastModified)
     Date test_D1() throws ParseException {
         return DateTimeAdapter.parseDate("2008-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
 
-    @ApiDavMapping(path=MAPPING_D2, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    @WebDavMapping(path=MAPPING_D2, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D2X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D2)
+    @WebDavMetaMapping(path=MAPPING_D2)
     void test_D2(final MetaData metaData) throws ParseException {
         metaData.setLastModified(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
-    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.LastModified)
     Date test_D2() throws ParseException {
         return DateTimeAdapter.parseDate("2008-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
 
-    @ApiDavMapping(path=MAPPING_D3, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    @WebDavMapping(path=MAPPING_D3, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D3X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D3)
+    @WebDavMetaMapping(path=MAPPING_D3)
     void test_D3(final MetaData metaData) throws ParseException {
         metaData.setLastModified(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
 
-    @ApiDavMapping(path=MAPPING_D4, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+    @WebDavMapping(path=MAPPING_D4, lastModified="2005-01-01 00:00:00 GMT", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D4X() {
     }
 
-    @ApiDavMapping(path=MAPPING_D5, lastModified="2005-01-01 00:00:00 GMT")
+    @WebDavMapping(path=MAPPING_D5, lastModified="2005-01-01 00:00:00 GMT")
     void test_D5X() {
     }
 
-    @ApiDavMapping(path=MAPPING_D6)
+    @WebDavMapping(path=MAPPING_D6)
     void test_D6X() {
     }
 }

@@ -19,23 +19,38 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.TimeZone;
 
 /**
- * SitemapException<br>
+ * Static utilities for date and time.<br>
  * <br>
- * SitemapException 1.0.0 20210627<br>
+ * DateTime 1.0.0 20210626<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210627
+ * @version 1.0.0 20210626
  */
-class SitemapException extends Exception {
+class DateTime {
 
-    private static final long serialVersionUID = 5221219333501527276L;
+    final static TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
 
-    SitemapException(final String message) {
-        super(message);
+    private DateTime() {
+    }
+
+    static String formatDate(final Date date, final String format) {
+        return DateTime.formatDate(DEFAULT_TIME_ZONE, date, format);
+    }
+
+    static String formatDate(final TimeZone timeZone, final Date date, final String format) {
+        final SimpleDateFormat pattern = new SimpleDateFormat(format, Locale.US);
+        pattern.setTimeZone(Objects.nonNull(timeZone) ? timeZone : DEFAULT_TIME_ZONE);
+        return pattern.format(date);
     }
 }

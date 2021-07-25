@@ -21,9 +21,9 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.SitemapAdapter;
-import com.seanox.apidav.SitemapExceptionAdapter;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.SitemapAdapter;
+import com.seanox.webdav.SitemapExceptionAdapter;
 import com.seanox.test.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.annotation.Annotation;
 
 /**
- * Test of the annotation {@link ApiDavMapping}.<br>
+ * Test of the annotation {@link WebDavMapping}.<br>
  * <br>
  * MappingTest 1.0.0 20210712<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -42,8 +42,8 @@ import java.lang.annotation.Annotation;
  */
 public class MappingTest extends AbstractTest {
 
-    @ApiDavMapping(path="a")
-    @ApiDavMapping(path="/a")
+    @WebDavMapping(path="a")
+    @WebDavMapping(path="/a")
     @Test
     void test_1() {
         final Object sitemap = SitemapAdapter.createInstance();
@@ -54,8 +54,8 @@ public class MappingTest extends AbstractTest {
         Assertions.assertEquals("Ambiguous Mapping: /a", throwable.getMessage());
     }
 
-    @ApiDavMapping(path="/a/b/c")
-    @ApiDavMapping(path="/a/b/c/d/e")
+    @WebDavMapping(path="/a/b/c")
+    @WebDavMapping(path="/a/b/c/d/e")
     @Test
     void test_2() {
         final Object sitemap = SitemapAdapter.createInstance();
@@ -66,8 +66,8 @@ public class MappingTest extends AbstractTest {
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c/d", throwable.getMessage());
     }
 
-    @ApiDavMapping(path="/a/b/c/d/e")
-    @ApiDavMapping(path="/a/b/c")
+    @WebDavMapping(path="/a/b/c/d/e")
+    @WebDavMapping(path="/a/b/c")
     @Test
     void test_3() {
         final Object sitemap = SitemapAdapter.createInstance();
@@ -78,8 +78,8 @@ public class MappingTest extends AbstractTest {
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
 
-    @ApiDavMapping(path="/a/b/c/d/e")
-    @ApiDavMapping(path="/a/b/C")
+    @WebDavMapping(path="/a/b/c/d/e")
+    @WebDavMapping(path="/a/b/C")
     @Test
     void test_4() {
         final Object sitemap = SitemapAdapter.createInstance();
@@ -90,8 +90,8 @@ public class MappingTest extends AbstractTest {
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
 
-    @ApiDavMapping(path="/a/B/c/d/e")
-    @ApiDavMapping(path="/A/b/c")
+    @WebDavMapping(path="/a/B/c/d/e")
+    @WebDavMapping(path="/A/b/c")
     @Test
     void test_5() {
         final Object sitemap = SitemapAdapter.createInstance();
@@ -102,11 +102,11 @@ public class MappingTest extends AbstractTest {
         Assertions.assertEquals("Ambiguous Mapping: /a/B/c", throwable.getMessage());
     }
 
-    @ApiDavMapping(path="/customer/list.xlsx")
-    @ApiDavMapping(path="/customer/reports/statistic.xlsx")
-    @ApiDavMapping(path="/customer/reports/turnover.xlsx")
-    @ApiDavMapping(path="/marketing/newsletter.pptx")
-    @ApiDavMapping(path="/marketing/sales.pptx")
+    @WebDavMapping(path="/customer/list.xlsx")
+    @WebDavMapping(path="/customer/reports/statistic.xlsx")
+    @WebDavMapping(path="/customer/reports/turnover.xlsx")
+    @WebDavMapping(path="/marketing/newsletter.pptx")
+    @WebDavMapping(path="/marketing/sales.pptx")
     @Test
     void test_6() throws Exception {
         final Object sitemap = SitemapAdapter.createInstance();

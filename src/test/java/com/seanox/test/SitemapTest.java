@@ -21,7 +21,7 @@
  */
 package com.seanox.test;
 
-import com.seanox.apidav.SitemapAdapter;
+import com.seanox.webdav.SitemapAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

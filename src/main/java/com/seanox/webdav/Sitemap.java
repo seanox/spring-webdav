@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -221,7 +221,7 @@ class Sitemap implements Serializable {
         final File file = new File(path, annotations);
 
         // First of all, the implementation is not thread-safe.
-        // It is not required for WebDAV/apiDAV implementation.
+        // It is not required for this WebDAV implementation.
 
         // To avoid adding unnecessary entries to the tree in case of errors, a
         // working copy is used. Only if no errors occur, the copy is merged

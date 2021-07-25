@@ -21,18 +21,19 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.apidav.ApiDavAttributeMapping;
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMappingAttribute;
-import com.seanox.apidav.ApiDavMappingAttributeExpression;
-import com.seanox.apidav.ApiDavMetaMapping;
-import com.seanox.apidav.MetaData;
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
+import com.seanox.webdav.WebDavMetaMapping;
+import com.seanox.webdav.MetaData;
+import com.seanox.webdav.WebDavInputMapping;
 import org.springframework.stereotype.Component;
 
 /**
  * Test the function of the accepted attribute for
- * {@link com.seanox.apidav.ApiDavMapping} and
- * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
+ * {@link WebDavMapping} and
+ * {@link WebDavInputMapping}.<br>
  * <br>
  * AcceptedTestController 1.0.0 20210724<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -67,106 +68,106 @@ public class AcceptedTestController {
     public static final String MAPPING_CG = "/extras/accepted/cG.txt";
     public static final String MAPPING_CH = "/extras/accepted/cH.txt";
 
-    @ApiDavMapping(path=MAPPING_C1, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C2, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C3, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C4, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C5, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C6, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C7, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C8, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_C9, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CA, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CB, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CC, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CD, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CE, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CF, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CG, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
-    @ApiDavMapping(path=MAPPING_CH, isReadOnly=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C1, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C2, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C3, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C4, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C5, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C6, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C7, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C8, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_C9, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CA, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CB, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CC, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CD, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CE, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CF, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CG, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
+    @WebDavMapping(path=MAPPING_CH, isReadOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")})
     void test_CX() {
     }
-    @ApiDavAttributeMapping(path=MAPPING_C1, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C1, attribute= WebDavMappingAttribute.Accepted)
     void test_C1() {
     }
-    @ApiDavAttributeMapping(path=MAPPING_C2, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C2, attribute= WebDavMappingAttribute.Accepted)
     String test_C2() {
         return null;
     }
-    @ApiDavAttributeMapping(path=MAPPING_C3, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C3, attribute= WebDavMappingAttribute.Accepted)
     String test_C3() {
         return "";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C4, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C4, attribute= WebDavMappingAttribute.Accepted)
     String test_C4() {
         return " ";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C5, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C5, attribute= WebDavMappingAttribute.Accepted)
     String test_C5() {
         return "True";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C6, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C6, attribute= WebDavMappingAttribute.Accepted)
     String test_C6() {
         return "true";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C7, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C7, attribute= WebDavMappingAttribute.Accepted)
     String test_C7() {
         return "True";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C8, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C8, attribute= WebDavMappingAttribute.Accepted)
     String test_C8() {
         return " true";
     }
-    @ApiDavAttributeMapping(path=MAPPING_C9, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_C9, attribute= WebDavMappingAttribute.Accepted)
     String test_C9() {
         return "false";
     }
-    @ApiDavAttributeMapping(path=MAPPING_CA, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CA, attribute= WebDavMappingAttribute.Accepted)
     boolean test_CA() {
         return true;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CB, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CB, attribute= WebDavMappingAttribute.Accepted)
     boolean test_CB() {
         return false;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CC, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CC, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_CC() {
         return null;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CD, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CD, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_CD() {
         return Boolean.TRUE;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CE, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CE, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_CE() {
         return Boolean.FALSE;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CF, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CF, attribute= WebDavMappingAttribute.Accepted)
     Object test_CF() {
         return Boolean.TRUE;
     }
-    @ApiDavAttributeMapping(path=MAPPING_CG, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CG, attribute= WebDavMappingAttribute.Accepted)
     Exception test_CG() {
         return new RuntimeException();
     }
-    @ApiDavAttributeMapping(path=MAPPING_CH, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_CH, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_CH() {
         throw new RuntimeException("Test CH");
     }
@@ -181,55 +182,55 @@ public class AcceptedTestController {
     public static final String MAPPING_D5 = "/extras/accepted/d5.txt";
     public static final String MAPPING_D6 = "/extras/accepted/d6.txt";
 
-    @ApiDavMapping(path=MAPPING_D1, isAccepted=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    @WebDavMapping(path=MAPPING_D1, isAccepted=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="false")
     })
     void test_D1X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D1)
+    @WebDavMetaMapping(path=MAPPING_D1)
     void test_D1(final MetaData metaData) {
         metaData.setAccepted(false);
     }
-    @ApiDavAttributeMapping(path=MAPPING_D1, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_D1() {
         return Boolean.FALSE;
     }
 
-    @ApiDavMapping(path=MAPPING_D2, isAccepted=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    @WebDavMapping(path=MAPPING_D2, isAccepted=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="false")
     })
     void test_D2X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D2)
+    @WebDavMetaMapping(path=MAPPING_D2)
     void test_D2(final MetaData metaData) {
         metaData.setAccepted(false);
     }
-    @ApiDavAttributeMapping(path=MAPPING_D2, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_D2() {
         return true;
     }
 
-    @ApiDavMapping(path=MAPPING_D3, isAccepted=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    @WebDavMapping(path=MAPPING_D3, isAccepted=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="false")
     })
     void test_D3X() {
     }
-    @ApiDavMetaMapping(path=MAPPING_D3)
+    @WebDavMetaMapping(path=MAPPING_D3)
     void test_D3(final MetaData metaData) {
         metaData.setAccepted(true);
     }
 
-    @ApiDavMapping(path=MAPPING_D4, isAccepted=false, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    @WebDavMapping(path=MAPPING_D4, isAccepted=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="true")
     })
     void test_D4X() {
     }
 
-    @ApiDavMapping(path=MAPPING_D5, isAccepted=true)
+    @WebDavMapping(path=MAPPING_D5, isAccepted=true)
     void test_D5X() {
     }
 
-    @ApiDavMapping(path=MAPPING_D6)
+    @WebDavMapping(path=MAPPING_D6)
     void test_D6X() {
     }
 
@@ -240,55 +241,55 @@ public class AcceptedTestController {
     public static final String MAPPING_DE = "/extras/accepted/dE.txt";
     public static final String MAPPING_DF = "/extras/accepted/dF.txt";
 
-    @ApiDavMapping(path=MAPPING_DA, isAccepted=true, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    @WebDavMapping(path=MAPPING_DA, isAccepted=true, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="true")
     })
     void test_DAX() {
     }
-    @ApiDavMetaMapping(path=MAPPING_DA)
+    @WebDavMetaMapping(path=MAPPING_DA)
     void test_DA(final MetaData metaData) {
         metaData.setAccepted(true);
     }
-    @ApiDavAttributeMapping(path=MAPPING_DA, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_DA, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_DA() {
         return Boolean.TRUE;
     }
 
-    @ApiDavMapping(path=MAPPING_DB, isAccepted=true, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    @WebDavMapping(path=MAPPING_DB, isAccepted=true, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="true")
     })
     void test_DBX() {
     }
-    @ApiDavMetaMapping(path=MAPPING_DB)
+    @WebDavMetaMapping(path=MAPPING_DB)
     void test_DB(final MetaData metaData) {
         metaData.setAccepted(true);
     }
-    @ApiDavAttributeMapping(path=MAPPING_DB, attribute=ApiDavMappingAttribute.Accepted)
+    @WebDavAttributeMapping(path=MAPPING_DB, attribute= WebDavMappingAttribute.Accepted)
     Boolean test_DB() {
         return false;
     }
 
-    @ApiDavMapping(path=MAPPING_DC, isAccepted=true, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="true")
+    @WebDavMapping(path=MAPPING_DC, isAccepted=true, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="true")
     })
     void test_DCX() {
     }
-    @ApiDavMetaMapping(path=MAPPING_DC)
+    @WebDavMetaMapping(path=MAPPING_DC)
     void test_DC(final MetaData metaData) {
         metaData.setAccepted(false);
     }
 
-    @ApiDavMapping(path=MAPPING_DD, isAccepted=true, attributeExpressions={
-            @ApiDavMappingAttributeExpression(attribute=ApiDavMappingAttribute.Accepted, phrase="false")
+    @WebDavMapping(path=MAPPING_DD, isAccepted=true, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.Accepted, phrase="false")
     })
     void test_DDX() {
     }
 
-    @ApiDavMapping(path=MAPPING_DE, isAccepted=false)
+    @WebDavMapping(path=MAPPING_DE, isAccepted=false)
     void test_DEX() {
     }
 
-    @ApiDavMapping(path=MAPPING_DF)
+    @WebDavMapping(path=MAPPING_DF)
     void test_DFX() {
     }
 }

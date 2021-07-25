@@ -19,28 +19,23 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 /**
- * Testing private parts and/or components visible only in the package requires
- * an adapter for access.<br>
+ * AnnotationException<br>
  * <br>
- * Why are the tests not in com.seanox.apidav?<br>
- * Spring Test is used for the tests. For this @ComponentScan must scan the
- * package. For the release version, however, it should be ensured that the
- * library com.seanox.apidav also works without @ComponentScan and therefore
- * another package is used for the tests of the package com.seanox.apidav.<br>
- * <br>
- * SitemapExceptionAdapter 1.0.0 20210725<br>
+ * AnnotationException 1.0.0 20210707<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210707
  */
-public class SitemapExceptionAdapter {
+class AnnotationException extends Exception {
 
-    public static Class<SitemapException> getSitemapExceptionClass() {
-        return SitemapException.class;
+    private static final long serialVersionUID = -8434311329163778177L;
+
+    AnnotationException(final String message) {
+        super(message);
     }
 }

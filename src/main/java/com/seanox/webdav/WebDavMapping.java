@@ -19,38 +19,47 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.TimeZone;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Static utilities for date and time.<br>
- * <br>
- * DateTime 1.0.0 20210626<br>
+ * TODO:
+ *
+ * WebDavMapping 1.0.0 20210719<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
+ * @version 1.0.0 20210719
  */
-class DateTime {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Repeatable(WebDavMapping.WebDavMappings.class)
+public @interface WebDavMapping {
 
-    final static TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
+    // Following values use the default values: -1, ""
 
-    private DateTime() {
-    }
+    String  path();
 
-    static String formatDate(final Date date, final String format) {
-        return DateTime.formatDate(DEFAULT_TIME_ZONE, date, format);
-    }
+    int     contentLength() default -1;
+    String  contentType()   default "";
+    String  lastModified()  default "";
+    String  creationDate()  default "";
+    boolean isReadOnly()    default true;
+    boolean isHidden()      default false;
+    boolean isAccepted()    default true;
+    boolean isPermitted()   default true;
 
-    static String formatDate(final TimeZone timeZone, final Date date, final String format) {
-        final SimpleDateFormat pattern = new SimpleDateFormat(format, Locale.US);
-        pattern.setTimeZone(Objects.nonNull(timeZone) ? timeZone : DEFAULT_TIME_ZONE);
-        return pattern.format(date);
+    WebDavMappingAttributeExpression[] attributeExpressions() default {};
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface WebDavMappings {
+        WebDavMapping[] value();
     }
 }

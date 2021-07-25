@@ -1,8 +1,8 @@
 <p>
-  <a href="https://github.com/seanox/apiDAV/pulls">
+  <a href="https://github.com/seanox/spring-webdav/pulls">
     <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
   </a>  
-  <a href="https://github.com/seanox/apiDAV/issues">
+  <a href="https://github.com/seanox/spring-webdav/issues">
     <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
   </a>
   <a href="http://seanox.de/contact">
@@ -17,7 +17,7 @@ WebDAV mapping for Spring Boot
 Use an API like a network drive, open data as files, edit and save them.  
 Why use a frontend when the data can be edited directly in an Office application?
 
-<img src="https://github.com/seanox/apiDAV/raw/main/manual/animation.gif"/>
+<img src="https://github.com/seanox/spring-webdav/raw/main/manual/animation.gif"/>
 
 
 # Features
@@ -61,8 +61,8 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Contact
-[Issues](https://github.com/seanox/apiDAV/issues)  
-[Requests](https://github.com/seanox/apiDAV/pulls)  
+[Issues](https://github.com/seanox/spring-webdav/issues)  
+[Requests](https://github.com/seanox/spring-webdav/pulls)  
 [Mail](http://seanox.de/contact)
 
 

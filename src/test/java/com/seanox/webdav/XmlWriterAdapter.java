@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,11 +29,11 @@ import java.nio.charset.Charset;
  * Testing private parts and/or components visible only in the package requires
  * an adapter for access.<br>
  * <br>
- * Why are the tests not in com.seanox.apidav?<br>
+ * Why are the tests not in com.seanox.webdav?<br>
  * Spring Test is used for the tests. For this @ComponentScan must scan the
  * package. For the release version, however, it should be ensured that the
- * library com.seanox.apidav also works without @ComponentScan and therefore
- * another package is used for the tests of the package com.seanox.apidav.<br>
+ * library com.seanox.webdav also works without @ComponentScan and therefore
+ * another package is used for the tests of the package com.seanox.webdav.<br>
  * <br>
  * XmlWriterAdapter 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>

@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,9 +38,9 @@ import java.util.Objects;
 
 /**
  * Annotation is the base class for handling the annotations. There are two
- * worlds here, the public one where deliberately fine-tuned ApiDav annotations
+ * worlds here, the public one where deliberately fine-tuned WebDav annotations
  * are used and there is the internal world where logic-optimized annotations
- * and meta-objects are used. The decoupling made sense because the ApiDav
+ * and meta-objects are used. The decoupling made sense because the WebDav
  * prefix would be too present and more information, functions and abstraction
  * can be provided for the internal world, which would rather confuse the
  * public world.<br>
@@ -120,11 +120,11 @@ abstract class Annotation {
             }
         }
 
-        // Attribute as container can be used independently of ApiDav
-        // annotations. Outside of the ApiDavFilter all components should work
-        // without the ApiDav annotations, because otherwise the prefix
-        // ApiDav*** is always present and it slays you.
-        // ApiDav*** is intended and helpful for the end developer only.
+        // Attribute as container can be used independently of WebDav
+        // annotations. Outside of the WebDavFilter all components should work
+        // without the WebDav annotations, because otherwise the prefix
+        // WebDav*** is always present and it slays you.
+        // WebDav*** is intended and helpful for the end developer only.
 
         @Builder(access=AccessLevel.PRIVATE)
         Attribute(final String path, final AnnotationType type, final Object origin, final Object object, final Method method, final AttributeType attribute) {
@@ -132,15 +132,15 @@ abstract class Annotation {
             this.attributeType = attribute;
         }
 
-        static Attribute create(final ApiDavAttributeMapping apiDavAttribute, final Object object, final Method method) {
+        static Attribute create(final WebDavAttributeMapping webDavAttribute, final Object object, final Method method) {
             return Annotation.Attribute.builder()
-                    .path(apiDavAttribute.path())
+                    .path(webDavAttribute.path())
                     .type(AnnotationType.Attribute)
-                    .origin(apiDavAttribute.attribute())
+                    .origin(webDavAttribute.attribute())
                     .object(object)
                     .method(method)
 
-                    .attribute(apiDavAttribute.attribute().type)
+                    .attribute(webDavAttribute.attribute().type)
                     .build();
         }
 
@@ -179,17 +179,17 @@ abstract class Annotation {
             this.expressions      = Objects.nonNull(expressions) ? Arrays.asList(expressions) : null;
         }
 
-        static Input create(final ApiDavInputMapping apiDavInput, final Object object, final Method method) {
+        static Input create(final WebDavInputMapping webDavInput, final Object object, final Method method) {
             return Input.builder()
-                    .path(apiDavInput.path())
+                    .path(webDavInput.path())
                     .type(AnnotationType.Input)
-                    .origin(apiDavInput)
+                    .origin(webDavInput)
                     .object(object)
                     .method(method)
 
-                    .contentLengthMax(apiDavInput.contentLengthMax())
-                    .accept(Annotation.convertText(apiDavInput.accept()))
-                    .expressions(Arrays.stream(apiDavInput.attributeExpressions())
+                    .contentLengthMax(webDavInput.contentLengthMax())
+                    .accept(Annotation.convertText(webDavInput.accept()))
+                    .expressions(Arrays.stream(webDavInput.attributeExpressions())
                             .map(attributeExpression -> new Attribute.AttributeExpression(attributeExpression.attribute().attributeType, attributeExpression.phrase()))
                             .toArray(Attribute.AttributeExpression[]::new))
                     .build();
@@ -228,37 +228,37 @@ abstract class Annotation {
             this.expressions   = Objects.nonNull(expressions) ? Arrays.asList(expressions) : null;
         }
 
-        static Mapping create(final ApiDavMapping apiDavMapping, final Object object, final Method method)
+        static Mapping create(final WebDavMapping webDavMapping, final Object object, final Method method)
                 throws AnnotationException {
 
             Date creationDate;
-            try {creationDate = Annotation.convertDateTime(apiDavMapping.creationDate());
+            try {creationDate = Annotation.convertDateTime(webDavMapping.creationDate());
             } catch (ParseException exception) {
-                throw new AnnotationException("Invalid value for creationDate: " + apiDavMapping.creationDate().trim());
+                throw new AnnotationException("Invalid value for creationDate: " + webDavMapping.creationDate().trim());
             }
 
             Date lastModified;
-            try {lastModified = Annotation.convertDateTime(apiDavMapping.lastModified());
+            try {lastModified = Annotation.convertDateTime(webDavMapping.lastModified());
             } catch (ParseException exception) {
-                throw new AnnotationException("Invalid value for lastModified: " + apiDavMapping.lastModified().trim());
+                throw new AnnotationException("Invalid value for lastModified: " + webDavMapping.lastModified().trim());
             }
 
             return Mapping.builder()
-                    .path(apiDavMapping.path())
+                    .path(webDavMapping.path())
                     .type(AnnotationType.Mapping)
-                    .origin(apiDavMapping)
+                    .origin(webDavMapping)
                     .object(object)
                     .method(method)
 
-                    .contentLength(apiDavMapping.contentLength())
-                    .contentType(Annotation.convertText(apiDavMapping.contentType()))
+                    .contentLength(webDavMapping.contentLength())
+                    .contentType(Annotation.convertText(webDavMapping.contentType()))
                     .creationDate(creationDate)
                     .lastModified(lastModified)
-                    .isReadOnly(apiDavMapping.isReadOnly())
-                    .isHidden(apiDavMapping.isHidden())
-                    .isAccepted(apiDavMapping.isAccepted())
-                    .isPermitted(apiDavMapping.isPermitted())
-                    .expressions(Arrays.stream(apiDavMapping.attributeExpressions())
+                    .isReadOnly(webDavMapping.isReadOnly())
+                    .isHidden(webDavMapping.isHidden())
+                    .isAccepted(webDavMapping.isAccepted())
+                    .isPermitted(webDavMapping.isPermitted())
+                    .expressions(Arrays.stream(webDavMapping.attributeExpressions())
                             .map(attributeExpression -> new Attribute.AttributeExpression(attributeExpression.attribute().type, attributeExpression.phrase()))
                             .toArray(Attribute.AttributeExpression[]::new))
                     .build();
@@ -273,11 +273,11 @@ abstract class Annotation {
             super(path, type, origin, object, method);
         }
 
-        static Meta create(final ApiDavMetaMapping apiDavMeta, final Object object, final Method method) {
+        static Meta create(final WebDavMetaMapping webDavMeta, final Object object, final Method method) {
             return Meta.builder()
-                    .path(apiDavMeta.path())
+                    .path(webDavMeta.path())
                     .type(AnnotationType.Meta)
-                    .origin(apiDavMeta)
+                    .origin(webDavMeta)
                     .object(object)
                     .method(method)
                     .build();

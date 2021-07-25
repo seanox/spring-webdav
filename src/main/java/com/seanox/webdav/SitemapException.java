@@ -19,35 +19,23 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package com.seanox.webdav;
 
 /**
- * TODO:
- *
- * ApiDavAttributeMapping 1.0.0 20210703<br>
+ * SitemapException<br>
+ * <br>
+ * SitemapException 1.0.0 20210627<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210703
+ * @version 1.0.0 20210627
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Repeatable(ApiDavAttributeMapping.ApiDavAttributeMappings.class)
-public @interface ApiDavAttributeMapping {
+class SitemapException extends Exception {
 
-    String                 path();
-    ApiDavMappingAttribute attribute();
+    private static final long serialVersionUID = 5221219333501527276L;
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.METHOD)
-    @interface ApiDavAttributeMappings {
-        ApiDavAttributeMapping[] value();
+    SitemapException(final String message) {
+        super(message);
     }
 }

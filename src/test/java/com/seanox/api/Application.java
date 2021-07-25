@@ -21,7 +21,7 @@
  */
 package com.seanox.api;
 
-import com.seanox.apidav.ApiDavFilter;
+import com.seanox.webdav.WebDavFilter;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -36,7 +36,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Example for the integration of apiDAV in a Spring bases application.<br>
+ * Example for the integration of webDAV in a Spring bases application.<br>
  * <br>
  * Normally @ComponentScan does not need to be used because Application.class
  * already sets the package com.seanox.api, but in this example there is still
@@ -45,11 +45,11 @@ import org.springframework.context.annotation.Configuration;
  * purpose, the tests are integrated as @components. Therefore @ComponentScan
  * must be configured.<br>
  * <br>
- * Why are the tests not in com.seanox.apidav?<br>
+ * Why are the tests not in com.seanox.webdav?<br>
  * Spring Test is used for the tests. For this @ComponentScan must scan the
  * package. For the release version, however, it should be ensured that the
- * library com.seanox.apidav also works without @ComponentScan and therefore
- * another package is used for the tests of the package com.seanox.apidav.<br>
+ * library com.seanox.webdav also works without @ComponentScan and therefore
+ * another package is used for the tests of the package com.seanox.webdav.<br>
  * <br>
  * SpringBootServletInitializer to prepare the application to deploy on
  * external servlet container/runner.<br>
@@ -77,7 +77,7 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     public FilterRegistrationBean someFilterRegistration() {
         final FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new ApiDavFilter());
+        registration.setFilter(new WebDavFilter());
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;

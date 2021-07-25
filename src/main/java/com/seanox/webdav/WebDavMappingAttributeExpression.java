@@ -19,23 +19,23 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 /**
- * AnnotationException<br>
- * <br>
- * AnnotationException 1.0.0 20210707<br>
+ * TODO:
+ *
+ * WebDavMappingAttributeExpression 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210707
+ * @version 1.0.0 20210703
  */
-class AnnotationException extends Exception {
+public @interface WebDavMappingAttributeExpression {
 
-    private static final long serialVersionUID = -8434311329163778177L;
+    /** Attribute */
+    WebDavMappingAttribute attribute();
 
-    AnnotationException(final String message) {
-        super(message);
-    }
+    /** Expression as string/phrase */
+    String phrase();
 }

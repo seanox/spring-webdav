@@ -23,13 +23,15 @@ package com.seanox.test.annotations;
 
 import com.seanox.api.extras.AcceptedTestController;
 import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test the function of the accepted attribute for
- * {@link com.seanox.apidav.ApiDavMapping} and
- * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
+ * {@link WebDavMapping} and
+ * {@link WebDavInputMapping}.<br>
  * <br>
  * AcceptedTest 1.0.0 20210724<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>

@@ -21,15 +21,15 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.MetaOutputStream;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 /**
  * Test the function of the hidden attribute for
- * {@link com.seanox.apidav.ApiDavMapping}.<br>
+ * {@link WebDavMapping}.<br>
  * <br>
  * HiddenTestController 1.0.0 20210724<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -76,27 +76,27 @@ public class HiddenTestController {
     public static final String MAPPING_A_FOLDER_B3_REDIRECT = "/extras/hidden/b/b-1/b-2/b-3";
     public static final String MAPPING_A_FOLDER_B3 = "/extras/hidden/b/b-1/b-2/b-3/";
 
-    @ApiDavMapping(path= MAPPING_A_FILE_A1, isHidden=true)
+    @WebDavMapping(path= MAPPING_A_FILE_A1, isHidden=true)
     void testA1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a1.txt").getBytes());
     }
-    @ApiDavMapping(path= MAPPING_A_FILE_A2, isHidden=true)
+    @WebDavMapping(path= MAPPING_A_FILE_A2, isHidden=true)
     void testA2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a2.txt").getBytes());
     }
-    @ApiDavMapping(path= MAPPING_A_FILE_B1, isHidden=true)
+    @WebDavMapping(path= MAPPING_A_FILE_B1, isHidden=true)
     void testB1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("b1.txt").getBytes());
     }
-    @ApiDavMapping(path= MAPPING_A_FILE_C1, isHidden=true)
+    @WebDavMapping(path= MAPPING_A_FILE_C1, isHidden=true)
     void testC1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c1.txt").getBytes());
     }
-    @ApiDavMapping(path= MAPPING_A_FILE_C2, isHidden=false)
+    @WebDavMapping(path= MAPPING_A_FILE_C2, isHidden=false)
     void testC2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c2.txt").getBytes());
     }
-    @ApiDavMapping(path= MAPPING_A_FILE_D1, isHidden=true)
+    @WebDavMapping(path= MAPPING_A_FILE_D1, isHidden=true)
     void testD1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("d1.txt").getBytes());
     }

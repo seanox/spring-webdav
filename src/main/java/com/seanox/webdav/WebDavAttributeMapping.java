@@ -19,34 +19,35 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Testing private parts and/or components visible only in the package requires
- * an adapter for access.<br>
- * <br>
- * Why are the tests not in com.seanox.apidav?<br>
- * Spring Test is used for the tests. For this @ComponentScan must scan the
- * package. For the release version, however, it should be ensured that the
- * library com.seanox.apidav also works without @ComponentScan and therefore
- * another package is used for the tests of the package com.seanox.apidav.<br>
- * <br>
- * AdapterException 1.0.0 20210725<br>
+ * TODO:
+ *
+ * WebDavAttributeMapping 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210703
  */
-public class AdapterException extends RuntimeException {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Repeatable(WebDavAttributeMapping.WebDavAttributeMappings.class)
+public @interface WebDavAttributeMapping {
 
-    private static final long serialVersionUID = -6019281634314244220L;
+    String                 path();
+    WebDavMappingAttribute attribute();
 
-    public AdapterException(final String message) {
-        super(message);
-    }
-
-    public AdapterException(final Throwable cause) {
-        super(cause);
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface WebDavAttributeMappings {
+        WebDavAttributeMapping[] value();
     }
 }

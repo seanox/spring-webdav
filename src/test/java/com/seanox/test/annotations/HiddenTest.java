@@ -23,6 +23,7 @@ package com.seanox.test.annotations;
 
 import com.seanox.api.extras.HiddenTestController;
 import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,7 +40,7 @@ import java.net.URI;
 
 /**
  * Test the function of the hidden attribute for
- * {@link com.seanox.apidav.ApiDavMapping}.<br>
+ * {@link WebDavMapping}.<br>
  * <br>
  * The directory structure shows only substructures with visible content.
  * If a directory has no visible content, this structure is not displayed.

@@ -22,7 +22,7 @@
 package com.seanox.test.annotations;
 
 import com.seanox.api.extras.MetaTestController;
-import com.seanox.apidav.ApiDavMetaMapping;
+import com.seanox.webdav.WebDavMetaMapping;
 import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 
 /**
- * Test of the annotation {@link ApiDavMetaMapping}.<br>
+ * Test of the annotation {@link WebDavMetaMapping}.<br>
  * <br>
  * MetaTest 1.0.0 20210713<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -236,7 +236,7 @@ public class MetaTest extends AbstractApiTest {
     }
 
     // Function of all attributes is tested.
-    // Test by the way of multiple @ApiDavMapping annotation.
+    // Test by the way of multiple @WebDavMapping annotation.
 
     @Test
     void test_CX() throws Exception {

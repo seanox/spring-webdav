@@ -22,7 +22,7 @@
 package com.seanox.test;
 
 import com.seanox.api.Application;
-import com.seanox.apidav.ApiDavFilter;
+import com.seanox.webdav.WebDavFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,10 +91,10 @@ public abstract class AbstractApiTest extends AbstractTest {
         if (Objects.nonNull(this.mockMvc))
             return;
         final MockFilterConfig mockFilterConfig = new MockFilterConfig(this.webApplicationContext.getServletContext());
-        final ApiDavFilter apiDavFilter = new ApiDavFilter();
-        apiDavFilter.init(mockFilterConfig);
+        final WebDavFilter webDavFilter = new WebDavFilter();
+        webDavFilter.init(mockFilterConfig);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext)
-                .addFilters(apiDavFilter)
+                .addFilters(webDavFilter)
                 .build();
     }
 

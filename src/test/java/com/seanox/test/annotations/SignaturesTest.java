@@ -71,7 +71,7 @@ public class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string("A4-AaBbCc-c-Dab"));
     }
 
-    // {@link ApiDavMapping}
+    // {@link WebDavMapping}
     // URI, Properties, MetaProperties, MetaOutputStream, Annotation.AnnotationType.Mapping
     // expected data type from return value: void
     // - without
@@ -120,7 +120,7 @@ public class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string("B4-AaBbCc-cD-ab"));
     }
 
-    // {@link ApiDavMetaMapping}
+    // {@link WebDavMetaMapping}
     // URI, Properties, MetaData, Annotation.AnnotationType.Meta (not public)
     // expected data type from return value: void
     // - without
@@ -157,8 +157,8 @@ public class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.content().string("C4-AaBbCcc---ab"));
     }
 
-    // {@link ApiDavAttributeMapping}
-    // URI, Properties, ApiDavMappingAttribute
+    // {@link WebDavAttributeMapping}
+    // URI, Properties, WebDavMappingAttribute
     // expected data type from return value: depending on the attributes - Boolean, Integer, String, Date
     // - without
     // - complete +3 more object

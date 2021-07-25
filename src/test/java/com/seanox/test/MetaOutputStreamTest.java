@@ -21,7 +21,7 @@
  */
 package com.seanox.test;
 
-import com.seanox.apidav.MetaInputStreamAdapter;
+import com.seanox.webdav.MetaInputStreamAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

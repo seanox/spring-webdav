@@ -22,10 +22,10 @@
 package com.seanox.test.annotations;
 
 import com.seanox.api.extras.ExpressionTestController;
-import com.seanox.apidav.AnnotationAdapter;
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMappingAttribute;
-import com.seanox.apidav.ApiDavMappingAttributeExpression;
+import com.seanox.webdav.AnnotationAdapter;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,48 +44,48 @@ public class ExpressionTest extends AbstractApiTest {
 
     // Exceptions/syntax errors in the expressions have no effect for the mapping.
 
-    @ApiDavMapping(path = "/ignore_01", attributeExpressions = {
-            @ApiDavMappingAttributeExpression(attribute = ApiDavMappingAttribute.ContentType, phrase = "")
+    @WebDavMapping(path = "/ignore_01", attributeExpressions = {
+            @WebDavMappingAttributeExpression(attribute = WebDavMappingAttribute.ContentType, phrase = "")
     })
     @Test
     void parseTest_01() throws Exception {
         AnnotationAdapter.createAnnotation(this.collectApiAnnotationsFromCurrentMethod().stream().findFirst().orElseThrow());
     }
 
-    @ApiDavMapping(path = "/ignore_02", attributeExpressions = {
-            @ApiDavMappingAttributeExpression(attribute = ApiDavMappingAttribute.ContentType, phrase = "a")
+    @WebDavMapping(path = "/ignore_02", attributeExpressions = {
+            @WebDavMappingAttributeExpression(attribute = WebDavMappingAttribute.ContentType, phrase = "a")
     })
     @Test
     void parseTest_02() throws Exception {
         AnnotationAdapter.createAnnotation(this.collectApiAnnotationsFromCurrentMethod().stream().findFirst().orElseThrow());
     }
 
-    @ApiDavMapping(path = "/ignore_03", attributeExpressions = {
-            @ApiDavMappingAttributeExpression(attribute = ApiDavMappingAttribute.ContentType, phrase = "1a")
+    @WebDavMapping(path = "/ignore_03", attributeExpressions = {
+            @WebDavMappingAttributeExpression(attribute = WebDavMappingAttribute.ContentType, phrase = "1a")
     })
     @Test
     void parseTest_03() throws Exception {
         AnnotationAdapter.createAnnotation(this.collectApiAnnotationsFromCurrentMethod().stream().findFirst().orElseThrow());
     }
 
-    @ApiDavMapping(path = "/ignore_04", attributeExpressions = {
-            @ApiDavMappingAttributeExpression(attribute = ApiDavMappingAttribute.ContentType, phrase = "a1")
+    @WebDavMapping(path = "/ignore_04", attributeExpressions = {
+            @WebDavMappingAttributeExpression(attribute = WebDavMappingAttribute.ContentType, phrase = "a1")
     })
     @Test
     void parseTest_04() throws Exception {
         AnnotationAdapter.createAnnotation(this.collectApiAnnotationsFromCurrentMethod().stream().findFirst().orElseThrow());
     }
 
-    @ApiDavMapping(path = "/ignore_05", attributeExpressions = {
-            @ApiDavMappingAttributeExpression(attribute = ApiDavMappingAttribute.ContentType, phrase = "#a1")
+    @WebDavMapping(path = "/ignore_05", attributeExpressions = {
+            @WebDavMappingAttributeExpression(attribute = WebDavMappingAttribute.ContentType, phrase = "#a1")
     })
     @Test
     void parseTest_05() throws Exception {
         AnnotationAdapter.createAnnotation(this.collectApiAnnotationsFromCurrentMethod().stream().findFirst().orElseThrow());
     }
 
-    @ApiDavMapping(path = "/ignore_06", attributeExpressions = {
-            @ApiDavMappingAttributeExpression(attribute = ApiDavMappingAttribute.ContentType, phrase = "#a1(")
+    @WebDavMapping(path = "/ignore_06", attributeExpressions = {
+            @WebDavMappingAttributeExpression(attribute = WebDavMappingAttribute.ContentType, phrase = "#a1(")
     })
     @Test
     void parseTest_06() throws Exception {

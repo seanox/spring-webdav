@@ -19,20 +19,41 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * TODO:
  *
- * ApiDavInputMappingAttributeExpression 1.0.0 20210703<br>
+ * WebDavInputMapping 1.0.0 20210719<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210703
+ * @version 1.0.0 20210719
  */
-public @interface ApiDavInputMappingAttributeExpression {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Repeatable(WebDavInputMapping.WebDavInputMappings.class)
+public @interface WebDavInputMapping {
 
-    ApiDavInputMappingAttribute attribute();
-    String                      phrase();
+    // Following values use the default values: -1, ""
+
+    String path();
+
+    String accept()           default "";
+    int    contentLengthMax() default -1;
+
+    WebDavInputMappingAttributeExpression[] attributeExpressions() default {};
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    @interface WebDavInputMappings {
+        WebDavInputMapping[] value();
+    }
 }

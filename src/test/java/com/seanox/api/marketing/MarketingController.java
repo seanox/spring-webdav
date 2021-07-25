@@ -23,12 +23,12 @@ package com.seanox.api.marketing;
 
 import com.seanox.api.marketing.data.MarketingFlyer;
 import com.seanox.api.marketing.data.MarketingNewsletter;
-import com.seanox.apidav.ApiDavAttributeMapping;
-import com.seanox.apidav.ApiDavInputMapping;
-import com.seanox.apidav.ApiDavMapping;
-import com.seanox.apidav.ApiDavMappingAttribute;
-import com.seanox.apidav.MetaInputStream;
-import com.seanox.apidav.MetaOutputStream;
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.MetaInputStream;
+import com.seanox.webdav.MetaOutputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,12 +36,12 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Example for the integration of apiDAV into a RestController.<br>
+ * Example for the integration of webDAV into a RestController.<br>
  * <br>
  * In general, a managed bean is required.<br>
  * There are various annotations for this:<br>
  *     e.g. @Component, @Service, @RestController, ...<br>
- * The methods and annotations for apiDAV combine well with @RestController.<br>
+ * The methods and annotations for webDAV combine well with @RestController.<br>
  * <br>
  * MarketingController 1.0.0 20210719<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -57,43 +57,43 @@ class MarketingController {
     private final MarketingService marketingService;
 
     private static final String MARKETING_NEWSLETTER_DOTX="/marketing/newsletter.docx";
-    @ApiDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
+    @WebDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
     void getMarketingNewsletter(final MetaOutputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
         output.write(marketingNewsletter.getData());
     }
-    @ApiDavInputMapping(path=MARKETING_NEWSLETTER_DOTX)
+    @WebDavInputMapping(path=MARKETING_NEWSLETTER_DOTX)
     void putMarketingNewsletter(final MetaInputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
         marketingNewsletter.setData(output.readAllBytes());
         this.marketingService.saveMarketingNewsletter(marketingNewsletter);
     }
-    @ApiDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute= WebDavMappingAttribute.ContentLength)
     Integer getMarketingNewsletterLength() {
         return Integer.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
     }
-    @ApiDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute= WebDavMappingAttribute.LastModified)
     Date getMarketingNewsletterLastModified() {
         return this.marketingService.readMarketingNewsletter().getLastModified();
     }
 
     private static final String MARKETING_FLYER_PPTX="/marketing/flyer.pptx";
-    @ApiDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
+    @WebDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
     void getMarketingFlyer(final MetaOutputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
         output.write(marketingFlyer.getData());
     }
-    @ApiDavInputMapping(path=MARKETING_FLYER_PPTX)
+    @WebDavInputMapping(path=MARKETING_FLYER_PPTX)
     void putMarketingFlyer(final MetaInputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
         marketingFlyer.setData(output.readAllBytes());
         this.marketingService.saveMarketingFlyer(marketingFlyer);
     }
-    @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute= WebDavMappingAttribute.ContentLength)
     Integer getMarketingFlyerLength() {
         return Integer.valueOf(this.marketingService.readMarketingFlyer().getData().length);
     }
-    @ApiDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=ApiDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute= WebDavMappingAttribute.LastModified)
     Date getMarketingFlyerLastModified() {
         return this.marketingService.readMarketingFlyer().getLastModified();
     }

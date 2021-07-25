@@ -23,12 +23,13 @@ package com.seanox.test.annotations;
 
 import com.seanox.api.extras.ContentTypeTestController;
 import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test the function of the ContentType attribute for
- * {@link com.seanox.apidav.ApiDavMapping}.<br>
+ * {@link WebDavMapping}.<br>
  * <br>
  * ContentTypeTest 1.0.0 20210721<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -40,14 +41,14 @@ import org.junit.jupiter.api.Test;
 public class ContentTypeTest extends AbstractApiTest {
 
     // Supported types of data definition:
-    // - {@link ApiDavMapping}
-    // - {@link ApiDavMapping} + {@link ApiDavMappingAttributeExpression}
-    // - {@link ApiDavMetaMapping}
-    // - {@link ApiDavAttribute}
+    // - {@link WebDavMapping}
+    // - {@link WebDavMapping} + {@link WebDavMappingAttributeExpression}
+    // - {@link WebDavMetaMapping}
+    // - {@link WebDavAttribute}
     // Supported data types of definition:
-    // - static value via {@link ApiDavMapping}, {@link ApiDavMetaMapping}
-    // - Spring Expression Language via {@link ApiDavMappingAttributeExpression}
-    // - callback via {@link ApiDavAttribute}
+    // - static value via {@link WebDavMapping}, {@link WebDavMetaMapping}
+    // - Spring Expression Language via {@link WebDavMappingAttributeExpression}
+    // - callback via {@link WebDavAttribute}
     // Expected data type:
     // - String
     // - null is supported (suppresses output in Response header and PROPFIND response)

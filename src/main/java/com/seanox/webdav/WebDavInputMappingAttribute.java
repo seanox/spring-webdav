@@ -19,23 +19,26 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 /**
  * TODO:
  *
- * ApiDavMappingAttributeExpression 1.0.0 20210703<br>
+ * WebDavInputMappingAttribute 1.0.0 20210715<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210703
+ * @version 1.0.0 20210715
  */
-public @interface ApiDavMappingAttributeExpression {
+public enum WebDavInputMappingAttribute {
 
-    /** Attribute */
-    ApiDavMappingAttribute attribute();
+    Accept(Annotation.Attribute.AttributeType.Accept),
+    ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax);
 
-    /** Expression as string/phrase */
-    String phrase();
+    final Annotation.Attribute.AttributeType attributeType;
+
+    WebDavInputMappingAttribute(final Annotation.Attribute.AttributeType type) {
+        this.attributeType = type;
+    }
 }

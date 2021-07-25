@@ -19,7 +19,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.apidav;
+package com.seanox.webdav;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ApiDavMetaMapping annotates a method for getting the meta data for a virtual
+ * WebDavMetaMapping annotates a method for getting the meta data for a virtual
  * entity. The method has no fixed signature and the data types of the
  * arguments are considered as placeholders and filled accordingly. If
  * arguments with the same data type are used multiple times, they are filled
@@ -68,21 +68,21 @@ import java.lang.annotation.Target;
  * one method.<br>
  * <br>
  * <pre>
- *   &#64;ApiDavMetaMapping(path="/example/file.xls")
+ *   &#64;WebDavMetaMapping(path="/example/file.xls")
  *   void setMetaData(final MetaData meta) {
  *       meta.set...
  *       ...
  *   }
  *
- *   &#64;ApiDavMetaMapping(path="/example/file.xls")
+ *   &#64;WebDavMetaMapping(path="/example/file.xls")
  *   void setMetaData(final URI uri, final Properties properties, final MetaData meta) {
  *       meta.set...
  *       ...
  *   }
  *
- *   &#64;ApiDavMetaMapping(path="/example/fileA.xls")
- *   &#64;ApiDavMetaMapping(path="/example/fileB.xls")
- *   &#64;ApiDavMetaMapping(path="/example/fileC.xls")
+ *   &#64;WebDavMetaMapping(path="/example/fileA.xls")
+ *   &#64;WebDavMetaMapping(path="/example/fileB.xls")
+ *   &#64;WebDavMetaMapping(path="/example/fileC.xls")
  *   void setMetaData(final MetaData meta) {
  *       meta.set...
  *       ...
@@ -90,7 +90,7 @@ import java.lang.annotation.Target;
  *
  *   ...
  * </pre>
- * ApiDavMetaMapping 1.0.0 20210703<br>
+ * WebDavMetaMapping 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
@@ -99,15 +99,15 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Repeatable(ApiDavMetaMapping.ApiDavMetaMappings.class)
-public @interface ApiDavMetaMapping {
+@Repeatable(WebDavMetaMapping.WebDavMetaMappings.class)
+public @interface WebDavMetaMapping {
 
     /** Referenced path of the virtual entity. */
     String path();
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    @interface ApiDavMetaMappings {
-        ApiDavMetaMapping[] value();
+    @interface WebDavMetaMappings {
+        WebDavMetaMapping[] value();
     }
 }
