@@ -30,12 +30,12 @@ import java.lang.annotation.Target;
 /**
  * TODO:
  *
- * WebDavMapping 1.0.0 20210719<br>
+ * WebDavMapping 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210725
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -50,10 +50,10 @@ public @interface WebDavMapping {
     String  contentType()   default "";
     String  lastModified()  default "";
     String  creationDate()  default "";
-    boolean isReadOnly()    default true;
-    boolean isHidden()      default false;
-    boolean isAccepted()    default true;
-    boolean isPermitted()   default true;
+    boolean readOnly()      default true;
+    boolean hidden()        default false;
+    boolean accepted()      default true;
+    boolean permitted()     default true;
 
     WebDavMappingAttributeExpression[] attributeExpressions() default {};
 

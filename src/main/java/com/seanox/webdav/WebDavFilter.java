@@ -75,12 +75,12 @@ import java.util.stream.IntStream;
  *   TODO:
  * </ul>
  * <br>
- * WebDavFilter 1.0.0 20210724<br>
+ * WebDavFilter 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210724
+ * @version 1.0.0 20210725
  */
 public class WebDavFilter extends HttpFilter {
 
@@ -428,12 +428,12 @@ public class WebDavFilter extends HttpFilter {
         final String lastModified  = Objects.nonNull(entry.getLastModified()) ? DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED) : null;
         final String contentType   = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentType()) ? ((Sitemap.File)entry).getContentType() : null;
         final String contentLength = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentLength()) ? ((Sitemap.File)entry).getContentLength().toString() : null;
-        final String isCollection  = String.valueOf(entry.isFolder());
 
-        final String isReadOnly = String.valueOf(entry.isReadOnly());
-        final String isHidden   = String.valueOf(entry.isHidden());
-        final String isSystem   = Boolean.FALSE.toString();
-        final String isArchive  = Boolean.FALSE.toString();
+        final String isCollection = String.valueOf(entry.isFolder());
+        final String isReadOnly   = String.valueOf(entry.isReadOnly());
+        final String isHidden     = String.valueOf(entry.isHidden());
+        final String isSystem     = Boolean.FALSE.toString();
+        final String isArchive    = Boolean.FALSE.toString();
 
         final String etag = Objects.nonNull(entry.getIdentifier()) ? "\"" + entry.getIdentifier() + "\"" : "";
 

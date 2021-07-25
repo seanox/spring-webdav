@@ -45,12 +45,12 @@ import java.util.Objects;
  * can be provided for the internal world, which would rather confuse the
  * public world.<br>
  * <br>
- * Annotation 1.0.0 20210723<br>
+ * Annotation 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210723
+ * @version 1.0.0 20210725
  */
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
@@ -254,10 +254,10 @@ abstract class Annotation {
                     .contentType(Annotation.convertText(webDavMapping.contentType()))
                     .creationDate(creationDate)
                     .lastModified(lastModified)
-                    .isReadOnly(webDavMapping.isReadOnly())
-                    .isHidden(webDavMapping.isHidden())
-                    .isAccepted(webDavMapping.isAccepted())
-                    .isPermitted(webDavMapping.isPermitted())
+                    .isReadOnly(webDavMapping.readOnly())
+                    .isHidden(webDavMapping.hidden())
+                    .isAccepted(webDavMapping.accepted())
+                    .isPermitted(webDavMapping.permitted())
                     .expressions(Arrays.stream(webDavMapping.attributeExpressions())
                             .map(attributeExpression -> new Attribute.AttributeExpression(attributeExpression.attribute().type, attributeExpression.phrase()))
                             .toArray(Attribute.AttributeExpression[]::new))
