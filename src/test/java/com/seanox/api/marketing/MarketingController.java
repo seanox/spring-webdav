@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -36,14 +36,15 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Example for the integration of apiDAV into a RestController.
- *
- * In general, a managed bean is required.
- * There are various annotations for this: e.g. @Component, @Service, @RestController, ...
- * The methods and annotations for apiDAV combine well with @RestController.
- *
- * MarketingController 1.0.0 20210719
- * Copyright (C) 2021 Seanox Software Solutions
+ * Example for the integration of apiDAV into a RestController.<br>
+ * <br>
+ * In general, a managed bean is required.<br>
+ * There are various annotations for this:<br>
+ *     e.g. @Component, @Service, @RestController, ...<br>
+ * The methods and annotations for apiDAV combine well with @RestController.<br>
+ * <br>
+ * MarketingController 1.0.0 20210719<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
