@@ -19,21 +19,27 @@
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.seanox.test.annotations;
+package com.seanox.api.extras;
 
-import com.seanox.test.AbstractApiTest;
+import org.springframework.stereotype.Component;
 
 /**
  * Test the function of the readOnly attribute for
  * {@link com.seanox.apidav.ApiDavMapping} and
  * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
  * <br>
- * ReadOnlyTest 1.0.0 20210711<br>
+ * ReadOnlyTestController 1.0.0 20210724<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210724
  */
-public class ReadOnlyTest extends AbstractApiTest {
+@Component
+public class ReadOnlyTestController {
+
+    // TODO: Test A for attributes + Variants of values (valid + invalid)
+    // TODO: Test B for expressions + Variants of values (valid + invalid)
+    // TODO: Test C for callbacks + Variants of values (valid + invalid)
+    // TODO: Test D of priorities, what is used when -- (MetaOutputStream), Callback, Meta, Expression, Static, (Default)
 }
