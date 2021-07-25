@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -31,10 +31,10 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Simulation of a simple data access layer.
- *
- * FinancialService 1.0.0 20210629
- * Copyright (C) 2021 Seanox Software Solutions
+ * Simulation of a simple data access layer.<br>
+ * <br>
+ * FinancialService 1.0.0 20210629<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
