@@ -32,17 +32,16 @@ import java.util.Date;
 
 /**
  * MetaProperties, read-only collector with all attributes of the virtual
- * entity.
- *
- * MetaProperties 1.0.0 20210715
- * Copyright (C) 2021 Seanox Software Solutions
- * Alle Rechte vorbehalten.
+ * entity.<br>
+ * <br>
+ * MetaProperties 1.0.0 20210725<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
+ * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210715
+ * @version 1.0.0 20210725
  */
-@Getter(AccessLevel.PUBLIC)
-@Setter(AccessLevel.PROTECTED)
+@Setter(AccessLevel.PACKAGE)
 @Builder(access=AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
 public class MetaProperties implements Cloneable {
@@ -56,6 +55,81 @@ public class MetaProperties implements Cloneable {
     private boolean isHidden;
     private boolean isAccepted;
     private boolean isPermitted;
+
+    // Lombok is awesome, but it doesn't create a usable JavaDoc and then using
+    // Delombok isn't so great.
+
+    /**
+     * Returns the path of the virtual entity as URI.
+     * @return the path of the virtual entity as URI
+     */
+    public URI getUri() {
+        return this.uri;
+    }
+
+    /**
+     * Returns the content-type of the virtual entity.
+     * @return the content-type of the virtual entity
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Returns the content-length of the virtual entity.
+     * @return the content-length of the virtual entity
+     */
+    public Integer getContentLength() {
+        return this.contentLength;
+    }
+
+    /**
+     * Returns the creation-date of the virtual entity.
+     * @return the creation-date of the virtual entity
+     */
+    public Date getCreationDate() {
+        return this.creationDate;
+    }
+
+    /**
+     * Returns the last-modified of the virtual entity.
+     * @return the last-modified of the virtual entity
+     */
+    public Date getLastModified() {
+        return this.lastModified;
+    }
+
+    /**
+     * Returns {@code true} when the virtual entity is read-only.
+     * @return {@code true} when the virtual entity is read-only
+     */
+    public boolean isReadOnly() {
+        return this.isReadOnly;
+    }
+
+    /**
+     * Returns {@code true} when the virtual entity is hidden.
+     * @return {@code true} when the virtual entity is hidden
+     */
+    public boolean isHidden() {
+        return this.isHidden;
+    }
+
+    /**
+     * Returns {@code true} when the virtual entity is accepted.
+     * @return {@code true} when the virtual entity is accepted
+     */
+    public boolean isAccepted() {
+        return this.isAccepted;
+    }
+
+    /**
+     * Returns {@code true} when the virtual entity is permitted.
+     * @return {@code true} when the virtual entity is permitted
+     */
+    public boolean isPermitted() {
+        return this.isPermitted;
+    }
 
     @Override
     public MetaProperties clone() {

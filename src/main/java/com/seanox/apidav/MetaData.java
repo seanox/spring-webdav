@@ -33,7 +33,7 @@ import java.util.Date;
  * <br>
  * MetaData 1.0.0 20210717<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
- * Alle Rechte vorbehalten.
+ * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210717
