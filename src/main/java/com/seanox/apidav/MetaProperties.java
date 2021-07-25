@@ -31,7 +31,8 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * MetaProperties readonly collector as an alternative to single attributes.
+ * MetaProperties, read-only collector with all attributes of the virtual
+ * entity.
  *
  * MetaProperties 1.0.0 20210715
  * Copyright (C) 2021 Seanox Software Solutions

@@ -21,6 +21,16 @@
  */
 package com.seanox.apidav;
 
+/**
+ * TODO:
+ *
+ * AnnotationException 1.0.0 20210707
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210707
+ */
 class AnnotationException extends Exception {
 
     private static final long serialVersionUID = -8434311329163778177L;

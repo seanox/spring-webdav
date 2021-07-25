@@ -30,14 +30,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-// MetaInputStream can be limited with contentLengthMax.
-// If the value of contentLengthMax greater than or equal to 0,
-// only the so defined amount of data can be read from the data stream.
-// Overwriting it will cause MetaInputStreamLimitException.
-// Another special feature is the handling of an IOException that occur when reading in limited mode.
-// An IOException is the permanent one, because it is not known how many bytes could be read, which can distort the limit.
-// Without limiting, the data stream behaves normally.
-
+/**
+ * MetaInpoutStream is an {@link InputStream} with read-only meta information.<br>
+ * <br>
+ * MetaInputStream can be limited with {@code ContentLengthMax}.
+ * If the value of {@code ContentLengthMax} greater than or equal to {@code 0},
+ * only the so defined amount of data can be read from the data stream.
+ * Overwriting it will cause {@link MetaInputStreamLimitException}.<br>
+ * <br>
+ * Another special feature is the handling of an {@link IOException} that occur
+ * when reading in limited mode. An {@link IOException} is the permanent one,
+ * because it is not known how many bytes could be read, which can distort the
+ * limit. Without limiting, the data stream behaves normally.
+ *
+ * MetaInputStream 1.0.0 20210720
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210720
+ */
 @Builder(access=AccessLevel.PACKAGE)
 public class MetaInputStream extends InputStream {
 

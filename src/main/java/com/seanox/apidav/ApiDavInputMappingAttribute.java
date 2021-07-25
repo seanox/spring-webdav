@@ -21,6 +21,16 @@
  */
 package com.seanox.apidav;
 
+/**
+ * TODO:
+ *
+ * ApiDavInputMappingAttribute 1.0.0 20210715
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210715
+ */
 public enum ApiDavInputMappingAttribute {
 
     Accept(Annotation.Attribute.AttributeType.Accept),
