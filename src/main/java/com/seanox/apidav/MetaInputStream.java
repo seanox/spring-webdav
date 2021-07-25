@@ -41,10 +41,10 @@ import java.util.Objects;
  * Another special feature is the handling of an {@link IOException} that occur
  * when reading in limited mode. An {@link IOException} is the permanent one,
  * because it is not known how many bytes could be read, which can distort the
- * limit. Without limiting, the data stream behaves normally.
- *
- * MetaInputStream 1.0.0 20210720
- * Copyright (C) 2021 Seanox Software Solutions
+ * limit. Without limiting, the data stream behaves normally.<br>
+ * <br>
+ * MetaInputStream 1.0.0 20210720<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions

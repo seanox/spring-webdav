@@ -35,10 +35,10 @@ import java.util.Objects;
  * MetaOutputStream is an {@link OutputStream} with meta information for the
  * response header. The meta information is already pre-filled with the data
  * determined by the framework and can be changed until the first byte is
- * written to the data output stream.
- *
- * MetaOutputStream 1.0.0 20210720
- * Copyright (C) 2021 Seanox Software Solutions
+ * written to the data output stream.<br>
+ * <br>
+ * MetaOutputStream 1.0.0 20210720<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions

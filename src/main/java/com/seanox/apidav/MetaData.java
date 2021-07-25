@@ -29,10 +29,10 @@ import java.util.Date;
 
 /**
  * MetaData, a writable collector containing all relevant attributes for a
- * virtual entity.
- *
- * MetaData 1.0.0 20210717
- * Copyright (C) 2021 Seanox Software Solutions
+ * virtual entity.<br>
+ * <br>
+ * MetaData 1.0.0 20210717<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * Alle Rechte vorbehalten.
  *
  * @author  Seanox Software Solutions
