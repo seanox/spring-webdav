@@ -10,9 +10,9 @@
   </parent>
 
   <groupId>com.seanox</groupId>
-  <artifactId>apiDAV</artifactId>
+  <artifactId>seanox-apidav</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>apiDAV</name>
+  <name>apidav</name>
   <description>
     API-WebDAV mapping for Spring Boot
     Use an API like a network drive, open files, edit and save them.
@@ -24,9 +24,25 @@
     <url>https://github.com/seanox/apiDAV</url>
   </scm>
 
+  <developers>
+    <developer>
+      <id>seanox</id>
+      <name>Seanox Software Solutions</name>
+      <email>service@seanox.com</email>
+    </developer>
+  </developers>
+
   <properties>
     <java.version>11</java.version>
     <encoding>UTF-8</encoding>
+    <sonatype.nexus.staging.version>1.6.8</sonatype.nexus.staging.version>
+    <maven.release.version>2.5.3</maven.release.version>
+    <maven.compiler.version>3.8.1</maven.compiler.version>
+    <maven.source.version>3.0.1</maven.source.version>
+    <maven.javadoc.version>3.0.1</maven.javadoc.version>
+    <maven.jar.version>3.2.0</maven.jar.version>
+    <maven.deploy.version>2.8.2</maven.deploy.version>
+    <maven.gpg.version>1.6</maven.gpg.version>
   </properties>
   
   <dependencies>
@@ -58,32 +74,22 @@
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven.deploy.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <target>${java.version}</target>
-          <source>${java.version}</source>
-          <encoding>${encoding}</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      <!-- demo only -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
-        <!--TODO: Gug - Here two Java processes are started, but only one can be terminated :-( -->
+        <!--TODO: Bug - Here two Java processes are started, but only one can be terminated :-( -->
         <configuration>
           <executable>mvn</executable>
           <arguments>
@@ -96,6 +102,7 @@
           </arguments>
         </configuration>
       </plugin>
+
       <!-- test only -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -104,6 +111,7 @@
           <forkCount>0</forkCount>
         </configuration>
       </plugin>
+
       <!-- reporting only -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -125,8 +133,106 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.14.0</version>
       </plugin>
+
+      <!-- build / release / deliver -->
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven.release.version}</version>
+        <configuration>
+          <useReleaseProfile>false</useReleaseProfile>
+          <releaseProfiles>release</releaseProfiles>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.version}</version>
+        <configuration>
+          <target>${java.version}</target>
+          <source>${java.version}</source>
+          <encoding>${encoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven.source.version}</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.version}</version>
+        <configuration>
+          <source>${java.version}</source>
+          <doclint>none</doclint>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>${maven.gpg.version}</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>${sonatype.nexus.staging.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
   <reporting>
     <plugins>
