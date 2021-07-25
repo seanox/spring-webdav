@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -30,6 +30,16 @@ import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test of the expressions.
+ *
+ * ExpressionTest 1.0.0 20210723<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
+ * All rights reserved.
+ *
+ * @author  Seanox Software Solutions
+ * @version 1.0.0 20210723
+ */
 public class ExpressionTest extends AbstractApiTest {
 
     // Exceptions/syntax errors in the expressions have no effect for the mapping.
