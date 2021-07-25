@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
- * Test the function of the Accept attribute for
+ * Test the function of the accept attribute for
  * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
  * <br>
  * AcceptTest 1.0.0 20210715<br>
