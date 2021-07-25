@@ -30,40 +30,68 @@ import java.lang.annotation.Target;
 /**
  * ApiDavMetaMapping annotates a method for getting the meta data for a virtual
  * entity. The method has no fixed signature and the data types of the
- * arguments are considered as placeholders and filled accordingly.<br>
+ * arguments are considered as placeholders and filled accordingly. If
+ * arguments with the same data type are used multiple times, they are filled
+ * with the same object multiple times. Unknown data types are filled with
+ * {@code null}.<br>
  * <br>
- * The following data types are supported:
- * <ul>
- *   <li>URI: Path of the virtual entity.</li>
- *   <li>
- *     Properties: Collector with relevant runtime, request and meta
- *     information as a nested map. The keys in the map are case insensitive.
- *   </li>
- *   </li>
- *     MetaData: Writable collector containing all relevant attributes for a
- *     virtual entity.
- *   </li>
- * </ul>
- * Expected return value: void<br>
+ * <table>
+ *   <tr>
+ *     <th>Data Type</th>
+ *     <th>Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>URI</td>
+ *     <td>Path of the virtual entity.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Properties</td>
+ *     <td>
+ *       Properties: Collector with relevant runtime, request and meta
+ *       information as a nested map. The keys in the map are case insensitive.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>MetaData</td>
+ *     <td>
+ *       Writable collector containing all relevant attributes for a virtual
+ *       entity.
+ *     </td>
+ *   </tr>
+ * </table>
  * <br>
- * Examples of implementation:<br>
+ * Expected return value: {@code void}<br>
+ * <br>
+ * <b>Usage:</b><br>
+ * <br>
+ * The annotation can be used multiple times for different virtual entities in
+ * one method.<br>
+ * <br>
  * <pre>
- *   @ApiDavMetaMapping(path="/example/file.txt")
- *   void testA5(final MetaData meta) {
+ *   &#64;ApiDavMetaMapping(path="/example/file.xls")
+ *   void setMetaData(final MetaData meta) {
+ *       meta.set...
  *       ...
  *   }
- * </pre>
- * <pre>
- *   @ApiDavMetaMapping(path="/example/file.txt")
- *   void testA5(final URI uri, final Properties properties, final MetaData meta) {
- *       ...
- *   }
- * </pre>
- * A method can be used multiple times with this annotation for different
- * virtual entities.
  *
- * ApiDavMetaMapping 1.0.0 20210703
- * Copyright (C) 2021 Seanox Software Solutions
+ *   &#64;ApiDavMetaMapping(path="/example/file.xls")
+ *   void setMetaData(final URI uri, final Properties properties, final MetaData meta) {
+ *       meta.set...
+ *       ...
+ *   }
+ *
+ *   &#64;ApiDavMetaMapping(path="/example/fileA.xls")
+ *   &#64;ApiDavMetaMapping(path="/example/fileB.xls")
+ *   &#64;ApiDavMetaMapping(path="/example/fileC.xls")
+ *   void setMetaData(final MetaData meta) {
+ *       meta.set...
+ *       ...
+ *   }
+ *
+ *   ...
+ * </pre>
+ * ApiDavMetaMapping 1.0.0 20210703<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
