@@ -29,11 +29,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * Writer for the output of XML data.
- *
- * XmlWriter 1.1.0 20210708
- * Copyright (C) 2021 Seanox Software Solutions
- * Alle Rechte vorbehalten.
+ * Writer for the output of XML data.<br>
+ * <br>
+ * XmlWriter 1.1.0 20210708<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
+ * All rights reserved.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20210708

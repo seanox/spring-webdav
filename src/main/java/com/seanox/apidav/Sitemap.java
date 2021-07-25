@@ -49,18 +49,18 @@ import java.util.TreeMap;
 /**
  * Sitemap for mapping a virtual file system.<br>
  * <br>
- * Rules (similar error behavior as mapping from RestController):
+ * Rules (similar error behavior as mapping from RestController):<br>
  * <ul>
  *   <li>Ambiguous mapping causes SitemapException</li>
  *   <li>Path must be unique (case insensitive), otherwise SitemapException</li>
  *   <li>Path must start with slash, otherwise SitemapException</li>
  *   <li>Not permitted (unauthorized) entries are not included in the sitemap</li>
  *   <li>Not permitted (unauthorized) entries are used as non-existent as 404</li>
- *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden/li>
+ *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
- *
- * Sitemap 1.0.0 20210724
- * Copyright (C) 2021 Seanox Software Solutions
+ * <br>
+ * Sitemap 1.0.0 20210724<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions

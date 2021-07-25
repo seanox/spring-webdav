@@ -25,10 +25,10 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 
 /**
  * Case-insensitive properties based on a {@link java.util.Map} /
- * {@link LinkedCaseInsensitiveMap}.
- *
- * Properties 1.0.0 20210716
- * Copyright (C) 2021 Seanox Software Solutions
+ * {@link LinkedCaseInsensitiveMap}.<br>
+ * <br>
+ * Properties 1.0.0 20210716<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions

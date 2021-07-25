@@ -22,10 +22,10 @@
 package com.seanox.apidav;
 
 /**
- * SitemapException
- *
- * SitemapException 1.0.0 20210627
- * Copyright (C) 2021 Seanox Software Solutions
+ * SitemapException<br>
+ * <br>
+ * SitemapException 1.0.0 20210627<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
