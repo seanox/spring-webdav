@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -37,10 +37,16 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * TODO:
- *
- * Annotation 1.0.0 20210723
- * Copyright (C) 2021 Seanox Software Solutions
+ * Annotation is the base class for handling the annotations. There are two
+ * worlds here, the public one where deliberately fine-tuned ApiDav annotations
+ * are used and there is the internal world where logic-optimized annotations
+ * and meta-objects are used. The decoupling made sense because the ApiDav
+ * prefix would be too present and more information, functions and abstraction
+ * can be provided for the internal world, which would rather confuse the
+ * public world.<br>
+ * <br>
+ * Annotation 1.0.0 20210723<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
