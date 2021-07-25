@@ -34,12 +34,12 @@ import java.util.Date;
  * Test the function of the ContentLengthMaxTest attribute for
  * {@link WebDavInputMapping}.<br>
  * <br>
- * ContentLengthMaxTestController 1.0.0 20210718<br>
+ * ContentLengthMaxTestController 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210725
  */
 @Component
 public class ContentLengthMaxTestController {
@@ -50,7 +50,7 @@ public class ContentLengthMaxTestController {
 
     public static final String MAPPING_A1 = "/extras/contentLengthMax/a1.txt";
     private byte[] a1 = new byte[0];
-    @WebDavMapping(path=MAPPING_A1, isReadOnly=false)
+    @WebDavMapping(path=MAPPING_A1, readOnly=false)
     void test_A1(final MetaOutputStream outputStream) throws IOException {
         outputStream.setLastModified(new Date());
         outputStream.write(String.valueOf(this.a1.length).getBytes());
@@ -62,7 +62,7 @@ public class ContentLengthMaxTestController {
 
     public static final String MAPPING_A2 = "/extras/contentLengthMax/a2.txt";
     private byte[] a2 = new byte[0];
-    @WebDavMapping(path=MAPPING_A2, isReadOnly=false)
+    @WebDavMapping(path=MAPPING_A2, readOnly=false)
     void test_A2(final MetaOutputStream outputStream) throws IOException {
         outputStream.setLastModified(new Date());
         outputStream.write(String.valueOf(this.a2.length).getBytes());
@@ -74,7 +74,7 @@ public class ContentLengthMaxTestController {
 
     public static final String MAPPING_A3 = "/extras/contentLengthMax/a3.txt";
     private byte[] a3 = new byte[0];
-    @WebDavMapping(path=MAPPING_A3, isReadOnly=false)
+    @WebDavMapping(path=MAPPING_A3, readOnly=false)
     void test_A3(final MetaOutputStream outputStream) throws IOException {
         outputStream.setLastModified(new Date());
         outputStream.write(String.valueOf(this.a3.length).getBytes());
@@ -86,7 +86,7 @@ public class ContentLengthMaxTestController {
 
     public static final String MAPPING_A4 = "/extras/contentLengthMax/a4.txt";
     private byte[] a4 = new byte[0];
-    @WebDavMapping(path=MAPPING_A4, isReadOnly=false)
+    @WebDavMapping(path=MAPPING_A4, readOnly=false)
     void test_A4(final MetaOutputStream outputStream) throws IOException {
         outputStream.setLastModified(new Date());
         outputStream.write(String.valueOf(this.a4.length).getBytes());
@@ -98,7 +98,7 @@ public class ContentLengthMaxTestController {
 
     public static final String MAPPING_A5 = "/extras/contentLengthMax/a5.txt";
     private byte[] a5 = new byte[0];
-    @WebDavMapping(path=MAPPING_A5, isReadOnly=false)
+    @WebDavMapping(path=MAPPING_A5, readOnly=false)
     void test_A5(final MetaOutputStream outputStream) throws IOException {
         outputStream.setLastModified(new Date());
         outputStream.write(String.valueOf(this.a5.length).getBytes());

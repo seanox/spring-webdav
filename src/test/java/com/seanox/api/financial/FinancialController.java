@@ -44,12 +44,12 @@ import java.util.Date;
  *     e.g. @Component, @Service, @RestController, ...<br>
  * The methods and annotations for webDAV combine well with @RestController.<br>
  * <br>
- * FinancialController 1.0.0 20210719<br>
+ * FinancialController 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210725
  */
 @RequiredArgsConstructor
 @RestController
@@ -78,7 +78,7 @@ class FinancialController {
     // In many cases this can be derived from the file name from the mapping.
 
     private static final String FINANCIAL_COSTS_XLSX ="/financial/costs.xlsx";
-    @WebDavMapping(path=FINANCIAL_COSTS_XLSX, isReadOnly=false)
+    @WebDavMapping(path=FINANCIAL_COSTS_XLSX, readOnly=false)
     void getFinancialCosts(final MetaOutputStream output) throws IOException {
         final FinancialCosts financialCosts = this.financialService.readFinancialCosts();
         output.write(financialCosts.getData());
@@ -103,7 +103,7 @@ class FinancialController {
 
 
     private static final String FINANCIAL_REPORTS_STATISTIC_PPTX="/financial/reports/statistic.pptx";
-    @WebDavMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, isReadOnly=false)
+    @WebDavMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, readOnly=false)
     void getFinancialReportStatistic(final MetaOutputStream output) throws IOException  {
         final FinancialReportStatistic financialReportStatistic = this.financialService.readFinancialReportStatistic();
         output.write(financialReportStatistic.getData());

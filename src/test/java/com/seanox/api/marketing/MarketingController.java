@@ -43,12 +43,12 @@ import java.util.Date;
  *     e.g. @Component, @Service, @RestController, ...<br>
  * The methods and annotations for webDAV combine well with @RestController.<br>
  * <br>
- * MarketingController 1.0.0 20210719<br>
+ * MarketingController 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210725
  */
 @RequiredArgsConstructor
 @RestController
@@ -57,7 +57,7 @@ class MarketingController {
     private final MarketingService marketingService;
 
     private static final String MARKETING_NEWSLETTER_DOTX="/marketing/newsletter.docx";
-    @WebDavMapping(path=MARKETING_NEWSLETTER_DOTX, isReadOnly=false)
+    @WebDavMapping(path=MARKETING_NEWSLETTER_DOTX, readOnly=false)
     void getMarketingNewsletter(final MetaOutputStream output) throws IOException {
         final MarketingNewsletter marketingNewsletter = this.marketingService.readMarketingNewsletter();
         output.write(marketingNewsletter.getData());
@@ -78,7 +78,7 @@ class MarketingController {
     }
 
     private static final String MARKETING_FLYER_PPTX="/marketing/flyer.pptx";
-    @WebDavMapping(path=MARKETING_FLYER_PPTX, isReadOnly=false)
+    @WebDavMapping(path=MARKETING_FLYER_PPTX, readOnly=false)
     void getMarketingFlyer(final MetaOutputStream output) throws IOException {
         final MarketingFlyer marketingFlyer = this.marketingService.readMarketingFlyer();
         output.write(marketingFlyer.getData());

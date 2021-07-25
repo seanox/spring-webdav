@@ -40,12 +40,12 @@ import java.net.URI;
 /**
  * Test the function of the method signatures.<br>
  * <br>
- * SignaturesTestController 1.0.0 20210720<br>
+ * SignaturesTestController 1.0.0 20210725<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210725
  */
 @Component
 public class SignaturesTestController {
@@ -104,10 +104,10 @@ public class SignaturesTestController {
 
     private String resultB;
 
-    @WebDavMapping(path=MAPPING_B1, isReadOnly=false)
-    @WebDavMapping(path=MAPPING_B2, isReadOnly=false)
-    @WebDavMapping(path=MAPPING_B3, isReadOnly=false)
-    @WebDavMapping(path=MAPPING_B4, isReadOnly=false)
+    @WebDavMapping(path=MAPPING_B1, readOnly=false)
+    @WebDavMapping(path=MAPPING_B2, readOnly=false)
+    @WebDavMapping(path=MAPPING_B3, readOnly=false)
+    @WebDavMapping(path=MAPPING_B4, readOnly=false)
     void test_BX(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultB.getBytes());
     }
