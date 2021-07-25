@@ -30,7 +30,7 @@ import com.seanox.apidav.MetaData;
 import org.springframework.stereotype.Component;
 
 /**
- * Test the function of the Permitted attribute.
+ * Test the function of the permitted attribute.
  * {@link com.seanox.apidav.ApiDavMapping} and
  * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
  * <br>
