@@ -34,7 +34,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * Test the function of the CreationDate attribute
+ * Test the function of the CreationDate attribute for
  * {@link com.seanox.apidav.ApiDavMapping}.<br>
  * <br>
  * CreationDateTestController 1.0.0 20210721<br>

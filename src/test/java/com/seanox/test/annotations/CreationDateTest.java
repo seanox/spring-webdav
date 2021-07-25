@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 
 /**
- * Test the function of the CreationDate attribute
+ * Test the function of the CreationDate attribute for
  * {@link com.seanox.apidav.ApiDavMapping}.<br>
  * <br>
  * CreationDateTest 1.0.0 20210721<br>

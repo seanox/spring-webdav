@@ -31,7 +31,7 @@ import com.seanox.apidav.MetaOutputStream;
 import org.springframework.stereotype.Component;
 
 /**
- * Test the function of the ContentType attribute
+ * Test the function of the ContentType attribute for
  * {@link com.seanox.apidav.ApiDavMapping}.<br>
  * <br>
  * ContentTypeTestController 1.0.0 20210720<br>

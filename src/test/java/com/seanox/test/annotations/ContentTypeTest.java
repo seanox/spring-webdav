@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test the function of the ContentType attribute
+ * Test the function of the ContentType attribute for
  * {@link com.seanox.apidav.ApiDavMapping}.<br>
  * <br>
  * ContentTypeTest 1.0.0 20210721<br>
