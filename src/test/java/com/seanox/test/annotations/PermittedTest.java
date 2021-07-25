@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test the function of the Permitted attribute.
+ * Test the function of the permitted attribute.
  * {@link com.seanox.apidav.ApiDavMapping} and
  * {@link com.seanox.apidav.ApiDavInputMapping}.<br>
  * <br>

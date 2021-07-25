@@ -3,7 +3,7 @@
  * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der GNU General Public License.
  *
- * apiDAV, API-WebDAV mapping for Spring Boot
+ * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -38,8 +38,9 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 
 /**
- * Test the function of the Hidden attribute.
- *
+ * Test the function of the hidden attribute for
+ * {@link com.seanox.apidav.ApiDavMapping}.<br>
+ * <br>
  * The directory structure shows only substructures with visible content.
  * If a directory has no visible content, this structure is not displayed.
  * However, the paths to the data exist.
@@ -53,8 +54,8 @@ import java.net.URI;
  * - /extras/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
  * - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
  *
- * HiddenTest 1.0.0 20210724
- * Copyright (C) 2021 Seanox Software Solutions
+ * HiddenTest 1.0.0 20210724<br>
+ * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
