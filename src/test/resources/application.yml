@@ -10,3 +10,5 @@ spring:
   devtools:
     restart:
       enabled: false
+  profiles:
+    active: test

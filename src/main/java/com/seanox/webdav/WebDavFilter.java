@@ -75,12 +75,12 @@ import java.util.stream.IntStream;
  *   TODO:
  * </ul>
  * <br>
- * WebDavFilter 1.0.0 20210725<br>
+ * WebDavFilter 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
 public class WebDavFilter extends HttpFilter {
 
@@ -282,9 +282,11 @@ public class WebDavFilter extends HttpFilter {
                 }
 
             LOGGER.info(this.getClass().getSimpleName() + " was established");
-            LOGGER.info("Sitemap");
-            LOGGER.info("---");
-            Arrays.stream(this.sitemap.toString().split("\\R")).forEach(LOGGER::info);
+            if (this.sitemap.toString().length() > 0) {
+                LOGGER.info("Sitemap");
+                LOGGER.info("---");
+                Arrays.stream(this.sitemap.toString().split("\\R")).forEach(LOGGER::info);
+            } else LOGGER.warn("Sitemap is empty");
 
         } catch (Exception exception) {
             throw new ServletException(exception);
