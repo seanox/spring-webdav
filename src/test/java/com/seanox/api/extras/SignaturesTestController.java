@@ -32,6 +32,7 @@ import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.MetaProperties;
 import com.seanox.webdav.Properties;
 import com.seanox.test.AbstractTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -40,13 +41,14 @@ import java.net.URI;
 /**
  * Test the function of the method signatures.<br>
  * <br>
- * SignaturesTestController 1.0.0 20210725<br>
+ * SignaturesTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class SignaturesTestController {
 

@@ -29,6 +29,7 @@ import com.seanox.webdav.WebDavMetaMapping;
 import com.seanox.webdav.DateTimeAdapter;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.MetaOutputStream;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -38,13 +39,14 @@ import java.util.Date;
  * Test the function of the LastModified attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * LastModifiedTestController 1.0.0 20210721<br>
+ * LastModifiedTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210721
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class LastModifiedTestController {
 

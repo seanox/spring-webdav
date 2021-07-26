@@ -28,19 +28,21 @@ import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.webdav.WebDavMetaMapping;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.MetaOutputStream;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
  * Test the function of the ContentType attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * ContentTypeTestController 1.0.0 20210720<br>
+ * ContentTypeTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class ContentTypeTestController {
 

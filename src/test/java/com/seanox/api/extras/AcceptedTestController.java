@@ -28,6 +28,7 @@ import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.webdav.WebDavMetaMapping;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.WebDavInputMapping;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -35,13 +36,14 @@ import org.springframework.stereotype.Component;
  * {@link WebDavMapping} and
  * {@link WebDavInputMapping}.<br>
  * <br>
- * AcceptedTestController 1.0.0 20210725<br>
+ * AcceptedTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class AcceptedTestController {
 

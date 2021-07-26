@@ -23,6 +23,7 @@ package com.seanox.api.extras;
 
 import com.seanox.webdav.WebDavInputMapping;
 import com.seanox.webdav.WebDavMapping;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,13 +31,14 @@ import org.springframework.stereotype.Component;
  * {@link WebDavMapping} and
  * {@link WebDavInputMapping}.<br>
  * <br>
- * ReadOnlyTestController 1.0.0 20210724<br>
+ * ReadOnlyTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210724
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class ReadOnlyTestController {
 

@@ -31,6 +31,7 @@ import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.MetaInputStream;
 import com.seanox.webdav.MetaOutputStream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -44,13 +45,14 @@ import java.util.Date;
  *     e.g. @Component, @Service, @RestController, ...<br>
  * The methods and annotations for webDAV combine well with @RestController.<br>
  * <br>
- * FinancialController 1.0.0 20210725<br>
+ * FinancialController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
+@Profile({"test", "demo"})
 @RequiredArgsConstructor
 @RestController
 class FinancialController {
@@ -65,14 +67,22 @@ class FinancialController {
     // The method signatures can be composed as follows, the order of the
     // arguments is unimportant, all arguments are optional and further
     // arguments can be used and are filled with null:
+    //
     //     GET-Method Callback:
-    // Return: void, Arguments: Properties, MetaOutputStream
+    // Return: void
+    // Arguments: URI, Properties, MetaProperties, MetaOutputStream
+    //
     //     PUT-Method Callback:
-    // Return: void, Arguments: Properties, MetaInputStream
+    // Return: void
+    // Arguments: URI, Properties, MetaProperties, MetaInputStream
+    //
     //     Meta-Method Callback:
-    // Return: Meta, Arguments: Properties
+    // Return: void
+    // Arguments: URI, Properties, MetaData
+    //
     //     Attribute Callback:
-    // Return: Object, Arguments: Properties
+    // Return: Object
+    // Arguments: URI, Properties
 
     // The declaration of the ContentType is optional.
     // In many cases this can be derived from the file name from the mapping.

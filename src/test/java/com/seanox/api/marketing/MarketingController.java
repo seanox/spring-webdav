@@ -30,6 +30,7 @@ import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.MetaInputStream;
 import com.seanox.webdav.MetaOutputStream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -43,13 +44,14 @@ import java.util.Date;
  *     e.g. @Component, @Service, @RestController, ...<br>
  * The methods and annotations for webDAV combine well with @RestController.<br>
  * <br>
- * MarketingController 1.0.0 20210725<br>
+ * MarketingController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
+@Profile({"test", "demo"})
 @RequiredArgsConstructor
 @RestController
 class MarketingController {

@@ -23,6 +23,7 @@ package com.seanox.api.extras;
 
 import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.MetaOutputStream;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -31,13 +32,14 @@ import java.io.IOException;
  * Test the function of the hidden attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * HiddenTestController 1.0.0 20210725<br>
+ * HiddenTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class HiddenTestController {
 

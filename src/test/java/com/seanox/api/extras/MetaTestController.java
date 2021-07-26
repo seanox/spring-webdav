@@ -29,6 +29,7 @@ import com.seanox.webdav.MetaInputStream;
 import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.MetaProperties;
 import com.seanox.webdav.Properties;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -39,13 +40,14 @@ import java.util.Objects;
 /**
  * Test of the annotation {@link WebDavMetaMapping}.<br>
  * <br>
- * MetaTestController 1.0.0 20210719<br>
+ * MetaTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 @SuppressWarnings("boxing")
 public class MetaTestController {
@@ -197,6 +199,7 @@ public class MetaTestController {
     public static final String MAPPING_CA = "/extras/meta/cA.txt";
     public static final String MAPPING_CB = "/extras/meta/cB.txt";
     public static final String MAPPING_CC = "/extras/meta/cC.txt";
+
     @WebDavMapping(path=MAPPING_C1)
     @WebDavMapping(path=MAPPING_C2)
     @WebDavMapping(path=MAPPING_C3)

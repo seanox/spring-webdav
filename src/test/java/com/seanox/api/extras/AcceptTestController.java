@@ -25,6 +25,7 @@ import com.seanox.webdav.WebDavInputMapping;
 import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.MetaInputStream;
 import com.seanox.webdav.MetaOutputStream;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -34,13 +35,14 @@ import java.util.Date;
  * Test the function of the accept attribute for
  * {@link WebDavInputMapping}.<br>
  * <br>
- * AcceptTestController 1.0.0 20210725<br>
+ * AcceptTestController 1.0.0 20210726<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210726
  */
+@Profile("test")
 @Component
 public class AcceptTestController {
 
