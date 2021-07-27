@@ -92,58 +92,58 @@ public class ContentLengthTestController {
     public static final String MAPPING_BI = "/extras/contentLength/bI.txt";
 
     @WebDavMapping(path=MAPPING_B1, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(110)")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(110)")
     })
     @WebDavMapping(path=MAPPING_B2, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(120).intValue()")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(120).intValue()")
     })
     @WebDavMapping(path=MAPPING_B3, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="'130'")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="'130'")
     })
     @WebDavMapping(path=MAPPING_B4, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="'-140'")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="'-140'")
     })
     @WebDavMapping(path=MAPPING_B5, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="'wrong text value'")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="'wrong text value'")
     })
     @WebDavMapping(path=MAPPING_B6, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="null")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="null")
     })
     @WebDavMapping(path=MAPPING_B7, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(0)")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(0)")
     })
     @WebDavMapping(path=MAPPING_B8, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(-1)")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(-1)")
     })
     @WebDavMapping(path=MAPPING_B9, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(-100)")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="T(java.lang.Integer).valueOf(-100)")
     })
     @WebDavMapping(path=MAPPING_BA, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="")
     })
     @WebDavMapping(path=MAPPING_BB, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="''")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="''")
     })
     @WebDavMapping(path=MAPPING_BC, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="' '")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="' '")
     })
     @WebDavMapping(path=MAPPING_BD, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="expression exception")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="expression exception")
     })
     @WebDavMapping(path=MAPPING_BE, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="-10")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="-10")
     })
     @WebDavMapping(path=MAPPING_BF, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="-1")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="-1")
     })
     @WebDavMapping(path=MAPPING_BG, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="0")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="0")
     })
     @WebDavMapping(path=MAPPING_BH, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="1")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="1")
     })
     @WebDavMapping(path=MAPPING_BI, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="10")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="10")
     })
     void test_BX() {
     }
@@ -183,63 +183,63 @@ public class ContentLengthTestController {
     @WebDavMapping(path=MAPPING_CF)
     void test_CX() {
     }
-    @WebDavAttributeMapping(path=MAPPING_C1, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C1, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_C1() {
         return 110;
     }
-    @WebDavAttributeMapping(path=MAPPING_C2, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C2, attribute=WebDavMappingAttribute.ContentLength)
     int test_C2() {
         return 120;
     }
-    @WebDavAttributeMapping(path=MAPPING_C3, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C3, attribute=WebDavMappingAttribute.ContentLength)
     String test_C3() {
         return "130";
     }
-    @WebDavAttributeMapping(path=MAPPING_C4, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C4, attribute=WebDavMappingAttribute.ContentLength)
     String test_C4() {
         return "-140";
     }
-    @WebDavAttributeMapping(path=MAPPING_C5, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C5, attribute=WebDavMappingAttribute.ContentLength)
     String test_C5() {
         return "wrong text value";
     }
-    @WebDavAttributeMapping(path=MAPPING_C6, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C6, attribute=WebDavMappingAttribute.ContentLength)
     Object test_C6() {
         return 160;
     }
-    @WebDavAttributeMapping(path=MAPPING_C7, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C7, attribute=WebDavMappingAttribute.ContentLength)
     Object test_C7() {
         return "170";
     }
-    @WebDavAttributeMapping(path=MAPPING_C8, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C8, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_C8() {
         return null;
     }
-    @WebDavAttributeMapping(path=MAPPING_C9, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_C9, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_C9() {
         return 0;
     }
-    @WebDavAttributeMapping(path=MAPPING_CA, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_CA, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_CA() {
         return -1;
     }
-    @WebDavAttributeMapping(path=MAPPING_CB, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_CB, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_CB() {
         return -100;
     }
-    @WebDavAttributeMapping(path=MAPPING_CC, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_CC, attribute=WebDavMappingAttribute.ContentLength)
     Exception test_CC() {
         return new Exception("Test CC");
     }
-    @WebDavAttributeMapping(path=MAPPING_CD, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_CD, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_CD() {
         throw new RuntimeException("Test CD");
     }
-    @WebDavAttributeMapping(path=MAPPING_CE, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_CE, attribute=WebDavMappingAttribute.ContentLength)
     String test_CE() {
         return "";
     }
-    @WebDavAttributeMapping(path=MAPPING_CF, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_CF, attribute=WebDavMappingAttribute.ContentLength)
     String test_CF() {
         return " ";
     }
@@ -255,7 +255,7 @@ public class ContentLengthTestController {
     public static final String MAPPING_D6 = "/extras/contentLength/d6.txt";
 
     @WebDavMapping(path=MAPPING_D1, contentLength=5, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="6")
     })
     void test_D1X(final MetaOutputStream outputStream) {
         outputStream.setContentLength(9);
@@ -264,13 +264,13 @@ public class ContentLengthTestController {
     void test_D1(final MetaData metaData) {
         metaData.setContentLength(7);
     }
-    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_D1() {
         return 8;
     }
 
     @WebDavMapping(path=MAPPING_D2, contentLength=5, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="6")
     })
     void test_D2X() {
     }
@@ -278,13 +278,13 @@ public class ContentLengthTestController {
     void test_D2(final MetaData metaData) {
         metaData.setContentLength(7);
     }
-    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute=WebDavMappingAttribute.ContentLength)
     Integer test_D2() {
         return 8;
     }
 
     @WebDavMapping(path=MAPPING_D3, contentLength=5, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="6")
     })
     void test_D3X() {
     }
@@ -294,7 +294,7 @@ public class ContentLengthTestController {
     }
 
     @WebDavMapping(path=MAPPING_D4, contentLength=5, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentLength, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="6")
     })
     void test_D4X() {
     }

@@ -91,67 +91,67 @@ public class CreationDateTestController {
     @WebDavMapping(path=MAPPING_CG)
     void test_CX() {
     }
-    @WebDavAttributeMapping(path=MAPPING_C1, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C1, attribute=WebDavMappingAttribute.CreationDate)
     String test_C1() {
         return null;
     }
-    @WebDavAttributeMapping(path=MAPPING_C2, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C2, attribute=WebDavMappingAttribute.CreationDate)
     String test_C2() {
         return "";
     }
-    @WebDavAttributeMapping(path=MAPPING_C3, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C3, attribute=WebDavMappingAttribute.CreationDate)
     String test_C3() {
         return " ";
     }
-    @WebDavAttributeMapping(path=MAPPING_C4, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C4, attribute=WebDavMappingAttribute.CreationDate)
     String test_C4() {
         return "1987-06-07 01:02:03";
     }
-    @WebDavAttributeMapping(path=MAPPING_C5, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C5, attribute=WebDavMappingAttribute.CreationDate)
     String test_C5() {
         return "2987-06-07 01:02:03";
     }
-    @WebDavAttributeMapping(path=MAPPING_C6, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C6, attribute=WebDavMappingAttribute.CreationDate)
     String test_C6() {
         return "2987-06-07 01:02";
     }
-    @WebDavAttributeMapping(path=MAPPING_C7, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C7, attribute=WebDavMappingAttribute.CreationDate)
     String test_C7() {
         return "2987-06-07";
     }
-    @WebDavAttributeMapping(path=MAPPING_C8, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C8, attribute=WebDavMappingAttribute.CreationDate)
     String test_C8() {
         return "xxx2987-06-07";
     }
-    @WebDavAttributeMapping(path=MAPPING_C9, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_C9, attribute=WebDavMappingAttribute.CreationDate)
     Date test_C9() {
         return null;
     }
-    @WebDavAttributeMapping(path=MAPPING_CA, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CA, attribute=WebDavMappingAttribute.CreationDate)
     Date test_CA() throws ParseException {
         return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @WebDavAttributeMapping(path=MAPPING_CB, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CB, attribute=WebDavMappingAttribute.CreationDate)
     Date test_CB() throws ParseException {
         return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @WebDavAttributeMapping(path=MAPPING_CC, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CC, attribute=WebDavMappingAttribute.CreationDate)
     Object test_CC() throws ParseException {
         return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @WebDavAttributeMapping(path=MAPPING_CD, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CD, attribute=WebDavMappingAttribute.CreationDate)
     Object test_CD() throws ParseException {
         return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @WebDavAttributeMapping(path=MAPPING_CE, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CE, attribute=WebDavMappingAttribute.CreationDate)
     Object test_CE() throws ParseException {
         return DateTimeAdapter.parseDate("1956-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
-    @WebDavAttributeMapping(path=MAPPING_CF, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CF, attribute=WebDavMappingAttribute.CreationDate)
     Exception test_CF() {
         return new Exception("Test C8");
     }
-    @WebDavAttributeMapping(path=MAPPING_CG, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_CG, attribute=WebDavMappingAttribute.CreationDate)
     Date test_CG() {
         throw new RuntimeException("2987-06-07 01:02");
     }
@@ -167,7 +167,7 @@ public class CreationDateTestController {
     public static final String MAPPING_D6 = "/extras/creationDate/d6.txt";
 
     @WebDavMapping(path=MAPPING_D1, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D1X() throws ParseException {
     }
@@ -175,13 +175,13 @@ public class CreationDateTestController {
     void test_D1(final MetaData metaData) throws ParseException {
         metaData.setCreationDate(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
-    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute=WebDavMappingAttribute.CreationDate)
     Date test_D1() throws ParseException {
         return DateTimeAdapter.parseDate("2008-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
 
     @WebDavMapping(path=MAPPING_D2, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D2X() {
     }
@@ -189,13 +189,13 @@ public class CreationDateTestController {
     void test_D2(final MetaData metaData) throws ParseException {
         metaData.setCreationDate(DateTimeAdapter.parseDate("2007-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT));
     }
-    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.CreationDate)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute=WebDavMappingAttribute.CreationDate)
     Date test_D2() throws ParseException {
         return DateTimeAdapter.parseDate("2008-01-01 00:00:00 GMT", DateTimeAdapter.DATETIME_FORMAT);
     }
 
     @WebDavMapping(path=MAPPING_D3, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D3X() {
     }
@@ -205,7 +205,7 @@ public class CreationDateTestController {
     }
 
     @WebDavMapping(path=MAPPING_D4, creationDate="2005-01-01 00:00:00 GMT", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.CreationDate, phrase="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss Z').parse('2006-01-01 00:00:00 GMT')")
     })
     void test_D4X() {
     }

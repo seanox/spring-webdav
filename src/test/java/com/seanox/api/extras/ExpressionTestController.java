@@ -52,22 +52,22 @@ public class ExpressionTestController {
     public static final String MAPPING_A6 = "/extras/expression/a6.txt";
 
     @WebDavMapping(path=MAPPING_A1, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="")
     })
     @WebDavMapping(path=MAPPING_A2, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="a")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="a")
     })
     @WebDavMapping(path=MAPPING_A3, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="1a")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="1a")
     })
     @WebDavMapping(path=MAPPING_A4, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="a1")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="a1")
     })
     @WebDavMapping(path=MAPPING_A5, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="#a1")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="#a1")
     })
     @WebDavMapping(path=MAPPING_A6, attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="#a1(")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="#a1(")
     })
     public void test_AX(MetaOutputStream outputStream) throws IOException {
         outputStream.write(String.valueOf(outputStream.getContentType()).getBytes());

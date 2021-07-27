@@ -201,22 +201,22 @@ public class SignaturesTestController {
     void test_DX(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultD.getBytes());
     }
-    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute=WebDavMappingAttribute.ContentType)
     Object test_D1() {
         this.resultD = "D1";
         return this.resultD;
     }
-    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute=WebDavMappingAttribute.ContentType)
     Object test_D2(final URI uri, final Properties properties, final WebDavMappingAttribute attribute, final Object o1, final Object o2, final Object o3) {
         this.resultD = "D2-" + AbstractTest.createObjectFingerprint(uri, properties, attribute, o1, o2, o3);
         return this.resultD;
     }
-    @WebDavAttributeMapping(path=MAPPING_D3, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D3, attribute=WebDavMappingAttribute.ContentType)
     Object test_D3(final Object o1, final Object o2, final Object o3, final WebDavMappingAttribute attribute, final Properties properties, final URI uri) {
         this.resultD = "D3-" + AbstractTest.createObjectFingerprint(o1, o2, o3, attribute, properties, uri);
         return this.resultD;
     }
-    @WebDavAttributeMapping(path=MAPPING_D4, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D4, attribute=WebDavMappingAttribute.ContentType)
     Object test_D4(final URI uri1, final URI uri2, final Properties properties1, final Properties properties2, final WebDavMappingAttribute attribute1, final WebDavMappingAttribute attribute2,
                    final MetaData o1, final MetaProperties o2, final MetaInputStream o3, final MetaOutputStream o4, final URI uri3, final Properties properties3) {
         this.resultD = "D4-" + AbstractTest.createObjectFingerprint(uri1, uri2, properties1, properties2, attribute1, attribute2, o1, o2, o3, o4, uri3, properties3);

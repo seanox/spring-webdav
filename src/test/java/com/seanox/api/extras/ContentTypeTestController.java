@@ -74,39 +74,39 @@ public class ContentTypeTestController {
     @WebDavMapping(path=MAPPING_C9)
     void test_CX() {
     }
-    @WebDavAttributeMapping(path=MAPPING_C1, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C1, attribute=WebDavMappingAttribute.ContentType)
     String test_C1() {
         return null;
     }
-    @WebDavAttributeMapping(path=MAPPING_C2, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C2, attribute=WebDavMappingAttribute.ContentType)
     String test_C2() {
         return "";
     }
-    @WebDavAttributeMapping(path=MAPPING_C3, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C3, attribute=WebDavMappingAttribute.ContentType)
     String test_C3() {
         return " ";
     }
-    @WebDavAttributeMapping(path=MAPPING_C4, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C4, attribute=WebDavMappingAttribute.ContentType)
     String test_C4() {
         return "a\t\r\nz";
     }
-    @WebDavAttributeMapping(path=MAPPING_C5, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C5, attribute=WebDavMappingAttribute.ContentType)
     String test_C5() {
         return "Test C5";
     }
-    @WebDavAttributeMapping(path=MAPPING_C6, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C6, attribute=WebDavMappingAttribute.ContentType)
     String test_C6() {
         return "a\u00A9z";
     }
-    @WebDavAttributeMapping(path=MAPPING_C7, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C7, attribute=WebDavMappingAttribute.ContentType)
     Object test_C7() {
         return "Test C7";
     }
-    @WebDavAttributeMapping(path=MAPPING_C8, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C8, attribute=WebDavMappingAttribute.ContentType)
     Exception test_C8() {
         return new Exception("Test C8");
     }
-    @WebDavAttributeMapping(path=MAPPING_C9, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_C9, attribute=WebDavMappingAttribute.ContentType)
     Integer test_C9() {
         throw new RuntimeException("Test C9");
     }
@@ -122,7 +122,7 @@ public class ContentTypeTestController {
     public static final String MAPPING_D6 = "/extras/contentType/d6.txt";
 
     @WebDavMapping(path=MAPPING_D1, contentType="5", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D1X(final MetaOutputStream outputStream) {
         outputStream.setContentType("9");
@@ -131,13 +131,13 @@ public class ContentTypeTestController {
     void test_D1(final MetaData metaData) {
         metaData.setContentType("7");
     }
-    @WebDavAttributeMapping(path=MAPPING_D1, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D1, attribute=WebDavMappingAttribute.ContentType)
     String test_D1() {
         return "8";
     }
 
     @WebDavMapping(path=MAPPING_D2, contentType="5", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D2X() {
     }
@@ -145,13 +145,13 @@ public class ContentTypeTestController {
     void test_D2(final MetaData metaData) {
         metaData.setContentType("7");
     }
-    @WebDavAttributeMapping(path=MAPPING_D2, attribute= WebDavMappingAttribute.ContentType)
+    @WebDavAttributeMapping(path=MAPPING_D2, attribute=WebDavMappingAttribute.ContentType)
     String test_D2() {
         return "8";
     }
 
     @WebDavMapping(path=MAPPING_D3, contentType="5", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D3X() {
     }
@@ -161,7 +161,7 @@ public class ContentTypeTestController {
     }
 
     @WebDavMapping(path=MAPPING_D4, contentType="5", attributeExpressions={
-            @WebDavMappingAttributeExpression(attribute= WebDavMappingAttribute.ContentType, phrase="6")
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="6")
     })
     void test_D4X() {
     }

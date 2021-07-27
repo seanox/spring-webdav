@@ -78,27 +78,27 @@ public class HiddenTestController {
     public static final String MAPPING_A_FOLDER_B3_REDIRECT = "/extras/hidden/b/b-1/b-2/b-3";
     public static final String MAPPING_A_FOLDER_B3 = "/extras/hidden/b/b-1/b-2/b-3/";
 
-    @WebDavMapping(path= MAPPING_A_FILE_A1, hidden=true)
+    @WebDavMapping(path=MAPPING_A_FILE_A1, hidden=true)
     void testA1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a1.txt").getBytes());
     }
-    @WebDavMapping(path= MAPPING_A_FILE_A2, hidden=true)
+    @WebDavMapping(path=MAPPING_A_FILE_A2, hidden=true)
     void testA2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("a2.txt").getBytes());
     }
-    @WebDavMapping(path= MAPPING_A_FILE_B1, hidden=true)
+    @WebDavMapping(path=MAPPING_A_FILE_B1, hidden=true)
     void testB1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("b1.txt").getBytes());
     }
-    @WebDavMapping(path= MAPPING_A_FILE_C1, hidden=true)
+    @WebDavMapping(path=MAPPING_A_FILE_C1, hidden=true)
     void testC1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c1.txt").getBytes());
     }
-    @WebDavMapping(path= MAPPING_A_FILE_C2, hidden=false)
+    @WebDavMapping(path=MAPPING_A_FILE_C2, hidden=false)
     void testC2(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("c2.txt").getBytes());
     }
-    @WebDavMapping(path= MAPPING_A_FILE_D1, hidden=true)
+    @WebDavMapping(path=MAPPING_A_FILE_D1, hidden=true)
     void testD1(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(("d1.txt").getBytes());
     }
