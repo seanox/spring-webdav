@@ -24,6 +24,7 @@ package com.seanox.webdav;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.UriUtils;
@@ -65,22 +66,64 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * TODO:
+ * <p>
+ *   The WebDAV implementation is based on the WebDavFilter, which handles all
+ *   requests to a URL pattern.
+ * </p>
+ * <p>
+ *   For this purpose, the filter is registered in the Spring Boot application
+ *   as follows:
+ * </p>
+ * <pre>
+ *   &#64;SpringBootApplication
+ *   public class Application extends SpringBootServletInitializer {
  *
- * Rules:
+ *       public static void main(final String... options) {
+ *           final SpringApplication springApplication = new SpringApplication(Application.class);
+ *           springApplication.setBannerMode(Banner.Mode.CONSOLE);
+ *           springApplication.run(options);
+ *       }
+ *
+ *       &#64;Bean
+ *       public FilterRegistrationBean someFilterRegistration() {
+ *           final FilterRegistrationBean registration = new FilterRegistrationBean();
+ *           registration.setFilter(new WebDavFilter());
+ *           registration.setOrder(1);
+ *           registration.addUrlPatterns("/*");
+ *           return registration;
+ *       }
+ *   }
+ * </pre>
+ * <p>
+ *   With the exception of the URL pattern and the initialization order, there
+ *   is no further configuration.
+ * </p>
+ * <p>
+ *   About the behavior of the implementation the following is interesting:
+ * </p>
  * <ul>
  *   <li>
  *     What is not permitted/allowed is handled as if it does not exist.
  *   </li>
- *   TODO:
+ *   <li>
+ *     PROPPATCH is not officially implemented and yet it is included. It is
+ *     used in specific cases of MS Office / MS-WebDAV-MiniRedir. The method is
+ *     not implemented in real, it just behaves like PROPFIND which is enough
+ *     for the case.
+ *   </li>
+ *   <li>
+ *     The implementation is based on throwing states. The request methods are
+ *     not exited with the end or return , but a state exception is used to
+ *     exit.
+ *   </li>
  * </ul>
  * <br>
- * WebDavFilter 1.0.0 20210726<br>
+ * WebDavFilter 1.0.0 20210727<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210726
+ * @version 1.0.0 20210727
  */
 public class WebDavFilter extends HttpFilter {
 
@@ -683,7 +726,7 @@ public class WebDavFilter extends HttpFilter {
                 xmlWriter.flush();
             }
 
-            response.setStatus(new MultiStatusState().getStatusCode());
+            response.setStatus(new MultiStatusState().getHttpStatus().value());
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setContentType(MediaType.TEXT_XML_VALUE);
             response.setContentLength(buffer.size());
@@ -979,7 +1022,7 @@ public class WebDavFilter extends HttpFilter {
             final State state = (State)exception;
             try {state.forceResponseStatus(response);
             } finally {
-                LOGGER.info("{} {} {} ({} ms)", state.getStatusCode(),
+                LOGGER.info("{} {} {} ({} ms)", state.getHttpStatus(),
                         request.getMethod(), request.getRequestURI(),
                         System.currentTimeMillis() -timing);
             }
@@ -990,18 +1033,18 @@ public class WebDavFilter extends HttpFilter {
 
         private static final long serialVersionUID = -3285926540309442308L;
 
-        abstract int getStatusCode();
+        abstract HttpStatus getHttpStatus();
 
         String getStatusLine() {
             final String message = this.getClass().getSimpleName().replaceAll("State$", "").replaceAll("(?<=[a-z])(?=[A-Z])", " ");
-            return "HTTP/1.1 " + this.getStatusCode() + " " + message;
+            return "HTTP/1.1 " + this.getHttpStatus().value() + " " + message;
         }
 
         void forceResponseStatus(final HttpServletResponse response)
                 throws IOException {
             if (response.isCommitted())
                 return;
-            response.setStatus(this.getStatusCode());
+            response.setStatus(this.getHttpStatus().value());
             response.flushBuffer();
             response.getOutputStream().close();
         }
@@ -1012,8 +1055,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = -1771577635432317281L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_OK;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.OK;
         }
     }
 
@@ -1022,8 +1065,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 3712271737420787168L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_NO_CONTENT;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.NO_CONTENT;
         }
     }
 
@@ -1032,8 +1075,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 384634503420067272L;
 
         @Override
-        int getStatusCode() {
-            return 207;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.MULTI_STATUS;
         }
     }
 
@@ -1048,8 +1091,8 @@ public class WebDavFilter extends HttpFilter {
         }
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_FOUND;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.FOUND;
         }
 
         @Override
@@ -1069,8 +1112,8 @@ public class WebDavFilter extends HttpFilter {
         final String identifier;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_NOT_MODIFIED;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.NOT_MODIFIED;
         }
 
         NotModifiedState(String identifier) {
@@ -1092,8 +1135,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 6236121705930514520L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_BAD_REQUEST;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.BAD_REQUEST;
         }
     }
 
@@ -1102,8 +1145,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 2028565954023402465L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_FORBIDDEN;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.FORBIDDEN;
         }
     }
 
@@ -1112,8 +1155,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = -3676678322498170899L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_NOT_FOUND;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.NOT_FOUND;
         }
     }
 
@@ -1128,8 +1171,8 @@ public class WebDavFilter extends HttpFilter {
         }
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.METHOD_NOT_ALLOWED;
         }
 
         @Override
@@ -1147,8 +1190,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = -3888539558816130805L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_NOT_ACCEPTABLE;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.NOT_ACCEPTABLE;
         }
     }
 
@@ -1157,8 +1200,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = -4196618688975724595L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_PRECONDITION_FAILED;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.PRECONDITION_FAILED;
         }
     }
 
@@ -1167,8 +1210,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 1616244187380236731L;
 
         @Override
-        int getStatusCode() {
-            return 413;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.PAYLOAD_TOO_LARGE;
         }
     }
 
@@ -1177,8 +1220,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = -6604759761612191353L;
 
         @Override
-        int getStatusCode() {
-            return 422;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.UNPROCESSABLE_ENTITY;
         }
     }
 
@@ -1187,8 +1230,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 836006924606414263L;
 
         @Override
-        int getStatusCode() {
-            return 423;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.LOCKED;
         }
     }
 
@@ -1197,8 +1240,8 @@ public class WebDavFilter extends HttpFilter {
         private static final long serialVersionUID = 3019539164953304989L;
 
         @Override
-        int getStatusCode() {
-            return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+        HttpStatus getHttpStatus() {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
 }
