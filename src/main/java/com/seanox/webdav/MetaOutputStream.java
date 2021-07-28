@@ -57,10 +57,14 @@ public class MetaOutputStream extends OutputStream {
     private Integer contentLength;
     private Date    lastModified;
 
-    private OutputStream output;
+    private OutputStream outputStream;
 
-    MetaOutputStream() {
-        throw new RuntimeException();
+    MetaOutputStream(final HttpServletResponse response, final String contentType, final Integer contentLength, final Date lastModified, final OutputStream outputStream) {
+        this.response      = response;
+        this.contentType   = contentType;
+        this.contentLength = contentLength;
+        this.lastModified  = lastModified;
+        this.outputStream  = outputStream;
     }
 
     /**
@@ -121,21 +125,21 @@ public class MetaOutputStream extends OutputStream {
     public void write(final int digit)
             throws IOException {
         this.flush();
-        this.output.write(digit);
+        this.outputStream.write(digit);
     }
 
     @Override
     public void write(final byte[] bytes)
             throws IOException {
         this.flush();
-        this.output.write(bytes);
+        this.outputStream.write(bytes);
     }
 
     @Override
     public void write(final byte[] bytes, final int offset, final int length)
             throws IOException {
         this.flush();
-        this.output.write(bytes, offset, length);
+        this.outputStream.write(bytes, offset, length);
     }
 
     @Override
@@ -156,8 +160,8 @@ public class MetaOutputStream extends OutputStream {
                 this.response.setHeader("Etag", "\"" + Long.toString(lastModified.getTime(), 36).toUpperCase() + "\"");
             this.response.flushBuffer();
         }
-        if (Objects.isNull(this.output))
-            this.output = this.response.getOutputStream();
+        if (Objects.isNull(this.outputStream))
+            this.outputStream = this.response.getOutputStream();
     }
 
     @Override
