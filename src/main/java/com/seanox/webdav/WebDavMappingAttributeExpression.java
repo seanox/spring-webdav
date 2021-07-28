@@ -33,7 +33,7 @@ package com.seanox.webdav;
  *   <code>request</code> and <code>session</code> are available as variables.
  * </p>
  * <pre>
- *   &#64;WebDavMapping(path="/example/file.xls", attributeExpressions={
+ *   &#64;WebDavMapping(path="/example/file.txt", attributeExpressions={
  *       &#64;WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.LastModified, phrase="..."),
  *       &#64;WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="..."),
  *       ...

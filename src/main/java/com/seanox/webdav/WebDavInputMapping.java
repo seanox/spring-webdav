@@ -74,7 +74,7 @@ import java.net.URI;
  *   No return value is expected.
  * </p>
  * <pre>
- *   &#64;WebDavInputMapping(path="/example/file.xls")
+ *   &#64;WebDavInputMapping(path="/example/file.txt")
  *   void putFile(final MetaInputStream input) throws IOException {
  *       ...
  *   }

@@ -27,6 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.net.URI;
+import java.util.Date;
 
 /**
  * <p>
@@ -102,39 +103,39 @@ import java.net.URI;
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/fileA.xls", attribute=WebDavMappingAttribute.ContentLength)
- *     &#64;WebDavAttributeMapping(path="/example/fileB.xls", attribute=WebDavMappingAttribute.ContentLength)
- *     &#64;WebDavAttributeMapping(path="/example/fileC.xls", attribute=WebDavMappingAttribute.ContentLength)
+ *     &#64;WebDavAttributeMapping(path="/example/fileA.txt", attribute=WebDavMappingAttribute.ContentLength)
+ *     &#64;WebDavAttributeMapping(path="/example/fileB.txt", attribute=WebDavMappingAttribute.ContentLength)
+ *     &#64;WebDavAttributeMapping(path="/example/fileC.txt", attribute=WebDavMappingAttribute.ContentLength)
  *     Integer getContentLength(final URI uri, final Properties properties, final WebDavMappingAttribute attribute) {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.CreationTime)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.CreationTime)
  *     Date getCreationTime() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.LastModified)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.LastModified)
  *     Date getLastModified() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.ReadOnly)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.ReadOnly)
  *     Boolean isReadOnly() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.Hidden)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.Hidden)
  *     Boolean isHidden() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.Accepted)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.Accepted)
  *     Boolean isAccepted() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.Permitted)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.Permitted)
  *     Boolean isPermitted() {
  *         return ...;
  *     }

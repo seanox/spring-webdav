@@ -26,63 +26,60 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.net.URI;
 
 /**
- * WebDavMetaMapping annotates a method for getting the meta data for a virtual
- * entity. The method has no fixed signature and the data types of the
- * arguments are considered as placeholders and filled accordingly. If
- * arguments with the same data type are used multiple times, they are filled
- * with the same object multiple times. Unknown data types are filled with
- * {@code null}.<br>
- * <br>
- * <table>
- *   <tr>
- *     <th>Data Type</th>
- *     <th>Description</th>
- *   </tr>
- *   <tr>
- *     <td>URI</td>
- *     <td>Path of the virtual entity.</td>
- *   </tr>
- *   <tr>
- *     <td>Properties</td>
- *     <td>
- *       Properties: Collector with relevant runtime, request and meta
- *       information as a nested map. The keys in the map are case insensitive.
- *     </td>
- *   </tr>
- *   <tr>
- *     <td>MetaData</td>
- *     <td>
- *       Writable collector containing all relevant attributes for a virtual
- *       entity.
- *     </td>
- *   </tr>
- * </table>
- * <br>
- * Expected return value: {@code void}<br>
- * <br>
- * <b>Usage:</b><br>
- * <br>
- * The annotation can be used multiple times for different virtual entities in
- * one method.<br>
- * <br>
+ * <p>
+ *   WebDavMetaMapping annotates a method for getting the meta data for a
+ *   virtual entity. The annotation can be used multiple times for different
+ *   virtual entities in one method. The method has no fixed signature and the
+ *   data types of the arguments are considered as placeholders and filled
+ *   accordingly. If arguments with the same data type are used multiple times,
+ *   they are filled with the same object multiple times. Unknown data types
+ *   are filled with {@code null}.
+ * </p>
+ * <p>
+ *   Following data types are supported as placeholders:
+ * </p>
+ * <ul>
+ *   <li>
+ *     <b>{@link URI}</b><br>
+ *     Path of the virtual entity.
+ *   </li>
+ *   <li>
+ *     <b>{@link Properties}</b><br>
+ *     Collector with relevant runtime, request and meta information as a
+ *     nested map. The keys in the map are case insensitive.
+ *   </li>
+ *   <li>
+ *     <b>{@link WebDavMappingAttribute}</b><br>
+ *     The attribute requested with the method.
+ *   </li>
+ *   <li>
+ *     <b>{@link MetaData}</b><br>
+ *     Writable collector containing all relevant attributes for a virtual
+ *     entity.
+ *   </li>
+ * </ul>
+ * <p>
+ *   No return value is expected.
+ * </p>
  * <pre>
- *   &#64;WebDavMetaMapping(path="/example/file.xls")
+ *   &#64;WebDavMetaMapping(path="/example/file.txt")
  *   void setMetaData(final MetaData meta) {
  *       meta.set...
  *       ...
  *   }
  *
- *   &#64;WebDavMetaMapping(path="/example/file.xls")
+ *   &#64;WebDavMetaMapping(path="/example/file.txt")
  *   void setMetaData(final URI uri, final Properties properties, final MetaData meta) {
  *       meta.set...
  *       ...
  *   }
  *
- *   &#64;WebDavMetaMapping(path="/example/fileA.xls")
- *   &#64;WebDavMetaMapping(path="/example/fileB.xls")
- *   &#64;WebDavMetaMapping(path="/example/fileC.xls")
+ *   &#64;WebDavMetaMapping(path="/example/fileA.txt")
+ *   &#64;WebDavMetaMapping(path="/example/fileB.txt")
+ *   &#64;WebDavMetaMapping(path="/example/fileC.txt")
  *   void setMetaData(final MetaData meta) {
  *       meta.set...
  *       ...
@@ -90,6 +87,7 @@ import java.lang.annotation.Target;
  *
  *   ...
  * </pre>
+ *
  * WebDavMetaMapping 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
@@ -102,9 +100,16 @@ import java.lang.annotation.Target;
 @Repeatable(WebDavMetaMapping.WebDavMetaMappings.class)
 public @interface WebDavMetaMapping {
 
-    /** Referenced path of the virtual entity. */
+    /**
+     * Path as a reference of the virtual entity
+     * @return Path the virtual entity
+     */
     String path();
 
+    /**
+     * Declaration for {@link WebDavMetaMapping} so that
+     * {@link WebDavMetaMapping} can be used multiple times.
+     */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     @interface WebDavMetaMappings {

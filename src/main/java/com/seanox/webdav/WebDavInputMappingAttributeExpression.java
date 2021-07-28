@@ -33,7 +33,7 @@ package com.seanox.webdav;
  *   <code>request</code> and <code>session</code> are available as variables.
  * </p>
  * <pre>
- *   &#64;WebDavInputMapping(path="/example/file.xls", attributeExpressions={
+ *   &#64;WebDavInputMapping(path="/example/file.txt", attributeExpressions={
  *       &#64;WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.Accept, phrase="..."),
  *       &#64;WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.ContentLengthMax, phrase="..."),
  *       ...
