@@ -22,7 +22,26 @@
 package com.seanox.webdav;
 
 /**
- * TODO:
+ * <p>
+ *   Optional extension for {@code WebDavInputMapping} to define attributes
+ *   with dynamic values as Spring Expression Language.
+ * </p>
+ * <p>
+ *   The expressions are interpreted in their own context. In this, all beans
+ *   whose name does not contain a dot, as well as
+ *   <code>applicationContext</code>, <code>servletContext</code>,
+ *   <code>request</code> and <code>session</code> are available as variables.
+ * </p>
+ * <pre>
+ *   &#64;WebDavInputMapping(path="/example/file.xls", attributeExpressions={
+ *       &#64;WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.Accept, phrase="..."),
+ *       &#64;WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.ContentLengthMax, phrase="..."),
+ *       ...
+ *   })
+ *   void putEntity(final MetaInputStream input) throws IOException {
+ *       ...
+ *   }
+ * </pre>
  *
  * WebDavInputMappingAttributeExpression 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -33,6 +52,15 @@ package com.seanox.webdav;
  */
 public @interface WebDavInputMappingAttributeExpression {
 
+    /**
+     * Referenced {@link WebDavInputMappingAttribute}
+     * @return Referenced {@link WebDavInputMappingAttribute}
+     */
     WebDavInputMappingAttribute attribute();
-    String                      phrase();
+
+    /**
+     * Expression as text phrase.
+     * @return expression as text phrase
+     */
+    String phrase();
 }

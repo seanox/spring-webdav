@@ -22,8 +22,10 @@
 package com.seanox.webdav;
 
 /**
- * TODO:
- *
+ * <p>
+ *   Constants for attributes of {@link WebDavInputMappingAttributeExpression}.
+ * </p>
+ * <br>
  * WebDavInputMappingAttribute 1.0.0 20210715<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
@@ -33,7 +35,10 @@ package com.seanox.webdav;
  */
 public enum WebDavInputMappingAttribute {
 
+    /** Constant for attribute Accept */
     Accept(Annotation.Attribute.AttributeType.Accept),
+
+    /** Constant for attribute ContentLengthMax */
     ContentLengthMax(Annotation.Attribute.AttributeType.ContentLengthMax);
 
     final Annotation.Attribute.AttributeType attributeType;

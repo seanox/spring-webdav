@@ -26,11 +26,12 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.net.URI;
 
 /**
  * <p>
  *   The WebDAV implementation is based on a virtual file system whose virtual
- *   entities also have properties.
+ *   entities, always with reference to a virtual path, also have properties.
  * </p>
  * <p>
  *   In the context of annotations and virtual entities, properties are called
@@ -73,51 +74,74 @@ import java.lang.annotation.Target;
  *   they are filled with the same object multiple times. Unknown data types
  *   are filled with {@code null}.
  * </p>
+ * <p>
+ *   Following data types are supported as placeholders:
+ * </p>
+ * <ul>
+ *   <li>
+ *     <b>{@link URI}</b><br>
+ *     Path of the virtual entity.
+ *   </li>
+ *   <li>
+ *     <b>{@link Properties}</b><br>
+ *     Collector with relevant runtime, request and meta information as a
+ *     nested map. The keys in the map are case insensitive.
+ *   </li>
+ *   <li>
+ *     <b>{@link WebDavMappingAttribute}</b><br>
+ *     The attribute requested with the method.
+ *   </li>
+ * </ul>
+ * <p>
+ *   The expected data type of the return value depends on the attribute:
+ *   {@link Boolean}, {@link Integer}, {@link String}, {@link Date}
+ * </p>
  * <pre>
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.ContentType)
+ *     &#64;WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.ContentType)
  *     String getContentType() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/fileA.xls", attribute=WebDavMappingAttribute.ContentLength)
- *     &#64;WebDavAttributeMapping(path=/example/fileB.xls", attribute=WebDavMappingAttribute.ContentLength)
- *     &#64;WebDavAttributeMapping(path=/example/fileC.xls", attribute=WebDavMappingAttribute.ContentLength)
+ *     &#64;WebDavAttributeMapping(path="/example/fileA.xls", attribute=WebDavMappingAttribute.ContentLength)
+ *     &#64;WebDavAttributeMapping(path="/example/fileB.xls", attribute=WebDavMappingAttribute.ContentLength)
+ *     &#64;WebDavAttributeMapping(path="/example/fileC.xls", attribute=WebDavMappingAttribute.ContentLength)
  *     Integer getContentLength(final URI uri, final Properties properties, final WebDavMappingAttribute attribute) {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.CreationTime)
+ *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.CreationTime)
  *     Date getCreationTime() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.LastModified)
+ *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.LastModified)
  *     Date getLastModified() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.ReadOnly)
+ *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.ReadOnly)
  *     Boolean isReadOnly() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.Hidden)
+ *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.Hidden)
  *     Boolean isHidden() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.Accepted)
+ *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.Accepted)
  *     Boolean isAccepted() {
  *         return ...;
  *     }
  *
- *     &#64;WebDavAttributeMapping(path=/example/file.xls", attribute=WebDavMappingAttribute.Permitted)
+ *     &#64;WebDavAttributeMapping(path="/example/file.xls", attribute=WebDavMappingAttribute.Permitted)
  *     Boolean isPermitted() {
  *         return ...;
  *     }
  *
  *     ...
  * </pre>
+ *
  * WebDavAttributeMapping 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
@@ -130,9 +154,22 @@ import java.lang.annotation.Target;
 @Repeatable(WebDavAttributeMapping.WebDavAttributeMappings.class)
 public @interface WebDavAttributeMapping {
 
-    String                 path();
+    /**
+     * Path as a reference of the virtual entity
+     * @return Path the virtual entity
+     */
+    String path();
+
+    /**
+     * Referenced attribute
+     * @return Referenced attribute
+     */
     WebDavMappingAttribute attribute();
 
+    /**
+     * Declaration for {@link WebDavAttributeMapping} so that
+     * {@link WebDavAttributeMapping} can be used multiple times.
+     */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     @interface WebDavAttributeMappings {

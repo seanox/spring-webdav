@@ -23,7 +23,6 @@ package com.seanox.webdav;
 
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,41 +31,86 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * MetaOutputStream is an {@link OutputStream} with meta information for the
- * response header. The meta information is already pre-filled with the data
- * determined by the framework and can be changed until the first byte is
- * written to the data output stream.<br>
- * <br>
- * MetaOutputStream 1.0.0 20210720<br>
+ * <p>
+ *   MetaOutputStream is an {@link OutputStream} with meta information for the
+ *   response header. The meta information is already pre-filled with the data
+ *   determined by the framework and can be changed until the first byte is
+ *   written to the data output stream.
+ * </p>
+ *
+ * MetaOutputStream 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210728
  */
 @Builder(access=AccessLevel.PACKAGE)
 public class MetaOutputStream extends OutputStream {
 
+    // NOTE: Lombok is awesome, but it doesn't create a usable JavaDoc
+    // and then using Delombok isn't so great.
+
     private final HttpServletResponse response;
 
-    @Getter(AccessLevel.PUBLIC) private String  contentType;
-    @Getter(AccessLevel.PUBLIC) private Integer contentLength;
-    @Getter(AccessLevel.PUBLIC) private Date    lastModified;
+    private String  contentType;
+    private Integer contentLength;
+    private Date    lastModified;
 
     private OutputStream output;
 
-    public void setContentLength(final Integer contentLength) {
-        if (this.response.isCommitted())
-            return;
-        this.contentLength = contentLength;
+    MetaOutputStream() {
+        throw new RuntimeException();
     }
 
+    /**
+     * Return ContentType to the outgoing data stream.
+     * @return ContentType to the outgoing data stream
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set ContentType for the outgoing data stream.
+     * @param contentType for the outgoing data stream
+     */
     public void setContentType(final String contentType) {
         if (this.response.isCommitted())
             return;
         this.contentType = contentType;
     }
 
+    /**
+     * Return ContentLength to the outgoing data stream.
+     * @return contentLength to the outgoing data stream
+     */
+    public Integer getContentLength() {
+        return this.contentLength;
+    }
+
+    /**
+     * Set ContentLength for the outgoing data stream.
+     * @param contentLength for the outgoing data stream
+     */
+    public void setContentLength(final Integer contentLength) {
+        if (this.response.isCommitted())
+            return;
+        this.contentLength = contentLength;
+    }
+
+    /**
+     * Return LastModified to the outgoing data stream.
+     * @return LastModified to the outgoing data stream
+     */
+    public Date getLastModified() {
+        return this.lastModified;
+    }
+
+    /**
+     * Set LastModified for the outgoing data stream.
+     * @param lastModified for the outgoing data stream
+     */
     public void setLastModified(final Date lastModified) {
         if (this.response.isCommitted())
             return;

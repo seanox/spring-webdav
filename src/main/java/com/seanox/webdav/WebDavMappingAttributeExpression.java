@@ -22,7 +22,26 @@
 package com.seanox.webdav;
 
 /**
- * TODO:
+ * <p>
+ *   Optional extension for {@code WebDavMapping} to define attributes with
+ *   dynamic values as Spring Expression Language.
+ * </p>
+ * <p>
+ *   The expressions are interpreted in their own context. In this, all beans
+ *   whose name does not contain a dot, as well as
+ *   <code>applicationContext</code>, <code>servletContext</code>,
+ *   <code>request</code> and <code>session</code> are available as variables.
+ * </p>
+ * <pre>
+ *   &#64;WebDavMapping(path="/example/file.xls", attributeExpressions={
+ *       &#64;WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.LastModified, phrase="..."),
+ *       &#64;WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentLength, phrase="..."),
+ *       ...
+ *   })
+ *   void getEntity(final MetaOutputStream output) throws IOException {
+ *       ...
+ *   }
+ * </pre>
  *
  * WebDavMappingAttributeExpression 1.0.0 20210703<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>

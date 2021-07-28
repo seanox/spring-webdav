@@ -21,24 +21,22 @@
  */
 package com.seanox.webdav;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-
 import java.net.URI;
 import java.util.Date;
 
 /**
- * MetaData, a writable collector containing all relevant attributes for a
- * virtual entity.<br>
- * <br>
- * MetaData 1.0.0 20210717<br>
+ * <p>
+ *   MetaData, a writable collector containing all relevant attributes for a
+ *   virtual entity.
+ * </p>
+ *
+ * MetaData 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210717
+ * @version 1.0.0 20210728
  */
-@Getter(AccessLevel.PUBLIC)
 public class MetaData extends MetaProperties {
 
     MetaData(final URI uri, final String contentType, final Integer contentLength,

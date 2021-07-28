@@ -22,8 +22,8 @@
 package com.seanox.webdav;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -31,39 +31,76 @@ import java.io.InputStream;
 import java.util.Objects;
 
 /**
- * MetaInpoutStream is an {@link InputStream} with read-only meta information.<br>
- * <br>
- * MetaInputStream can be limited with {@code ContentLengthMax}.
- * If the value of {@code ContentLengthMax} greater than or equal to {@code 0},
- * only the so defined amount of data can be read from the data stream.
- * Overwriting it will cause {@link MetaInputStreamLimitException}.<br>
- * <br>
- * Another special feature is the handling of an {@link IOException} that occur
- * when reading in limited mode. An {@link IOException} is the permanent one,
- * because it is not known how many bytes could be read, which can distort the
- * limit. Without limiting, the data stream behaves normally.<br>
- * <br>
- * MetaInputStream 1.0.0 20210720<br>
+ * <p>
+ *   MetaInpoutStream is an {@link InputStream} with read-only meta
+ *   information.
+ * </p>
+ * <p>
+ *   MetaInputStream can be limited with {@code ContentLengthMax}. If the value
+ *   of {@code ContentLengthMax} greater than or equal to {@code 0}, only the
+ *   so defined amount of data can be read from the data stream. Overwriting it
+ *   will cause {@link MetaInputStreamLimitException}.
+ * </p>
+ * <p>
+ *   Another special feature is the handling of an {@link IOException} that
+ *   occur when reading in limited mode. An {@link IOException} is the
+ *   permanent one, because it is not known how many bytes could be read, which
+ *   can distort the limit. Without limiting, the data stream behaves normally.
+ * </p>
+ *
+ * MetaInputStream 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210720
+ * @version 1.0.0 20210728
  */
 @Builder(access=AccessLevel.PACKAGE)
+@AllArgsConstructor(access=AccessLevel.PACKAGE)
 public class MetaInputStream extends InputStream {
+
+    // NOTE: Lombok is awesome, but it doesn't create a usable JavaDoc
+    // and then using Delombok isn't so great.
 
     private final HttpServletRequest request;
 
-    @Getter(AccessLevel.PUBLIC) private final String  contentType;
-    @Getter(AccessLevel.PUBLIC) private final Integer contentLength;
-    @Getter(AccessLevel.PUBLIC) private final Integer contentLengthMax;
+    private final String  contentType;
+    private final Integer contentLength;
+    private final Integer contentLengthMax;
 
     private InputStream input;
 
     private int limit;
 
     private IOException exception;
+
+    MetaInputStream() {
+        throw new RuntimeException();
+    }
+
+    /**
+     * Return ContentType to the incoming data stream.
+     * @return ContentType to the incoming data stream
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Return ContentLength to the incoming data stream.
+     * @return ContentLength to the incoming data stream
+     */
+    public Integer getContentLength() {
+        return this.contentLength;
+    }
+
+    /**
+     * Return ContentLengthMax as limit for the incoming data stream.
+     * @return ContentLengthMax as limit for the incoming data stream
+     */
+    public Integer getContentLengthMax() {
+        return this.contentLengthMax;
+    }
 
     private void advanceAccess()
             throws IOException {
@@ -167,7 +204,7 @@ public class MetaInputStream extends InputStream {
                 || this.contentLengthMax.intValue() < 0)
             return this.input.readAllBytes();
 
-        try {return this.input.readNBytes((int)this.limit);
+        try {return this.input.readNBytes(this.limit);
         } catch (IOException exception) {
             this.exception = exception;
             throw exception;

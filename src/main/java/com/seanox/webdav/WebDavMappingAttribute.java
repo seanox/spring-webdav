@@ -22,7 +22,10 @@
 package com.seanox.webdav;
 
 /**
- * TODO:
+ * <p>
+ *   Constants for attributes of {@link WebDavMappingAttributeExpression} and
+ *   {@link WebDavAttributeMapping}.
+ * </p>
  *
  * WebDavMappingAttribute 1.0.0 20210715<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
@@ -33,14 +36,28 @@ package com.seanox.webdav;
  */
 public enum WebDavMappingAttribute {
 
+    /** Constant for attribute ContentType */
     ContentType(Annotation.Attribute.AttributeType.ContentType),
+
+    /** Constant for attribute ContentLength */
     ContentLength(Annotation.Attribute.AttributeType.ContentLength),
+
+    /** Constant for attribute CreationDate */
     CreationDate(Annotation.Attribute.AttributeType.CreationDate),
+
+    /** Constant for attribute LastModified */
     LastModified(Annotation.Attribute.AttributeType.LastModified),
 
+    /** Constant for attribute ReadOnly */
     ReadOnly(Annotation.Attribute.AttributeType.ReadOnly),
+
+    /** Constant for attribute Hidden */
     Hidden(Annotation.Attribute.AttributeType.Hidden),
+
+    /** Constant for attribute Accepted */
     Accepted(Annotation.Attribute.AttributeType.Accepted),
+
+    /** Constant for attribute Permitted */
     Permitted(Annotation.Attribute.AttributeType.Permitted);
 
     final Annotation.Attribute.AttributeType type;

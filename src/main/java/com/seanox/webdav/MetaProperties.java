@@ -30,20 +30,25 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * MetaProperties, read-only collector with all attributes of the virtual
- * entity.<br>
- * <br>
- * MetaProperties 1.0.0 20210725<br>
+ * <p>
+ *   MetaProperties, read-only collector with all attributes of the virtual
+ *   entity.
+ * </p>
+ *
+ * MetaProperties 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210728
  */
 @Setter(AccessLevel.PACKAGE)
 @Builder(access=AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
 public class MetaProperties implements Cloneable {
+
+    // NOTE: Lombok is awesome, but it doesn't create a usable JavaDoc
+    // and then using Delombok isn't so great.
 
     private URI uri;
     private String contentType;
@@ -55,8 +60,8 @@ public class MetaProperties implements Cloneable {
     private boolean isAccepted;
     private boolean isPermitted;
 
-    // Lombok is awesome, but it doesn't create a usable JavaDoc and then using
-    // Delombok isn't so great.
+    MetaProperties() {
+    }
 
     /**
      * Returns the path of the virtual entity as URI.
@@ -67,32 +72,32 @@ public class MetaProperties implements Cloneable {
     }
 
     /**
-     * Returns the content-type of the virtual entity.
-     * @return the content-type of the virtual entity
+     * Returns the ContentType of the virtual entity.
+     * @return the ContentType of the virtual entity
      */
     public String getContentType() {
         return this.contentType;
     }
 
     /**
-     * Returns the content-length of the virtual entity.
-     * @return the content-length of the virtual entity
+     * Returns the ContentLength of the virtual entity.
+     * @return the ContentLength of the virtual entity
      */
     public Integer getContentLength() {
         return this.contentLength;
     }
 
     /**
-     * Returns the creation-date of the virtual entity.
-     * @return the creation-date of the virtual entity
+     * Returns the CreationDate of the virtual entity.
+     * @return the CreationDate of the virtual entity
      */
     public Date getCreationDate() {
         return this.creationDate;
     }
 
     /**
-     * Returns the last-modified of the virtual entity.
-     * @return the last-modified of the virtual entity
+     * Returns the LastModified of the virtual entity.
+     * @return the LastModified of the virtual entity
      */
     public Date getLastModified() {
         return this.lastModified;

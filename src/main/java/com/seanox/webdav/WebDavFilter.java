@@ -224,6 +224,7 @@ public class WebDavFilter extends HttpFilter {
 
     private final Collection<String> filterUrlPatternMappings;
 
+    /** Constructor, creates a new instance of WebDavFilter. */
     public WebDavFilter() {
         this.filterUrlPatternMappings = new ArrayList<>();
     }
