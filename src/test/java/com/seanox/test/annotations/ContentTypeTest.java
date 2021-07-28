@@ -31,12 +31,12 @@ import org.junit.jupiter.api.Test;
  * Test the function of the ContentType attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * ContentTypeTest 1.0.0 20210721<br>
+ * ContentTypeTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210721
+ * @version 1.0.0 20210728
  */
 public class ContentTypeTest extends AbstractApiTest {
 
@@ -57,26 +57,26 @@ public class ContentTypeTest extends AbstractApiTest {
 
     @Test
     void test_CX() throws Exception {
-        Assertions.assertEquals("200/200/207 /extras/contentType/c1.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C1, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c2.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C2, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c3.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C3, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c4.txt 301361 a\t\r\nz/a\t\r\nz/a\t\nz", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C4, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c5.txt 301361 Test C5/Test C5/Test C5", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C5, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c6.txt 301361 a\u00A9z/a\u00A9z/a\u00A9z", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C6, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c7.txt 301361 Test C7/Test C7/Test C7", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C7, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c8.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C8, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/c9.txt 001361 null/null", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_C9, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c1.txt 001361 null/null", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C1, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c2.txt 001361 null/null", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C2, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c3.txt 001361 null/null", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C3, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c4.txt 301361 a\t\r\nz/a\t\r\nz/a\t\nz", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C4, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c5.txt 301361 Test C5/Test C5/Test C5", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C5, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c6.txt 301361 a\u00A9z/a\u00A9z/a\u00A9z", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C6, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c7.txt 301361 Test C7/Test C7/Test C7", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C7, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c8.txt 001361 null/null", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C8, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/c9.txt 001361 null/null", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_C9, AttributeFingerprintType.ContentType));
     }
 
     @Test
     void test_DX() throws Exception {
         // Variations like 8/9/8 look strange, but they are correct.
-        // Because MetaOutputstream::ContentLength is only used with GET and not with HEAD and PROPFIND.
-        Assertions.assertEquals("200/200/207 /extras/contentType/d1.txt 301361 8/9/8", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D1, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/d2.txt 301361 8/8/8", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D2, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/d3.txt 301361 7/7/7", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D3, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/d4.txt 301361 6/6/6", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D4, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/d5.txt 301361 5/5/5", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D5, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/contentType/d6.txt 301361 text/plain/text/plain/text/plain", this.createAttributeFingeprint(ContentTypeTestController.MAPPING_D6, AttributeFingeprintType.ContentType));
+        // Because MetaOutputStream::ContentLength is only used with GET and not with HEAD and PROPFIND.
+        Assertions.assertEquals("200/200/207 /extras/contentType/d1.txt 301361 8/9/8", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_D1, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d2.txt 301361 8/8/8", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_D2, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d3.txt 301361 7/7/7", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_D3, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d4.txt 301361 6/6/6", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_D4, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d5.txt 301361 5/5/5", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_D5, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/contentType/d6.txt 301361 text/plain/text/plain/text/plain", this.createAttributeFingerprint(ContentTypeTestController.MAPPING_D6, AttributeFingerprintType.ContentType));
     }
 }

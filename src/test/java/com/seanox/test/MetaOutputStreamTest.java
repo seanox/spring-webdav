@@ -33,12 +33,12 @@ import java.util.Objects;
 /**
  * Test of the MetaOutputStream functions.<br>
  * <br>
- * MetaOutputStreamTest 1.0.0 20210719<br>
+ * MetaOutputStreamTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210728
  */
 @SuppressWarnings("boxing")
 public class MetaOutputStreamTest extends AbstractTest {
@@ -76,14 +76,14 @@ public class MetaOutputStreamTest extends AbstractTest {
     @Test
     void test_A1() throws IOException {
         final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter();
-        String string = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
             if (digit >= 0)
-                string += (char)digit;
-            else string += String.valueOf(digit);
+                stringBuilder.append((char)digit);
+            else stringBuilder.append(digit);
         }
-        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", string);
+        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", stringBuilder.toString());
     }
 
     @Test
@@ -117,14 +117,14 @@ public class MetaOutputStreamTest extends AbstractTest {
     @Test
     void test_B1() throws IOException {
         final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(null);
-        String string = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
             if (digit >= 0)
-                string += (char)digit;
-            else string += String.valueOf(digit);
+                stringBuilder.append((char)digit);
+            else stringBuilder.append(digit);
         }
-        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", string);
+        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", stringBuilder.toString());
     }
 
     @Test
@@ -158,14 +158,14 @@ public class MetaOutputStreamTest extends AbstractTest {
     @Test
     void test_C1() throws IOException {
         final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
-        String string = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
             if (digit >= 0)
-                string += (char)digit;
-            else string += String.valueOf(digit);
+                stringBuilder.append((char)digit);
+            else stringBuilder.append(digit);
         }
-        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", string);
+        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", stringBuilder.toString());
     }
 
     @Test
@@ -199,14 +199,14 @@ public class MetaOutputStreamTest extends AbstractTest {
     @Test
     void test_D1() throws IOException {
         final MetaInputStreamAdapter metaInputStreamAdapter = MetaOutputStreamTest.createMetaInputStreamAdapter(-1);
-        String string = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (int loop = 0; loop < LIMIT +3; loop++) {
             final int digit = metaInputStreamAdapter.read();
             if (digit >= 0)
-                string += (char)digit;
-            else string += String.valueOf(digit);
+                stringBuilder.append((char)digit);
+            else stringBuilder.append(digit);
         }
-        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", string);
+        Assertions.assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ-1-1-1", stringBuilder.toString());
     }
 
     @Test

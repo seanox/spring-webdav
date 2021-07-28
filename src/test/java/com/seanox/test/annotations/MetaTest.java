@@ -42,12 +42,12 @@ import java.net.URI;
 /**
  * Test of the annotation {@link WebDavMetaMapping}.<br>
  * <br>
- * MetaTest 1.0.0 20210713<br>
+ * MetaTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210713
+ * @version 1.0.0 20210728
  */
 public class MetaTest extends AbstractApiTest {
 
@@ -240,17 +240,17 @@ public class MetaTest extends AbstractApiTest {
 
     @Test
     void test_CX() throws Exception {
-        Assertions.assertEquals("404/404/404 /extras/meta/c1.txt 000000 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C1, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c2.txt 300061 TesT/TesT/TesT null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C2, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c3.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C3, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c4.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C4, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c5.txt 030061 null/null 0/0/0 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C5, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c6.txt 030061 null/null 1/1/1 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C6, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c7.txt 030061 null/null 100/100/100 null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C7, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c8.txt 001061 null/null null/null 2000-01-01T00:00:00Z null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_C8, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/c9.txt 000361 null/null null/null Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT", this.createAttributeFingeprint(MetaTestController.MAPPING_C9, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/cA.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CA, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/cB.txt 000066 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CB, AttributeFingeprintType.Meta));
-        Assertions.assertEquals("200/200/207 /extras/meta/cC.txt 000061 null/null null/null null/null", this.createAttributeFingeprint(MetaTestController.MAPPING_CC, AttributeFingeprintType.Meta));
+        Assertions.assertEquals("404/404/404 /extras/meta/c1.txt 000000 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C1, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c2.txt 300061 TesT/TesT/TesT null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C2, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c3.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C3, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c4.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C4, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c5.txt 030061 null/null 0/0/0 null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C5, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c6.txt 030061 null/null 1/1/1 null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C6, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c7.txt 030061 null/null 100/100/100 null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C7, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c8.txt 001061 null/null null/null 2000-01-01T00:00:00Z null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_C8, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/c9.txt 000361 null/null null/null Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT/Sat, 01 Jan 2000 00:00:00 GMT", this.createAttributeFingerprint(MetaTestController.MAPPING_C9, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/cA.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CA, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/cB.txt 000066 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CB, AttributeFingerprintType.Meta));
+        Assertions.assertEquals("200/200/207 /extras/meta/cC.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CC, AttributeFingerprintType.Meta));
     }
 }

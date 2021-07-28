@@ -23,7 +23,6 @@ package com.seanox.webdav;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 
 /**
  * Testing private parts and/or components visible only in the package requires
@@ -35,23 +34,18 @@ import java.nio.charset.Charset;
  * library com.seanox.webdav also works without @ComponentScan and therefore
  * another package is used for the tests of the package com.seanox.webdav.<br>
  * <br>
- * XmlWriterAdapter 1.0.0 20210725<br>
+ * XmlWriterAdapter 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210728
  */
 public class XmlWriterAdapter extends XmlWriter {
 
     public XmlWriterAdapter(final OutputStream output)
             throws IOException {
         super(output);
-    }
-
-    public XmlWriterAdapter(final OutputStream output, final Charset encoding)
-            throws IOException {
-        super(output, encoding);
     }
 
     public enum ElementType {

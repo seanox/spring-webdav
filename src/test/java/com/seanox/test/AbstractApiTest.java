@@ -50,12 +50,12 @@ import java.util.Objects;
 /**
  * General implementation for the execution of API tests.<br>
  * <br>
- * AbstractApiTest 1.0.0 20210718<br>
+ * AbstractApiTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210728
  */
 @SpringBootTest(classes=Application.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -103,46 +103,46 @@ public abstract class AbstractApiTest extends AbstractTest {
         return AbstractApiTest.class.getResourceAsStream(template).readAllBytes();
     }
 
-    protected String createAttributeFingeprint(final String uri)
+    protected String createAttributeFingerprint(final String uri)
             throws Exception {
-        return this.createAttributeFingeprint(uri, null);
+        return this.createAttributeFingerprint(uri, null);
     }
 
-    protected String createAttributeFingeprint(final String uri, final AttributeFingeprintType type)
+    protected String createAttributeFingerprint(final String uri, final AttributeFingerprintType type)
             throws Exception {
 
-        final AttributeFingeprint attributeFingeprint = new AttributeFingeprint();
-        attributeFingeprint.uri = uri;
+        final AttributeFingerprint attributeFingerprint = new AttributeFingerprint();
+        attributeFingerprint.uri = uri;
 
         final MvcResult mvcResultHead = this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .head(uri))
                 .andReturn();
-        attributeFingeprint.status = String.valueOf(mvcResultHead.getResponse().getStatus());
+        attributeFingerprint.status = String.valueOf(mvcResultHead.getResponse().getStatus());
         if (mvcResultHead.getResponse().containsHeader("Content-Type"))
-            attributeFingeprint.contentTypeCount++;
+            attributeFingerprint.contentTypeCount++;
         if (mvcResultHead.getResponse().containsHeader("Content-Length"))
-            attributeFingeprint.contentLengthCount++;
+            attributeFingerprint.contentLengthCount++;
         if (mvcResultHead.getResponse().containsHeader("Last-Modified"))
-            attributeFingeprint.lastModifiedCount++;
+            attributeFingerprint.lastModifiedCount++;
 
         final MvcResult mvcResultGet = this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .get(uri))
                 .andReturn();
-        attributeFingeprint.status += "/" + mvcResultGet.getResponse().getStatus();
+        attributeFingerprint.status += "/" + mvcResultGet.getResponse().getStatus();
         if (mvcResultGet.getResponse().containsHeader("Content-Type"))
-            attributeFingeprint.contentTypeCount++;
+            attributeFingerprint.contentTypeCount++;
         if (mvcResultGet.getResponse().containsHeader("Content-Length"))
-            attributeFingeprint.contentLengthCount++;
+            attributeFingerprint.contentLengthCount++;
         if (mvcResultGet.getResponse().containsHeader("Last-Modified"))
-            attributeFingeprint.lastModifiedCount++;
+            attributeFingerprint.lastModifiedCount++;
 
         final MvcResult mvcResultPropfind = this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .request("PROPFIND", URI.create(uri)))
                 .andReturn();
-        attributeFingeprint.status += "/" + mvcResultPropfind.getResponse().getStatus();
+        attributeFingerprint.status += "/" + mvcResultPropfind.getResponse().getStatus();
 
         String propfindContentType = "";
         String propfindContentLength = "";
@@ -155,14 +155,14 @@ public abstract class AbstractApiTest extends AbstractTest {
             final Document xmlDocument = builder.parse(new ByteArrayInputStream(mvcResultPropfind.getResponse().getContentAsString(StandardCharsets.UTF_8).getBytes(StandardCharsets.UTF_8)));
             final XPath xpath = XPathFactory.newInstance().newXPath();
 
-            attributeFingeprint.contentTypeCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontenttype)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-            attributeFingeprint.contentLengthCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontentlength)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-            attributeFingeprint.creationDateCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/creationdate)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-            attributeFingeprint.lastModifiedCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getlastmodified)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-            attributeFingeprint.isReadOnlyCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/isreadonly)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-            attributeFingeprint.isReadOnlyCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/isreadonly[text()='true'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
-            attributeFingeprint.isHiddenCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/ishidden)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
-            attributeFingeprint.isHiddenCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/ishidden[text()='true'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
+            attributeFingerprint.contentTypeCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontenttype)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
+            attributeFingerprint.contentLengthCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getcontentlength)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
+            attributeFingerprint.creationDateCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/creationdate)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
+            attributeFingerprint.lastModifiedCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/getlastmodified)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
+            attributeFingerprint.isReadOnlyCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/isreadonly)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
+            attributeFingerprint.isReadOnlyCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/isreadonly[text()='true'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
+            attributeFingerprint.isHiddenCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/ishidden)").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
+            attributeFingerprint.isHiddenCount += ((Number)xpath.compile("count(/multistatus/response/propstat/prop/ishidden[text()='true'])").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue() *5;
 
             propfindContentType = xpath.compile("/multistatus/response/propstat/prop/getcontenttype").evaluate(xmlDocument);
             propfindContentLength = xpath.compile("/multistatus/response/propstat/prop/getcontentlength").evaluate(xmlDocument);
@@ -170,38 +170,38 @@ public abstract class AbstractApiTest extends AbstractTest {
             propfindLastModified = xpath.compile("/multistatus/response/propstat/prop/getlastmodified").evaluate(xmlDocument);
         }
 
-        String fingeprint = attributeFingeprint.toString();
-        if (AttributeFingeprintType.Meta.equals(type)
-                || AttributeFingeprintType.ContentType.equals(type)) {
-            fingeprint += " " + mvcResultHead.getResponse().getHeader("Content-Type");
-            fingeprint += "/" + mvcResultGet.getResponse().getHeader("Content-Type");
+        String fingerprint = attributeFingerprint.toString();
+        if (AttributeFingerprintType.Meta.equals(type)
+                || AttributeFingerprintType.ContentType.equals(type)) {
+            fingerprint += " " + mvcResultHead.getResponse().getHeader("Content-Type");
+            fingerprint += "/" + mvcResultGet.getResponse().getHeader("Content-Type");
             if (!propfindContentType.isBlank())
-                fingeprint += "/" + propfindContentType;
+                fingerprint += "/" + propfindContentType;
         }
-        if (AttributeFingeprintType.Meta.equals(type)
-                || AttributeFingeprintType.ContentLength.equals(type)) {
-            fingeprint += " " + mvcResultHead.getResponse().getHeader("Content-Length");
-            fingeprint += "/" + mvcResultGet.getResponse().getHeader("Content-Length");
+        if (AttributeFingerprintType.Meta.equals(type)
+                || AttributeFingerprintType.ContentLength.equals(type)) {
+            fingerprint += " " + mvcResultHead.getResponse().getHeader("Content-Length");
+            fingerprint += "/" + mvcResultGet.getResponse().getHeader("Content-Length");
             if (!propfindContentLength.isBlank())
-                fingeprint += "/" + propfindContentLength;
+                fingerprint += "/" + propfindContentLength;
         }
-        if (AttributeFingeprintType.Meta.equals(type)
-                || AttributeFingeprintType.CreationDate.equals(type)) {
+        if (AttributeFingerprintType.Meta.equals(type)
+                || AttributeFingerprintType.CreationDate.equals(type)) {
             if (!propfindCreationDate.isBlank())
-                fingeprint += " " + propfindCreationDate;
+                fingerprint += " " + propfindCreationDate;
         }
-        if (AttributeFingeprintType.Meta.equals(type)
-                || AttributeFingeprintType.LastModified.equals(type)) {
-            fingeprint += " " + mvcResultHead.getResponse().getHeader("Last-Modified");
-            fingeprint += "/" + mvcResultGet.getResponse().getHeader("Last-Modified");
+        if (AttributeFingerprintType.Meta.equals(type)
+                || AttributeFingerprintType.LastModified.equals(type)) {
+            fingerprint += " " + mvcResultHead.getResponse().getHeader("Last-Modified");
+            fingerprint += "/" + mvcResultGet.getResponse().getHeader("Last-Modified");
             if (!propfindLastModified.isBlank())
-                fingeprint += "/" + propfindLastModified;
+                fingerprint += "/" + propfindLastModified;
         }
 
-        return fingeprint;
+        return fingerprint;
     }
 
-    private static class AttributeFingeprint {
+    private static class AttributeFingerprint {
 
         private String uri;
         private String status;
@@ -225,7 +225,7 @@ public abstract class AbstractApiTest extends AbstractTest {
         }
     }
 
-    public enum AttributeFingeprintType {
+    public enum AttributeFingerprintType {
         Meta,
         ContentType,
         ContentLength,

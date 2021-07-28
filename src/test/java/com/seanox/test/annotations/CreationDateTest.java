@@ -32,12 +32,12 @@ import org.junit.jupiter.api.Test;
  * Test the function of the CreationDate attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * CreationDateTest 1.0.0 20210721<br>
+ * CreationDateTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210721
+ * @version 1.0.0 20210728
  */
 public class CreationDateTest extends AbstractApiTest {
 
@@ -59,32 +59,32 @@ public class CreationDateTest extends AbstractApiTest {
 
     @Test
     void test_CX() throws Exception {
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c1.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C1, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c2.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C2, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c3.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C3, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c4.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C4, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c5.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C5, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c6.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C6, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c7.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C7, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c8.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C8, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/c9.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_C9, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cA.txt 301361 2456-01-02T03:04:05Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CA, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cB.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CB, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cC.txt 301361 2456-01-02T03:04:05Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CC, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cD.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CD, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cE.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CE, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cF.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CF, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/cG.txt 300061", this.createAttributeFingeprint(CreationDateTestController.MAPPING_CG, AttributeFingeprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c1.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C1, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c2.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C2, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c3.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C3, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c4.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C4, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c5.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C5, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c6.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C6, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c7.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C7, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c8.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C8, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/c9.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_C9, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cA.txt 301361 2456-01-02T03:04:05Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CA, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cB.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CB, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cC.txt 301361 2456-01-02T03:04:05Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CC, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cD.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CD, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cE.txt 301361 1956-01-02T03:04:05Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CE, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cF.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CF, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/cG.txt 300061", this.createAttributeFingerprint(CreationDateTestController.MAPPING_CG, AttributeFingerprintType.CreationDate));
     }
 
     @Test
     void test_DX() throws Exception {
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d1.txt 301361 2008-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D1, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d2.txt 301361 2008-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D2, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d3.txt 301361 2007-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D3, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d4.txt 301361 2006-01-01T00:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D4, AttributeFingeprintType.CreationDate));
-        Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 2004-12-31T23:00:00Z", this.createAttributeFingeprint(CreationDateTestController.MAPPING_D5, AttributeFingeprintType.CreationDate));
-        String timestampD6 = this.createAttributeFingeprint(CreationDateTestController.MAPPING_D6, AttributeFingeprintType.CreationDate);
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d1.txt 301361 2008-01-01T00:00:00Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_D1, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d2.txt 301361 2008-01-01T00:00:00Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_D2, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d3.txt 301361 2007-01-01T00:00:00Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_D3, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d4.txt 301361 2006-01-01T00:00:00Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_D4, AttributeFingerprintType.CreationDate));
+        Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 2004-12-31T23:00:00Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_D5, AttributeFingerprintType.CreationDate));
+        String timestampD6 = this.createAttributeFingerprint(CreationDateTestController.MAPPING_D6, AttributeFingerprintType.CreationDate);
         timestampD6 = timestampD6.replaceAll("T.*$", "");
         Assertions.assertEquals(String.format("200/200/207 /extras/creationDate/d6.txt 301361 %1$tY-%1$tm-%1$td", DateTimeAdapter.getBuildDate()), timestampD6);
     }

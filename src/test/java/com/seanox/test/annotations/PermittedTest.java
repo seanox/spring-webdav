@@ -33,32 +33,32 @@ import org.junit.jupiter.api.Test;
  * {@link WebDavMapping} and
  * {@link WebDavInputMapping}.<br>
  * <br>
- * PermittedTest 1.0.0 20210724<br>
+ * PermittedTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210724
+ * @version 1.0.0 20210728
  */
 public class PermittedTest extends AbstractApiTest {
 
     @Test
     void test_DX1() throws Exception {
-        Assertions.assertEquals("404/404/404 /extras/permitted/d1.txt 000000", this.createAttributeFingeprint(PermittedTestController.MAPPING_D1));
-        Assertions.assertEquals("200/200/207 /extras/permitted/d2.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_D2));
-        Assertions.assertEquals("200/200/207 /extras/permitted/d3.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_D3));
-        Assertions.assertEquals("200/200/207 /extras/permitted/d4.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_D4));
-        Assertions.assertEquals("200/200/207 /extras/permitted/d5.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_D5));
-        Assertions.assertEquals("200/200/207 /extras/permitted/d6.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_D6));
+        Assertions.assertEquals("404/404/404 /extras/permitted/d1.txt 000000", this.createAttributeFingerprint(PermittedTestController.MAPPING_D1));
+        Assertions.assertEquals("200/200/207 /extras/permitted/d2.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_D2));
+        Assertions.assertEquals("200/200/207 /extras/permitted/d3.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_D3));
+        Assertions.assertEquals("200/200/207 /extras/permitted/d4.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_D4));
+        Assertions.assertEquals("200/200/207 /extras/permitted/d5.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_D5));
+        Assertions.assertEquals("200/200/207 /extras/permitted/d6.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_D6));
     }
 
     @Test
     void test_DX2() throws Exception {
-        Assertions.assertEquals("200/200/207 /extras/permitted/dA.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_DA));
-        Assertions.assertEquals("404/404/404 /extras/permitted/dB.txt 000000", this.createAttributeFingeprint(PermittedTestController.MAPPING_DB));
-        Assertions.assertEquals("404/404/404 /extras/permitted/dC.txt 000000", this.createAttributeFingeprint(PermittedTestController.MAPPING_DC));
-        Assertions.assertEquals("404/404/404 /extras/permitted/dD.txt 000000", this.createAttributeFingeprint(PermittedTestController.MAPPING_DD));
-        Assertions.assertEquals("404/404/404 /extras/permitted/dE.txt 000000", this.createAttributeFingeprint(PermittedTestController.MAPPING_DE));
-        Assertions.assertEquals("200/200/207 /extras/permitted/dF.txt 301361", this.createAttributeFingeprint(PermittedTestController.MAPPING_DF));
+        Assertions.assertEquals("200/200/207 /extras/permitted/dA.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_DA));
+        Assertions.assertEquals("404/404/404 /extras/permitted/dB.txt 000000", this.createAttributeFingerprint(PermittedTestController.MAPPING_DB));
+        Assertions.assertEquals("404/404/404 /extras/permitted/dC.txt 000000", this.createAttributeFingerprint(PermittedTestController.MAPPING_DC));
+        Assertions.assertEquals("404/404/404 /extras/permitted/dD.txt 000000", this.createAttributeFingerprint(PermittedTestController.MAPPING_DD));
+        Assertions.assertEquals("404/404/404 /extras/permitted/dE.txt 000000", this.createAttributeFingerprint(PermittedTestController.MAPPING_DE));
+        Assertions.assertEquals("200/200/207 /extras/permitted/dF.txt 301361", this.createAttributeFingerprint(PermittedTestController.MAPPING_DF));
     }
 }

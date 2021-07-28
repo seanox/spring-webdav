@@ -33,12 +33,12 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of the expressions.
  *
- * ExpressionTest 1.0.0 20210723<br>
+ * ExpressionTest 1.0.0 20210728<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210723
+ * @version 1.0.0 20210728
  */
 public class ExpressionTest extends AbstractApiTest {
 
@@ -97,11 +97,11 @@ public class ExpressionTest extends AbstractApiTest {
 
     @Test
     void test_CX() throws Exception {
-        Assertions.assertEquals("200/200/207 /extras/expression/a1.txt 001361 null/null", this.createAttributeFingeprint(ExpressionTestController.MAPPING_A1, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/expression/a2.txt 001361 null/null", this.createAttributeFingeprint(ExpressionTestController.MAPPING_A2, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/expression/a3.txt 001361 null/null", this.createAttributeFingeprint(ExpressionTestController.MAPPING_A3, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/expression/a4.txt 001361 null/null", this.createAttributeFingeprint(ExpressionTestController.MAPPING_A4, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/expression/a5.txt 001361 null/null", this.createAttributeFingeprint(ExpressionTestController.MAPPING_A5, AttributeFingeprintType.ContentType));
-        Assertions.assertEquals("200/200/207 /extras/expression/a6.txt 001361 null/null", this.createAttributeFingeprint(ExpressionTestController.MAPPING_A6, AttributeFingeprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/expression/a1.txt 001361 null/null", this.createAttributeFingerprint(ExpressionTestController.MAPPING_A1, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/expression/a2.txt 001361 null/null", this.createAttributeFingerprint(ExpressionTestController.MAPPING_A2, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/expression/a3.txt 001361 null/null", this.createAttributeFingerprint(ExpressionTestController.MAPPING_A3, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/expression/a4.txt 001361 null/null", this.createAttributeFingerprint(ExpressionTestController.MAPPING_A4, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/expression/a5.txt 001361 null/null", this.createAttributeFingerprint(ExpressionTestController.MAPPING_A5, AttributeFingerprintType.ContentType));
+        Assertions.assertEquals("200/200/207 /extras/expression/a6.txt 001361 null/null", this.createAttributeFingerprint(ExpressionTestController.MAPPING_A6, AttributeFingerprintType.ContentType));
     }
 }
