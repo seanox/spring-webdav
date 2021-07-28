@@ -99,11 +99,11 @@ class FinancialController {
         financialCosts.setData(input.readAllBytes());
         this.financialService.saveFinancialCosts(financialCosts);
     }
-    @WebDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute=WebDavMappingAttribute.ContentLength)
     Integer getFinancialCostsContentLength() {
         return Integer.valueOf(this.financialService.readFinancialCosts().getData().length);
     }
-    @WebDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute= WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=FINANCIAL_COSTS_XLSX, attribute=WebDavMappingAttribute.LastModified)
     Date getFinancialCostsLastModified() {
         return this.financialService.readFinancialCosts().getLastModified();
     }
@@ -118,11 +118,11 @@ class FinancialController {
         final FinancialReportStatistic financialReportStatistic = this.financialService.readFinancialReportStatistic();
         output.write(financialReportStatistic.getData());
     }
-    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, attribute=WebDavMappingAttribute.ContentLength)
     Integer getFinancialReportStatisticLength() {
         return Integer.valueOf(this.financialService.readFinancialReportStatistic().getData().length);
     }
-    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, attribute= WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_STATISTIC_PPTX, attribute=WebDavMappingAttribute.LastModified)
     Date getFinancialReportStatisticLastModified() {
         return this.financialService.readFinancialReportStatistic().getLastModified();
     }
@@ -137,11 +137,11 @@ class FinancialController {
         final FinancialReportSales financialReportSales = this.financialService.readFinancialReportSales();
         output.write(financialReportSales.getData());
     }
-    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_SALES_PPTX, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_SALES_PPTX, attribute=WebDavMappingAttribute.ContentLength)
     Integer getFinancialReportSalesLength() {
         return Integer.valueOf(this.financialService.readFinancialReportSales().getData().length);
     }
-    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_SALES_PPTX, attribute= WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=FINANCIAL_REPORTS_SALES_PPTX, attribute=WebDavMappingAttribute.LastModified)
     Date getFinancialReportSalesLastModified() {
         return this.financialService.readFinancialReportSales().getLastModified();
     }

@@ -56,7 +56,7 @@ public class SignaturesTestController {
     // is used as a placeholder and filled when called.
 
     // {@link WebDavMapping}
-    // URI, final Properties, final MetaProperties, final MetaOutputStream, Annotation.AnnotationType.Mapping
+    // URI, Properties, MetaProperties, MetaOutputStream, Annotation.AnnotationType.Mapping
     // expected data type from return value: void
     // - without
     // - complete +3 more object
@@ -92,7 +92,7 @@ public class SignaturesTestController {
     }
 
     // {@link WebDavInputMapping}
-    // URI, final Properties, final MetaProperties, MetaInputStream, Annotation.AnnotationType.Input (not public)
+    // URI, Properties, MetaProperties, MetaInputStream, Annotation.AnnotationType.Input (not public)
     // expected data type from return value: void
     // - without
     // - complete +3 more object
@@ -180,7 +180,7 @@ public class SignaturesTestController {
     }
 
     // {@link WebDavAttributeMapping}
-    // URI, final Properties, WebDavMappingAttribute
+    // URI, Properties, WebDavMappingAttribute
     // expected data type from return value: depending on the attributes - Boolean, Integer, String, Date
     // - without
     // - complete +3 more object

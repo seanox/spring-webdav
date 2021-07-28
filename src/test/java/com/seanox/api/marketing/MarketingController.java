@@ -70,11 +70,11 @@ class MarketingController {
         marketingNewsletter.setData(output.readAllBytes());
         this.marketingService.saveMarketingNewsletter(marketingNewsletter);
     }
-    @WebDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=WebDavMappingAttribute.ContentLength)
     Integer getMarketingNewsletterLength() {
         return Integer.valueOf(this.marketingService.readMarketingNewsletter().getData().length);
     }
-    @WebDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute= WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MARKETING_NEWSLETTER_DOTX, attribute=WebDavMappingAttribute.LastModified)
     Date getMarketingNewsletterLastModified() {
         return this.marketingService.readMarketingNewsletter().getLastModified();
     }
@@ -91,11 +91,11 @@ class MarketingController {
         marketingFlyer.setData(output.readAllBytes());
         this.marketingService.saveMarketingFlyer(marketingFlyer);
     }
-    @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute= WebDavMappingAttribute.ContentLength)
+    @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=WebDavMappingAttribute.ContentLength)
     Integer getMarketingFlyerLength() {
         return Integer.valueOf(this.marketingService.readMarketingFlyer().getData().length);
     }
-    @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute= WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=WebDavMappingAttribute.LastModified)
     Date getMarketingFlyerLastModified() {
         return this.marketingService.readMarketingFlyer().getLastModified();
     }
