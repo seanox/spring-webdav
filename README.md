@@ -12,7 +12,6 @@
 
 
 # Description
-
 WebDAV mapping for Spring Boot  
 Use an API like a network drive, open data as files, edit and save them.  
 Why use a frontend when the data can be edited directly in an Office application?
@@ -21,7 +20,6 @@ Why use a frontend when the data can be edited directly in an Office application
 
 
 # Features
-
 - Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
 - Declarative approach with annotations, also supports Spring Expression Language  
 - Supports __WebDAV Class 1 + 2__ and thus also MS Office (Excel, Word, PowerPoint, ...)  
@@ -31,7 +29,6 @@ Why use a frontend when the data can be edited directly in an Office application
 
 
 # Licence Agreement
-
 Seanox Software Solutions ist ein Open-Source-Projekt, im Folgenden
 Seanox Software Solutions oder kurz Seanox genannt.
 
@@ -53,13 +50,11 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # System Requirement
-
 - Java 11 or higher
 - Spring Boot
 
 
 # Downloads
-
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav (pending)
 ```xml
 <dependency>
@@ -71,8 +66,13 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav (pending)
 
 
 # Manuals
-
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
+
+# Changes (Change Log)
+## 1.0.0 20210729 (summary of the current version)
+NT: Release is available  
+
+[Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
 
 
 # Contact
