@@ -58,9 +58,9 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 - Spring Boot
 
 
-# Download
+# Downloads
 
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav (pending)
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
