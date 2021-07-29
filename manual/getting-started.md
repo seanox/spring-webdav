@@ -23,6 +23,7 @@ access to a Spring Boot based API without an additional Frontend.
 * [Integration](#integration)
 * [Registration of WebDAV filter](#registration-of-webdav-filter)
 * [Definition of Sitemap](#definition-of-sitemap)
+* [Attributes of the virtual entity](#attributes-of-the-virtual-entity)  
 * [Starting the application](#starting-the-application)
 * [Mapping from network drive](#)
 * [Read-only access](#)
@@ -45,9 +46,70 @@ for a Maven based project.
 ```
 
 ## Registration of WebDAV filter
-TODO:
+To use the WebDAV implementation, the WebDavFilter must be registered, which is
+very easy in Spring. At least a URL pattern is needed that defines the context
+path of the WebDavFilter. Thus, the WebDAV implementation should always use its
+own scope. Optionally, the order of filter can be specified, which is useful
+when using filter chains.
+
+Example of a easy registration, directly in an application:
+```
+@SpringBootApplication
+public class Application extends SpringBootServletInitializer {
+
+    public static void main(final String... options) {
+        final SpringApplication springApplication = new SpringApplication(Application.class);
+        springApplication.setBannerMode(Banner.Mode.CONSOLE);
+        springApplication.run(options);
+    }
+
+    @Bean
+    public FilterRegistrationBean someFilterRegistration() {
+        final FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new WebDavFilter());
+        registration.addUrlPatterns("/*");
+        registration.setOrder(1);
+        return registration;
+    }
+}
+```
 
 ## Definition of Sitemap
+The WebDAV implementation uses a virtual file system. This file system is built
+per annotations in the sitemap. The sitemap cannot be accessed directly, it is
+only built via the annotations. The annotations are applied directly in the
+managed beans, e.g. in `Component`, `Controller`, `Service`, `RestController`,
+...
+
+The WebDAV implementation contains various annotations. The central component
+is `WebDavMapping`. This defines the virtual entities of the Sitemap and thus
+from the virtual file system. The `WebDavMapping` defines a virtual path for
+this purpose, which is later used as a reference in other WebDav annotations.
+The paths of the annotations are case-insensitive.
+
+```
+@RestController
+public class ExampleController {
+
+    @WebDavMapping(path="/example/file.txt")
+    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+    
+    ...
+}
+```
+
+The WebDAV relevant annotations always have a reference to methods which are
+called by the WebDAV implementation. The methods generally have no fixed
+signature and use the data types of used arguments as placeholders which are
+then filled with the available data. Unknown placeholders are ignored and used
+with `null`. Multiple used placeholders are filled with the same data
+instances.
+
+TODO:
+
+## Attributes of the virtual entity
 TODO:
 
 ## Starting the application
