@@ -35,12 +35,12 @@ import java.util.Date;
  *   entity.
  * </p>
  *
- * MetaProperties 1.0.0 20210728<br>
+ * MetaProperties 1.0.0 20210729<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.0.0 20210729
  */
 @Setter(AccessLevel.PACKAGE)
 @Builder(access=AccessLevel.PACKAGE)
@@ -68,7 +68,7 @@ public class MetaProperties implements Cloneable {
      * @return the path of the virtual entity as URI
      */
     public URI getUri() {
-        return this.uri;
+        return URI.create(this.uri.toString());
     }
 
     /**
