@@ -13,9 +13,18 @@
 
 
 # Description
-WebDAV mapping for Spring Boot  
+WebDAV mapping for Spring Boot.  
 Use an API like a network drive, open data as files, edit and save them.  
 Why use a frontend when the data can be edited directly in an Office application?
+
+Seanox Spring WebDAV is a minimal implementation of WebDAV 1 + 2 for
+integration into a Spring Boot based API. The implementation is based on a
+virtual file system with virtual entities as an abstraction. The virtual file
+system is created strictly via annotations in the managed beans and, like the
+virtual entities, does not use any physical file structures.
+
+A user can use this virtual file system as a network drive and has direct
+access to a Spring Boot based API without an additional Frontend.
 
 <img src="https://github.com/seanox/spring-webdav/raw/main/manual/animation.gif"/>
 
