@@ -13,3 +13,28 @@
 ## Contents Overview
 
 ## Integration
+
+## Maven
+`mvn clean install`  
+Downloads the dependencies and then executes the tests.
+
+`mvn clean install -DskipTests`  
+Downloads the dependencies and skips the tests.
+
+`mvn clean test`  
+Rebuilds the project and executes the tests.
+
+`mvn clean compile site`  
+Rebuilds the project, starts the static code analysis and creates the report:  
+`./spring-webdav/target/site/project-reports.html`
+
+`mvn clean package -DskipTests`  
+`mvn -Dspring.profiles.active=demo -Dexec.mainClass=com.seanox.api.Application -Dexec.classpathScope=test exec:java`  
+Rebuilds the project and starts the demo without test paths.  
+`net use x: http://127.0.0.1:8080 /persistent:no`  
+Maps the WebDAV as drive X: in Windows (not permanent).  
+`net use x: /delete /YES`  
+Remove the mapping for drive X: in Windows.
+
+`mvn clean deploy`
+Rebuilds the project and publish a release.
