@@ -24,7 +24,7 @@ system is created strictly via annotations in the managed beans and, like the
 virtual entities, does not use any physical file structures.
 
 A user can use this virtual file system as a network drive and has direct
-access to a Spring Boot based API without an additional Frontend.
+access to a Spring Boot based API without an additional frontend.
 
 <img src="https://github.com/seanox/spring-webdav/raw/main/manual/animation.gif"/>
 
