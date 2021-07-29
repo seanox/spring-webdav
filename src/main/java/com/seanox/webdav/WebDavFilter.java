@@ -118,12 +118,12 @@ import java.util.stream.IntStream;
  *   </li>
  * </ul>
  * <br>
- * WebDavFilter 1.0.0 20210727<br>
+ * WebDavFilter 1.0.0 20210729<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210727
+ * @version 1.0.0 20210729
  */
 public class WebDavFilter extends HttpFilter {
 
@@ -275,13 +275,6 @@ public class WebDavFilter extends HttpFilter {
                 for (final Class<?> source : WebDavFilter.getClassHierarchy(object)) {
                     for (final Method method : source.getDeclaredMethods()) {
                         for (final java.lang.annotation.Annotation annotation : method.getDeclaredAnnotations()) {
-                            // TODO: Check for uniqueness of annotations, multiple occurrences cause exception
-                            //       e.g @WebDavAttributeMapping(path=MAPPING_D4, attribute=WebDavMappingAttribute.ContentType)
-                            //           methodA...
-                            //           @WebDavAttributeMapping(path=MAPPING_D4, attribute=WebDavMappingAttribute.ContentType)
-                            //           methodB...
-                            //       the same for meta or input
-                            //       One annotation multiple targets/methods
                             if (annotation.annotationType().equals(WebDavAttributeMapping.class))
                                 annotations.add(Annotation.Attribute.create((WebDavAttributeMapping)annotation, object, method));
                             else if (annotation.annotationType().equals(WebDavAttributeMapping.WebDavAttributeMappings.class))
@@ -318,6 +311,29 @@ public class WebDavFilter extends HttpFilter {
             for (final Annotation annotation : annotations)
                 if (!mappingPaths.contains(annotation.getPath().toLowerCase()))
                     throw new AnnotationException("Mapping annotation missing for path: " + annotation.getPath());
+
+            // Check for uniqueness of annotations, multiple occurrences lead to an AnnotationException:
+            //     e.g. @WebDavAttributeMapping(path=/example/file.txt, attribute=WebDavMappingAttribute.ContentType)
+            //          methodA...
+            //          @WebDavAttributeMapping(path=/example/file.txt, attribute=WebDavMappingAttribute.ContentType)
+            //          methodB...
+            // The attribute mapping for a path and attribute for different callbacks.
+            // It would always be random which method the VM uses.
+
+            final List<String> register = new ArrayList<>();
+            for (Annotation annotation : annotations) {
+                final List<String> collector = new ArrayList<>();
+                collector.add(annotation.getClass().getSimpleName());
+                collector.add(annotation.getPath().toLowerCase());
+                if (annotation instanceof Annotation.Attribute)
+                    collector.add(((Annotation.Attribute)annotation).attributeType.name());
+                final String fingerprint = String.join(":", collector.toArray(new String[0]));
+                if (register.contains(fingerprint))
+                    if (Annotation.AnnotationType.Mapping.equals(annotation.getType()))
+                        throw new AnnotationException("Ambiguous " + annotation.getType() + ": " + annotation.getPath());
+                    else throw new AnnotationException("Ambiguous " + annotation.getType() + " Mapping: " + annotation.getPath());
+                register.add(fingerprint);
+            }
 
             for (final String mappingPath : mappingPaths)
                 try {this.sitemap.map(annotations.stream().filter(annotation -> annotation.getPath().equalsIgnoreCase(mappingPath)).toArray(Annotation[]::new));
