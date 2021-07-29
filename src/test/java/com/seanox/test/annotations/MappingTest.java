@@ -21,10 +21,10 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.webdav.WebDavMapping;
+import com.seanox.test.AbstractTest;
 import com.seanox.webdav.SitemapAdapter;
 import com.seanox.webdav.SitemapExceptionAdapter;
-import com.seanox.test.AbstractTest;
+import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -123,4 +123,15 @@ public class MappingTest extends AbstractTest {
                 "  - sales.pptx";
         Assertions.assertEquals(pattern, output);
     }
+
+    // The following test is difficult to implement, because the expected
+    // exception only occurs when initializing the filter and the filter
+    // requires the bean scan of Spring.
+    // expected: com.seanox.webdav.AnnotationException: Ambiguous Attribute Mapping: /example/file.txt
+    // @WebDavMapping(path="/test/1.txt")
+    // @WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.ContentType)
+    // @WebDavAttributeMapping(path="/example/file.txt", attribute=WebDavMappingAttribute.ContentType)
+    // @Test
+    // void test_8() throws Exception {
+    // }
 }
