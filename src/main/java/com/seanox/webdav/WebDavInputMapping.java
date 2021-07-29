@@ -57,10 +57,6 @@ import java.net.URI;
  *     nested map. The keys in the map are case insensitive.
  *   </li>
  *   <li>
- *     <b>{@link WebDavMappingAttribute}</b><br>
- *     The attribute requested with the method.
- *   </li>
- *   <li>
  *     <b>{@link MetaProperties}</b><br>
  *     MetaProperties, read-only collector with all attributes of the virtual
  *     entity.
@@ -75,19 +71,19 @@ import java.net.URI;
  * </p>
  * <pre>
  *   &#64;WebDavInputMapping(path="/example/file.txt")
- *   void putFile(final MetaInputStream input) throws IOException {
+ *   void putEntity(final MetaInputStream input) throws IOException {
  *       ...
  *   }
 
  *   &#64;WebDavInputMapping(path="/example/file.txt", accept="text/*", contentLengthMax=1073741824)
- *   void putEnity(final MetaInputStream input) throws IOException {
+ *   void putEntity(final MetaInputStream input) throws IOException {
  *       ...
  *   }
  *
  *   &#64;WebDavInputMapping(path="/example/fileA.txt", accept="text/*", contentLengthMax=1073741824)
  *   &#64;WebDavInputMapping(path="/example/fileB.txt", accept="text/*", contentLengthMax=1073741824)
  *   &#64;WebDavInputMapping(path="/example/fileC.txt", accept="text/*", contentLengthMax=1073741824)
- *   void putEnity(final URI uri, final Properties properties, final MetaProperties metaProperties, final MetaInputStream input) throws IOException {
+ *   void putEntity(final URI uri, final Properties properties, final MetaProperties metaProperties, final MetaInputStream input) throws IOException {
  *       ...
  *   }
  *
