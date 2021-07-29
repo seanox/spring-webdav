@@ -26,7 +26,8 @@ Why use a frontend when the data can be edited directly in an Office application
 - Declarative approach with annotations, also supports Spring Expression Language  
 - Supports __WebDAV Class 1 + 2__ and thus also MS Office (Excel, Word, PowerPoint, ...)  
   but it does not create or transform Office documents automatically
-- ...
+- Supports use as a network drive
+- Supports extended file attributes for Windows
 
 
 # Licence Agreement
@@ -53,11 +54,25 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # System Requirement
 
+- Java 11 or higher
+- Spring Boot
 
-# Downloads
+
+# Download (coming soon)
+
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
+```xml
+<dependency>
+    <groupId>com.seanox</groupId>
+    <artifactId>seanox-spring-webdav</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
 
 # Manuals
+
+[Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 
 # Contact
