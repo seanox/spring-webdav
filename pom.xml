@@ -11,7 +11,7 @@
 
   <groupId>com.seanox</groupId>
   <artifactId>seanox-spring-webdav</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>spring-webdav</name>
   <description>
     WebDAV mapping for Spring Boot
@@ -89,18 +89,6 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
-        <!--TODO: Bug - Here two Java processes are started, but only one can be terminated :-( -->
-        <configuration>
-          <executable>mvn</executable>
-          <arguments>
-            <argument>clean</argument>
-            <argument>package</argument>
-            <argument>-DskipTests</argument>
-            <argument>-Dexec.mainClass=com.seanox.api.Application</argument>
-            <argument>-Dexec.classpathScope=test</argument>
-            <argument>exec:java</argument>
-          </arguments>
-        </configuration>
       </plugin>
 
       <!-- test only -->
