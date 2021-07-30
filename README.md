@@ -65,7 +65,7 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
 # Downloads
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav (pending)
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
