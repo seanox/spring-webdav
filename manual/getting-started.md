@@ -248,9 +248,9 @@ public class ExampleController {
         return new Date();
     }
 
-    @WebDavAttributeMapping(path="/example/fileA.txt", )
-    @WebDavAttributeMapping(path="/example/fileB.txt")
-    @WebDavAttributeMapping(path="/example/fileC.txt")
+    @WebDavAttributeMapping(path="/example/fileA.txt", attribute=WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path="/example/fileB.txt", attribute=WebDavMappingAttribute.LastModified)
+    @WebDavAttributeMapping(path="/example/fileC.txt", attribute=WebDavMappingAttribute.LastModified)
     Date getExampleEntitiesLastModified() {
         return new Date();
     }
