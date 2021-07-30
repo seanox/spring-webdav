@@ -24,6 +24,11 @@ access to a Spring Boot based API without an additional frontend.
 * [Registration of WebDAV filter](#registration-of-webdav-filter)
 * [Definition of Sitemap](#definition-of-sitemap)
 * [Attributes of the virtual entity](#attributes-of-the-virtual-entity)  
+  * [Default value](#default-value-lowest-priority)
+  * [Static value from annotation](#static-value-from-annotation)
+  * [Dynamic value from the annotation as expression](#dynamic-value-from-the-annotation-as-expression)
+  * [Dynamic value from the meta-method implementation](#dynamic-value-from-the-meta-method-implementation)
+  * [Dynamic value from the attribute-method implementation](#dynamic-value-from-the-attribute-method-implementation-highest-priority)
 * [Starting the application](#starting-the-application)
 * [Mapping from network drive](#)
 * [Read-only access](#)
@@ -37,7 +42,7 @@ Create a new Spring Boot based project e.g. with https://start.spring.io or use
 an existing one and add the dependencies to the project, e.g. in the `pom.xml`
 for a Maven based project.
 
-```
+```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
@@ -53,7 +58,8 @@ own scope. Optionally, the order of filter can be specified, which is useful
 when using filter chains.
 
 Example of a easy registration, directly in an application:
-```
+
+```java
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
@@ -87,7 +93,7 @@ from the virtual file system. The `WebDavMapping` defines a virtual path for
 this purpose, which is later used as a reference in other WebDav annotations.
 The paths of the annotations are case-insensitive.
 
-```
+```java
 @RestController
 public class ExampleController {
 
@@ -95,6 +101,13 @@ public class ExampleController {
     void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
+
+    @WebDavMapping(path="/example/fileA.txt")
+    @WebDavMapping(path="/example/fileB.txt")
+    @WebDavMapping(path="/example/fileC.txt")
+    void getExampleEntities(final URI uri, final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }    
     
     ...
 }
@@ -110,7 +123,141 @@ instances.
 TODO:
 
 ## Attributes of the virtual entity
+For WebDAV, file attributes are an important thing. Especially the last change
+is important, because WebDAV is designed for versioning among other things,
+even if it has no direct use in this WebDAV implementation.    
+
+Following file attributes are supported:
+- __ContentType__ indicates the media type of the entity
+- __ContentLength__ is the size of the entity, in decimal number of bytes 
+- __CreationDate__ the last modification date of the entity, used to compare
+  several versions of the same entity
+- __LastModified__ is the last modification of the entity and the basis for the
+  ETag, both for comparing different versions
+- __ReadOnly__ indicates if the entity is read-only.
+- __Hidden__ indicates if the entity is hidden but usable
+
+The following additional attributes are supported:
+- __Accepted__ internal attribute that indicates if the request is valid for
+  the entity; if not the request will be responded with status 400
+- __Permitted__ internal attribute that specifies if the request is permitted
+  for the entity; if not, the request is responded with status 404
+
+Both affect all methods except `OPTIONS`.
+
+Why status 404 instead of 401?  
+It should not be possible to scan the folder structure.
+
+Attributes can be defined in different ways with different priority (ascending).
+
+### Default value (lowest priority)
+
+Without further definition, the following default values are used:
+
+| Attribute       | Default Value                       |
+| --------------- |------------------------------------ |
+| `ContentType`   | `application/octet-stream`          |
+| `ContentLength` | `-1`                                |
+| `CreationDate`  | build date of the application / jar |
+| `LastModified`  | build date of the application / jar |
+| `ReadOnly`      | `true`                              |
+| `Hidden`        | `false`                             |
+| `Accepted`      | `true`                              |
+| `Permitted`     | `true`                              |
+
+### Static value from annotation
 TODO:
+
+```java
+@RestController
+public class ExampleController {
+
+    @WebDavMapping(path="/example/file.txt", lastModified="2000-01-01 00:00:00")
+    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+    
+    ...
+}
+```
+
+### Dynamic value from the annotation as expression
+TODO:
+
+```java
+@RestController
+public class ExampleController {
+
+    @WebDavMapping(path="/example/file.txt", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")
+    })
+    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+    
+    ...
+}
+```
+
+### Dynamic value from the meta-method implementation
+TODO:
+
+```java
+@RestController
+public class ExampleController {
+
+    private static final String MAPPING_FILE_TXT = "/example/file.txt";
+    
+    @WebDavMapping(path=MAPPING_FILE_TXT)
+    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavMetaMapping(path=MAPPING_FILE_TXT)
+    void getExampleEntityMeta(final MetaData meta) {
+        meta.setLastModified(new Date());
+    }
+
+    @WebDavMetaMapping(path="/example/fileA.txt")
+    @WebDavMetaMapping(path="/example/fileB.txt")
+    @WebDavMetaMapping(path="/example/fileC.txt")
+    void getExampleEntitiesMeta(final MetaData meta) {
+        meta.setLastModified(new Date());
+    }
+    
+    ...
+}
+```
+
+### Dynamic value from the attribute-method implementation (highest priority)
+TODO:
+
+```java
+@RestController
+public class ExampleController {
+
+    private static final String MAPPING_FILE_TXT = "/example/file.txt";
+    
+    @WebDavMapping(path=MAPPING_FILE_TXT)
+    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.LastModified)
+    Date getExampleEntityLastModified() {
+        return new Date();
+    }
+
+    @WebDavAttributeMapping(path="/example/fileA.txt", )
+    @WebDavAttributeMapping(path="/example/fileB.txt")
+    @WebDavAttributeMapping(path="/example/fileC.txt")
+    Date getExampleEntitiesLastModified() {
+      return new Date();
+    }
+    
+    ...
+}
+```
 
 ## Starting the application
 TODO:
