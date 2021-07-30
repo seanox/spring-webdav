@@ -252,7 +252,7 @@ public class ExampleController {
     @WebDavAttributeMapping(path="/example/fileB.txt")
     @WebDavAttributeMapping(path="/example/fileC.txt")
     Date getExampleEntitiesLastModified() {
-      return new Date();
+        return new Date();
     }
     
     ...
