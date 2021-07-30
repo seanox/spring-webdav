@@ -148,7 +148,9 @@ Both affect all methods except `OPTIONS`.
 Why status 404 instead of 401?  
 It should not be possible to scan the folder structure.
 
-Attributes can be defined in different ways with different priority (ascending).
+Attributes can be defined in different ways with different priority (ascending).  
+The priority is important when the same attribute is defined multiple times for
+the same entity.
 
 ### Default value (lowest priority)
 
