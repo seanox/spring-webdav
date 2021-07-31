@@ -548,10 +548,27 @@ __@WebDavInputMapping__ supports the following data types as arguments:
 No return value is expected.
 
 ## Validation
-TODO:
+Requests to virtual entities support a permission concept via the Accepted
+attribute. The attribute can react dynamically for each use case when used as
+an expression, MetaData method, or attribute method.
+
+If the value of the attribute is not `true`, the requests are responded with
+status 400 / Bad Request. This status does not affect the display in the File
+Explorer / File Manager. The virtual entity is displayed if it is permitted and
+not hidden.
+
+Except the HTTP method `OPTIONS`, the function has an effect on all requests.
 
 ## Permission
-TODO:
+Requests to virtual entities support a permission concept via the Permitted
+attribute. The attribute can react dynamically for each use case when used as
+an expression, MetaData method, or attribute method.
+
+If the value of the attribute is not `true`, the requests are responded with
+status 404 / Bad Request. This status affects the display in the File Explorer
+/ File Manager. The virtual entity is not displayed even if it is not hidden.
+
+Except the HTTP method `OPTIONS`, the function has an effect on all requests.
 
 ## Demo and Examples 
 TODO:
