@@ -122,7 +122,10 @@ Where and in which managed beans the paths are defined does not matter. During
 the initialization of the WebDavFilter all managed beans are scanned and the
 information for the sitemap is collected.
 
-TODO:
+The Sitemap is created with the initialization of the WebDavFilter. During this
+process the paths are checked for validity, possible collisions and possible
+conflicts. Similar to the Spring mapping, this causes an exception during the
+initialization of the application and aborts the application.
 
 ## Using the WebDAV annotations
 The WebDAV relevant annotations always have a reference to methods which are
@@ -133,14 +136,13 @@ placeholders are ignored and used with `null`. Multiple used placeholders are
 filled with the same data instances.
 
 The annotations supports callbacks and expression, which will be described
-later. During initialization, primarily the mapping and path of the virtual
-entities are validated. If faults are detected, this causes a ServletException
-in the filter and the initialization is aborted. The behavior is therefore
-comparable to the mapping in Spring.
-
-If errors occur at runtime in callbacks, expressions or during automatic
+later. If errors occur at runtime in callbacks, expressions or during automatic
 conversion of return values, this causes an error log entry, but processing is
 not interrupted. In this case the value `null` is used.
+
+Why the exception behavior?
+
+If one mapping is broken, all others entries in a folder will not work either.
 
 ## Mapping of virtual entity
 TODO:
@@ -227,8 +229,9 @@ The following additional attributes are supported:
 
 - __Permitted__ internal attribute that specifies if the request is permitted
   for the entity.  
-  If not, the request is responded with status 404. Why status 404 instead of
-  401? It should not be possible to scan the folder structure.
+  If not, the request is responded with status 404.  
+  Why status 404 instead of 401?  
+  It should not be possible to scan the folder structure.
 
 Permitted has the higher priority and both affect all methods except `OPTIONS`.  
 
