@@ -98,14 +98,14 @@ The paths of the annotations are case-insensitive.
 public class ExampleController {
 
     @WebDavMapping(path="/example/file.txt")
-    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMapping(path="/example/fileA.txt")
     @WebDavMapping(path="/example/fileB.txt")
     @WebDavMapping(path="/example/fileC.txt")
-    void getExampleEntities(final URI uri, final MetaOutputStream outputStream) throws IOException {
+    void getExampleFiles(final URI uri, final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }    
     
@@ -115,10 +115,33 @@ public class ExampleController {
 
 The WebDAV relevant annotations always have a reference to methods which are
 called by the WebDAV implementation. The methods generally have no fixed
-signature and use the data types of used arguments as placeholders which are
-then filled with the available data. Unknown placeholders are ignored and used
-with `null`. Multiple used placeholders are filled with the same data
-instances.
+signature, no naming conventions and use the data types of used arguments as
+placeholders which are then filled with the available data. Unknown
+placeholders are ignored and used with `null`. Multiple used placeholders are
+filled with the same data instances.
+
+__@WebDavMapping__ supports the following data types as arguments:
+
+- __URI__ Path of the virtual entity.
+- __Properties__ Collector with relevant runtime, request and meta information
+  as a nested case-insensitive map.
+- __MetaProperties__ MetaProperties, read-only collector with all attributes of
+  the virtual entity.
+- __MetaOutputStream__ OutputStream with meta information for the response header.
+
+No return value is expected.
+
+Some more notes about the Sitemap.
+
+The annotations supports callbacks and expression, which will be described
+later. During initialization, primarily the mapping and path of the virtual
+entities are validated. If faults are detected, this causes a ServletException
+in the filter and the initialization is aborted. The behavior is therefore
+comparable to the mapping in Spring.
+
+If errors occur at runtime in callbacks, expressions or during automatic
+conversion of return values, this causes an error log entry, but processing is
+not interrupted. In this case the value `null` is used.
 
 TODO:
 
@@ -128,44 +151,82 @@ is important, because WebDAV is designed for versioning among other things,
 even if it has no direct use in this WebDAV implementation.    
 
 Following file attributes are supported:
-- __ContentType__ indicates the media type of the entity
-- __ContentLength__ is the size of the entity, in decimal number of bytes 
+
+- __ContentType__ indicates the media type of the entity.  
+  This value can be determined automatically from the file extension from the
+  virtual path and therefore usually does not need to be defined.
+
+
+- __ContentLength__ is the size of the entity, in decimal number of bytes.  
+  WebDAV does not need this value, but it is helpful in the representation of
+  the virtual entity in File Explorer / File Manager. The value should be
+  cached based on the LastModified value in the application.
+  
+    
 - __CreationDate__ the last modification date of the entity, used to compare
-  several versions of the same entity
+  several versions of the same entity.  
+  WebDAV does not need this value, but it is helpful in the representation of
+  the virtual entity in File Explorer / File Manager. The default value uses
+  the creation date of the application / jar and normally does not need to be
+  defined.
+
+
 - __LastModified__ is the last modification of the entity and the basis for the
-  ETag, both for comparing different versions
-- __ReadOnly__ indicates if the entity is read-only.
-- __Hidden__ indicates if the entity is hidden but usable
+  ETag, both for comparing different versions.  
+  This value is very important for many WebDAV clients as it ensures that a
+  virtual entity can be opened for editing and there is no version violation
+  when saving.
+
+
+- __ReadOnly__ indicates if the entity is read-only.  
+  The default value is false and must be deliberately set to `true`. However,
+  the value `true` requires that an input method has been annotated to receive
+  the data.  
+
+ 
+- __Hidden__ indicates if the entity is hidden but usable.  
+  The value `true` has only a visual effect in File Explorer / File Manager
+  where the virtual entity is then not displayed. Folder structures that are
+  only created indirectly via the paths of the virtual entities are only
+  displayed in File Explorer / File Manager if they contain at least one
+  visible entity. The root folder is an exception, this is always displayed and
+  would then be empty.
 
 The following additional attributes are supported:
+
 - __Accepted__ internal attribute that indicates if the request is valid for
-  the entity; if not the request will be responded with status 400
+  the entity.  
+  If not the request will be responded with status 400.
+
+
 - __Permitted__ internal attribute that specifies if the request is permitted
-  for the entity; if not, the request is responded with status 404
+  for the entity.  
+  If not, the request is responded with status 404. Why status 404 instead of
+  401? It should not be possible to scan the folder structure.
 
-Both affect all methods except `OPTIONS`.
-
-Why status 404 instead of 401?  
-It should not be possible to scan the folder structure.
+Permitted has the higher priority and both affect all methods except `OPTIONS`.  
 
 Attributes can be defined in different ways with different priority (ascending).  
 The priority is important when the same attribute is defined multiple times for
 the same entity.
 
+The value of attributes can suppress them. This means that they are not
+included in the response header and not in the response XML from the `PROPFIND`.
+
 ### Default value (lowest priority)
 
 Without further definition, the following default values are used:
 
-| Attribute       | Default Value                       |
-| --------------- |------------------------------------ |
-| `ContentType`   | `application/octet-stream`          |
-| `ContentLength` | `-1`                                |
-| `CreationDate`  | build date of the application / jar |
-| `LastModified`  | build date of the application / jar |
-| `ReadOnly`      | `true`                              |
-| `Hidden`        | `false`                             |
-| `Accepted`      | `true`                              |
-| `Permitted`     | `true`                              |
+| Attribute       | Default Value                       | Suppress Value            |
+| --------------- |------------------------------------ | ------------------------- |
+| `ContentType`   | `application/octet-stream`          | `null`, empty             | 
+| `ContentLength` | `-1`                                | `null`, value less than 0 |
+| `CreationDate`  | build date of the application / jar | `null`                    |
+| `LastModified`  | build date of the application / jar | `null`                    |
+| `ReadOnly`      | `true`                              |                           |
+| `Hidden`        | `false`                             |                           |
+| `Accepted`      | `true`                              |                           |
+| `Permitted`     | `true`                              |                           |
 
 ### Static value from annotation
 TODO:
@@ -175,7 +236,7 @@ TODO:
 public class ExampleController {
 
     @WebDavMapping(path="/example/file.txt", lastModified="2000-01-01 00:00:00")
-    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
     
@@ -193,7 +254,7 @@ public class ExampleController {
     @WebDavMapping(path="/example/file.txt", attributeExpressions={
             @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")
     })
-    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
     
@@ -211,19 +272,19 @@ public class ExampleController {
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
     @WebDavMapping(path=MAPPING_FILE_TXT)
-    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMetaMapping(path=MAPPING_FILE_TXT)
-    void getExampleEntityMeta(final MetaData meta) {
+    void getExampleFileMeta(final MetaData meta) {
         meta.setLastModified(new Date());
     }
 
     @WebDavMetaMapping(path="/example/fileA.txt")
     @WebDavMetaMapping(path="/example/fileB.txt")
     @WebDavMetaMapping(path="/example/fileC.txt")
-    void getExampleEntitiesMeta(final MetaData meta) {
+    void getExampleFilesMeta(final MetaData meta) {
         meta.setLastModified(new Date());
     }
     
@@ -241,19 +302,19 @@ public class ExampleController {
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
     @WebDavMapping(path=MAPPING_FILE_TXT)
-    void getExampleEntity(final MetaOutputStream outputStream) throws IOException {
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.LastModified)
-    Date getExampleEntityLastModified() {
+    Date getExampleFileLastModified() {
         return new Date();
     }
 
     @WebDavAttributeMapping(path="/example/fileA.txt", attribute=WebDavMappingAttribute.LastModified)
     @WebDavAttributeMapping(path="/example/fileB.txt", attribute=WebDavMappingAttribute.LastModified)
     @WebDavAttributeMapping(path="/example/fileC.txt", attribute=WebDavMappingAttribute.LastModified)
-    Date getExampleEntitiesLastModified() {
+    Date getExampleFilesLastModified() {
         return new Date();
     }
     
