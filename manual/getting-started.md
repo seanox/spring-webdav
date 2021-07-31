@@ -23,6 +23,8 @@ access to a Spring Boot based API without an additional frontend.
 * [Integration](#integration)
 * [Registration of WebDAV filter](#registration-of-webdav-filter)
 * [Definition of Sitemap](#definition-of-sitemap)
+* [Using the WebDAV annotations](#using-the-webdav-annotations)
+* [Mapping of the virtual entity](#mapping-of-the-virtual-entity)  
 * [Attributes of the virtual entity](#attributes-of-the-virtual-entity)  
   * [Default value](#default-value-lowest-priority)
   * [Static value from annotation](#static-value-from-annotation)
@@ -30,12 +32,13 @@ access to a Spring Boot based API without an additional frontend.
   * [Dynamic value from the meta-method implementation](#dynamic-value-from-the-meta-method-implementation)
   * [Dynamic value from the attribute-method implementation](#dynamic-value-from-the-attribute-method-implementation-highest-priority)
 * [Starting the application](#starting-the-application)
-* [Mapping from network drive](#)
-* [Read-only access](#)
-* [Read-write access](#)
-* [Validation](#)
-* [Permission ](#)
-* [Maveb](#maven)  
+* [Mapping from network drive](#mapping-from-network-drive)
+* [Read-only access](#read-only-access)
+* [Read-write access](#read-write-access)
+* [Validation](#validation)
+* [Permission ](#permission)
+* [Demo and examples](#demo-and-examples)  
+* [Maven](#maven)  
 
 ## Integration
 Create a new Spring Boot based project e.g. with https://start.spring.io or use
@@ -82,10 +85,10 @@ public class Application extends SpringBootServletInitializer {
 
 ## Definition of Sitemap
 The WebDAV implementation uses a virtual file system. This file system is built
-per annotations in the sitemap. The sitemap cannot be accessed directly, it is
-only built via the annotations. The annotations are applied directly in the
-managed beans, e.g. in `Component`, `Controller`, `Service`, `RestController`,
-...
+per annotations in the Sitemap. Direct access to the sitemap is not possible,
+it is only created via the annotations. The annotations are applied directly in
+the managed beans, e.g. in `Component`, `Controller`, `Service`,
+`RestController`, ...
 
 The WebDAV implementation contains various annotations. The central component
 is `WebDavMapping`. This defines the virtual entities of the Sitemap and thus
@@ -112,14 +115,48 @@ public class ExampleController {
     ...
 }
 ```
-_Example of single and multiple use of annotation_
+_Example of single and multiple use of annotation for path definition_
 
+The Sitemap supports folders and files based on the paths of virtual entities.
+Where and in which managed beans the paths are defined does not matter. During
+the initialization of the WebDavFilter all managed beans are scanned and the
+information for the sitemap is collected.
+
+TODO:
+
+## Using the WebDAV annotations
 The WebDAV relevant annotations always have a reference to methods which are
 called by the WebDAV implementation. The methods generally have no fixed
 signature, no naming conventions and use the data types of used arguments as
 placeholders which are then filled with the available data. Unknown
 placeholders are ignored and used with `null`. Multiple used placeholders are
 filled with the same data instances.
+
+The annotations supports callbacks and expression, which will be described
+later. During initialization, primarily the mapping and path of the virtual
+entities are validated. If faults are detected, this causes a ServletException
+in the filter and the initialization is aborted. The behavior is therefore
+comparable to the mapping in Spring.
+
+If errors occur at runtime in callbacks, expressions or during automatic
+conversion of return values, this causes an error log entry, but processing is
+not interrupted. In this case the value `null` is used.
+
+## Mapping of the virtual entity
+TODO:
+
+__@WebDavMapping__ supports the following attributes:
+
+- __path__ Path as a reference of the virtual entity
+- __contentType__ Static value of ContentType
+- __contentLength__ Static value of ContentLength
+- __creationDate__ Static value of CreationDate (`yyyy-MM-dd HH:mm:ss`)
+- __lastModified__ Static value of LastModified (`yyyy-MM-dd HH:mm:ss`)
+- __readOnly__ Static value of flag ReadOnly
+- __hidden__ Static value of flag Hidden
+- __accepted__ Static value of flag Accepted
+- __permitted__ Static value of flag Permitted
+- __attributeExpressions__ Optionally to the static values, an array of dynamic expressions
 
 __@WebDavMapping__ supports the following data types as arguments:
 
@@ -131,22 +168,6 @@ __@WebDavMapping__ supports the following data types as arguments:
 - __MetaOutputStream__ OutputStream with meta information for the response header.
 
 No return value is expected.
-
-__@WebDavMapping__ supports the following attributes:
-
-TODO:
-
-Some more notes about the Sitemap.
-
-The annotations supports callbacks and expression, which will be described
-later. During initialization, primarily the mapping and path of the virtual
-entities are validated. If faults are detected, this causes a ServletException
-in the filter and the initialization is aborted. The behavior is therefore
-comparable to the mapping in Spring.
-
-If errors occur at runtime in callbacks, expressions or during automatic
-conversion of return values, this causes an error log entry, but processing is
-not interrupted. In this case the value `null` is used.
 
 TODO:
 
@@ -311,7 +332,14 @@ TODO:
 
 __@WebDavMetaMapping__ supports the following data types as arguments:
 
-TODO:
+- __URI__ Path of the virtual entity.
+- __Properties__ Collector with relevant runtime, request and meta information
+  as a nested case-insensitive map.
+- __WebDavMappingAttribute__ The attribute requested with the method.
+- __MetaData__ Writable collector containing all relevant attributes for a
+  virtual entity.
+
+No return value is expected.
 
 __@WebDavMetaMapping__ supports the following attributes:
 
@@ -352,7 +380,13 @@ TODO:
 
 __@WebDavAttributeMapping__ supports the following data types as arguments:
 
-TODO:
+- __URI__ Path of the virtual entity.
+- __Properties__ Collector with relevant runtime, request and meta information
+  as a nested case-insensitive map.
+- __WebDavMappingAttribute__ The attribute requested with the method.
+
+The expected data type of the return value depends on the attribute:  
+`Boolean`, `Integer`, `String`, `Date`
 
 __@WebDavAttributeMapping__ supports the following attributes:
 
@@ -411,11 +445,16 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation_
 
-TODO:
-
 __@WebDavInputMapping__ supports the following data types as arguments:
 
-TODO:
+- __URI__ Path of the virtual entity.
+- __Properties__ Collector with relevant runtime, request and meta information
+  as a nested case-insensitive map.
+- __MetaProperties__ MetaProperties, read-only collector with all attributes
+  of the virtual entity.
+- __MetaInputStream__ InputStream with read-only meta information.
+
+No return value is expected.
 
 __@WebDavInputMapping__ supports the following attributes:
 
@@ -425,6 +464,9 @@ TODO:
 TODO:
 
 ## Permission
+TODO:
+
+## Demo and examples 
 TODO:
 
 ## Maven
