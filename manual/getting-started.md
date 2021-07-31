@@ -146,7 +146,35 @@ Why the exception behavior?
 If one mapping is broken, all others entries in a folder will not work either.
 
 ## Using expressions
-TODO:
+Expressions are an important part of the WebDAV annotations for intgeration
+into Spring based applications and therefore also use the
+[Spring Expression Language](https://www.baeldung.com/spring-expression-language).
+
+Because expressions use a special annotation, there is no need for the usual
+`#{...}` syntax.
+
+The expressions are interpreted in their own context. In this, all beans whos
+name does not contain a dot, as well as `applicationContext`, `servletContext`,
+`request` and `session` are available as variables.
+
+If errors/exceptions occur during the interpretation or the optional
+conversion, this will cause an error output in the logging, but the processing
+will not be aborted, the WebDAV implementation will use the value `null` as
+result.
+
+Why the exception behavior?
+
+If an mapping in the sitemap is incorrect, all other entries in a folder will
+not work either.
+
+Automatic conversion from data type: Usually the return value of expressions is
+an object.However, the WebDAV implementation also uses primitive data types
+internally and wants to support the use of text as value. Therefore, if the
+data type of the return value does not match, the valueOf-method of the
+expected data type are used for Integer, Boolean and String if necessary.
+
+Possible errors during the conversion cause an error output as already
+described, but not an abort and the value null is used.
 
 ## Mapping of virtual entity
 The WebDAV implementation contains various annotations. The central component
