@@ -559,6 +559,49 @@ not hidden.
 
 Except the HTTP method `OPTIONS`, the function has an effect on all requests.
 
+```java
+@RestController
+public class ExampleController {
+
+    private static final String MAPPING_FILE_TXT = "/example/file.txt";
+    
+    @WebDavMapping(path=MAPPING_FILE_TXT, accepted=true)
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Accepted, phrase="#secureService.isUserInRole('editor')")
+    })
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavInputMapping(path=MAPPING_FILE_TXT)
+    void putExampleFile(final MetaInputStream inputStream) throws IOException {
+        ...
+    }
+
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
+    boolean isFileAccepted(final URI uri, final Properties properties) throws IOException {
+        return true;
+    }
+
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
+    Boolean isFileAccepted(final URI uri, final Properties properties) throws IOException {
+        return Booelan.TRUE;
+    }
+
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
+    String isFileAccepted(final URI uri, final Properties properties) throws IOException {
+      return "true";
+    }
+    
+    ...
+}
+```
+_Example of usage_
+
 ## Permission
 Requests to virtual entities support a permission concept via the Permitted
 attribute. The attribute can react dynamically for each use case when used as
@@ -569,6 +612,49 @@ status 404 / Bad Request. This status affects the display in the File Explorer
 / File Manager. The virtual entity is not displayed even if it is not hidden.
 
 Except the HTTP method `OPTIONS`, the function has an effect on all requests.
+
+```java
+@RestController
+public class ExampleController {
+
+  private static final String MAPPING_FILE_TXT = "/example/file.txt";
+
+  @WebDavMapping(path=MAPPING_FILE_TXT, permitted=true)
+  void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    outputStream.write("Hello WebDAV!".getBytes());
+  }
+
+  @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
+          @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Permitted, phrase="#secureService.isUserInRole('editor')")
+  })
+  void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    outputStream.write("Hello WebDAV!".getBytes());
+  }
+
+  @WebDavInputMapping(path=MAPPING_FILE_TXT)
+  void putExampleFile(final MetaInputStream inputStream) throws IOException {
+        ...
+  }
+
+  @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
+  boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
+    return true;
+  }
+
+  @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
+  Boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
+    return Booelan.TRUE;
+  }
+
+  @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
+  String isFilePermitted(final URI uri, final Properties properties) throws IOException {
+    return "true";
+  }
+    
+  ...
+}
+```
+_Example of usage_
 
 ## Demo and Examples 
 TODO:
