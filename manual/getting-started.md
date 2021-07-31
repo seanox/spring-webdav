@@ -112,6 +112,7 @@ public class ExampleController {
     ...
 }
 ```
+_Example of single and multiple use of annotation_
 
 The WebDAV relevant annotations always have a reference to methods which are
 called by the WebDAV implementation. The methods generally have no fixed
@@ -130,6 +131,10 @@ __@WebDavMapping__ supports the following data types as arguments:
 - __MetaOutputStream__ OutputStream with meta information for the response header.
 
 No return value is expected.
+
+__@WebDavMapping__ supports the following attributes:
+
+TODO:
 
 Some more notes about the Sitemap.
 
@@ -217,16 +222,16 @@ included in the response header and not in the response XML from the `PROPFIND`.
 
 Without further definition, the following default values are used:
 
-| Attribute       | Default Value                       | Suppress Value            |
-| --------------- |------------------------------------ | ------------------------- |
-| `ContentType`   | `application/octet-stream`          | `null`, empty             | 
-| `ContentLength` | `-1`                                | `null`, value less than 0 |
-| `CreationDate`  | build date of the application / jar | `null`                    |
-| `LastModified`  | build date of the application / jar | `null`                    |
-| `ReadOnly`      | `true`                              |                           |
-| `Hidden`        | `false`                             |                           |
-| `Accepted`      | `true`                              |                           |
-| `Permitted`     | `true`                              |                           |
+| Attribute       | Default Value                       | Suppress Value                   |
+| --------------- |------------------------------------ | -------------------------------- |
+| `ContentType`   | `application/octet-stream`          | `null`, empty                    | 
+| `ContentLength` | `-1`                                | `null`, empty, value less than 0 |
+| `CreationDate`  | build date of the application / jar | `null`, empty                    |
+| `LastModified`  | build date of the application / jar | `null`                           |
+| `ReadOnly`      | `true`                              |                                  |
+| `Hidden`        | `false`                             |                                  |
+| `Accepted`      | `true`                              |                                  |
+| `Permitted`     | `true`                              |                                  |
 
 ### Static value from annotation
 TODO:
@@ -243,6 +248,7 @@ public class ExampleController {
     ...
 }
 ```
+_Example of usage_
 
 ### Dynamic value from the annotation as expression
 TODO:
@@ -251,16 +257,24 @@ TODO:
 @RestController
 public class ExampleController {
 
-    @WebDavMapping(path="/example/file.txt", attributeExpressions={
+    @WebDavMapping(path="/example/fileA.txt", attributeExpressions={
             @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.LastModified, phrase="new java.util.Date()")
+    })
+    @WebDavMapping(path="/example/fileB.txt", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.LastModified, phrase="new java.util.Date()"),
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="'text/plain'"),
+            ...
     })
     void getExampleFile(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
-    
+
     ...
 }
 ```
+_Example of single and multiple use of annotation_
+
+TODO: Expression
 
 ### Dynamic value from the meta-method implementation
 TODO:
@@ -291,6 +305,17 @@ public class ExampleController {
     ...
 }
 ```
+_Example of single and multiple use of annotation_
+
+TODO:
+
+__@WebDavMetaMapping__ supports the following data types as arguments:
+
+TODO:
+
+__@WebDavMetaMapping__ supports the following attributes:
+
+TODO:
 
 ### Dynamic value from the attribute-method implementation (highest priority)
 TODO:
@@ -321,6 +346,17 @@ public class ExampleController {
     ...
 }
 ```
+_Example of single and multiple use of annotation_
+
+TODO:
+
+__@WebDavAttributeMapping__ supports the following data types as arguments:
+
+TODO:
+
+__@WebDavAttributeMapping__ supports the following attributes:
+
+TODO:
 
 ## Starting the application
 TODO:
@@ -332,6 +368,57 @@ TODO:
 TODO:
 
 ## Read-write access
+TODO:
+
+```java
+@RestController
+public class ExampleController {
+
+    private static final String MAPPING_FILE_TXT = "/example/file.txt";
+    
+    @WebDavMapping(path=MAPPING_FILE_TXT)
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+    
+    @WebDavInputMapping(path=MAPPING_FILE_TXT, accept="text/*", contentLengthMax=1073741824)
+    void putExampleFile(final MetaInputStream inputStream) throws IOException {
+        ...
+    }
+
+    @WebDavInputMapping(path=MAPPING_FILE_TXT, attributeExpressions={
+            @WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.Accept, phrase="'text/*'"),
+            @WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.ContentLengthMax, phrase="1073741824")
+    })
+    void putExampleFile(final MetaInputStream inputStream) throws IOException {
+        ...
+    }
+
+    @WebDavInputMapping(path="/example/fileA.txt")
+    @WebDavInputMapping(path="/example/fileB.txt")
+    @WebDavInputMapping(path="/example/fileC.txt")
+    void putExampleFiles(final MetaInputStream inputStream) throws IOException {
+        ...
+    }
+
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.LastModified)
+    Date getExampleFileLastModified() {
+        return new Date();
+    }
+    
+    ...
+}
+```
+_Example of single and multiple use of annotation_
+
+TODO:
+
+__@WebDavInputMapping__ supports the following data types as arguments:
+
+TODO:
+
+__@WebDavInputMapping__ supports the following attributes:
+
 TODO:
 
 ## Validation
