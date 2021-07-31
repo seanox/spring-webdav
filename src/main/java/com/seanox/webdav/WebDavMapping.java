@@ -53,7 +53,7 @@ import java.net.URI;
  *   <li>
  *     <b>{@link Properties}</b><br>
  *     Collector with relevant runtime, request and meta information as a
- *     nested map. The keys in the map are case insensitive.
+ *     nested case-insensitive map.
  *   </li>
  *   <li>
  *     <b>{@link MetaProperties}</b><br>
@@ -89,12 +89,12 @@ import java.net.URI;
  *   ...
  * </pre>
  *
- * WebDavMapping 1.0.0 20210725<br>
+ * WebDavMapping 1.0.0 20210731<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.0.0 20210731
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
