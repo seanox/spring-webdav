@@ -21,24 +21,24 @@ access to a Spring Boot based API without an additional frontend.
 ## Contents Overview
 
 * [Integration](#integration)
-* [Registration of WebDAV filter](#registration-of-webdav-filter)
+* [Registration of WebDavFilter](#registration-of-webdavfilter)
 * [Definition of Sitemap](#definition-of-sitemap)
-* [Using WebDAV annotations](#using-webdav-annotations)
-* [Using expressions](#using-expressions)
-* [Mapping of virtual entity](#mapping-of-virtual-entity)  
-* [Attributes of virtual entity](#attributes-of-virtual-entity)  
+* [Using WebDAV Annotations](#using-webdav-annotations)
+* [Using Expressions](#using-expressions)
+* [Mapping of Virtual Entity](#mapping-of-virtual-entity)  
+* [Attributes of Virtual Entity](#attributes-of-virtual-entity)  
   * [Default value](#default-value-lowest-priority)
   * [Static value from annotation](#static-value-from-annotation)
   * [Dynamic value from the annotation as expression](#dynamic-value-from-the-annotation-as-expression)
   * [Dynamic value from the meta-method implementation](#dynamic-value-from-the-meta-method-implementation)
   * [Dynamic value from the attribute-method implementation](#dynamic-value-from-the-attribute-method-implementation-highest-priority)
-* [Starting the application](#starting-the-application)
-* [Mapping from network drive](#mapping-from-network-drive)
-* [Read-only access](#read-only-access)
-* [Read-write access](#read-write-access)
+* [Starting the Application](#starting-the-application)
+* [Mapping from Network Drive](#mapping-from-network-drive)
+* [Read-Only Access](#read-only-access)
+* [Read-Write Access](#read-write-access)
 * [Validation](#validation)
 * [Permission ](#permission)
-* [Demo and examples](#demo-and-examples)  
+* [Demo and Examples](#demo-and-examples)  
 * [Maven](#maven)  
 
 ## Integration
@@ -54,7 +54,7 @@ for a Maven based project.
 </dependency>
 ```
 
-## Registration of WebDAV filter
+## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
 very easy in Spring. At least a URL pattern is needed that defines the context
 path of the WebDavFilter. Thus, the WebDAV implementation should always use its
@@ -128,7 +128,7 @@ process the paths are checked for validity, possible collisions and possible
 conflicts. Similar to the Spring mapping, this causes an exception during the
 initialization of the application and aborts the application.
 
-## Using WebDAV annotations
+## Using WebDAV Annotations
 The WebDAV relevant annotations always have a reference to methods which are
 called by the WebDAV implementation. The methods generally have no fixed
 signature, no naming conventions and use the data types of used arguments as
@@ -145,7 +145,7 @@ Why the exception behavior?
 
 If one mapping is broken, all others entries in a folder will not work either.
 
-## Using expressions
+## Using Expressions
 Expressions are an important part of the WebDAV annotations for intgeration
 into Spring based applications and therefore also use the
 [Spring Expression Language](https://www.baeldung.com/spring-expression-language).
@@ -176,7 +176,7 @@ expected data type are used for Integer, Boolean and String if necessary.
 Possible errors during the conversion cause an error output as already
 described, but not an abort and the value null is used.
 
-## Mapping of virtual entity
+## Mapping of Virtual Entity
 The WebDAV implementation contains various annotations. The central component
 is `@WebDavMapping`. This defines the virtual entities of the Sitemap and thus
 from the virtual file system. `@WebDavMapping` defines a virtual path for this
@@ -249,7 +249,7 @@ __@WebDavMapping__ supports the following data types as arguments:
 
 No return value is expected.
 
-## Attributes of virtual entity
+## Attributes of Virtual Entity
 For WebDAV, file attributes are an important thing. Especially the last change
 is important, because WebDAV is designed for versioning among other things,
 even if it has no direct use in this WebDAV implementation.    
@@ -471,16 +471,16 @@ __@WebDavAttributeMapping__ supports the following attributes:
 
 TODO:
 
-## Starting the application
+## Starting the Application
 TODO:
 
-## Mapping from network drive
+## Mapping from Network Drive
 TODO:
 
-## Read-only access
+## Read-Only Access
 TODO:
 
-## Read-write access
+## Read-Write Access
 TODO:
 
 ```java
@@ -545,7 +545,7 @@ TODO:
 ## Permission
 TODO:
 
-## Demo and examples 
+## Demo and Examples 
 TODO:
 
 ## Maven
