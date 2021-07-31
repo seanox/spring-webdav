@@ -23,7 +23,8 @@ access to a Spring Boot based API without an additional frontend.
 * [Integration](#integration)
 * [Registration of WebDAV filter](#registration-of-webdav-filter)
 * [Definition of Sitemap](#definition-of-sitemap)
-* [Using the WebDAV annotations](#using-the-webdav-annotations)
+* [Using WebDAV annotations](#using-webdav-annotations)
+* [Using expressions](#using-expressions)
 * [Mapping of virtual entity](#mapping-of-virtual-entity)  
 * [Attributes of virtual entity](#attributes-of-virtual-entity)  
   * [Default value](#default-value-lowest-priority)
@@ -91,10 +92,10 @@ the managed beans, e.g. in `Component`, `Controller`, `Service`,
 `RestController`, ...
 
 The WebDAV implementation contains various annotations. The central component
-is `WebDavMapping`. This defines the virtual entities of the Sitemap and thus
-from the virtual file system. The `WebDavMapping` defines a virtual path for
-this purpose, which is later used as a reference in other WebDav annotations.
-The paths of the annotations are case-insensitive.
+is `@WebDavMapping`. This defines the virtual entities of the Sitemap and thus
+from the virtual file system. `@WebDavMapping` defines a virtual path for this
+purpose, which is later used as a reference in other WebDav annotations. The
+paths of the annotations are case-insensitive.
 
 ```java
 @RestController
@@ -127,7 +128,7 @@ process the paths are checked for validity, possible collisions and possible
 conflicts. Similar to the Spring mapping, this causes an exception during the
 initialization of the application and aborts the application.
 
-## Using the WebDAV annotations
+## Using WebDAV annotations
 The WebDAV relevant annotations always have a reference to methods which are
 called by the WebDAV implementation. The methods generally have no fixed
 signature, no naming conventions and use the data types of used arguments as
@@ -144,8 +145,51 @@ Why the exception behavior?
 
 If one mapping is broken, all others entries in a folder will not work either.
 
-## Mapping of virtual entity
+## Using expressions
 TODO:
+
+## Mapping of virtual entity
+The WebDAV implementation contains various annotations. The central component
+is `@WebDavMapping`. This defines the virtual entities of the Sitemap and thus
+from the virtual file system. `@WebDavMapping` defines a virtual path for this
+purpose, which is later used as a reference in other WebDav annotations. The
+paths of the annotations are case-insensitive.
+
+In the context of HTTP, `@WebDavMapping` is the base for the GET method.
+
+```java
+@RestController
+public class ExampleController {
+
+    @WebDavMapping(path="/example/file.txt")
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavMapping(path="/example/file.txt", lastModified="2000-01-01 00:00:00", attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="'text/plain'"),
+            ...
+    })
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavMapping(path="/example/file.txt", lastModified="2000-01-01 00:00:00")
+    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
+
+    @WebDavMapping(path="/example/fileA.txt")
+    @WebDavMapping(path="/example/fileB.txt")
+    @WebDavMapping(path="/example/fileC.txt")
+    void getExampleFiles(final URI uri, final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }    
+    
+    ...
+}
+```
+_Example of single and multiple use of annotation_
 
 __@WebDavMapping__ supports the following attributes:
 
@@ -160,6 +204,12 @@ __@WebDavMapping__ supports the following attributes:
 - __permitted__ Static value of flag Permitted
 - __attributeExpressions__ Optionally to the static values, an array of dynamic expressions
 
+The annotation can be used multiple times for different virtual entities
+in one method. The method has no fixed signature and the data types of the
+arguments are considered as placeholders and filled accordingly. If arguments
+with the same data type are used multiple times, they are filled with the same
+object multiple times. Unknown data types are filled with `null`.
+
 __@WebDavMapping__ supports the following data types as arguments:
 
 - __URI__ Path of the virtual entity.
@@ -170,8 +220,6 @@ __@WebDavMapping__ supports the following data types as arguments:
 - __MetaOutputStream__ OutputStream with meta information for the response header.
 
 No return value is expected.
-
-TODO:
 
 ## Attributes of virtual entity
 For WebDAV, file attributes are an important thing. Especially the last change
@@ -298,7 +346,7 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation_
 
-TODO: Expression
+TODO:
 
 ### Dynamic value from the meta-method implementation
 TODO:
