@@ -633,7 +633,7 @@ public class ExampleController {
 
   @WebDavInputMapping(path=MAPPING_FILE_TXT)
   void putExampleFile(final MetaInputStream inputStream) throws IOException {
-        ...
+      ...
   }
 
   @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
