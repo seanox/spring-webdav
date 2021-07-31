@@ -594,7 +594,7 @@ public class ExampleController {
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
     String isFileAccepted(final URI uri, final Properties properties) throws IOException {
-      return "true";
+        return "true";
     }
     
     ...
@@ -621,14 +621,14 @@ public class ExampleController {
 
   @WebDavMapping(path=MAPPING_FILE_TXT, permitted=true)
   void getExampleFile(final MetaOutputStream outputStream) throws IOException {
-    outputStream.write("Hello WebDAV!".getBytes());
+      outputStream.write("Hello WebDAV!".getBytes());
   }
 
   @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
           @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Permitted, phrase="#secureService.isUserInRole('editor')")
   })
   void getExampleFile(final MetaOutputStream outputStream) throws IOException {
-    outputStream.write("Hello WebDAV!".getBytes());
+      outputStream.write("Hello WebDAV!".getBytes());
   }
 
   @WebDavInputMapping(path=MAPPING_FILE_TXT)
@@ -638,17 +638,17 @@ public class ExampleController {
 
   @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
   boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
-    return true;
+      return true;
   }
 
   @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
   Boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
-    return Booelan.TRUE;
+      return Booelan.TRUE;
   }
 
   @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
   String isFilePermitted(final URI uri, final Properties properties) throws IOException {
-    return "true";
+      return "true";
   }
     
   ...
