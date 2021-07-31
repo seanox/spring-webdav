@@ -468,7 +468,41 @@ The expected data type of the return value depends on the attribute:
 `Boolean`, `Integer`, `String`, `Date`
 
 ## Starting the Application
-TODO:
+The application will launch a normal Spring Boot based application.
+
+Maven:  
+`mvn spring-boot:run`
+
+Gradle:  
+`gradle bootRun`
+
+In log level `INFO` the structure of the Sitemap is logged.
+
+```
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.api.Application               : Starting Application using Java 11.0.12
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.api.Application               : The following profiles are active: demo
+2021-07-31 20:00:00 INFO 12345 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2021-07-31 20:00:00 INFO 12345 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-07-31 20:00:00 INFO 12345 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.46]
+2021-07-31 20:00:00 INFO 12345 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-07-31 20:00:00 INFO 12345 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1689 ms
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : WebDavFilter was established
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : Sitemap
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : ---
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : + financial
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :   - costs.xlsx
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :   + reports
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :     - sales.pptx
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :     - statistic.pptx
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : + marketing
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :   - flyer.pptx
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :   - newsletter.docx
+2021-07-31 20:00:00 INFO 12345 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.api.Application               : Started Application in 3.205 seconds (JVM running for 5.577)
+2021-07-31 20:00:00 INFO 12345 --- [main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2021-07-31 20:00:00 INFO 12345 --- [main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+```
+_Example of the output_
 
 ## Mapping from Network Drive
 TODO:
@@ -657,7 +691,16 @@ public class ExampleController {
 _Example of the use of the different possibilities_
 
 ## Demo and Examples 
-TODO:
+A small example is already included in the project.  
+https://github.com/seanox/spring-webdav/tree/main/src/test/java/com/seanox/api  
+
+After the project has been cloned, it can be started as follows:  
+`mvn clean install package -DskipTests`  
+`mvn -Dspring.profiles.active=demo -Dexec.mainClass=com.seanox.api.Application -Dexec.classpathScope=test exec:java`
+
+After startup, the network drive can be mapped via WebDAV with the address:
+http://127.0.0.8080/.  
+Details can be found in chapter [Mapping from Network Drive](#mapping-from-network-drive)
 
 ## Maven
 `mvn clean install`  
