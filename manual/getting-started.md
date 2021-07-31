@@ -600,7 +600,7 @@ public class ExampleController {
     ...
 }
 ```
-_Example of usage_
+_Example of the use of the different possibilities_
 
 ## Permission
 Requests to virtual entities support a permission concept via the Permitted
@@ -654,7 +654,7 @@ public class ExampleController {
   ...
 }
 ```
-_Example of usage_
+_Example of the use of the different possibilities_
 
 ## Demo and Examples 
 TODO:
