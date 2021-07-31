@@ -220,7 +220,6 @@ public class ExampleController {
 _Example of single and multiple use of annotation_
 
 __@WebDavMapping__ supports the following attributes:
-
 - __path__ Path as a reference of the virtual entity
 - __contentType__ Static value of ContentType
 - __contentLength__ Static value of ContentLength
@@ -230,7 +229,8 @@ __@WebDavMapping__ supports the following attributes:
 - __hidden__ Static value of flag Hidden
 - __accepted__ Static value of flag Accepted
 - __permitted__ Static value of flag Permitted
-- __attributeExpressions__ Optionally to the static values, an array of dynamic expressions
+- __attributeExpressions__ Optionally to the static values, an array of dynamic
+  expressions
 
 The annotation can be used multiple times for different virtual entities
 in one method. The method has no fixed signature and the data types of the
@@ -239,7 +239,6 @@ with the same data type are used multiple times, they are filled with the same
 object multiple times. Unknown data types are filled with `null`.
 
 __@WebDavMapping__ supports the following data types as arguments:
-
 - __URI__ Path of the virtual entity.
 - __Properties__ Collector with relevant runtime, request and meta information
   as a nested case-insensitive map.
@@ -407,10 +406,10 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation_
 
-TODO:
+__@WebDavMetaMapping__ supports the following attributes:
+- __path__ Path as a reference of the virtual entity.
 
 __@WebDavMetaMapping__ supports the following data types as arguments:
-
 - __URI__ Path of the virtual entity.
 - __Properties__ Collector with relevant runtime, request and meta information
   as a nested case-insensitive map.
@@ -419,10 +418,6 @@ __@WebDavMetaMapping__ supports the following data types as arguments:
   virtual entity.
 
 No return value is expected.
-
-__@WebDavMetaMapping__ supports the following attributes:
-
-TODO:
 
 ### Dynamic value from the attribute-method implementation (highest priority)
 TODO:
@@ -455,10 +450,11 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation_
 
-TODO:
+__@WebDavAttributeMapping__ supports the following attributes:
+- __path__ Path as a reference of the virtual entity.
+- __attribute__ Referenced attribute.
 
 __@WebDavAttributeMapping__ supports the following data types as arguments:
-
 - __URI__ Path of the virtual entity.
 - __Properties__ Collector with relevant runtime, request and meta information
   as a nested case-insensitive map.
@@ -466,10 +462,6 @@ __@WebDavAttributeMapping__ supports the following data types as arguments:
 
 The expected data type of the return value depends on the attribute:  
 `Boolean`, `Integer`, `String`, `Date`
-
-__@WebDavAttributeMapping__ supports the following attributes:
-
-TODO:
 
 ## Starting the Application
 TODO:
@@ -482,6 +474,8 @@ TODO:
 
 ## Read-Write Access
 TODO:
+
+In the context of HTTP, `@WebDavInputMapping` is the base for the PUT method.
 
 ```java
 @RestController
@@ -524,8 +518,21 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation_
 
-__@WebDavInputMapping__ supports the following data types as arguments:
+__@WebDavInputMapping__ supports the following attributes:
+- __path__ Path as a reference of the virtual entity.
+- __accept__ Based on the Accept HTTP header, a comma-separated list of
+  expected MimeType / ContentType. The wildcard character is supported. If the
+  attribute is used, requests that do not match the filter will be rejected
+  with status 406 / Not-Acceptable. Without specification or if empty, all
+  content types are accepted.
+- __contentLengthMax__ Limits the size of the request body in bytes. For this
+  purpose the number of bytes read is evaluated. If the limit is exceeded,
+  the requests are rejected with status 413 / Payload-Too-Large. Without
+  specification or a value less than 0, the limit is ignored.
+- __attributeExpressions__ Optionally to the static values, an array of dynamic
+  expressions 
 
+__@WebDavInputMapping__ supports the following data types as arguments:
 - __URI__ Path of the virtual entity.
 - __Properties__ Collector with relevant runtime, request and meta information
   as a nested case-insensitive map.
@@ -534,10 +541,6 @@ __@WebDavInputMapping__ supports the following data types as arguments:
 - __MetaInputStream__ InputStream with read-only meta information.
 
 No return value is expected.
-
-__@WebDavInputMapping__ supports the following attributes:
-
-TODO:
 
 ## Validation
 TODO:
