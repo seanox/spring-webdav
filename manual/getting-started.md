@@ -24,8 +24,8 @@ access to a Spring Boot based API without an additional frontend.
 * [Registration of WebDAV filter](#registration-of-webdav-filter)
 * [Definition of Sitemap](#definition-of-sitemap)
 * [Using the WebDAV annotations](#using-the-webdav-annotations)
-* [Mapping of the virtual entity](#mapping-of-the-virtual-entity)  
-* [Attributes of the virtual entity](#attributes-of-the-virtual-entity)  
+* [Mapping of virtual entity](#mapping-of-virtual-entity)  
+* [Attributes of virtual entity](#attributes-of-virtual-entity)  
   * [Default value](#default-value-lowest-priority)
   * [Static value from annotation](#static-value-from-annotation)
   * [Dynamic value from the annotation as expression](#dynamic-value-from-the-annotation-as-expression)
@@ -142,7 +142,7 @@ If errors occur at runtime in callbacks, expressions or during automatic
 conversion of return values, this causes an error log entry, but processing is
 not interrupted. In this case the value `null` is used.
 
-## Mapping of the virtual entity
+## Mapping of virtual entity
 TODO:
 
 __@WebDavMapping__ supports the following attributes:
@@ -171,7 +171,7 @@ No return value is expected.
 
 TODO:
 
-## Attributes of the virtual entity
+## Attributes of virtual entity
 For WebDAV, file attributes are an important thing. Especially the last change
 is important, because WebDAV is designed for versioning among other things,
 even if it has no direct use in this WebDAV implementation.    
