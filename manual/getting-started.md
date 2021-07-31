@@ -30,7 +30,7 @@ access to a Spring Boot based API without an additional frontend.
   * [Default value](#default-value-lowest-priority)
   * [Static value from annotation](#static-value-from-annotation)
   * [Dynamic value from the annotation as expression](#dynamic-value-from-the-annotation-as-expression)
-  * [Dynamic value from the meta-method implementation](#dynamic-value-from-the-meta-method-implementation)
+  * [Dynamic value from the MetaData](#dynamic-value-from-the-metadata)
   * [Dynamic value from the attribute-method implementation](#dynamic-value-from-the-attribute-method-implementation-highest-priority)
 * [Starting the Application](#starting-the-application)
 * [Mapping from Network Drive](#mapping-from-network-drive)
@@ -333,7 +333,8 @@ Without further definition, the following default values are used:
 | `Permitted`     | `true`                              |                                  |
 
 ### Static value from annotation
-TODO:
+In the easiest case the attributes can be defined as static values directly
+with `@WebDavMapping`.
 
 ```java
 @RestController
@@ -350,7 +351,7 @@ public class ExampleController {
 _Example of usage_
 
 ### Dynamic value from the annotation as expression
-TODO:
+Dynamic values with expressions are more flexible and consider the use case.
 
 ```java
 @RestController
@@ -373,10 +374,11 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation_
 
-TODO:
-
-### Dynamic value from the meta-method implementation
-TODO:
+### Dynamic value from the MetaData
+Implementing a method to get the meta-data can provide all the information
+about a virtual entity in one place. By using the supported parameters: `URI`,
+`Properties`, `WebDavMappingAttribute` it can also be used for different
+virtual entities.
 
 ```java
 @RestController
@@ -420,7 +422,9 @@ __@WebDavMetaMapping__ supports the following data types as arguments:
 No return value is expected.
 
 ### Dynamic value from the attribute-method implementation (highest priority)
-TODO:
+Implementing a method to get the value for a specific attribute has the highest
+priority. By using the supported parameters: `URI`, `Properties`,
+`WebDavMappingAttribute` it can also be used for different virtual entities.
 
 ```java
 @RestController
@@ -521,10 +525,11 @@ _Example of single and multiple use of annotation_
 __@WebDavInputMapping__ supports the following attributes:
 - __path__ Path as a reference of the virtual entity.
 - __accept__ Based on the Accept HTTP header, a comma-separated list of
-  expected MimeType / ContentType. The wildcard character is supported. If the
-  attribute is used, requests that do not match the filter will be rejected
-  with status 406 / Not-Acceptable. Without specification or if empty, all
-  content types are accepted.
+  expected MimeType / ContentType. The wildcard character is supported (`*/*`,
+  `mime-type/*`, `mime-type/mime-subtype`, `*/mime-subtype`). If the attribute
+  is used, requests that do not match the filter will be rejected with status
+  406 / Not-Acceptable. Without specification or if empty, all content types
+  are accepted.
 - __contentLengthMax__ Limits the size of the request body in bytes. For this
   purpose the number of bytes read is evaluated. If the limit is exceeded,
   the requests are rejected with status 413 / Payload-Too-Large. Without
