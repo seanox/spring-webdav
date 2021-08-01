@@ -59,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
  * <br>
- * Sitemap 1.0.0 20210724<br>
+ * Sitemap 1.0.1 20210731<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.0.0 20210724
+ * @version 1.0.1 20210731
  */
 class Sitemap implements Serializable {
 
@@ -732,6 +732,8 @@ class Sitemap implements Serializable {
         }
 
         boolean isAccepted() {
+            if (!this.isPermitted())
+                return false;
             final Boolean result = this.eval(Annotation.Target.Accepted, this.isAccepted, Defaults.isAccepted);
             return Objects.nonNull(result) && result.booleanValue();
         }
