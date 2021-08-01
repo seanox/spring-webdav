@@ -90,12 +90,12 @@ import java.net.URI;
  *   ...
  * </pre>
  *
- * WebDavInputMapping 1.0.0 20210731<br>
+ * WebDavInputMapping 1.0.0 2021801<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210731
+ * @version 1.0.0 2021801
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -121,9 +121,9 @@ public @interface WebDavInputMapping {
     String accept() default "";
 
     /**
-     * This attribute limits the size of the request body in bytes. For this
-     * purpose the number of bytes read is evaluated. If the limit is exceeded,
-     * the requests are rejected with status 413/Payload-Too-Large.<br>
+     * Limits the size of the request body in bytes. For this purpose the
+     * number of bytes read is evaluated. If the limit is exceeded, the
+     * requests are rejected with status 413/Payload-Too-Large.<br>
      * Without specification or a value less than 0, the limit is ignored.
      * @return Limit of the request body size in bytes
      */

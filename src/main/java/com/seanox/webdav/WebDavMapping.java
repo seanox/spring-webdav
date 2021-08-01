@@ -89,12 +89,12 @@ import java.net.URI;
  *   ...
  * </pre>
  *
- * WebDavMapping 1.0.0 20210731<br>
+ * WebDavMapping 1.0.0 2021801<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210731
+ * @version 1.0.0 2021801
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -115,7 +115,7 @@ public @interface WebDavMapping {
     /** Static value of ContentLength */
     int contentLength() default -1;
 
-    /** Static value of LastModified (yyyy-MM-dd HH:mm:ss) */
+    /** Static value of CreationDate (yyyy-MM-dd HH:mm:ss) */
     String creationDate() default "";
 
     /** Static value of LastModified (yyyy-MM-dd HH:mm:ss) */
