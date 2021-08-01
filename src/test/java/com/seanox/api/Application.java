@@ -54,12 +54,12 @@ import org.springframework.context.annotation.Configuration;
  * SpringBootServletInitializer to prepare the application to deploy on
  * external servlet container/runner.<br>
  * <br>
- * Application 1.0.0 20210626<br>
+ * Application 1.0.0 20210801<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
+ * @version 1.0.0 20210801
  */
 @ComponentScan({"com.seanox.api", "com.seanox.test"})
 @SpringBootApplication
@@ -75,11 +75,10 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public FilterRegistrationBean someFilterRegistration() {
+    public FilterRegistrationBean webDavFilterRegistration() {
         final FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new WebDavFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(1);
         return registration;
     }
 
