@@ -1,2 +1,7 @@
+1.1.0 2021xxxx
+  BF: Sitemap: Optimization of accepted/permitted
+  BF: WebDavFilter: More tolerant URL pattern
+  BF: WebDavFilter: Optimization/correction determination from context path
+
 1.0.0 20210729
   NT: Release is available
