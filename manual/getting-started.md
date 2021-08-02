@@ -90,7 +90,7 @@ public class Application extends SpringBootServletInitializer {
     }
 }
 ```
-_Example Example of configuration_
+_Example of configuration_
 
 __StrictHttpFirewall__ is required only if Spring Security Web Firewall is
 used.  
