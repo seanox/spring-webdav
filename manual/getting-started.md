@@ -74,15 +74,36 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public FilterRegistrationBean someFilterRegistration() {
+    public FilterRegistrationBean webDavFilterRegistration() {
         final FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new WebDavFilter());
         registration.addUrlPatterns("/*");
-        registration.setOrder(1);
         return registration;
+    }
+
+    @Bean
+    public StrictHttpFirewall webDavFilterFirewall() {
+        final StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowedHttpMethods(Arrays.asList("DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT",
+                "LOCK", "PROPFIND", "PROPPATCH", "UNLOCK"));
+        return firewall;
     }
 }
 ```
+_Example Example of configuration_
+
+__StrictHttpFirewall__ is required only if Spring Security Web Firewall is
+used.  
+If `@EnableWebSecurity` and `WebSecurityConfigurerAdapter` is used, the
+pattern of path of WebDavFilter must be configured here too if necessary:
+
+```java
+void configure(final WebSecurity webSecurity);  
+void configure(final HttpSecurity httpSecurity) throws Exception;
+```
+
+__URL patterns and AntPathMatcher differ slightly at the end. For WebDAV, URL
+patterns end usually with `/*` and AntPathMatcher end with `/**`.__
 
 ## Definition of Sitemap
 The WebDAV implementation uses a virtual file system. This file system is built
