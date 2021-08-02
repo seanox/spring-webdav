@@ -101,10 +101,8 @@ pattern of path of WebDavFilter must be configured here too if necessary:
 void configure(final WebSecurity webSecurity);  
 void configure(final HttpSecurity httpSecurity) throws Exception;
 ```
-__
-For WebDAV, URL patterns end usually with `/*` and AntPathMatcher end with `/**`.    
-The patterns are always used without a context path.
-__
+__For WebDAV, URL patterns end usually with `/*` and AntPathMatcher end with `/**`.__      
+__The patterns are always used without a context path.__
 
 ## Definition of Sitemap
 The WebDAV implementation uses a virtual file system. This file system is built
