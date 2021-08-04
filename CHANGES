@@ -1,7 +1,8 @@
 1.1.0 2021xxxx
   BF: Sitemap: Optimization of accepted/permitted
-  BF: WebDavFilter: More tolerant URL pattern
-  BF: WebDavFilter: Optimization/correction determination from context path
+  BF: Sitemap: Correction from eval if no fallback exists
+  CR: WebDavFilter: More tolerant URL pattern
+  CR: WebDavFilter: Optimization of the determination from the context path
 
 1.0.0 20210729
   NT: Release is available
