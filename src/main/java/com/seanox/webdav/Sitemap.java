@@ -59,12 +59,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
  * <br>
- * Sitemap 1.0.1 20210731<br>
+ * Sitemap 1.1.0 20210804<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.0.1 20210731
+ * @version 1.1.0 20210804
  */
 class Sitemap implements Serializable {
 
@@ -664,6 +664,8 @@ class Sitemap implements Serializable {
                 return null;
 
             if (!target.type.equals(result.getClass())) {
+                if (Objects.isNull(fallback))
+                    return null;
                 Class<?> type = result.getClass();
                 try {type = (Class<?>)type.getDeclaredField("TYPE").get(null);
                 } catch (Exception exception) {
