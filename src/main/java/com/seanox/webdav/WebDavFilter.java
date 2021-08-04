@@ -118,12 +118,12 @@ import java.util.stream.IntStream;
  *   </li>
  * </ul>
  * <br>
- * WebDavFilter 1.0.0 20210729<br>
+ * WebDavFilter 1.1.0 20210801<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210729
+ * @version 1.1.0 20210801
  */
 public class WebDavFilter extends HttpFilter {
 
@@ -263,7 +263,7 @@ public class WebDavFilter extends HttpFilter {
         if (Objects.nonNull(filterRegistration))
             this.filterUrlPatternMappings.addAll(filterRegistration.getUrlPatternMappings());
         for (String urlPatternMapping : this.filterUrlPatternMappings)
-            if (!urlPatternMapping.matches("^/(\\w+/){0,}\\*?$"))
+            if (!urlPatternMapping.matches("^/(\\w+([\\w\\-]+\\w){0,1}/){0,}(\\*){0,}$"))
                 throw new ServletException("Invalid URL pattern mapping for filter: " + this.getClass().getName());
 
         try {
@@ -353,9 +353,18 @@ public class WebDavFilter extends HttpFilter {
         }
     }
 
-    private String locateRequestContextPath(final HttpServletRequest request) {
-
+    private String locateRequesPath(final HttpServletRequest request) {
+        final String contextPath = request.getContextPath();
         final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
+        if (requestURI.startsWith(contextPath + "/"))
+            return requestURI.substring(contextPath.length());
+        if (requestURI.equals(contextPath))
+            return "/";
+        return requestURI;
+    }
+
+    private String locateRequestContextPath(final HttpServletRequest request) {
+        final String requestURI = this.locateRequesPath(request);
         for (String urlPatternMapping : this.filterUrlPatternMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("/+\\**$", "");
             if (requestURI.startsWith(urlPatternMapping + "/")
@@ -366,8 +375,7 @@ public class WebDavFilter extends HttpFilter {
     }
 
     private String locateSitemapPath(final HttpServletRequest request) {
-
-        final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
+        final String requestURI = this.locateRequesPath(request);
         if (this.filterUrlPatternMappings.isEmpty())
             return requestURI;
         for (String urlPatternMapping : this.filterUrlPatternMappings) {
