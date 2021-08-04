@@ -1,6 +1,8 @@
 1.1.0 2021xxxx
   BF: Sitemap: Optimization of accepted/permitted
-  BF: Sitemap: Correction from eval if no fallback exists
+  BF: Sitemap: Correction of eval if no fallback exists
+  CR: Sitemap: Optimization of eval when using data types
+      e.g. Inheritance: Timestamp is accepted for Date
   CR: WebDavFilter: More tolerant URL pattern
   CR: WebDavFilter: Optimization of the determination from the context path
 

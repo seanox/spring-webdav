@@ -663,7 +663,7 @@ class Sitemap implements Serializable {
             if (Objects.isNull(result))
                 return null;
 
-            if (!target.type.equals(result.getClass())) {
+            if (!target.type.isAssignableFrom(result.getClass())) {
                 if (Objects.isNull(fallback))
                     return null;
                 Class<?> type = result.getClass();
