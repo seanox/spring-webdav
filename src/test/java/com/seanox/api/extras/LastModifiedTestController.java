@@ -21,17 +21,18 @@
  */
 package com.seanox.api.extras;
 
+import com.seanox.webdav.DateTimeAdapter;
+import com.seanox.webdav.MetaData;
+import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.WebDavAttributeMapping;
 import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.webdav.WebDavMetaMapping;
-import com.seanox.webdav.DateTimeAdapter;
-import com.seanox.webdav.MetaData;
-import com.seanox.webdav.MetaOutputStream;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -138,7 +139,7 @@ public class LastModifiedTestController {
     }
     @WebDavAttributeMapping(path=MAPPING_CC, attribute=WebDavMappingAttribute.LastModified)
     Object test_CC() throws ParseException {
-        return DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT);
+        return new Timestamp(DateTimeAdapter.parseDate("2456-01-02 03:04:05 GMT", DateTimeAdapter.DATETIME_FORMAT).getTime());
     }
     @WebDavAttributeMapping(path=MAPPING_CD, attribute=WebDavMappingAttribute.LastModified)
     Object test_CD() throws ParseException {
