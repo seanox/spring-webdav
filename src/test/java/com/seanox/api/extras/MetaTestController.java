@@ -338,6 +338,8 @@ public class MetaTestController {
         metaData.setPermitted(true);
     }
 
+    // MetaData based on the initial values of attributes + expressions from WebDavMapping.
+
     public static final String MAPPING_D1 = "/extras/meta/d1.txt";
     public static final String MAPPING_D2 = "/extras/meta/d2.txt";
 

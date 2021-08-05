@@ -254,6 +254,8 @@ public class MetaTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/meta/cC.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CC, AttributeFingerprintType.Meta));
     }
 
+    // MetaData based on the initial values of attributes + expressions from WebDavMapping.
+
     @Test
     void test_D1() throws Exception {
         this.mockMvc.perform(
