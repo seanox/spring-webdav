@@ -42,12 +42,12 @@ import java.net.URI;
 /**
  * Test of the annotation {@link WebDavMetaMapping}.<br>
  * <br>
- * MetaTest 1.0.0 20210728<br>
+ * MetaTest 1.1.0 20210805<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.1.0 20210805
  */
 public class MetaTest extends AbstractApiTest {
 
@@ -252,5 +252,14 @@ public class MetaTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/meta/cA.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CA, AttributeFingerprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/cB.txt 000066 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CB, AttributeFingerprintType.Meta));
         Assertions.assertEquals("200/200/207 /extras/meta/cC.txt 000061 null/null null/null null/null", this.createAttributeFingerprint(MetaTestController.MAPPING_CC, AttributeFingerprintType.Meta));
+    }
+
+    @Test
+    void test_D1() throws Exception {
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get(MetaTestController.MAPPING_D1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_D1 + " false-true"));
     }
 }

@@ -21,14 +21,16 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.webdav.WebDavMapping;
-import com.seanox.webdav.WebDavMetaMapping;
 import com.seanox.webdav.DateTimeAdapter;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.MetaInputStream;
 import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.MetaProperties;
 import com.seanox.webdav.Properties;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
+import com.seanox.webdav.WebDavMetaMapping;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -40,12 +42,12 @@ import java.util.Objects;
 /**
  * Test of the annotation {@link WebDavMetaMapping}.<br>
  * <br>
- * MetaTestController 1.0.0 20210726<br>
+ * MetaTestController 1.1.0 20210805<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210726
+ * @version 1.1.0 20210805
  */
 @Profile("test")
 @Component
@@ -334,5 +336,20 @@ public class MetaTestController {
         metaData.setReadOnly(false);
         metaData.setHidden(false);
         metaData.setPermitted(true);
+    }
+
+    public static final String MAPPING_D1 = "/extras/meta/d1.txt";
+    @WebDavMapping(path=MAPPING_D1, contentType="test/123", readOnly=false, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Hidden, phrase="true")
+    })
+    void testD1(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
+        outputStream.write((MAPPING_D1 + " " + outputStream.getContentType()).getBytes());
+    }
+    @WebDavMetaMapping(path=MAPPING_D1)
+    void testD1(final MetaData metaData) {
+        metaData.setContentType(
+                (metaData.isReadOnly() == false)
+                + "-" + (metaData.isHidden() == true)
+        );
     }
 }
