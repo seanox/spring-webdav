@@ -339,17 +339,21 @@ public class MetaTestController {
     }
 
     public static final String MAPPING_D1 = "/extras/meta/d1.txt";
-    @WebDavMapping(path=MAPPING_D1, contentType="test/123", readOnly=false, attributeExpressions={
+    public static final String MAPPING_D2 = "/extras/meta/d2.txt";
+
+    @WebDavMapping(path=MAPPING_D1)
+    @WebDavMapping(path=MAPPING_D2, readOnly=false, attributeExpressions={
             @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Hidden, phrase="true")
     })
-    void testD1(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
-        outputStream.write((MAPPING_D1 + " " + outputStream.getContentType()).getBytes());
+    void testDX(final MetaProperties metaProperties, final MetaOutputStream outputStream) throws IOException {
+        outputStream.write((metaProperties.getUri() + " " + outputStream.getContentType()).getBytes());
     }
     @WebDavMetaMapping(path=MAPPING_D1)
-    void testD1(final MetaData metaData) {
+    @WebDavMetaMapping(path=MAPPING_D2)
+    void testDX(final MetaData metaData) {
         metaData.setContentType(
-                (metaData.isReadOnly() == false)
-                + "-" + (metaData.isHidden() == true)
+                metaData.isReadOnly()
+                + "-" + metaData.isHidden()
         );
     }
 }
