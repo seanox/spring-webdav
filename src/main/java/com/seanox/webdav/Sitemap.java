@@ -585,7 +585,7 @@ class Sitemap implements Serializable {
         // A lot of logic can be called and therefore the cache for the
         // attributes.
 
-        private <T> T eval(final Annotation.Target target, final Variant attribute, final T fallback) {
+        private <T> T compute(final Annotation.Target target, final Variant attribute, final T fallback) {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
@@ -687,33 +687,33 @@ class Sitemap implements Serializable {
         }
 
         String getContentType() {
-            final String contentType = this.eval(Annotation.Target.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
+            final String contentType = this.compute(Annotation.Target.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
             return Objects.nonNull(contentType) && !contentType.isBlank() ? contentType : null;
         }
 
         Integer getContentLength() {
-            final Integer contentLength = this.eval(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
+            final Integer contentLength = this.compute(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength);
             return Objects.nonNull(contentLength) && contentLength.intValue() >= 0 ? contentLength : null;
         }
 
         Integer getContentLengthMax() {
-            final Integer contentLengthMax = this.eval(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
+            final Integer contentLengthMax = this.compute(Annotation.Target.ContentLengthMax, this.contentLengthMax, Defaults.contentLengthMax);
             return Objects.nonNull(contentLengthMax) && contentLengthMax.intValue() >= 0 ? contentLengthMax : null;
         }
 
         String getAccept() {
-            final String accept = this.eval(Annotation.Target.Accept, this.accept, Defaults.accept);
+            final String accept = this.compute(Annotation.Target.Accept, this.accept, Defaults.accept);
             return Objects.nonNull(accept) && !accept.isBlank() ? accept : null;
         }
 
         @Override
         Date getCreationDate() {
-            return this.eval(Annotation.Target.CreationDate, this.creationDate, Defaults.creationDate);
+            return this.compute(Annotation.Target.CreationDate, this.creationDate, Defaults.creationDate);
         }
 
         @Override
         Date getLastModified() {
-            return this.eval(Annotation.Target.LastModified, this.lastModified, this.getCreationDate());
+            return this.compute(Annotation.Target.LastModified, this.lastModified, this.getCreationDate());
         }
 
         @Override
@@ -721,7 +721,7 @@ class Sitemap implements Serializable {
             if (!this.isPermitted()
                     || Objects.isNull(this.inputCallback))
                 return true;
-            final Boolean result = this.eval(Annotation.Target.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
+            final Boolean result = this.compute(Annotation.Target.ReadOnly, this.isReadOnly, Defaults.isReadOnly);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
@@ -729,19 +729,19 @@ class Sitemap implements Serializable {
         boolean isHidden() {
             if (!this.isPermitted())
                 return true;
-            final Boolean result = this.eval(Annotation.Target.Hidden, this.isHidden, Defaults.isHidden);
+            final Boolean result = this.compute(Annotation.Target.Hidden, this.isHidden, Defaults.isHidden);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
         boolean isAccepted() {
             if (!this.isPermitted())
                 return false;
-            final Boolean result = this.eval(Annotation.Target.Accepted, this.isAccepted, Defaults.isAccepted);
+            final Boolean result = this.compute(Annotation.Target.Accepted, this.isAccepted, Defaults.isAccepted);
             return Objects.nonNull(result) && result.booleanValue();
         }
 
         boolean isPermitted() {
-            final Boolean result = this.eval(Annotation.Target.Permitted, this.isPermitted, Defaults.isPermitted);
+            final Boolean result = this.compute(Annotation.Target.Permitted, this.isPermitted, Defaults.isPermitted);
             return Objects.nonNull(result) && result.booleanValue();
         }
     }
