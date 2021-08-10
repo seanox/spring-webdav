@@ -122,14 +122,14 @@ paths of the annotations are case-insensitive.
 public class ExampleController {
 
     @WebDavMapping(path="/example/file.txt")
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMapping(path="/example/fileA.txt")
     @WebDavMapping(path="/example/fileB.txt")
     @WebDavMapping(path="/example/fileC.txt")
-    void getExampleFiles(final URI uri, final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final URI uri, final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }    
     
@@ -210,7 +210,7 @@ In the context of HTTP, `@WebDavMapping` is the base for the GET method.
 public class ExampleController {
 
     @WebDavMapping(path="/example/file.txt")
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
@@ -218,19 +218,19 @@ public class ExampleController {
             @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="'text/plain'"),
             ...
     })
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMapping(path="/example/file.txt", lastModified="2000-01-01 00:00:00")
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMapping(path="/example/fileA.txt")
     @WebDavMapping(path="/example/fileB.txt")
     @WebDavMapping(path="/example/fileC.txt")
-    void getExampleFiles(final URI uri, final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final URI uri, final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }    
     
@@ -361,7 +361,7 @@ with `@WebDavMapping`.
 public class ExampleController {
 
     @WebDavMapping(path="/example/file.txt", lastModified="2000-01-01 00:00:00")
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
     
@@ -385,7 +385,7 @@ public class ExampleController {
             @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.ContentType, phrase="'text/plain'"),
             ...
     })
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
@@ -407,19 +407,19 @@ public class ExampleController {
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
     @WebDavMapping(path=MAPPING_FILE_TXT)
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMetaMapping(path=MAPPING_FILE_TXT)
-    void getExampleFileMeta(final MetaData meta) {
+    void exampleFileMeta(final MetaData meta) {
         meta.setLastModified(new Date());
     }
 
     @WebDavMetaMapping(path="/example/fileA.txt")
     @WebDavMetaMapping(path="/example/fileB.txt")
     @WebDavMetaMapping(path="/example/fileC.txt")
-    void getExampleFilesMeta(final MetaData meta) {
+    void exampleFileMeta(final MetaData meta) {
         meta.setLastModified(new Date());
     }
     
@@ -453,19 +453,19 @@ public class ExampleController {
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
     @WebDavMapping(path=MAPPING_FILE_TXT)
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.LastModified)
-    Date getExampleFileLastModified() {
+    Date exampleFileLastModified() {
         return new Date();
     }
 
     @WebDavAttributeMapping(path="/example/fileA.txt", attribute=WebDavMappingAttribute.LastModified)
     @WebDavAttributeMapping(path="/example/fileB.txt", attribute=WebDavMappingAttribute.LastModified)
     @WebDavAttributeMapping(path="/example/fileC.txt", attribute=WebDavMappingAttribute.LastModified)
-    Date getExampleFilesLastModified() {
+    Date exampleFileLastModified() {
         return new Date();
     }
     
@@ -542,12 +542,12 @@ public class ExampleController {
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
     @WebDavMapping(path=MAPPING_FILE_TXT)
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
     
     @WebDavInputMapping(path=MAPPING_FILE_TXT, accept="text/*", contentLengthMax=1073741824)
-    void putExampleFile(final MetaInputStream inputStream) throws IOException {
+    void exampleFilePut(final MetaInputStream inputStream) throws IOException {
         ...
     }
 
@@ -555,19 +555,19 @@ public class ExampleController {
             @WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.Accept, phrase="'text/*'"),
             @WebDavInputMappingAttributeExpression(attribute=WebDavInputMappingAttribute.ContentLengthMax, phrase="1073741824")
     })
-    void putExampleFile(final MetaInputStream inputStream) throws IOException {
+    void exampleFilePut(final MetaInputStream inputStream) throws IOException {
         ...
     }
 
     @WebDavInputMapping(path="/example/fileA.txt")
     @WebDavInputMapping(path="/example/fileB.txt")
     @WebDavInputMapping(path="/example/fileC.txt")
-    void putExampleFiles(final MetaInputStream inputStream) throws IOException {
+    void exampleFilePut(final MetaInputStream inputStream) throws IOException {
         ...
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.LastModified)
-    Date getExampleFileLastModified() {
+    Date exampleFileLastModified() {
         return new Date();
     }
     
@@ -620,34 +620,34 @@ public class ExampleController {
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
     @WebDavMapping(path=MAPPING_FILE_TXT, accepted=true)
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
             @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Accepted, phrase="#secureService.isUserInRole('editor')")
     })
-    void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
 
     @WebDavInputMapping(path=MAPPING_FILE_TXT)
-    void putExampleFile(final MetaInputStream inputStream) throws IOException {
+    void exampleFilePut(final MetaInputStream inputStream) throws IOException {
         ...
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    boolean isFileAccepted(final URI uri, final Properties properties) throws IOException {
+    boolean exampleFileAccepted(final URI uri, final Properties properties) throws IOException {
         return true;
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    Boolean isFileAccepted(final URI uri, final Properties properties) throws IOException {
+    Boolean exampleFileAccepted(final URI uri, final Properties properties) throws IOException {
         return Booelan.TRUE;
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    String isFileAccepted(final URI uri, final Properties properties) throws IOException {
+    String exampleFileAccepted(final URI uri, final Properties properties) throws IOException {
         return "true";
     }
     
@@ -674,19 +674,19 @@ public class ExampleController {
   private static final String MAPPING_FILE_TXT = "/example/file.txt";
 
   @WebDavMapping(path=MAPPING_FILE_TXT, permitted=true)
-  void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+  void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
       outputStream.write("Hello WebDAV!".getBytes());
   }
 
   @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
           @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Permitted, phrase="#secureService.isUserInRole('editor')")
   })
-  void getExampleFile(final MetaOutputStream outputStream) throws IOException {
+  void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
       outputStream.write("Hello WebDAV!".getBytes());
   }
 
   @WebDavInputMapping(path=MAPPING_FILE_TXT)
-  void putExampleFile(final MetaInputStream inputStream) throws IOException {
+  void exampleFilePut(final MetaInputStream inputStream) throws IOException {
       ...
   }
 
