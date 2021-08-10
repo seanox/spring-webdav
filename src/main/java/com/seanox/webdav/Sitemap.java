@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 /**
  * Sitemap for mapping a virtual file system.<br>
@@ -59,12 +60,12 @@ import java.util.TreeMap;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
  * <br>
- * Sitemap 1.1.0 20210804<br>
+ * Sitemap 1.1.0 20210809<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.1.0 20210804
+ * @version 1.1.0 20210809
  */
 class Sitemap implements Serializable {
 
@@ -585,25 +586,71 @@ class Sitemap implements Serializable {
         // A lot of logic can be called and therefore the cache for the
         // attributes.
 
+        private <T> T convert(final Class<T> type, final Object value, final Consumer<Exception> consumer) {
+
+            if (Objects.isNull(value)
+                    || type.isAssignableFrom(value.getClass()))
+                return (T)value;
+
+            Class<?> source = value.getClass();
+            try {source = (Class<?>)source.getDeclaredField("TYPE").get(null);
+            } catch (Exception exception) {
+            }
+
+            if (type.isAssignableFrom(source))
+                return (T)value;
+
+            try {return (T)type.getMethod("valueOf", source).invoke(null, value);
+            } catch (Exception exception) {
+                while (exception instanceof InvocationTargetException)
+                    exception = (Exception)((InvocationTargetException)exception).getTargetException();
+                if (Objects.nonNull(consumer))
+                    consumer.accept(exception);
+                return null;
+            }
+        }
+
+        private final ErrorOutputConsumer<String, String, Exception> errorOutputConsumer = (classification, scope, exception) -> {
+            while (exception instanceof InvocationTargetException)
+                exception = (Exception)((InvocationTargetException)exception).getTargetException();
+            final String message = String.format("%s: %s %s", scope, exception.getClass().getName(), exception.getMessage());
+            LoggerFactory.getLogger(Sitemap.class.getPackageName() + "." + classification).error(message);
+        };
+
+        private final AttributeErrorOutputConsumer<String, Annotation.Target, Exception> attributeErrorOutputConsumer = (classification, scope, exception) -> {
+            errorOutputConsumer.accept(classification, "Attribute " + scope, exception);
+        };
+
+        private Object computeInitialValue(final Annotation.Target target, final Variant variant, final Object fallback) {
+            Object result = fallback;
+            if (variant instanceof Expression)
+                try {result = ((Expression)variant).eval();
+                } catch (Exception exception) {
+                    attributeErrorOutputConsumer.accept("ExpressionException", target, exception);
+                    result = null;
+                }
+            else if (variant instanceof Static)
+                result = ((Static)variant).value;
+            return this.convert(target.type, result, exception -> {
+                attributeErrorOutputConsumer.accept("ConverterException", target, exception);
+            });
+        }
+
         private <T> T compute(final Annotation.Target target, final Variant attribute, final T fallback) {
 
             if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
                 Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final Map<Variant, Object> metaMap = (Map<Variant, Object>)Sitemap.this.meta.get(this.getPathUnique());
-            if (Objects.nonNull(attribute)
-                    && metaMap.containsKey(attribute))
-                return (T)metaMap.get(attribute);
+            final Map<Object, Object> metaMap = (Map<Object, Object>)Sitemap.this.meta.get(this.getPathUnique());
+            if (Objects.nonNull(target)
+                    && metaMap.containsKey(target))
+                return (T)metaMap.get(target);
 
             Object result = fallback;
-            if (Objects.nonNull(attribute)
-                    && attribute instanceof Callback) {
+            if (attribute instanceof Callback) {
                 try {result = ((Callback)attribute).invoke(URI.create(Sitemap.File.this.getPath()), ((Callback)attribute).type);
                 } catch (Exception exception) {
-                    while (exception instanceof InvocationTargetException)
-                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
-                    final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
-                    LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".CallbackException").error(message);
-                    return null;
+                    attributeErrorOutputConsumer.accept("CallbackException", target, exception);
+                    result = null;
                 }
             } else if (Objects.nonNull(this.metaCallback)
                     && Arrays.asList(Annotation.Target.ContentLength, Annotation.Target.ContentType,
@@ -612,14 +659,18 @@ class Sitemap implements Serializable {
                 if (!metaMap.containsKey(this.metaCallback)) {
                     final MetaProperties meta = Defaults.MetaDataTemplate.clone();
                     meta.setUri(URI.create(Sitemap.File.this.getPath()));
-                    meta.setContentType(Sitemap.probeContentType(Sitemap.File.this.getPath()));
+                    meta.setContentType((String)this.computeInitialValue(Annotation.Target.ContentType, this.contentType, Sitemap.probeContentType(Sitemap.File.this.getPath())));
+                    meta.setContentLength((Integer)this.computeInitialValue(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength));
+                    meta.setCreationDate((Date)this.computeInitialValue(Annotation.Target.CreationDate, this.creationDate, Defaults.creationDate));
+                    meta.setLastModified((Date)this.computeInitialValue(Annotation.Target.LastModified, this.lastModified, Defaults.lastModified));
+                    meta.setReadOnly((Boolean)this.computeInitialValue(Annotation.Target.ReadOnly, this.isReadOnly, Defaults.isReadOnly));
+                    meta.setHidden((Boolean)this.computeInitialValue(Annotation.Target.Hidden, this.isHidden, Defaults.isHidden));
+                    meta.setAccepted((Boolean)this.computeInitialValue(Annotation.Target.Accepted, this.isAccepted, Defaults.isAccepted));
+                    meta.setPermitted((Boolean)this.computeInitialValue(Annotation.Target.Permitted, this.isPermitted, Defaults.isPermitted));
                     try {this.metaCallback.invoke(meta.getUri(), meta, this.metaCallback.type);
                     } catch (Exception exception) {
-                        while (exception instanceof InvocationTargetException)
-                            exception = (Exception)((InvocationTargetException)exception).getTargetException();
-                        final String message = String.format("MetaMapping: %s %s", exception.getClass().getName(), exception.getMessage());
-                        LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".CallbackException").error(message);
-                        return null;
+                        errorOutputConsumer.accept("CallbackException", "MetaMapping", exception);
+                        result = null;
                     }
                     metaMap.put(this.metaCallback, meta.clone());
                 }
@@ -643,45 +694,20 @@ class Sitemap implements Serializable {
 
             } else {
 
-                if (Objects.isNull(attribute))
-                    return (T)result;
-
-                if (attribute instanceof Expression)
-                    try {result = ((Expression)attribute).eval();
-                    } catch (Exception exception) {
-                        while (exception instanceof InvocationTargetException)
-                            exception = (Exception)((InvocationTargetException)exception).getTargetException();
-                        final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
-                        LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".ExpressionException").error(message);
-                        result = null;
-                    }
-
-                else if (attribute instanceof Static)
-                    result = ((Static)attribute).value;
+                if (attribute instanceof Expression
+                        || attribute instanceof Static)
+                    result = this.computeInitialValue(target, attribute, fallback);
             }
 
-            if (Objects.isNull(result))
-                return null;
+            if (Objects.nonNull(result)
+                    && !target.type.isAssignableFrom(result.getClass()))
+                if (Objects.nonNull(fallback))
+                    result = this.convert(fallback.getClass(), result, exception -> {
+                        attributeErrorOutputConsumer.accept("ConverterException", target, exception);
+                    });
+                else result = null;
 
-            if (!target.type.isAssignableFrom(result.getClass())) {
-                if (Objects.isNull(fallback))
-                    return null;
-                Class<?> type = result.getClass();
-                try {type = (Class<?>)type.getDeclaredField("TYPE").get(null);
-                } catch (Exception exception) {
-                }
-                final Class<?> source = fallback.getClass();
-                try {result = source.getMethod("valueOf", type).invoke(null, result);
-                } catch (Exception exception) {
-                    while (exception instanceof InvocationTargetException)
-                        exception = (Exception)((InvocationTargetException)exception).getTargetException();
-                    final String message = String.format("Attribute %s: %s %s", target, exception.getClass().getName(), exception.getMessage());
-                    LoggerFactory.getLogger(Sitemap.class.getPackageName() + ".ConverterException").error(message);
-                    return null;
-                }
-            }
-
-            metaMap.put(attribute, result);
+            metaMap.put(target, result);
 
             return (T)result;
         }
@@ -744,6 +770,16 @@ class Sitemap implements Serializable {
             final Boolean result = this.compute(Annotation.Target.Permitted, this.isPermitted, Defaults.isPermitted);
             return Objects.nonNull(result) && result.booleanValue();
         }
+    }
+
+    @FunctionalInterface
+    private interface ErrorOutputConsumer<C, S, E> {
+        void accept(C classification, final S scope, final E exception);
+    }
+
+    @FunctionalInterface
+    private interface AttributeErrorOutputConsumer<C, S, E> {
+        void accept(C classification, final S scope, final E exception);
     }
 
     private abstract class Variant {
