@@ -32,12 +32,12 @@ import java.net.URI;
 /**
  * Test the sequence for PROPFIND for files and folders.<br>
  * <br>
- * PropfindTest 1.0.0 20210710<br>
+ * PropfindTest 1.1.0 20210811<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210710
+ * @version 1.1.0 20210811
  */
 @SuppressWarnings("boxing")
 public class PropfindTest extends AbstractApiTest {
@@ -58,7 +58,7 @@ public class PropfindTest extends AbstractApiTest {
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(207))
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
-                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "950"))
+                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "959"))
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_XML))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/displayname").string("costs.xlsx"))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/iscollection").booleanValue(Boolean.FALSE))
@@ -73,7 +73,7 @@ public class PropfindTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/getcontenttype").string(AbstractApiTest.CONTENT_TYPE_XLSX))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/getcontentlength").number((double)AbstractApiTest.readTemplate(TEMPLATES_COSTS_XLSX).length))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/getetag").exists())
-                .andExpect(MockMvcResultMatchers.xpath("string-length(/multistatus/response/propstat/prop/getetag)").number(10d))
+                .andExpect(MockMvcResultMatchers.xpath("string-length(/multistatus/response/propstat/prop/getetag)").number(19d))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/supportedlock/lockentry/lockscope/exclusive").exists())
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/supportedlock/lockentry/locktype/write").exists())
                 .andExpect(MockMvcResultMatchers.xpath("count(/multistatus/response/propstat)").number(1d))
@@ -89,7 +89,7 @@ public class PropfindTest extends AbstractApiTest {
                         .header("Depth", "0"))
                 .andExpect(MockMvcResultMatchers.status().is(207))
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
-                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "966"))
+                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "975"))
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_XML))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/displayname").string("sales.pptx"))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/iscollection").booleanValue(Boolean.FALSE))
@@ -104,7 +104,7 @@ public class PropfindTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/getcontenttype").string(AbstractApiTest.CONTENT_TYPE_PPTX))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/getcontentlength").number((double)AbstractApiTest.readTemplate(TEMPLATE_SALES_PPTX).length))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/getetag").exists())
-                .andExpect(MockMvcResultMatchers.xpath("string-length(/multistatus/response/propstat/prop/getetag)").number(10d))
+                .andExpect(MockMvcResultMatchers.xpath("string-length(/multistatus/response/propstat/prop/getetag)").number(19d))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/supportedlock/lockentry/lockscope/exclusive").exists())
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response/propstat/prop/supportedlock/lockentry/locktype/write").exists())
                 .andExpect(MockMvcResultMatchers.xpath("count(/multistatus/response/propstat)").number(1d))
@@ -137,7 +137,7 @@ public class PropfindTest extends AbstractApiTest {
                         .header("Depth", "1"))
                 .andExpect(MockMvcResultMatchers.status().is(207))
                 .andExpect(MockMvcResultMatchers.header().doesNotExist("Last-Modified"))
-                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "2090"))
+                .andExpect(MockMvcResultMatchers.header().string("Content-Length", "2099"))
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_XML))
                 .andExpect(MockMvcResultMatchers.xpath("count(/multistatus/response)").number(3d))
                 .andExpect(MockMvcResultMatchers.xpath("/multistatus/response[1]/propstat/prop/displayname").string("financial"))

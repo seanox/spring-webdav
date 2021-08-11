@@ -1,6 +1,5 @@
 package com.seanox.webdav;
 
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,12 +17,12 @@ import java.util.TimeZone;
  * library com.seanox.webdav also works without @ComponentScan and therefore
  * another package is used for the tests of the package com.seanox.webdav.<br>
  * <br>
- * DateTimeAdapter 1.0.0 20210725<br>
+ * DateTimeAdapter 1.1.0 20210811<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
+ * @version 1.1.0 20210811
  */
 public class DateTimeAdapter {
 
@@ -54,16 +53,7 @@ public class DateTimeAdapter {
         return pattern.parse(date);
     }
 
-    public static Date getBuildDate() {
-
-        final String source = Sitemap.class.getName().replaceAll("\\.", "/") + ".class";
-        final URL url = Sitemap.class.getClassLoader().getResource(source);
-        if (Objects.nonNull(url.getProtocol())) {
-            if (url.getProtocol().equals("jar"))
-                return new Date(new java.io.File(url.getFile().replaceAll("(?i)(^file:)|(!.*$)", "")).lastModified());
-            if (url.getProtocol().equals("file"))
-                return new Date(new java.io.File(url.getFile()).lastModified());
-        }
-        return null;
+    public static Date getAssumedApplicationBuildDate() {
+        return WebDavFilter.ASSUMED_APPLICATION_BUILD_DATE;
     }
 }
