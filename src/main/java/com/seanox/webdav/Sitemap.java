@@ -60,12 +60,12 @@ import java.util.function.Consumer;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
  * <br>
- * Sitemap 1.1.0 20210809<br>
+ * Sitemap 1.1.0 20210811<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.1.0 20210809
+ * @version 1.1.0 20210811
  */
 class Sitemap implements Serializable {
 
@@ -76,7 +76,7 @@ class Sitemap implements Serializable {
     private final Properties data;
     private final Properties meta;
 
-    private static final Date CREATION_DATE = Sitemap.getBuildDate();
+    private static final Date CREATION_DATE = WebDavFilter.ASSUMED_APPLICATION_BUILD_DATE;
 
     Sitemap() {
         this.tree  = new TreeMap<>();
@@ -98,19 +98,6 @@ class Sitemap implements Serializable {
             sitemap.map(annotations);
         sitemap.data.putAll(properties.clone());
         return sitemap;
-    }
-
-    private static Date getBuildDate() {
-
-        final String source = Sitemap.class.getName().replaceAll("\\.", "/") + ".class";
-        final URL url = Sitemap.class.getClassLoader().getResource(source);
-        if (Objects.nonNull(url.getProtocol())) {
-            if (url.getProtocol().equals("jar"))
-                return new Date(new java.io.File(url.getFile().replaceAll("(?i)(^file:)|(!.*$)", "")).lastModified());
-            if (url.getProtocol().equals("file"))
-                return new Date(new java.io.File(url.getFile()).lastModified());
-        }
-        return null;
     }
 
     private static String probeContentType(final String file) {
@@ -289,8 +276,8 @@ class Sitemap implements Serializable {
     private static class Defaults {
         private static final String  contentType      = "application/octet-stream";
         private static final Integer contentLength    = Integer.valueOf(-1);
-        private static final Date    creationDate     = Sitemap.getBuildDate();
-        private static final Date    lastModified     = Sitemap.getBuildDate();
+        private static final Date    creationDate     = Sitemap.CREATION_DATE;
+        private static final Date    lastModified     = Sitemap.CREATION_DATE;
         private static final Boolean isReadOnly       = Boolean.TRUE;
         private static final Boolean isHidden         = Boolean.FALSE;
         private static final Boolean isAccepted       = Boolean.TRUE;
@@ -379,13 +366,20 @@ class Sitemap implements Serializable {
             return this.getCreationDate();
         }
 
+        // The identifier or ETag are based on the build datetime of the
+        // application, assuming the data must be incompatible after an update.
+        // However, for use in scalable environments, the datetime must have a
+        // common fixed point.
+
         String getIdentifier() {
             Date date = this.getLastModified();
             if (Objects.isNull(date))
                 date = this.getCreationDate();
             if (Objects.isNull(date))
                 date = CREATION_DATE;
-            return Long.toString(date.getTime(), 36).toUpperCase();
+            if (CREATION_DATE.getTime() == date.getTime())
+                return Long.toString(CREATION_DATE.getTime(), 36).toUpperCase();
+            return (Long.toString(CREATION_DATE.getTime(), 36) + "-" + Long.toString(date.getTime(), 36)).toUpperCase();
         }
 
         boolean isHidden() {
