@@ -24,6 +24,7 @@ package com.seanox.webdav;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.io.IOException;
@@ -60,12 +61,12 @@ import java.util.function.Consumer;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
  * <br>
- * Sitemap 1.1.0 20210811<br>
+ * Sitemap 1.1.0 20210812<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.1.0 20210811
+ * @version 1.1.0 20210812
  */
 class Sitemap implements Serializable {
 
@@ -76,7 +77,7 @@ class Sitemap implements Serializable {
     private final Properties data;
     private final Properties meta;
 
-    private static final Date CREATION_DATE = WebDavFilter.ASSUMED_APPLICATION_BUILD_DATE;
+    private static final Date CREATION_DATE = Sitemap.detectApplicationBuildDate();
 
     Sitemap() {
         this.tree  = new TreeMap<>();
@@ -98,6 +99,50 @@ class Sitemap implements Serializable {
             sitemap.map(annotations);
         sitemap.data.putAll(properties.clone());
         return sitemap;
+    }
+
+    private static Date detectApplicationClassBuildDate(final String className) {
+        String classResourceName = className.replaceAll("\\.", "/");
+        if (!classResourceName.endsWith(".class"))
+            classResourceName += ".class";
+        final URL classResourceUrl = WebDavFilter.class.getResource(classResourceName);
+        if (Objects.isNull(classResourceUrl))
+            return null;
+        if (("jar").equals(classResourceUrl.getProtocol()))
+            return new Date(new java.io.File(classResourceUrl.getFile().replaceAll("(?i)(^file:)|(!.*$)", "")).lastModified());
+        if (("file").equals(classResourceUrl.getProtocol()))
+            return new Date(new java.io.File(classResourceUrl.getFile()).lastModified());
+        return null;
+    }
+
+    private static Date detectApplicationBuildDate() {
+
+        // Primarily, the top-level class with the annotation
+        // @SpringBootApplication is searched for, assuming that it represents
+        // the application and has the correct build date.
+        for (final StackTraceElement stackTraceElement : new Throwable().getStackTrace()) {
+            final String className = stackTraceElement.getClassName();
+            final Class<?> classSource;
+            try {classSource = Sitemap.class.getClassLoader().loadClass(className);
+            } catch (Throwable throwable) {
+                continue;
+            }
+            if (Objects.isNull(classSource.getDeclaredAnnotation(SpringBootApplication.class)))
+                continue;
+            final Date classBuildDate = Sitemap.detectApplicationClassBuildDate(className);
+            if (Objects.nonNull(classBuildDate))
+                return classBuildDate;
+        }
+
+        // Secondary the build date of the Sitemap is used if no application
+        // was detected. This is possible in the case of unit tests if no
+        // Spring boot application is used there.
+        final Date classBuildDate = Sitemap.detectApplicationClassBuildDate(Sitemap.class.getName());
+        if (Objects.nonNull(classBuildDate))
+            return classBuildDate;
+
+        // What should never happen, but who knows...
+        return new Date();
     }
 
     private static String probeContentType(final String file) {

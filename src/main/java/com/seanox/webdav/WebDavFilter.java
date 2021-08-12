@@ -50,14 +50,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -120,20 +118,18 @@ import java.util.stream.IntStream;
  *   </li>
  * </ul>
  * <br>
- * WebDavFilter 1.1.0 20210811<br>
+ * WebDavFilter 1.1.0 20210812<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210811
+ * @version 1.1.0 20210812
  */
 public class WebDavFilter extends HttpFilter {
 
     private static final long serialVersionUID = 7637895578410477411L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebDavFilter.class);
-
-    static final Date ASSUMED_APPLICATION_BUILD_DATE = WebDavFilter.getAssumedApplicationBuildDate();
 
     private Properties properties;
 
@@ -233,43 +229,6 @@ public class WebDavFilter extends HttpFilter {
         this.filterUrlPatternMappings = new ArrayList<>();
     }
 
-    private static Date getClassBuildDate(final String className) {
-        String classResourceName = className.replaceAll("\\.", "/");
-        if (!classResourceName.endsWith(".class"))
-            classResourceName += ".class";
-        final URL classResourceUrl = WebDavFilter.class.getClassLoader().getResource(classResourceName);
-        if (Objects.isNull(classResourceUrl))
-            return null;
-        if (("jar").equals(classResourceUrl.getProtocol()))
-            return new Date(new java.io.File(classResourceUrl.getFile().replaceAll("(?i)(^file:)|(!.*$)", "")).lastModified());
-        if (("file").equals(classResourceUrl.getProtocol()))
-            return new Date(new java.io.File(classResourceUrl.getFile()).lastModified());
-        return null;
-    }
-
-    private static Date getAssumedApplicationBuildDate() {
-
-        for (final StackTraceElement stackTraceElement : new Throwable().getStackTrace()) {
-            final String className = stackTraceElement.getClassName();
-            if (className.startsWith(WebDavFilter.class.getPackageName() + "."))
-                continue;
-            final Date classBuildDate = WebDavFilter.getClassBuildDate(className);
-            if (Objects.nonNull(classBuildDate))
-                return classBuildDate;
-            break;
-        }
-
-        // Not a good alternative, but an alternative is the package from
-        // WebDavFilter, for the theoretical case that no application can be
-        // found.
-        final Date classBuildDate = WebDavFilter.getClassBuildDate(WebDavFilter.class.getName());
-        if (Objects.nonNull(classBuildDate))
-            return classBuildDate;
-
-        // What should never happen, but who knows...
-        return null;
-    }
-
     private static Class<?>[] getClassHierarchy(Object source) {
 
         if (Objects.isNull(source))
@@ -292,9 +251,6 @@ public class WebDavFilter extends HttpFilter {
     @Override
     public void init(final FilterConfig filterConfig)
             throws ServletException {
-
-        if (Objects.isNull(WebDavFilter.ASSUMED_APPLICATION_BUILD_DATE))
-            throw new ServletException(WebDavFilter.class.getName() + ": No Spring Application was found");
 
         this.sitemap = new Sitemap();
 
