@@ -34,12 +34,12 @@ import java.util.Locale;
  * Test the function of the LastModified attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * LastModifiedTest 1.1.0 20210811<br>
+ * LastModifiedTest 1.1.0 20210812<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210811
+ * @version 1.1.0 20210812
  */
 public class LastModifiedTest extends AbstractApiTest {
 
@@ -90,6 +90,6 @@ public class LastModifiedTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/lastModified/d5.txt 301361 Fri, 31 Dec 2004 23:00:00 GMT/Fri, 31 Dec 2004 23:00:00 GMT/Fri, 31 Dec 2004 23:00:00 GMT", this.createAttributeFingerprint(LastModifiedTestController.MAPPING_D5, AttributeFingerprintType.LastModified));
         String timestampD6 = this.createAttributeFingerprint(LastModifiedTestController.MAPPING_D6, AttributeFingerprintType.LastModified);
         timestampD6 = timestampD6.replaceAll("\\s+\\d\\d:.*$", "");
-        Assertions.assertEquals(String.format(Locale.US, "200/200/207 /extras/lastModified/d6.txt 301361 %1$ta, %1$td %1$tb %1$tY", DateTimeAdapter.getAssumedApplicationBuildDate()), timestampD6);
+        Assertions.assertEquals(String.format(Locale.US, "200/200/207 /extras/lastModified/d6.txt 301361 %1$ta, %1$td %1$tb %1$tY", DateTimeAdapter.getApplicationBuildDate()), timestampD6);
     }
 }

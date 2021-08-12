@@ -32,12 +32,12 @@ import org.junit.jupiter.api.Test;
  * Test the function of the CreationDate attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * CreationDateTest 1.1.0 20210811<br>
+ * CreationDateTest 1.1.0 20210812<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210811
+ * @version 1.1.0 20210812
  */
 public class CreationDateTest extends AbstractApiTest {
 
@@ -86,6 +86,6 @@ public class CreationDateTest extends AbstractApiTest {
         Assertions.assertEquals("200/200/207 /extras/creationDate/d5.txt 301361 2004-12-31T23:00:00Z", this.createAttributeFingerprint(CreationDateTestController.MAPPING_D5, AttributeFingerprintType.CreationDate));
         String timestampD6 = this.createAttributeFingerprint(CreationDateTestController.MAPPING_D6, AttributeFingerprintType.CreationDate);
         timestampD6 = timestampD6.replaceAll("T.*$", "");
-        Assertions.assertEquals(String.format("200/200/207 /extras/creationDate/d6.txt 301361 %1$tY-%1$tm-%1$td", DateTimeAdapter.getAssumedApplicationBuildDate()), timestampD6);
+        Assertions.assertEquals(String.format("200/200/207 /extras/creationDate/d6.txt 301361 %1$tY-%1$tm-%1$td", DateTimeAdapter.getApplicationBuildDate()), timestampD6);
     }
 }
