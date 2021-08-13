@@ -11,11 +11,11 @@
 
   <groupId>com.seanox</groupId>
   <artifactId>seanox-spring-webdav</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <name>spring-webdav</name>
   <description>
     WebDAV mapping for Spring Boot
-    Use an API like a network drive, open files, edit and save them.
+    - Use an API like a network drive, open files, edit and save them.
   </description>
 
   <scm>
