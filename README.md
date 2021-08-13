@@ -79,8 +79,16 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 # Changes (Change Log)
-## 1.0.0 20210729 (summary of the current version)
-NT: Release is available  
+## 1.1.0 20210813 (summary of the current version)
+BF: Sitemap: Optimization of accepted/permitted  
+BF: Sitemap: Correction of compute if no fallback exists  
+BF: Sitemap: Correction of path normalization for non Windows  
+CR: Sitemap: Optimization of compute when using data types  
+CR: Sitemap: MetaData based on the initial values of WebDavMapping  
+CR: Sitemap: Optimization from CreationDate, based on the build date of the application  
+CR: WebDavFilter: More tolerant URL pattern  
+CR: WebDavFilter: Optimization of the determination from the context path  
+CR: WebDavFilter: Optimization from CreationDate, based on the build date of the application  
 
 [Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
 
