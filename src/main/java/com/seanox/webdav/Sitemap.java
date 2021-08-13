@@ -61,12 +61,12 @@ import java.util.function.Consumer;
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
  * <br>
- * Sitemap 1.1.0 20210812<br>
+ * Sitemap 1.1.0 20210813<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author Seanox Software Solutions
- * @version 1.1.0 20210812
+ * @version 1.1.0 20210813
  */
 class Sitemap implements Serializable {
 
@@ -174,7 +174,7 @@ class Sitemap implements Serializable {
         path = path.replace('\\', '/');
 
         // Special characters only relevant for Windows (:*?"'<>|)
-        if (path.matches("^.*[\\*\\?\"'<>\\|].*$"))
+        if (path.matches("^.*[:\\*\\?\"'<>\\|].*$"))
             throw new InvalidPathException(path, "Illegal character found");
         // Paths based only on spaces and dots are often a problem
         if (path.matches(".*/[\\s\\.]+(/.*)?$"))

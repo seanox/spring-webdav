@@ -1,6 +1,8 @@
 1.1.0 2021xxxx
   BF: Sitemap: Optimization of accepted/permitted
   BF: Sitemap: Correction of compute if no fallback exists
+  BF: Sitemap: Correction of path normalization for non Windows
+      The character : is not supported in paths.
   CR: Sitemap: Optimization of compute when using data types
       e.g. Inheritance: Timestamp is accepted for Date
   CR: Sitemap: MetaData based on the initial values of WebDavMapping
