@@ -34,14 +34,14 @@ import java.util.Locale;
  * Test the function of the LastModified attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * LastModifiedTest 1.1.0 20210812<br>
+ * LastModifiedTest 1.1.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210812
+ * @version 1.1.0 20210815
  */
-public class LastModifiedTest extends AbstractApiTest {
+class LastModifiedTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link WebDavMapping}

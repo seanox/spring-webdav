@@ -33,14 +33,14 @@ import java.lang.annotation.Annotation;
 /**
  * Test of the annotation {@link WebDavMapping}.<br>
  * <br>
- * MappingTest 1.0.0 20210712<br>
+ * MappingTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210712
+ * @version 1.0.0 20210815
  */
-public class MappingTest extends AbstractTest {
+class MappingTest extends AbstractTest {
 
     @WebDavMapping(path="a")
     @WebDavMapping(path="/a")

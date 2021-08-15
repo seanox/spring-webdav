@@ -30,12 +30,12 @@ import com.seanox.webdav.WebDavMapping;
  * {@link WebDavMapping} and
  * {@link WebDavInputMapping}.<br>
  * <br>
- * ReadOnlyTest 1.0.0 20210711<br>
+ * ReadOnlyTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210711
+ * @version 1.0.0 20210815
  */
-public class ReadOnlyTest extends AbstractApiTest {
+class ReadOnlyTest extends AbstractApiTest {
 }

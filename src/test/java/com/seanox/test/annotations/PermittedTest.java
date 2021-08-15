@@ -33,14 +33,14 @@ import org.junit.jupiter.api.Test;
  * {@link WebDavMapping} and
  * {@link WebDavInputMapping}.<br>
  * <br>
- * PermittedTest 1.0.0 20210728<br>
+ * PermittedTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.0.0 20210815
  */
-public class PermittedTest extends AbstractApiTest {
+class PermittedTest extends AbstractApiTest {
 
     @Test
     void test_DX1() throws Exception {

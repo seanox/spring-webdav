@@ -30,14 +30,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * Test the function of the method signatures.<br>
  * <br>
- * SignaturesTest 1.0.0 20210719<br>
+ * SignaturesTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210815
  */
-public class SignaturesTest extends AbstractApiTest {
+class SignaturesTest extends AbstractApiTest {
 
     // Methods do not have a fixed signature, the data type of the parameters
     // is used as a placeholder and filled when called.
