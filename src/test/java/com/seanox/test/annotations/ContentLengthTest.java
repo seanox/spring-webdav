@@ -31,14 +31,14 @@ import org.junit.jupiter.api.Test;
  * Test the function of the ContentLength attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * ContentLengthTest 1.0.0 20210728<br>
+ * ContentLengthTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.0.0 20210815
  */
-public class ContentLengthTest extends AbstractApiTest {
+class ContentLengthTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link WebDavMapping}

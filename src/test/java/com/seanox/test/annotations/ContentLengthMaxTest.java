@@ -32,14 +32,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  * Test the function of the ContentLengthMaxTest attribute for
  * {@link WebDavInputMapping}.<br>
  * <br>
- * ContentLengthMaxTest 1.0.0 20210719<br>
+ * ContentLengthMaxTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210719
+ * @version 1.0.0 20210815
  */
-public class ContentLengthMaxTest extends AbstractApiTest {
+class ContentLengthMaxTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link WebDavInputMapping}

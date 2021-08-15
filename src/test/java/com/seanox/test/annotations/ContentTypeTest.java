@@ -31,14 +31,14 @@ import org.junit.jupiter.api.Test;
  * Test the function of the ContentType attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * ContentTypeTest 1.0.0 20210728<br>
+ * ContentTypeTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.0.0 20210815
  */
-public class ContentTypeTest extends AbstractApiTest {
+class ContentTypeTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link WebDavMapping}

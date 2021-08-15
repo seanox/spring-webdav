@@ -33,14 +33,14 @@ import org.junit.jupiter.api.Test;
 /**
  * Test of the expressions.
  *
- * ExpressionTest 1.0.0 20210728<br>
+ * ExpressionTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.0.0 20210815
  */
-public class ExpressionTest extends AbstractApiTest {
+class ExpressionTest extends AbstractApiTest {
 
     // Exceptions/syntax errors in the expressions have no effect for the mapping.
 

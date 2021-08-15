@@ -32,14 +32,14 @@ import org.junit.jupiter.api.Test;
  * Test the function of the CreationDate attribute for
  * {@link WebDavMapping}.<br>
  * <br>
- * CreationDateTest 1.1.0 20210812<br>
+ * CreationDateTest 1.1.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210812
+ * @version 1.1.0 20210815
  */
-public class CreationDateTest extends AbstractApiTest {
+class CreationDateTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link WebDavMapping}

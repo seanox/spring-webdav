@@ -32,14 +32,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  * Test the function of the accept attribute for
  * {@link WebDavInputMapping}.<br>
  * <br>
- * AcceptTest 1.0.0 20210715<br>
+ * AcceptTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210715
+ * @version 1.0.0 20210815
  */
-public class AcceptTest extends AbstractApiTest {
+class AcceptTest extends AbstractApiTest {
 
     // Supported types of data definition:
     // - {@link WebDavInputMapping}
