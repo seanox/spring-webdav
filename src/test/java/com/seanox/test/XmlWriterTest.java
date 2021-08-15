@@ -31,14 +31,14 @@ import java.io.IOException;
 /**
  * Test of the XmlWriter functions.<br>
  * <br>
- * XmlWriterTest 1.0.0 20210718<br>
+ * XmlWriterTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210718
+ * @version 1.0.0 20210815
  */
-public class XmlWriterTest extends AbstractTest {
+class XmlWriterTest extends AbstractTest {
 
     @Test
     void test_1() throws IOException {

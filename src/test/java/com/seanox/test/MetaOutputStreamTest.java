@@ -33,15 +33,15 @@ import java.util.Objects;
 /**
  * Test of the MetaOutputStream functions.<br>
  * <br>
- * MetaOutputStreamTest 1.0.0 20210728<br>
+ * MetaOutputStreamTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.0.0 20210815
  */
 @SuppressWarnings("boxing")
-public class MetaOutputStreamTest extends AbstractTest {
+class MetaOutputStreamTest extends AbstractTest {
 
     private static final byte[] BYTES = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").getBytes();
 

@@ -30,14 +30,14 @@ import java.nio.file.InvalidPathException;
 /**
  * Test of the Sitemap functions.<br>
  * <br>
- * SitemapTest 1.0.0 20210707<br>
+ * SitemapTest 1.0.0 20210815<br>
  * Copyright (C) 2021 Seanox Software Solutions<br>
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210707
+ * @version 1.0.0 20210815
  */
-public class SitemapTest extends AbstractTest {
+class SitemapTest extends AbstractTest {
 
     @Test
     void testNormalizePath_1() {
