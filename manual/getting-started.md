@@ -525,7 +525,27 @@ In log level `INFO` the structure of the Sitemap is logged.
 _Example of the output_
 
 ## Mapping from Network Drive
-TODO:
+### Windows
+```
+net use x: http://127.0.0.1:8080/ /persistent:no
+```
+
+### macOS
+Mounting via command line is not so easily explained here, therefore the
+configuration via UI.
+
+1. Choose Go > Connect to Server (or _CMD + K_).
+2. Specify the address of the server in the _Server Address_ field.  
+   e.g. `http://127.0.0.1:8080/`
+3. Click Connect.
+
+### Linux
+Mount from network drive with davfs2.
+```
+$ sudo apt-get install davfs2
+$ sudo mkdir /mnt/dav
+$ sudo mount -t davfs -o noexec http://127.0.0.1:8080/ /mnt/dav/
+```
 
 ## Read-Only Access
 TODO:
