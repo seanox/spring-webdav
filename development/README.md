@@ -3,6 +3,10 @@ General notes, hints and comments for development.
 
 ## Contents Overview
 * [Banner](#banner)
+* [Version Number](#version-number)
+* [Documentation](#documentation)
+* [Exception Handling](#exception-handling)
+* [Using final](#using-final)
 
 ## Banner
 https://patorjk.com/software/taag/#p=display&h=1&v=1&f=Standard  
