@@ -693,41 +693,41 @@ Except the HTTP method `OPTIONS`, the function has an effect on all requests.
 @RestController
 public class ExampleController {
 
-  private static final String MAPPING_FILE_TXT = "/example/file.txt";
+    private static final String MAPPING_FILE_TXT = "/example/file.txt";
 
-  @WebDavMapping(path=MAPPING_FILE_TXT, permitted=true)
-  void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
-      outputStream.write("Hello WebDAV!".getBytes());
-  }
+    @WebDavMapping(path=MAPPING_FILE_TXT, permitted=true)
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
 
-  @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
-          @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Permitted, phrase="#secureService.isUserInRole('editor')")
-  })
-  void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
-      outputStream.write("Hello WebDAV!".getBytes());
-  }
+    @WebDavMapping(path=MAPPING_FILE_TXT, attributeExpressions={
+            @WebDavMappingAttributeExpression(attribute=WebDavMappingAttribute.Permitted, phrase="#secureService.isUserInRole('editor')")
+    })
+    void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
+        outputStream.write("Hello WebDAV!".getBytes());
+    }
 
-  @WebDavInputMapping(path=MAPPING_FILE_TXT)
-  void exampleFilePut(final MetaInputStream inputStream) throws IOException {
-      ...
-  }
+    @WebDavInputMapping(path=MAPPING_FILE_TXT)
+    void exampleFilePut(final MetaInputStream inputStream) throws IOException {
+        ...
+    }
 
-  @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
-  boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
-      return true;
-  }
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
+    boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
+        return true;
+    }
 
-  @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
-  Boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
-      return Booelan.TRUE;
-  }
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
+    Boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
+        return Booelan.TRUE;
+    }
 
-  @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-  String isFilePermitted(final URI uri, final Properties properties) throws IOException {
-      return "true";
-  }
+    @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
+    String isFilePermitted(final URI uri, final Properties properties) throws IOException {
+        return "true";
+    }
     
-  ...
+    ...
 }
 ```
 _Example of the use of the different possibilities_
