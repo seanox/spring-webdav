@@ -548,10 +548,12 @@ $ sudo mount -t davfs -o noexec http://127.0.0.1:8080/ /mnt/dav/
 ```
 
 ## Read-Only Access
-TODO:
+By default `@WebDavMapping` uses read-only access, regardless of whether
+`@WebDavInputMapping` is available for a path.
 
 ## Read-Write Access
-TODO:
+The read and write access requires that the `@WebDavMapping` attribute
+`readOnly` is `true` and `@WebDavInputMapping` is used.
 
 In the context of HTTP, `@WebDavInputMapping` is the base for the PUT method.
 
@@ -561,7 +563,7 @@ public class ExampleController {
 
     private static final String MAPPING_FILE_TXT = "/example/file.txt";
     
-    @WebDavMapping(path=MAPPING_FILE_TXT)
+    @WebDavMapping(path=MAPPING_FILE_TXT, readOnly=false)
     void exampleFileGet(final MetaOutputStream outputStream) throws IOException {
         outputStream.write("Hello WebDAV!".getBytes());
     }
