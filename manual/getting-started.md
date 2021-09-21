@@ -769,5 +769,5 @@ Maps the WebDAV as drive X: in Windows (not permanent).
 `net use x: /delete /YES`  
 Remove the mapping for drive X: in Windows.
 
-`mvn clean deploy`
+`mvn clean deploy`  
 Rebuilds the project and publish a release.
