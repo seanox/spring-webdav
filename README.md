@@ -69,7 +69,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
