@@ -17,13 +17,18 @@
     WebDAV mapping for Spring Boot
     - Use an API like a network drive, open files, edit and save them.
   </description>
-
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <scm>
     <connection>scm:git:git://github.com/seanox/spring-webdav.git</connection>
     <developerConnection>scm:git:git@github.com:seanox/spring-webdav.git</developerConnection>
     <url>https://github.com/seanox/spring-webdav</url>
   </scm>
-
   <developers>
     <developer>
       <id>seanox</id>
@@ -35,14 +40,6 @@
   <properties>
     <java.version>11</java.version>
     <encoding>UTF-8</encoding>
-    <sonatype.nexus.staging.version>1.6.8</sonatype.nexus.staging.version>
-    <maven.release.version>2.5.3</maven.release.version>
-    <maven.compiler.version>3.8.1</maven.compiler.version>
-    <maven.source.version>3.0.1</maven.source.version>
-    <maven.javadoc.version>3.2.0</maven.javadoc.version>
-    <maven.jar.version>3.2.0</maven.jar.version>
-    <maven.deploy.version>2.8.2</maven.deploy.version>
-    <maven.gpg.version>1.6</maven.gpg.version>
   </properties>
   
   <dependencies>
@@ -79,7 +76,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>${maven.deploy.version}</version>
+          <version>2.8.2</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -125,7 +122,7 @@
       <!-- build / release / deliver -->
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
-        <version>${maven.release.version}</version>
+        <version>2.5.3</version>
         <configuration>
           <useReleaseProfile>false</useReleaseProfile>
           <releaseProfiles>release</releaseProfiles>
@@ -134,7 +131,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven.compiler.version}</version>
+        <version>3.8.1</version>
         <configuration>
           <target>${java.version}</target>
           <source>${java.version}</source>
@@ -144,7 +141,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>${maven.source.version}</version>
+        <version>3.0.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -157,7 +154,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven.javadoc.version}</version>
+        <version>3.2.0</version>
         <configuration>
           <source>${java.version}</source>
           <doclint>none</doclint>
@@ -174,7 +171,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven.jar.version}</version>
+        <version>3.2.0</version>
         <executions>
           <execution>
             <goals>
@@ -186,7 +183,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-        <version>${maven.gpg.version}</version>
+        <version>1.6</version>
         <executions>
           <execution>
             <id>sign-artifacts</id>
@@ -200,7 +197,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>${sonatype.nexus.staging.version}</version>
+        <version>1.6.8</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>ossrh</serverId>
