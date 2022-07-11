@@ -553,7 +553,7 @@ By default `@WebDavMapping` uses read-only access, regardless of whether
 
 ## Read-Write Access
 The read and write access requires that the `@WebDavMapping` attribute
-`readOnly` is `true` and `@WebDavInputMapping` is used.
+`readOnly` is `false` and `@WebDavInputMapping` is used.
 
 In the context of HTTP, `@WebDavInputMapping` is the base for the PUT method.
 
