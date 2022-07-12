@@ -64,7 +64,9 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav  
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.1.1
+
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
@@ -88,20 +90,3 @@ CR: License: Change to Apache License Version 2.0
 [Issues](https://github.com/seanox/spring-webdav/issues)  
 [Requests](https://github.com/seanox/spring-webdav/pulls)  
 [Mail](http://seanox.de/contact)
-
-
-# Thanks!
-<img src="https://raw.githubusercontent.com/seanox/seanox/master/sources/resources/images/thanks.png">
-
-[cantaa GmbH](https://cantaa.de/)  
-[JetBrains](https://www.jetbrains.com/?from=seanox)  
-Sven Lorenz  
-Andreas Mitterhofer  
-[novaObjects GmbH](https://www.novaobjects.de)  
-Leo Pelillo  
-Gunter Pfannm&uuml;ller  
-Annette und Steffen Pokel  
-Edgar R&ouml;stle  
-Michael S&auml;mann  
-Markus Schlosneck  
-[T-Systems International GmbH](https://www.t-systems.com)
