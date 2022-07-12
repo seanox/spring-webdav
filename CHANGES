@@ -1,3 +1,7 @@
+1.1.2 2022xxxx
+  BF: Maven: Update of dependencies
+      CVE-2022-22965
+
 1.1.1 20210924
   CR: License: Change to Apache License Version 2.0
 
