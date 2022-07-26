@@ -59,7 +59,7 @@ public class MetaProperties implements Cloneable {
     private boolean isAccepted;
     private boolean isPermitted;
 
-    MetaProperties() {
+    private MetaProperties() {
     }
 
     /**

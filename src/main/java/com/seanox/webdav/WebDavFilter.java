@@ -352,7 +352,7 @@ public class WebDavFilter extends HttpFilter {
         }
     }
 
-    private String locateRequesPath(final HttpServletRequest request) {
+    private String locateRequestPath(final HttpServletRequest request) {
         final String contextPath = request.getContextPath();
         final String requestURI = URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8);
         if (requestURI.startsWith(contextPath + "/"))
@@ -363,7 +363,7 @@ public class WebDavFilter extends HttpFilter {
     }
 
     private String locateRequestContextPath(final HttpServletRequest request) {
-        final String requestURI = this.locateRequesPath(request);
+        final String requestURI = this.locateRequestPath(request);
         for (String urlPatternMapping : this.filterUrlPatternMappings) {
             urlPatternMapping = urlPatternMapping.replaceAll("/+\\**$", "");
             if (requestURI.startsWith(urlPatternMapping + "/")
@@ -374,7 +374,7 @@ public class WebDavFilter extends HttpFilter {
     }
 
     private String locateSitemapPath(final HttpServletRequest request) {
-        final String requestURI = this.locateRequesPath(request);
+        final String requestURI = this.locateRequestPath(request);
         if (this.filterUrlPatternMappings.isEmpty())
             return requestURI;
         for (String urlPatternMapping : this.filterUrlPatternMappings) {
@@ -508,7 +508,7 @@ public class WebDavFilter extends HttpFilter {
 
         // Win32FileAttributes
         // see also https://docs.microsoft.com/de-de/windows/win32/api/fileapi/nf-fileapi-setfileattributesa?redirectedfrom=MSDN
-        // readOnly: 0x01, hidden: 0x02, system: 0x04, directory: 0x10, achive: 0x20
+        // readOnly: 0x01, hidden: 0x02, system: 0x04, directory: 0x10, archive: 0x20
         final String win32FileAttributes = Integer.toHexString(
                 (entry.isReadOnly() ? 0x01 : 0)
                         | (entry.isHidden() ? 0x02 : 0)
@@ -770,7 +770,7 @@ public class WebDavFilter extends HttpFilter {
         // But MS Office / MS-WebDAV-MiniRedir does it sometimes and wants to
         // change timestamps and file attributes.
         // Lazy magic -- here simply PROPFIND is used and the requests are
-        // supplied with meta data. Not nice but works.
+        // supplied with metadata. Not nice but works.
 
         this.doPropfind(sitemap, request, response);
     }
@@ -1004,7 +1004,7 @@ public class WebDavFilter extends HttpFilter {
 
         // There is no break and no return.
         // The methods all end with a state exception.
-        // Thus the methods can be left simply without complex if-constructs
+        // Thus, the methods can be left simply without complex if-constructs
         // and the type of the return value is more flexible.
 
         try {

@@ -120,7 +120,7 @@ abstract class Annotation {
         }
 
         // Attribute as container can be used independently of WebDav
-        // annotations. Outside of the WebDavFilter all components should work
+        // annotations. Outside the WebDavFilter all components should work
         // without the WebDav annotations, because otherwise the prefix
         // WebDav*** is always present and it slays you.
         // WebDav*** is intended and helpful for the end developer only.

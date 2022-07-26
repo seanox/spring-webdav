@@ -73,10 +73,6 @@ public class MetaInputStream extends InputStream {
 
     private IOException exception;
 
-    MetaInputStream() {
-        throw new RuntimeException();
-    }
-
     /**
      * Return ContentType to the incoming data stream.
      * @return ContentType to the incoming data stream
@@ -107,8 +103,8 @@ public class MetaInputStream extends InputStream {
         if (Objects.isNull(this.input)) {
             this.input = this.request.getInputStream();
             if (Objects.nonNull(this.contentLengthMax)
-                    && this.contentLengthMax.intValue() >= 0)
-                this.limit = this.contentLengthMax.intValue();
+                    && this.contentLengthMax >= 0)
+                this.limit = this.contentLengthMax;
         }
 
         if (Objects.nonNull(this.exception))
@@ -122,7 +118,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.intValue() < 0)
+                || this.contentLengthMax < 0)
             return this.input.read();
 
         try {
@@ -148,7 +144,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.intValue() < 0)
+                || this.contentLengthMax < 0)
             return this.input.read(bytes);
 
         try {
@@ -174,7 +170,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.intValue() < 0)
+                || this.contentLengthMax < 0)
             return this.input.read(bytes, offset, length);
 
         try {
@@ -200,7 +196,7 @@ public class MetaInputStream extends InputStream {
         this.advanceAccess();
 
         if (Objects.isNull(this.contentLengthMax)
-                || this.contentLengthMax.intValue() < 0)
+                || this.contentLengthMax < 0)
             return this.input.readAllBytes();
 
         try {return this.input.readNBytes(this.limit);
