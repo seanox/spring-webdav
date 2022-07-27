@@ -91,7 +91,7 @@ class MarketingController {
     }
     @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=WebDavMappingAttribute.ContentLength)
     Integer marketingFlyerContentLength() {
-        return Integer.valueOf(this.marketingService.readMarketingFlyer().getData().length);
+        return this.marketingService.readMarketingFlyer().getData().length;
     }
     @WebDavAttributeMapping(path=MARKETING_FLYER_PPTX, attribute=WebDavMappingAttribute.LastModified)
     Date marketingFlyerLastModified() {

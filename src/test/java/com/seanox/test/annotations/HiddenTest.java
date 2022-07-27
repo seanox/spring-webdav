@@ -102,9 +102,9 @@ class HiddenTest extends AbstractApiTest {
         final PropfindResult propfindResult = new PropfindResult();
         propfindResult.uri = xpath.compile("/multistatus/response/href").evaluate(xmlDocument);
         propfindResult.status = mvcResult.getResponse().getStatus();
-        propfindResult.isFolder = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/iscollection").evaluate(xmlDocument)).booleanValue();
+        propfindResult.isFolder = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/iscollection").evaluate(xmlDocument));
         propfindResult.isFile = !propfindResult.isFolder;
-        propfindResult.isHidden = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/ishidden").evaluate(xmlDocument)).booleanValue();
+        propfindResult.isHidden = Boolean.valueOf(xpath.compile("/multistatus/response/propstat/prop/ishidden").evaluate(xmlDocument));
         propfindResult.isEmpty = !propfindResult.isFile;
         propfindResult.childs = ((Number)xpath.compile("count(/multistatus/response) -1").evaluate(xmlDocument, XPathConstants.NUMBER)).intValue();
         return propfindResult;

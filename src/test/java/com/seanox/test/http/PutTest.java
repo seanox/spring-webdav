@@ -194,7 +194,7 @@ public class PutTest extends AbstractApiTest {
     @Test
     void test_file_not_exists() throws Exception {
 
-        // PUT for for non-existing files are responded with status FORBIDDEN.
+        // PUT for non-existing files are responded with status FORBIDDEN.
         this.mockMvc.perform(
                 MockMvcRequestBuilders
                         .put(FOLDER_NOT_EXISTS_URI)
