@@ -12,6 +12,7 @@
   <groupId>com.seanox</groupId>
   <artifactId>seanox-spring-webdav</artifactId>
   <version>1.1.2</version>
+  <packaging>jar</packaging>
   <name>spring-webdav</name>
   <description>
     WebDAV mapping for Spring Boot
@@ -42,7 +43,7 @@
     <java.version>11</java.version>
     <encoding>UTF-8</encoding>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
