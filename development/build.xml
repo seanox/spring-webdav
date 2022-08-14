@@ -107,8 +107,6 @@
     <release-info-locate/>
     <release-info-insert/>
 
-    <replaceregexp file="${workspace}/pom.xml"
-       match="(&lt;version&gt;)\d+(?:\.\d+)+(&lt;/version&gt;)" replace="\1${release.version}\2"/>
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(&lt;version&gt;)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
         replace="\1${release.version}\2"/>
