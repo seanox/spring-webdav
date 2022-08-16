@@ -44,7 +44,7 @@ Seanox Software Solutions oder kurz Seanox genannt.
 
 Diese Software unterliegt der Version 2 der Apache License.
 
-Copyright (C) 2021 Seanox Software Solutions
+Copyright (C) 2022 Seanox Software Solutions
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -65,13 +65,13 @@ specific language governing permissions and limitations under the License.
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav  
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.1.1
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.1.2
 
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
@@ -80,8 +80,10 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.1.1
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 # Changes (Change Log)
-## 1.1.1 20210924 (summary of the current version)  
-CR: License: Change to Apache License Version 2.0  
+## 1.1.2 20220816 (summary of the current version)  
+BF: Maven: Update of dependencies  
+BF: Review: Optimization and corrections (without functional impact)  
+BF: Build: Optimization of the release info process  
 
 [Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
 
