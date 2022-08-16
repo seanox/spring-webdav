@@ -741,7 +741,7 @@ After the project has been cloned, it can be started as follows:
 `mvn -Dspring.profiles.active=demo -Dexec.mainClass=com.seanox.api.Application -Dexec.classpathScope=test exec:java`
 
 After startup, the network drive can be mapped via WebDAV with the address:
-http://127.0.0.8080/.  
+http://127.0.0:8080/.  
 Details can be found in chapter [Mapping from Network Drive](#mapping-from-network-drive)
 
 ## Maven
