@@ -73,6 +73,10 @@ public class MetaInputStream extends InputStream {
 
     private IOException exception;
 
+    MetaInputStream() {
+        throw new RuntimeException();
+    }
+
     /**
      * Return ContentType to the incoming data stream.
      * @return ContentType to the incoming data stream
