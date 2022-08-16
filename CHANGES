@@ -1,8 +1,8 @@
-1.1.2 2022xxxx
+1.1.2 20220816
   BF: Maven: Update of dependencies
       CVE-2022-22965
   BF: Review: Optimization and corrections (without functional impact)
-  CR: Build: Optimization of the release info process
+  BF: Build: Optimization of the release info process
 
 1.1.1 20210924
   CR: License: Change to Apache License Version 2.0
