@@ -32,10 +32,6 @@ import java.io.IOException;
 /**
  * Test of the expressions.
  *
- * ExpressionTestController 1.0.0 20210726<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210726
  */

@@ -39,11 +39,7 @@ import java.text.ParseException;
 import java.util.Objects;
 
 /**
- * Test of the annotation {@link WebDavMetaMapping}.<br>
- * <br>
- * MetaTestController 1.1.0 20210805<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test of the annotation {@link WebDavMetaMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20210805

@@ -29,11 +29,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Simulation of a simple data access layer.<br>
- * <br>
- * MarketingService 1.0.0 20210629<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Simulation of a simple data access layer.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210629

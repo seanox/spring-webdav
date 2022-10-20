@@ -38,11 +38,7 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * Test the function of the method signatures.<br>
- * <br>
- * SignaturesTestController 1.0.0 20210726<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the function of the method signatures.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210726

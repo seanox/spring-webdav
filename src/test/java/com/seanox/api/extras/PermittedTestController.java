@@ -31,13 +31,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
- * Test the function of the permitted attribute.
- * {@link WebDavMapping} and
- * {@link WebDavInputMapping}.<br>
- * <br>
- * PermittedTestController 1.0.0 20210726<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the function of the permitted attribute:
+ * {@link WebDavMapping} and {@link WebDavInputMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210726

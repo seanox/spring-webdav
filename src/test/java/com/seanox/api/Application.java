@@ -51,11 +51,7 @@ import org.springframework.context.annotation.Configuration;
  * another package is used for the tests of the package com.seanox.webdav.<br>
  * <br>
  * SpringBootServletInitializer to prepare the application to deploy on
- * external servlet container/runner.<br>
- * <br>
- * Application 1.0.0 20210801<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * external servlet container/runner.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210801

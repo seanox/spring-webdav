@@ -25,11 +25,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Example for a data object.<br>
- * <br>
- * MarketingNewsletter 1.0.0 20210629<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Example for a data object.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210629

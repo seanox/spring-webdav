@@ -42,11 +42,7 @@ import java.util.Date;
  * In general, a managed bean is required.<br>
  * There are various annotations for this:<br>
  *     e.g. @Component, @Service, @RestController, ...<br>
- * The methods and annotations for webDAV combine well with @RestController.<br>
- * <br>
- * FinancialController 1.1.0 20210810<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * The methods and annotations for webDAV combine well with @RestController.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20210810

@@ -32,11 +32,7 @@ import java.util.Date;
 
 /**
  * Test the function of the ContentLengthMaxTest attribute for
- * {@link WebDavInputMapping}.<br>
- * <br>
- * ContentLengthMaxTestController 1.0.0 20210726<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * {@link WebDavInputMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210726

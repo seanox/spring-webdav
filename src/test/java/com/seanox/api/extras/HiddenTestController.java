@@ -29,11 +29,7 @@ import java.io.IOException;
 
 /**
  * Test the function of the hidden attribute for
- * {@link WebDavMapping}.<br>
- * <br>
- * HiddenTestController 1.0.0 20210726<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * {@link WebDavMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210726
