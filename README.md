@@ -79,8 +79,8 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.1.2
 # Manuals
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
-# Changes (Change Log)
-## 1.1.2 20220816 (summary of the current version)  
+# Changes 
+## 1.1.2 20220816 
 BF: Maven: Update of dependencies  
 BF: Review: Optimization and corrections (without functional impact)  
 BF: Build: Optimization of the release info process  
