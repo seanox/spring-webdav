@@ -4,7 +4,7 @@
     <echo>                                                          </echo>
     <echo> the following targets are available ...                  </echo>
     <echo>                                                          </echo>
-    <echo>   changes    synchronizes the README.md with CHANGES     </echo>
+    <echo>   changes    synchronizes README.md with CHANGES         </echo>
     <echo>                                                          </echo>
     <echo>   release    Builds the complete release                 </echo>
     <echo>              Synchronizes the version in README.md       </echo>
@@ -15,7 +15,6 @@
   <property name="workspace.sources.filter" value="**/*.java,**/pom.xml"/>
   <property name="workspace.development" value="${workspace}/development"/>
   <property name="workspace.target" value="${workspace}/target"/>
-  <property name="workspace.releases" value="${workspace}/releases"/>
 
   <macrodef name="release-info-locate">
     <sequential>
@@ -33,6 +32,12 @@
           match="(?&lt;=\d+)\." byline="true" replace="&#x000D;release.patch="/>
       <loadproperties srcfile="${workspace}/CHANGES.tmp"/>
       <delete file="${workspace}/CHANGES.tmp"/>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="release-info-reset">
+    <sequential>
+      <release-info-insert version="0.0.0 00000000"/>
     </sequential>
   </macrodef>
 
@@ -79,14 +84,14 @@
     <replaceregexp file="${workspace}/CHANGES.tmp" match="^(\d[\.\d x]+)[^\r\n]*" replace="## \1" byline="false"/>
     <replaceregexp file="${workspace}/CHANGES.tmp" match="^ {0,4}([A-Z]+:.*)\s*$" replace="\1" byline="true"/>
     <replaceregexp file="${workspace}/CHANGES.tmp" match="(?s)[\r\n]+ [^\r\n]+" replace="" flags="g" byline="false"/>
-    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ \d+)(  )" replace="\1 (summary of the current version)\2" flags="g" byline="true"/>
-    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ [\dx]+)(  )" replace="\1 (summary of the upcoming version)\2" flags="g" byline="true"/>
+    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ \d+)(  )" replace="\1\2" flags="g" byline="true"/>
+    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ \d+x+)(  )" replace="\1 (upcoming version)\2" flags="g" byline="true"/>
     <loadresource property="changes">
       <file file="${workspace}/CHANGES.tmp"/>
     </loadresource>
     <delete file="${workspace}/CHANGES.tmp"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(?si)(# Changes \(Change Log\)\s+).*?(\[Read more\])" flags="g" byline="false"
+        match="(?si)(# Changes\s+).*?(\[Read more\])" flags="g" byline="false"
         replace="\1${changes}${line.separator}${line.separator}\2"/>
     <tstamp>
       <format property="now.year" pattern="yyyy"/>
@@ -94,7 +99,14 @@
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(?&lt;=\(C\)\s)\d{4}\b" flags="g" byline="true"
         replace="${now.year}"/>
+  </target>
 
+  <target name="release" depends="changes">
+    <release-info-locate/>
+    <release-info-insert/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(?si)(&lt;version&gt;)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
+        replace="\1${release.version}\2"/>
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
         replace="\1${release.version}\2" flags="g" byline="false"/>
@@ -104,15 +116,7 @@
     <replaceregexp file="${workspace}/manual/getting-started.md"
         match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
         replace="\1${release.version}\2" flags="g" byline="false"/>
-  </target>
-
-  <target name="release" depends="changes">
-    <release-info-locate/>
-    <release-info-insert/>
-
-    <replaceregexp file="${workspace}/README.md"
-        match="(?si)(&lt;version&gt;)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
-        replace="\1${release.version}\2"/>
+    <release-info-reset/>
   </target>
 
   <target name="deploy" depends="release">
@@ -122,5 +126,6 @@
       <arg value="/c"/>
       <arg value="mvn clean deploy"/>
     </exec>
+    <release-info-reset/>
   </target>
 </project>
