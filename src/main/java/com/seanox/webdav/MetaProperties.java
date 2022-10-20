@@ -29,14 +29,8 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * <p>
- *   MetaProperties, read-only collector with all attributes of the virtual
- *   entity.
- * </p>
- *
- * MetaProperties 1.0.0 20210729<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * MetaProperties, read-only collector with all attributes of the virtual
+ * entity.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210729

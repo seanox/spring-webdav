@@ -42,11 +42,7 @@ import java.util.Objects;
  * and meta-objects are used. The decoupling made sense because the WebDav
  * prefix would be too present and more information, functions and abstraction
  * can be provided for the internal world, which would rather confuse the
- * public world.<br>
- * <br>
- * Annotation 1.0.0 20210725<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * public world.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210725

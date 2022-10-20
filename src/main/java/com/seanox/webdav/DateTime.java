@@ -27,11 +27,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 /**
- * Static utilities for date and time.<br>
- * <br>
- * DateTime 1.0.0 20210626<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Static utilities for date and time.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210626

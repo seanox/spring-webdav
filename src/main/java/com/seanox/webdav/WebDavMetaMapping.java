@@ -87,10 +87,6 @@ import java.net.URI;
  *   ...
  * </pre>
  *
- * WebDavMetaMapping 1.0.0 20210731<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210731
  */

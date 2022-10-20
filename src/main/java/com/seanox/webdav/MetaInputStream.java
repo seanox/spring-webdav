@@ -47,10 +47,6 @@ import java.util.Objects;
  *   can distort the limit. Without limiting, the data stream behaves normally.
  * </p>
  *
- * MetaInputStream 1.0.0 20210728<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210728
  */

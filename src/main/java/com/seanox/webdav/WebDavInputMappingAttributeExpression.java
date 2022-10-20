@@ -42,10 +42,6 @@ package com.seanox.webdav;
  *   }
  * </pre>
  *
- * WebDavInputMappingAttributeExpression 1.0.0 20210703<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210703
  */

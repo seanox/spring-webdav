@@ -30,16 +30,10 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * <p>
- *   MetaOutputStream is an {@link OutputStream} with meta information for the
- *   response header. The meta information is already pre-filled with the data
- *   determined by the framework and can be changed until the first byte is
- *   written to the data output stream.
- * </p>
- *
- * MetaOutputStream 1.0.0 20210728<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * MetaOutputStream is an {@link OutputStream} with meta information for the
+ * response header. The meta information is already pre-filled with the data
+ * determined by the framework and can be changed until the first byte is
+ * written to the data output stream.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210728

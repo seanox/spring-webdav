@@ -24,14 +24,8 @@ import java.net.URI;
 import java.util.Date;
 
 /**
- * <p>
- *   MetaData, a writable collector containing all relevant attributes for a
- *   virtual entity.
- * </p>
- *
- * MetaData 1.0.0 20210728<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * MetaData, a writable collector containing all relevant attributes for a
+ * virtual entity.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210728

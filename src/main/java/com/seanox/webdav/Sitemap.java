@@ -48,8 +48,9 @@ import java.util.TreeMap;
 import java.util.function.Consumer;
 
 /**
- * Sitemap for mapping a virtual file system.<br>
- * <br>
+ * <p>
+ *   Sitemap for mapping a virtual file system.
+ * </p>
  * Rules (similar error behavior as mapping from RestController):<br>
  * <ul>
  *   <li>Ambiguous mapping causes SitemapException</li>
@@ -59,10 +60,6 @@ import java.util.function.Consumer;
  *   <li>Not permitted (unauthorized) entries are used as non-existent as 404</li>
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
- * <br>
- * Sitemap 1.1.0 20210813<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
  *
  * @author Seanox Software Solutions
  * @version 1.1.0 20210813

@@ -142,10 +142,6 @@ import java.util.Date;
  *     ...
  * </pre>
  *
- * WebDavAttributeMapping 1.0.0 20210731<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210731
  */

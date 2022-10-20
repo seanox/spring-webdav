@@ -21,14 +21,8 @@
 package com.seanox.webdav;
 
 /**
- * <p>
- *   Constants for attributes of {@link WebDavMappingAttributeExpression} and
- *   {@link WebDavAttributeMapping}.
- * </p>
- *
- * WebDavMappingAttribute 1.0.0 20210715<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Constants for attributes of {@link WebDavMappingAttributeExpression} and
+ * {@link WebDavAttributeMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210715
