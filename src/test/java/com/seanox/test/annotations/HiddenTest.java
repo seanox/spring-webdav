@@ -54,10 +54,6 @@ import java.net.URI;
  * - /extras/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
  * - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
  *
- * HiddenTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815
  */

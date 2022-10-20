@@ -33,11 +33,7 @@ import java.net.URI;
  * But for MS Office it is answered with 207 PROPFIND.<br>
  * <br>
  *     <dir>Expectation:</dir>
- * If an Entry found in the SiteMap, the requests are responded with 207 PROPFIND.<br>
- * <br>
- * ProppatchTest 1.0.0 20210719<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * If an Entry found in the SiteMap, the requests are responded with 207 PROPFIND.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210719

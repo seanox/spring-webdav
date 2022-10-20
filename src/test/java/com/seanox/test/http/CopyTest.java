@@ -32,11 +32,7 @@ import java.net.URI;
  * COPY is not supported/allowed.<br>
  * <br>
  *     <dir>Expectation:</dir>
- * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.<br>
- * <br>
- * CopyTest 1.0.0 20210710<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * If an Entry found in the SiteMap, the requests are responded with FORBIDDEN.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210710

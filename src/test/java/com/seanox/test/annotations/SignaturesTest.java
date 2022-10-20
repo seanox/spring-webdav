@@ -27,11 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
- * Test the function of the method signatures.<br>
- * <br>
- * SignaturesTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the function of the method signatures.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815

@@ -30,11 +30,7 @@ import java.io.InputStream;
 import java.util.Objects;
 
 /**
- * Test of the MetaOutputStream functions.<br>
- * <br>
- * MetaOutputStreamTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test of the MetaOutputStream functions.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815

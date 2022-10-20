@@ -39,11 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 
 /**
- * Test of the annotation {@link WebDavMetaMapping}.<br>
- * <br>
- * MetaTest 1.1.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test of the annotation {@link WebDavMetaMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20210815

@@ -30,12 +30,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Locale;
 
 /**
- * Test the function of the LastModified attribute for
- * {@link WebDavMapping}.<br>
- * <br>
- * LastModifiedTest 1.1.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the function of the LastModified attribute for {@link WebDavMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20210815

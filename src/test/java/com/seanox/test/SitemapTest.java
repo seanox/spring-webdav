@@ -27,11 +27,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.InvalidPathException;
 
 /**
- * Test of the Sitemap functions.<br>
- * <br>
- * SitemapTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test of the Sitemap functions.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815

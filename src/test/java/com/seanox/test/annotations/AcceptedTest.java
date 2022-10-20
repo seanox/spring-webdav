@@ -29,12 +29,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test the function of the accepted attribute for
- * {@link WebDavMapping} and
- * {@link WebDavInputMapping}.<br>
- * <br>
- * AcceptedTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * {@link WebDavMapping} and {@link WebDavInputMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815

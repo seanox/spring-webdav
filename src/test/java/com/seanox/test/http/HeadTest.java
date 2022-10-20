@@ -27,11 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
- * Test the sequence for HEAD for files and folders.<br>
- * <br>
- * HeadTest 1.0.0 20210706<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the sequence for HEAD for files and folders.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210706

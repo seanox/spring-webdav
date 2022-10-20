@@ -47,11 +47,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * General implementation for the execution of API tests.<br>
- * <br>
- * AbstractApiTest 1.0.0 20210728<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * General implementation for the execution of API tests.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210728

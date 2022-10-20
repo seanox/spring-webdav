@@ -29,11 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.net.URI;
 
 /**
- * Test the sequence for PROPFIND for files and folders.<br>
- * <br>
- * PropfindTest 1.1.0 20210811<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the sequence for PROPFIND for files and folders.
  *
  * @author  Seanox Software Solutions
  * @version 1.1.0 20210811

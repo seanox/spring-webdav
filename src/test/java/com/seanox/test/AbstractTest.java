@@ -35,11 +35,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * General implementation for the execution of tests.<br>
- * <br>
- * AbstractTest 1.0.0 20210718<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * General implementation for the execution of tests.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210718

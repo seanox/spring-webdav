@@ -28,13 +28,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test the function of the permitted attribute.
- * {@link WebDavMapping} and
- * {@link WebDavInputMapping}.<br>
- * <br>
- * PermittedTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the function of the permitted attribute {@link WebDavMapping} and
+ * {@link WebDavInputMapping}.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815

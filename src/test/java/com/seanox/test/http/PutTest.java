@@ -28,11 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
- * Test the sequence for PUT file and folders.<br>
- * <br>
- * PutTest 1.0.0 20210706<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test the sequence for PUT file and folders.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210706

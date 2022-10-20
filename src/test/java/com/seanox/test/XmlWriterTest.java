@@ -28,11 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
- * Test of the XmlWriter functions.<br>
- * <br>
- * XmlWriterTest 1.0.0 20210815<br>
- * Copyright (C) 2021 Seanox Software Solutions<br>
- * All rights reserved.
+ * Test of the XmlWriter functions.
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210815
