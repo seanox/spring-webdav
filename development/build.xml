@@ -105,6 +105,10 @@
   </target>
 
   <target name="release" depends="changes">
+    <exec executable="cmd" failonerror="true">
+      <arg value="/c"/>
+      <arg value="mvn clean test"/>
+    </exec>
     <release-info-locate/>
     <release-info-insert/>
     <replaceregexp file="${workspace}/README.md"
@@ -125,7 +129,7 @@
   <target name="publish" depends="release">
     <release-info-locate/>
     <release-info-insert/>
-    <exec executable="cmd">
+    <exec executable="cmd" failonerror="true">
       <arg value="/c"/>
       <arg value="mvn clean deploy"/>
     </exec>
