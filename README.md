@@ -30,7 +30,8 @@ access to a Spring Boot based API without an additional frontend.
 
 
 # Features
-- Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
+- Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`,
+  `PROPPATCH`, `UNLOCK`
 - Declarative approach with annotations, also supports Spring Expression Language  
 - Supports __WebDAV Class 1 + 2__ and thus also MS Office (Excel, Word, PowerPoint, ...)  
   but it does not create or transform Office documents automatically
