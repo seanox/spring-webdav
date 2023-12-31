@@ -1,6 +1,9 @@
-1.1.3 2023xxxx
+1.2.0 2024xxxx
 BF: Build: Optimization of the release info process
 BF: Build: Added test before release
+BF: WebDavFilter: Optimization and corrections (for Office 365)
+BF: WebDavFilter: LOCK can process tokens in brackets
+BF: WebDavFilter: OPTIONS optimization and corrections of allows
 
 1.1.2 20220816
 BF: Maven: Update of dependencies
