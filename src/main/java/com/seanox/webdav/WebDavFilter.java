@@ -4,7 +4,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * WebDAV mapping for Spring Boot
- * Copyright (C) 2021 Seanox Software Solutions
+ * Copyright (C) 2023 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -118,7 +118,7 @@ import java.util.stream.IntStream;
  * </ul>
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210812
+ * @version 1.2.0 20221231
  */
 public class WebDavFilter extends HttpFilter {
 
@@ -202,7 +202,7 @@ public class WebDavFilter extends HttpFilter {
     /** Constant for PROPFIND to display all properties */
     private static final int WEBDAV_FIND_ALL_PROP = 1;
 
-    /** Constant for  PROPFIND to specify a property mask */
+    /** Constant for PROPFIND to specify a property mask */
     private static final int WEBDAV_FIND_BY_PROPERTY = 0;
 
     /** Constant for PROPFIND to find property names */
@@ -690,19 +690,24 @@ public class WebDavFilter extends HttpFilter {
 
         response.setHeader(HEADER_DAV, "1, 2");
         response.setHeader(HEADER_MS_AUTHOR_VIA, "DAV");
-        response.setHeader(HEADER_ALLOW, String.join(", ",
-                WebDavFilter.METHOD_OPTIONS,
-                WebDavFilter.METHOD_HEAD,
-                WebDavFilter.METHOD_GET,
-                WebDavFilter.METHOD_PROPFIND));
-        if (Objects.nonNull(entry)
-                && !entry.isReadOnly()) {
-            response.setHeader(HEADER_ALLOW, response.getHeader(HEADER_ALLOW)
-                    + ", " + String.join(", ",
-                    WebDavFilter.METHOD_LOCK,
-                    WebDavFilter.METHOD_PUT,
-                    WebDavFilter.METHOD_UNLOCK));
+
+        final List<String> allows = new ArrayList<>();
+        allows.add(WebDavFilter.METHOD_OPTIONS);
+        allows.add(WebDavFilter.METHOD_HEAD);
+        allows.add(WebDavFilter.METHOD_GET);
+        allows.add(WebDavFilter.METHOD_PROPFIND);
+
+        if (Objects.nonNull(entry)) {
+            final boolean writable = entry.isFolder() || !entry.isReadOnly();
+            if (writable) {
+                allows.add(WebDavFilter.METHOD_PROPPATCH);
+                allows.add(WebDavFilter.METHOD_LOCK);
+                allows.add(WebDavFilter.METHOD_PUT);
+                allows.add(WebDavFilter.METHOD_UNLOCK);
+            }
         }
+
+        response.setHeader(HEADER_ALLOW, String.join(", ", allows.toArray(new String[0])));
 
         throw new SuccessState();
     }
@@ -884,10 +889,13 @@ public class WebDavFilter extends HttpFilter {
 
         // Lock and token are more a simulation not real.
         // Only Exclusive Write Locks are supported.
-        // It  based on an echo of the If-OpaqueLockToken.
+        // It based on an echo of the If-OpaqueLockToken.
         // Timeout headers are ignored.
 
         String token = request.getHeader(HEADER_IF);
+        if (Objects.nonNull(token)
+                && token.matches("^\\((.*)\\)$"))
+            token = token.replaceAll("^\\((.*)\\)$", "$1");
         if (Objects.nonNull(token)
                 && token.matches("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+)>$"))
             token = token.replaceAll("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+>)$", "$1");
