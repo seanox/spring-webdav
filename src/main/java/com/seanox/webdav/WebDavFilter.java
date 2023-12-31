@@ -898,7 +898,7 @@ public class WebDavFilter extends HttpFilter {
             token = token.replaceAll("^\\((.*)\\)$", "$1");
         if (Objects.nonNull(token)
                 && token.matches("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+)>$"))
-            token = token.replaceAll("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+>)$", "$1");
+            token = token.replaceAll("(?i)^<([a-z0-9]+(?:-[a-z0-9]+)+)>$", "$1");
         else token = UUID.randomUUID().toString();
 
         String timeout = request.getHeader(HEADER_TIMEOUT);
