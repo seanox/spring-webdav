@@ -2,7 +2,9 @@
 BF: Build: Optimization of the release info process
 BF: Build: Added test before release
 BF: WebDavFilter: Optimization and corrections (for Office 365)
-BF: WebDavFilter: LOCK can process tokens in brackets
+BF: WebDavFilter: LOCK Optimization and corrections
+    - Can process tokens in brackets
+    - Correction of token in HTTP header
 BF: WebDavFilter: OPTIONS optimization and corrections of allows
 
 1.1.2 20220816
