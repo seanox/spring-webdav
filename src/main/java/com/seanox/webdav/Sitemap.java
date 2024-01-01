@@ -4,7 +4,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * WebDAV mapping for Spring Boot
- * Copyright (C) 2021 Seanox Software Solutions
+ * Copyright (C) 2024 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -62,7 +62,7 @@ import java.util.function.Consumer;
  * </ul>
  *
  * @author Seanox Software Solutions
- * @version 1.1.0 20210813
+ * @version 1.2.0 20240101
  */
 class Sitemap implements Serializable {
 
@@ -413,14 +413,10 @@ class Sitemap implements Serializable {
         // common fixed point.
 
         String getIdentifier() {
-            Date date = this.getLastModified();
-            if (Objects.isNull(date))
-                date = this.getCreationDate();
-            if (Objects.isNull(date))
-                date = CREATION_DATE;
-            if (CREATION_DATE.getTime() == date.getTime())
-                return Long.toString(CREATION_DATE.getTime(), 36).toUpperCase();
-            return (Long.toString(CREATION_DATE.getTime(), 36) + "-" + Long.toString(date.getTime(), 36)).toUpperCase();
+            Date lastModified = this.getLastModified();
+            if (Objects.isNull(lastModified))
+                lastModified = new Date();
+            return (Long.toString(lastModified.getTime(), 16));
         }
 
         boolean isHidden() {
