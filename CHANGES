@@ -8,6 +8,7 @@ BF: WebDavFilter: LOCK Optimization and corrections
     - Can process tokens in brackets
     - Correction of token in HTTP header
 BF: WebDavFilter: OPTIONS optimization and corrections of allows
+CR: Maven: Update of dependencies
 
 1.1.2 20220816
 BF: Maven: Update of dependencies
