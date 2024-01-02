@@ -2,6 +2,8 @@
 BF: Build: Optimization of the release info process
 BF: Build: Added test before release
 BF: WebDavFilter: Optimization and corrections (for Office 365)
+    - Unwanted error: Upload Failed -- because of interim changes
+    - Correction of ETag generation/handling
 BF: WebDavFilter: LOCK Optimization and corrections
     - Can process tokens in brackets
     - Correction of token in HTTP header
