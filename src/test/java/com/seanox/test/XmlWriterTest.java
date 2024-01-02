@@ -39,7 +39,7 @@ class XmlWriterTest extends AbstractTest {
     void test_1() throws IOException {
 
         // UTF-8 encoding and decoding is not easy to do with the strings and
-        // the JRE. Therefore text 1:1 and then see whether the UTF-8 encoding
+        // the JRE. Therefore, text 1:1 and then see whether the UTF-8 encoding
         // is in the byte array.
 
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
