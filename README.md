@@ -61,18 +61,18 @@ specific language governing permissions and limitations under the License.
 
 # System Requirement
 - Java 11 or higher
-- Spring Boot
+- Spring Boot 2
 
 
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav  
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.1.2
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.2.0
 
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
