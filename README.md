@@ -93,7 +93,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.3.0
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 # Changes 
-## 1.3.0 2024xxxx (upcoming version)  
+## 1.3.0 20240103  
 CR: WebDavFilter: Update to Spring 3  
 
 [Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
