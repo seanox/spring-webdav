@@ -13,18 +13,17 @@
 
 
 # Description
-WebDAV mapping for Spring Boot.  
-Use an API like a network drive, open data as files, edit and save them.  
-Why use a frontend when the data can be edited directly in an Office application?
+WebDAV mapping for Spring Boot -- Use an API like a network drive, open data as
+files, edit and save them. Why use a frontend when the data can be edited
+directly in an Office application?
 
 Seanox Spring WebDAV is a minimal implementation of WebDAV 1 + 2 for
 integration into a Spring Boot based API. The implementation is based on a
 virtual file system with virtual entities as an abstraction. The virtual file
 system is created strictly via annotations in the managed beans and, like the
-virtual entities, does not use any physical file structures.
-
-A user can use this virtual file system as a network drive and has direct
-access to a Spring Boot based API without an additional frontend.
+virtual entities, does not use any physical file structures. A user can use this
+virtual file system as a network drive and has direct access to a Spring Boot
+based API without an additional frontend.
 
 <img src="https://github.com/seanox/spring-webdav/raw/main/manual/animation.gif"/>
 
@@ -37,6 +36,7 @@ access to a Spring Boot based API without an additional frontend.
   but it does not create or transform Office documents automatically
 - Supports use as a network drive
 - Supports extended file attributes for Windows
+- Supports Spring Boot 2 + 3
 
 
 # Licence Agreement
@@ -61,11 +61,13 @@ specific language governing permissions and limitations under the License.
 
 # System Requirement
 - Java 11 or higher
-- Spring Boot 2
+- Spring Boot 2 + 3
 
 
 # Downloads
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav  
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
+
+for Spring Boot 2:  
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.2.0
 
 ```xml
@@ -76,18 +78,23 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.2.0
 </dependency>
 ```
 
+for Spring Boot 3:  
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.3.0
+
+```xml
+<dependency>
+    <groupId>com.seanox</groupId>
+    <artifactId>seanox-spring-webdav</artifactId>
+    <version>1.3.0</version>
+</dependency>
+```
 
 # Manuals
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 # Changes 
-## 1.2.0 20240103  
-BF: Build: Optimization of the release info process  
-BF: Build: Added test before release  
-BF: WebDavFilter: Optimization and corrections (for Office 365)  
-BF: WebDavFilter: LOCK Optimization and corrections  
-BF: WebDavFilter: OPTIONS optimization and corrections of allows  
-CR: Maven: Update of dependencies  
+## 1.3.0 2024xxxx (upcoming version)  
+CR: WebDavFilter: Update to Spring 3  
 
 [Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
 

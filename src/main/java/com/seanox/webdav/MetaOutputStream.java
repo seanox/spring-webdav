@@ -23,7 +23,7 @@ package com.seanox.webdav;
 import lombok.AccessLevel;
 import lombok.Builder;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
@@ -36,7 +36,7 @@ import java.util.Objects;
  * written to the data output stream.
  *
  * @author  Seanox Software Solutions
- * @version 1.2.0 20240101
+ * @version 1.3.0 20240103
  */
 @Builder(access=AccessLevel.PACKAGE)
 public class MetaOutputStream extends OutputStream {

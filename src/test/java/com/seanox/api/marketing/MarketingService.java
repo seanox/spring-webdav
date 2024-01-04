@@ -4,7 +4,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * WebDAV mapping for Spring Boot
- * Copyright (C) 2021 Seanox Software Solutions
+ * Copyright (C) 2024 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -24,7 +24,7 @@ import com.seanox.api.marketing.data.MarketingFlyer;
 import com.seanox.api.marketing.data.MarketingNewsletter;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
 
@@ -32,7 +32,7 @@ import java.util.Date;
  * Simulation of a simple data access layer.
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210629
+ * @version 1.3.0 20240103
  */
 @Service
 class MarketingService {

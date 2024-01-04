@@ -4,7 +4,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * WebDAV mapping for Spring Boot
- * Copyright (C) 2021 Seanox Software Solutions
+ * Copyright (C) 2024 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -24,7 +24,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -48,7 +48,7 @@ import java.util.Objects;
  * </p>
  *
  * @author  Seanox Software Solutions
- * @version 1.0.0 20210728
+ * @version 1.3.0 20240103
  */
 @Builder(access=AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
