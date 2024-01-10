@@ -68,7 +68,65 @@
       </replaceregexp>
     </sequential>
   </macrodef>
+  
+  <!--
+      
+      It took a long time to decide what to do about Spring 2 and Spring 3. The
+      separation from the project was a consideration and an approach. But in
+      essence, only the javax packages change. Therefore, spring-webdav 1.x will
+      remain the basis from which the versions for Spring Boot 2 + 3 will be
+      built. 
+  
+      Differences between Spring 2 and 3:
+      - Package javax.servlet    -> jakarta.servlet
+      - Package javax.annotation -> jakarta.annotation
+      
+      In future, the major number of the release will refer to Spring-Boot.
+      - spring-webdav 1.x -> 2.x + 3.x
+      Not nice, but only temporary until Spring-Boot 2 EOL.
 
+  -->
+
+  <macrodef name="spring-boot-2">
+    <sequential>
+      <local name="spring.version"/>
+      <property name="spring.version" value="2.7.18"/>
+      <!-- TODO: pom.xml -->
+      <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
+          replace="\1javax\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp match="^(\s*import\s+)jakarta(\.annotation\.)"
+          replace="\1javax\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp file="${workspace}/pom.xml"
+          match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
+          replace="\1${spring.version}" flags="g" byline="false">
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="spring-boot-3">
+    <sequential>
+      <local name="spring.version"/>
+      <property name="spring.version" value="3.2.1"/>
+      <!-- TODO: pom.xml -->
+      <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
+          replace="\1jakarta\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp match="^(\s*import\s+)javax(\.annotation\.)"
+          replace="\1jakarta\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp file="${workspace}/pom.xml"
+           match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
+           replace="\1${spring.version}" flags="g" byline="false">
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+  
   <target name="changes">
     <release-info-locate/>
 
