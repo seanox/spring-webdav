@@ -87,45 +87,43 @@
 
   -->
 
-  <macrodef name="spring-boot-2">
-    <sequential>
-      <local name="spring.version"/>
-      <property name="spring.version" value="2.7.18"/>
-      <!-- TODO: pom.xml -->
-      <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
-          replace="\1javax\2" flags="g" byline="true">
-        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-      </replaceregexp>
-      <replaceregexp match="^(\s*import\s+)jakarta(\.annotation\.)"
-          replace="\1javax\2" flags="g" byline="true">
-        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-      </replaceregexp>
-      <replaceregexp file="${workspace}/pom.xml"
-          match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
-          replace="\1${spring.version}" flags="g" byline="false">
-      </replaceregexp>
-    </sequential>
-  </macrodef>
+  <target name="spring-boot-2">
+    <local name="spring.version"/>
+    <property name="spring.version" value="2.7.18"/>
+    <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
+    <!-- TODO: pom.xml -->
+    <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
+        replace="\1javax\2" flags="g" byline="true">
+      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+    </replaceregexp>
+    <replaceregexp match="^(\s*import\s+)jakarta(\.annotation\.)"
+        replace="\1javax\2" flags="g" byline="true">
+      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+    </replaceregexp>
+    <replaceregexp file="${workspace}/pom.xml"
+        match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
+        replace="\1${spring.version}" flags="g" byline="false">
+    </replaceregexp>
+  </target>
 
-  <macrodef name="spring-boot-3">
-    <sequential>
-      <local name="spring.version"/>
-      <property name="spring.version" value="3.2.1"/>
-      <!-- TODO: pom.xml -->
-      <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
-          replace="\1jakarta\2" flags="g" byline="true">
-        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-      </replaceregexp>
-      <replaceregexp match="^(\s*import\s+)javax(\.annotation\.)"
-          replace="\1jakarta\2" flags="g" byline="true">
-        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-      </replaceregexp>
-      <replaceregexp file="${workspace}/pom.xml"
-           match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
-           replace="\1${spring.version}" flags="g" byline="false">
-      </replaceregexp>
-    </sequential>
-  </macrodef>
+  <target name="spring-boot-3">
+    <local name="spring.version"/>
+    <property name="spring.version" value="3.2.1"/>
+    <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="3"/>
+    <!-- TODO: pom.xml -->
+    <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
+        replace="\1jakarta\2" flags="g" byline="true">
+      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+    </replaceregexp>
+    <replaceregexp match="^(\s*import\s+)javax(\.annotation\.)"
+        replace="\1jakarta\2" flags="g" byline="true">
+      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+    </replaceregexp>
+    <replaceregexp file="${workspace}/pom.xml"
+        match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
+        replace="\1${spring.version}" flags="g" byline="false">
+    </replaceregexp>
+  </target>
   
   <target name="changes">
     <release-info-locate/>
