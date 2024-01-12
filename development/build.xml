@@ -89,10 +89,10 @@
 
   <target name="spring-boot-2">
     <local name="spring.version"/>
-    <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.tmp" overwrite="true"/>
+    <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
     <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
     <release-info-locate/>
-    <move file="${workspace}/CHANGES.tmp" tofile="${workspace}/CHANGES" overwrite="true"/>
+    <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
     <!-- TODO: pom.xml -->
     <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
         replace="\1javax\2" flags="g" byline="true">
@@ -111,10 +111,10 @@
   <target name="spring-boot-3">
     <local name="spring.version"/>
     <property name="spring.version" value="3.2.1"/>
-    <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.tmp" overwrite="true"/>
+    <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
     <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="3"/>
     <release-info-locate/>
-    <move file="${workspace}/CHANGES.tmp" tofile="${workspace}/CHANGES" overwrite="true"/>
+    <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
     <!-- TODO: pom.xml -->
     <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
         replace="\1jakarta\2" flags="g" byline="true">
