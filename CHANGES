@@ -1,6 +1,11 @@
-1.4.0 2024xxxx
+3.4.0 2024xxxx
 BF: Review: Optimization and corrections
 CR: Build: Optimization for Spring version 2 and 3
+    - Development of both versions in one project
+    - Development uses the current version of Spring Boot
+    - New approach for the version number
+    - Major version reflects the based Spring Boot version
+    - Minor version reflects the version of spring-webdav
 
 1.3.0 20240103
 CR: WebDavFilter: Update to Spring 3

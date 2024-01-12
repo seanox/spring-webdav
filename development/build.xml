@@ -49,9 +49,10 @@
     <sequential>
       <echo file="release-info.tmp" message="@{version}"/>
       <replaceregexp file="release-info.tmp" match="[^\d\.\s]" replace="0" flags="g"/>
-      <replaceregexp file="release-info.tmp" match="^([^\s]+)\s+(\d{4})(\d{4})"
-          replace="release.info.version=\1&#x000D;release.info.year=\2&#x000D;release.info.date=\2\3&#x000D;"/>
+      <replaceregexp file="release-info.tmp" match="^(\d+\.)([^\s]+)\s+(\d{4})(\d{4})"
+          replace="release.info.version=\1\2&#x000D;release.info.minor.version=\2&#x000D;release.info.year=\3&#x000D;release.info.date=\3\4&#x000D;"/>
       <local name="release.info.version"/>
+      <local name="release.info.minor.version"/>
       <local name="release.info.year"/>
       <local name="release.info.date"/>
       <loadproperties srcfile="release-info.tmp"/>
@@ -89,11 +90,11 @@
 
   <target name="spring-boot-2">
     <local name="spring.version"/>
+    <property name="spring.version" value="2.7.18"/>
     <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
     <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
     <release-info-locate/>
     <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
-    <!-- TODO: pom.xml -->
     <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
         replace="\1javax\2" flags="g" byline="true">
       <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
@@ -103,9 +104,8 @@
       <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
     </replaceregexp>
     <replaceregexp file="${workspace}/pom.xml"
-        match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
-        replace="\1${spring.version}" flags="g" byline="false">
-    </replaceregexp>
+        match="(?si)(&lt;artifactId&gt;spring-boot-starter-parent\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
+        replace="\1${spring.version}\2" flags="g" byline="false"/>
   </target>
 
   <target name="spring-boot-3">
@@ -115,7 +115,6 @@
     <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="3"/>
     <release-info-locate/>
     <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
-    <!-- TODO: pom.xml -->
     <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
         replace="\1jakarta\2" flags="g" byline="true">
       <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
@@ -173,17 +172,17 @@
     <release-info-locate/>
     <release-info-insert/>
     <replaceregexp file="${workspace}/README.md"
-        match="(?si)(&lt;version&gt;)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
-        replace="\1${release.version}\2"/>
+        match="(?si)(&lt;version&gt;\s*\d+\)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
+        replace="\1${release.minor.version}\2"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
-        replace="\1${release.version}\2" flags="g" byline="false"/>
+        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+\.)[\d\.]+(&lt;/version&gt;)"
+        replace="\1${release.minor.version}\2" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(seanox-${ant.project.name}/)\d[\d\.]+"
-        replace="\1${release.version}" flags="g" byline="false"/>
+        match="(seanox-${ant.project.name}/\d+\.)\d[\d\.]+"
+        replace="\1${release.minor.version}" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/manual/getting-started.md"
-        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
-        replace="\1${release.version}\2" flags="g" byline="false"/>
+        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+\.)[\d\.]+(&lt;/version&gt;)"
+        replace="\1${release.minor.version}\2" flags="g" byline="false"/>
     <release-info-reset/>
   </target>
 
