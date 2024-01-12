@@ -1,7 +1,6 @@
-2.0.0 2024xxxx
+1.4.0 2024xxxx
 BF: Review: Optimization and corrections
-CR: Project: Split for version 2 and 3 of Spring
-    - new names of the repositories: spring-webdav-2 / spring-webdav-3
+CR: Build: Optimization for Spring version 2 and 3
 
 1.3.0 20240103
 CR: WebDavFilter: Update to Spring 3
