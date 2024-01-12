@@ -3,7 +3,7 @@ BF: Review: Optimization and corrections
 CR: Build: Optimization for Spring version 2 and 3
     - Development of both versions in one project
     - Development uses the current version of Spring Boot
-    - New approach for the version number
+CR: Build: New approach for the version number
     - Major version reflects the based Spring Boot version
     - Minor version reflects the version of spring-webdav
 
