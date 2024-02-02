@@ -128,7 +128,7 @@ public class WebDavFilter extends HttpFilter {
 
     private Properties properties;
 
-    private Sitemap sitemap;
+    private Mapping mapping;
 
     private static final String METHOD_OPTIONS   = "OPTIONS";
     private static final String METHOD_PROPFIND  = "PROPFIND";
@@ -247,7 +247,7 @@ public class WebDavFilter extends HttpFilter {
     public void init(final FilterConfig filterConfig)
             throws ServletException {
 
-        this.sitemap = new Sitemap();
+        this.mapping = new Mapping();
 
         // Validation of URL pattern mappings, only patterns that start with a
         // slash, optionally contain word-character sequences separated by
@@ -331,17 +331,17 @@ public class WebDavFilter extends HttpFilter {
             }
 
             for (final String mappingPath : mappingPaths)
-                try {this.sitemap.map(annotations.stream().filter(annotation -> annotation.getPath().equalsIgnoreCase(mappingPath)).toArray(Annotation[]::new));
-                } catch (SitemapException exception) {
+                try {this.mapping.map(annotations.stream().filter(annotation -> annotation.getPath().equalsIgnoreCase(mappingPath)).toArray(Annotation[]::new));
+                } catch (MappingException exception) {
                     throw new AnnotationException(exception.getMessage());
                 }
 
             LOGGER.info(this.getClass().getSimpleName() + " was established");
-            if (this.sitemap.toString().length() > 0) {
-                LOGGER.info("Sitemap");
+            if (this.mapping.toString().length() > 0) {
+                LOGGER.info("Mapping");
                 LOGGER.info("---");
-                Arrays.stream(this.sitemap.toString().split("\\R")).forEach(LOGGER::info);
-            } else LOGGER.warn("Sitemap is empty");
+                Arrays.stream(this.mapping.toString().split("\\R")).forEach(LOGGER::info);
+            } else LOGGER.warn("Mapping is empty");
 
         } catch (Exception exception) {
             throw new ServletException(exception);
@@ -369,7 +369,7 @@ public class WebDavFilter extends HttpFilter {
         return "";
     }
 
-    private String locateSitemapPath(final HttpServletRequest request) {
+    private String locateMappingPath(final HttpServletRequest request) {
         final String requestURI = this.locateRequestPath(request);
         if (this.filterUrlPatternMappings.isEmpty())
             return requestURI;
@@ -383,9 +383,9 @@ public class WebDavFilter extends HttpFilter {
         return null;
     }
 
-    private Sitemap.Entry locateSitemapEntry(final Sitemap sitemap, final HttpServletRequest request) {
+    private Mapping.Entry locateMappingEntry(final Mapping mapping, final HttpServletRequest request) {
 
-        final String pathInfo = this.locateSitemapPath(request);
+        final String pathInfo = this.locateMappingPath(request);
         if (Objects.isNull(pathInfo))
             throw new NotFoundState();
 
@@ -395,7 +395,7 @@ public class WebDavFilter extends HttpFilter {
 
         final String method = request.getMethod().toUpperCase();
 
-        final Sitemap.Entry entry = sitemap.locate(pathInfo);
+        final Mapping.Entry entry = mapping.locate(pathInfo);
         if (Objects.isNull(entry)) {
             if (METHOD_PUT.equals(method))
                 throw new ForbiddenState();
@@ -410,7 +410,7 @@ public class WebDavFilter extends HttpFilter {
             throw new FoundState(request.getRequestURI().replaceAll("/+$", ""));
 
         if (entry.isFile()
-                && !((Sitemap.File)entry).isAccepted())
+                && !((Mapping.File)entry).isAccepted())
             throw new BadRequestState();
 
         if (!Arrays.asList(METHOD_HEAD, METHOD_GET, METHOD_LOCK, METHOD_PUT).contains(method))
@@ -480,7 +480,7 @@ public class WebDavFilter extends HttpFilter {
         return properties;
     }
 
-    private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Sitemap.Entry entry,
+    private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Mapping.Entry entry,
                   final int type, final Properties properties)
             throws IOException {
 
@@ -491,8 +491,8 @@ public class WebDavFilter extends HttpFilter {
 
         final String creationDate  = Objects.nonNull(entry.getCreationDate()) ? DateTime.formatDate(entry.getCreationDate(), DATETIME_FORMAT_CREATION_DATE) : null;
         final String lastModified  = Objects.nonNull(entry.getLastModified()) ? DateTime.formatDate(entry.getLastModified(), DATETIME_FORMAT_LAST_MODIFIED) : null;
-        final String contentType   = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentType()) ? ((Sitemap.File)entry).getContentType() : null;
-        final String contentLength = entry.isFile() && Objects.nonNull(((Sitemap.File)entry).getContentLength()) ? ((Sitemap.File)entry).getContentLength().toString() : null;
+        final String contentType   = entry.isFile() && Objects.nonNull(((Mapping.File)entry).getContentType()) ? ((Mapping.File)entry).getContentType() : null;
+        final String contentLength = entry.isFile() && Objects.nonNull(((Mapping.File)entry).getContentLength()) ? ((Mapping.File)entry).getContentLength().toString() : null;
 
         final String isCollection = String.valueOf(entry.isFolder());
         final String isReadOnly   = String.valueOf(entry.isReadOnly());
@@ -666,7 +666,7 @@ public class WebDavFilter extends HttpFilter {
         xmlWriter.writeElement(WebDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESPONSE, XmlWriter.ElementType.CLOSING);
     }
 
-    private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Sitemap.Entry entry,
+    private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Mapping.Entry entry,
                     final int type, final Properties properties, final int depth)
             throws IOException {
 
@@ -674,17 +674,17 @@ public class WebDavFilter extends HttpFilter {
         if (entry.isFile()
                 || depth <= 0)
             return;
-        for (Sitemap.Entry folderEntry : ((Sitemap.Folder)entry).getCollection()) {
+        for (Mapping.Entry folderEntry : ((Mapping.Folder)entry).getCollection()) {
             if (folderEntry.isHidden())
                 continue;
             WebDavFilter.collectProperties(xmlWriter, contextUrl, folderEntry, type, properties, depth -1);
         }
     }
 
-    private void doOptions(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+    private void doOptions(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response) {
 
-        Sitemap.Entry entry = null;
-        try {entry = this.locateSitemapEntry(sitemap, request);
+        Mapping.Entry entry = null;
+        try {entry = this.locateMappingEntry(mapping, request);
         } catch (State state) {
         }
 
@@ -712,10 +712,10 @@ public class WebDavFilter extends HttpFilter {
         throw new SuccessState();
     }
 
-    private void doPropfind(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+    private void doPropfind(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        final Mapping.Entry entry = this.locateMappingEntry(mapping, request);
         final String contextPath = this.locateRequestContextPath(request);
 
         try {
@@ -764,7 +764,7 @@ public class WebDavFilter extends HttpFilter {
         throw new MultiStatusState();
     }
 
-    private void doProppatch(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+    private void doProppatch(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
 
         // PROPPATCH is not officially supported, it doesn't make sense.
@@ -773,17 +773,17 @@ public class WebDavFilter extends HttpFilter {
         // Lazy magic -- here simply PROPFIND is used and the requests are
         // supplied with metadata. Not nice but works.
 
-        this.doPropfind(sitemap, request, response);
+        this.doPropfind(mapping, request, response);
     }
 
-    private void doHead(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+    private void doHead(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response) {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        final Mapping.Entry entry = this.locateMappingEntry(mapping, request);
 
         if (entry.isFolder())
             throw new NotFoundState();
 
-        final Sitemap.File file = (Sitemap.File)entry;
+        final Mapping.File file = (Mapping.File)entry;
         if (Objects.nonNull(file.getIdentifier()))
             response.setHeader(HEADER_ETAG, "\"" + file.getIdentifier() + "\"");
         if (Objects.nonNull(file.getLastModified()))
@@ -795,16 +795,16 @@ public class WebDavFilter extends HttpFilter {
         throw new SuccessState();
     }
 
-    private void doGet(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+    private void doGet(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        final Mapping.Entry entry = this.locateMappingEntry(mapping, request);
 
         if (entry.isFolder())
             throw new NotFoundState();
 
-        final Sitemap.File file = (Sitemap.File)entry;
-        final Sitemap.Callback outputCallback = file.getOutputCallback();
+        final Mapping.File file = (Mapping.File)entry;
+        final Mapping.Callback outputCallback = file.getOutputCallback();
 
         try (final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
                 .response(response)
@@ -850,18 +850,18 @@ public class WebDavFilter extends HttpFilter {
             throw new NotAcceptableState();
     }
 
-    private void doPut(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+    private void doPut(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response) {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        final Mapping.Entry entry = this.locateMappingEntry(mapping, request);
 
         if (entry.isReadOnly())
             throw new ForbiddenState();
 
-        response.setHeader(HEADER_CONTENT_LOCATION, this.locateSitemapPath(request));
+        response.setHeader(HEADER_CONTENT_LOCATION, this.locateMappingPath(request));
 
-        final Sitemap.File file = (Sitemap.File)entry;
+        final Mapping.File file = (Mapping.File)entry;
         WebDavFilter.acceptContentType(file.getAccept(), request.getContentType());
-        final Sitemap.Callback inputCallback = file.getInputCallback();
+        final Mapping.Callback inputCallback = file.getInputCallback();
         final MetaInputStream metaInputStream = MetaInputStream.builder()
                 .request(request)
                 .contentType(file.getContentType())
@@ -880,10 +880,10 @@ public class WebDavFilter extends HttpFilter {
         throw new NoContentState();
     }
 
-    private void doLock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response)
+    private void doLock(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        final Mapping.Entry entry = this.locateMappingEntry(mapping, request);
         if (entry.isReadOnly())
             throw new ForbiddenState();
 
@@ -933,7 +933,7 @@ public class WebDavFilter extends HttpFilter {
     
                         xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.OPENING);
                             xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.OPENING);
-                                xmlWriter.writeText(this.locateSitemapPath(request));
+                                xmlWriter.writeText(this.locateMappingPath(request));
                             xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_HREF, XmlWriter.ElementType.CLOSING);
                         xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_LOCKROOT, XmlWriter.ElementType.CLOSING);
                     xmlWriter.writeElement(WEBDAV_DEFAULT_XML_NAMESPACE, XML_ACTIVELOCK, XmlWriter.ElementType.CLOSING);
@@ -951,9 +951,9 @@ public class WebDavFilter extends HttpFilter {
         throw new SuccessState();
     }
 
-    private void doUnlock(final Sitemap sitemap, final HttpServletRequest request, final HttpServletResponse response) {
+    private void doUnlock(final Mapping mapping, final HttpServletRequest request, final HttpServletResponse response) {
 
-        final Sitemap.Entry entry = this.locateSitemapEntry(sitemap, request);
+        final Mapping.Entry entry = this.locateMappingEntry(mapping, request);
         if (entry.isReadOnly())
             throw new ForbiddenState();
         throw new NoContentState();
@@ -968,7 +968,7 @@ public class WebDavFilter extends HttpFilter {
         final ServletContext servletContext = request.getServletContext();
         final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 
-        // The sitemap is used as a request-based shared instance.
+        // The mapping is used as a request-based shared instance.
         // The values of the annotations can contain values, expressions and
         // callbacks, which must then be processed in relation to the request.
 
@@ -996,9 +996,9 @@ public class WebDavFilter extends HttpFilter {
         if (Objects.nonNull(session))
             properties.put("session", session);
 
-        final Sitemap sitemap;
-        try {sitemap = this.sitemap.share(properties);
-        } catch (SitemapException exception) {
+        final Mapping mapping;
+        try {mapping = this.mapping.share(properties);
+        } catch (MappingException exception) {
             throw new ServletException(exception);
         }
 
@@ -1014,26 +1014,26 @@ public class WebDavFilter extends HttpFilter {
         try {
             switch (request.getMethod().toUpperCase()) {
                 case WebDavFilter.METHOD_OPTIONS:
-                    this.doOptions(sitemap, request, response);
+                    this.doOptions(mapping, request, response);
                 case WebDavFilter.METHOD_PROPFIND:
-                    this.doPropfind(sitemap, request, response);
+                    this.doPropfind(mapping, request, response);
                 case WebDavFilter.METHOD_HEAD:
-                    this.doHead(sitemap, request, response);
+                    this.doHead(mapping, request, response);
                 case WebDavFilter.METHOD_GET:
-                    this.doGet(sitemap, request, response);
+                    this.doGet(mapping, request, response);
                 case WebDavFilter.METHOD_LOCK:
-                    this.doLock(sitemap, request, response);
+                    this.doLock(mapping, request, response);
                 case WebDavFilter.METHOD_PUT:
-                    this.doPut(sitemap, request, response);
+                    this.doPut(mapping, request, response);
                 case WebDavFilter.METHOD_UNLOCK:
-                    this.doUnlock(sitemap, request, response);
+                    this.doUnlock(mapping, request, response);
                 case WebDavFilter.METHOD_PROPPATCH:
-                    this.doProppatch(sitemap, request, response);
+                    this.doProppatch(mapping, request, response);
                 case WebDavFilter.METHOD_MKCOL:
                 case WebDavFilter.METHOD_COPY:
                 case WebDavFilter.METHOD_MOVE:
                 case WebDavFilter.METHOD_DELETE:
-                    this.locateSitemapEntry(sitemap, request);
+                    this.locateMappingEntry(mapping, request);
                     throw new ForbiddenState();
                 default:
             }
