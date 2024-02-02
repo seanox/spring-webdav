@@ -32,7 +32,7 @@ import java.net.URI;
  * PATCH is not supported, it is an example for other unsupported methods.<br>
  * <br>
  *     <dir>Expectation:</dir>
- * If an Entry found in the SiteMap, the requests are responded with METHOD NOT ALLOWED
+ * If an Entry found in the Mapping, the requests are responded with METHOD NOT ALLOWED
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210710
