@@ -21,16 +21,16 @@
 package com.seanox.webdav;
 
 /**
- * SitemapException
+ * MappingException
  *
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210627
  */
-class SitemapException extends Exception {
+class MappingException extends Exception {
 
     private static final long serialVersionUID = 5221219333501527276L;
 
-    SitemapException(final String message) {
+    MappingException(final String message) {
         super(message);
     }
 }
