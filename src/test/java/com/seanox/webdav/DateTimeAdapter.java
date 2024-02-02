@@ -72,7 +72,7 @@ public class DateTimeAdapter {
 
     public static Date getApplicationBuildDate()
             throws Exception {
-        final Field field = Sitemap.class.getDeclaredField("CREATION_DATE");
+        final Field field = Mapping.class.getDeclaredField("CREATION_DATE");
         field.setAccessible(true);
         return (Date)field.get(null);
     }

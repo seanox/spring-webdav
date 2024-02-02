@@ -33,9 +33,9 @@ package com.seanox.webdav;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210725
  */
-public class SitemapExceptionAdapter {
+public class MappingExceptionAdapter {
 
-    public static Class<SitemapException> getSitemapExceptionClass() {
-        return SitemapException.class;
+    public static Class<MappingException> getMappingExceptionClass() {
+        return MappingException.class;
     }
 }

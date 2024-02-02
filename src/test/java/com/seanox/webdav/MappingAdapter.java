@@ -37,14 +37,14 @@ import java.util.Arrays;
  * @author  Seanox Software Solutions
  * @version 1.0.0 20210725
  */
-public class SitemapAdapter {
+public class MappingAdapter {
 
-    private static final Method SitemapNormalizePathMethod;
+    private static final Method MappingNormalizePathMethod;
 
     static {
         try {
-            SitemapNormalizePathMethod = Sitemap.class.getDeclaredMethod("normalizePath", String.class);
-            SitemapNormalizePathMethod.setAccessible(true);
+            MappingNormalizePathMethod = Mapping.class.getDeclaredMethod("normalizePath", String.class);
+            MappingNormalizePathMethod.setAccessible(true);
         } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
@@ -60,26 +60,26 @@ public class SitemapAdapter {
     }
 
     private static RuntimeException getTargetRuntimeException(Exception exception) {
-        exception = SitemapAdapter.getTargetException(exception);
+        exception = MappingAdapter.getTargetException(exception);
         if (exception instanceof RuntimeException)
             return (RuntimeException)exception;
         return new RuntimeException(exception);
     }
 
-    public static Sitemap createInstance() {
-        return new Sitemap();
+    public static Mapping createInstance() {
+        return new Mapping();
     }
 
     public static String normalizePath(final String path) {
-        try {return (String)SitemapNormalizePathMethod.invoke(Sitemap.class, path);
+        try {return (String)MappingNormalizePathMethod.invoke(Mapping.class, path);
         } catch (Exception exception) {
-            throw SitemapAdapter.getTargetRuntimeException(exception);
+            throw MappingAdapter.getTargetRuntimeException(exception);
         }
     }
 
-    public static Object map(final Object sitemap, final java.lang.annotation.Annotation[] annotations)
+    public static Object map(final Object mapping, final java.lang.annotation.Annotation[] annotations)
             throws Exception {
-        return ((Sitemap)sitemap).map(Arrays.stream(annotations).map(annotation -> {
+        return ((Mapping)mapping).map(Arrays.stream(annotations).map(annotation -> {
             try {return AnnotationAdapter.createAnnotation(annotation);
             } catch (AnnotationException exception) {
                 throw new AdapterException(exception);
