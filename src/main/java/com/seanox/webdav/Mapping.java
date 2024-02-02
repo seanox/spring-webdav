@@ -49,14 +49,14 @@ import java.util.function.Consumer;
 
 /**
  * <p>
- *   Sitemap for mapping a virtual file system.
+ *   Mapping for mapping a virtual file system.
  * </p>
  * Rules (similar error behavior as mapping from RestController):<br>
  * <ul>
- *   <li>Ambiguous mapping causes SitemapException</li>
- *   <li>Path must be unique (case insensitive), otherwise SitemapException</li>
- *   <li>Path must start with slash, otherwise SitemapException</li>
- *   <li>Not permitted (unauthorized) entries are not included in the sitemap</li>
+ *   <li>Ambiguous mapping causes MappingException</li>
+ *   <li>Path must be unique (case insensitive), otherwise MappingException</li>
+ *   <li>Path must start with slash, otherwise MappingException</li>
+ *   <li>Not permitted (unauthorized) entries are not included in the mapping</li>
  *   <li>Not permitted (unauthorized) entries are used as non-existent as 404</li>
  *   <li>Empty folders are hidden, e.g. if included files are not allowed or hidden</li>
  * </ul>
@@ -64,7 +64,7 @@ import java.util.function.Consumer;
  * @author Seanox Software Solutions
  * @version 1.2.0 20240101
  */
-class Sitemap implements Serializable {
+class Mapping implements Serializable {
 
     private static final long serialVersionUID = 2047313581285550891L;
 
@@ -73,28 +73,28 @@ class Sitemap implements Serializable {
     private final Properties data;
     private final Properties meta;
 
-    private static final Date CREATION_DATE = Sitemap.detectApplicationBuildDate();
+    private static final Date CREATION_DATE = Mapping.detectApplicationBuildDate();
 
-    Sitemap() {
+    Mapping() {
         this.tree  = new TreeMap<>();
         this.trace = new ArrayList<>();
         this.data  = new Properties();
         this.meta  = new Properties();
     }
 
-    Sitemap share(final Properties properties)
-            throws SitemapException {
+    Mapping share(final Properties properties)
+            throws MappingException {
 
         // The trace is the basis for sharing, which is very complex due to the
-        // reference to the parent sitemap instance. That's why a trace is
-        // created to build the sitemap, so that for sharing a new instance can
+        // reference to the parent mapping instance. That's why a trace is
+        // created to build the mapping, so that for sharing a new instance can
         // be easily created based on the existing source information.
 
-        final Sitemap sitemap = new Sitemap();
+        final Mapping mapping = new Mapping();
         for (final Annotation[] annotations : this.trace)
-            sitemap.map(annotations);
-        sitemap.data.putAll(properties.clone());
-        return sitemap;
+            mapping.map(annotations);
+        mapping.data.putAll(properties.clone());
+        return mapping;
     }
 
     private static Date detectApplicationClassBuildDate(final String className) {
@@ -119,21 +119,21 @@ class Sitemap implements Serializable {
         for (final StackTraceElement stackTraceElement : new Throwable().getStackTrace()) {
             final String className = stackTraceElement.getClassName();
             final Class<?> classSource;
-            try {classSource = Sitemap.class.getClassLoader().loadClass(className);
+            try {classSource = Mapping.class.getClassLoader().loadClass(className);
             } catch (Throwable throwable) {
                 continue;
             }
             if (Objects.isNull(classSource.getDeclaredAnnotation(SpringBootApplication.class)))
                 continue;
-            final Date classBuildDate = Sitemap.detectApplicationClassBuildDate(className);
+            final Date classBuildDate = Mapping.detectApplicationClassBuildDate(className);
             if (Objects.nonNull(classBuildDate))
                 return classBuildDate;
         }
 
-        // Secondary the build date of the Sitemap is used if no application
+        // Secondary the build date of the Mapping is used if no application
         // was detected. This is possible in the case of unit tests if no
         // Spring boot application is used there.
-        final Date classBuildDate = Sitemap.detectApplicationClassBuildDate(Sitemap.class.getName());
+        final Date classBuildDate = Mapping.detectApplicationClassBuildDate(Mapping.class.getName());
         if (Objects.nonNull(classBuildDate))
             return classBuildDate;
 
@@ -149,14 +149,14 @@ class Sitemap implements Serializable {
     }
 
     private static String defaultContentType() {
-        return Sitemap.probeContentType("none");
+        return Mapping.probeContentType("none");
     }
 
     private static String recognizeContentType(final String extension) {
         if (Objects.isNull(extension)
                 || extension.isBlank())
-            return Sitemap.defaultContentType();
-        return Sitemap.probeContentType("none." + extension);
+            return Mapping.defaultContentType();
+        return Mapping.probeContentType("none." + extension);
     }
 
     private static String normalizePath(String path) {
@@ -180,13 +180,13 @@ class Sitemap implements Serializable {
     }
 
     private Entry add(final TreeMap<String, Entry> tree, final Entry entry)
-            throws SitemapException {
+            throws MappingException {
 
         // Files cannot already exist, because none are created recursively.
         // The existing and colliding path in the tree is used as the message.
         if (entry.isFile()
                 && tree.containsKey(entry.getPathUnique()))
-            throw new SitemapException("Ambiguous Mapping: " + tree.get(entry.getPathUnique()).getPath());
+            throw new MappingException("Ambiguous Mapping: " + tree.get(entry.getPathUnique()).getPath());
 
         // Parent entries can only be folders.
         // Caution, no parent entry must exist at this time, so use the path.
@@ -196,7 +196,7 @@ class Sitemap implements Serializable {
         if (Objects.nonNull(parentPathUnique)
                 && tree.containsKey(parentPathUnique)
                 && !tree.get(parentPathUnique).isFolder())
-            throw new SitemapException("Ambiguous Mapping: " + entry.getPath());
+            throw new MappingException("Ambiguous Mapping: " + entry.getPath());
 
         Folder parentFolder = entry.getParent();
         if (Objects.isNull(parentFolder)
@@ -212,39 +212,39 @@ class Sitemap implements Serializable {
     }
 
     File map(final Annotation... annotations)
-            throws SitemapException {
+            throws MappingException {
 
         final Annotation.Mapping mappingAnnotation = (Annotation.Mapping)Arrays.stream(annotations)
                 .filter(annotation -> annotation.getType().equals(Annotation.AnnotationType.Mapping)).findFirst().orElse(null);
         if (Objects.isNull(mappingAnnotation))
-            throw new SitemapException("Mapping is missing");
+            throw new MappingException("Mapping is missing");
 
         String path;
-        try {path = Sitemap.normalizePath(mappingAnnotation.getPath());
+        try {path = Mapping.normalizePath(mappingAnnotation.getPath());
         } catch (InvalidPathException exception) {
             if (Objects.isNull(exception.getReason())
                     || exception.getReason().isBlank())
-                throw new SitemapException("Invalid mapping path");
-            throw new SitemapException("Invalid mapping path: " + exception.getReason().trim());
+                throw new MappingException("Invalid mapping path");
+            throw new MappingException("Invalid mapping path: " + exception.getReason().trim());
         }
 
         if (path.isBlank()) {
             if (mappingAnnotation.getPath().isBlank())
-                throw new SitemapException("Invalid mapping path");
-            throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+                throw new MappingException("Invalid mapping path");
+            throw new MappingException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         if (!path.startsWith("/")) {
             if (mappingAnnotation.getPath().isBlank())
-                throw new SitemapException("Invalid mapping path");
-            throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+                throw new MappingException("Invalid mapping path");
+            throw new MappingException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         final String name = path.replaceAll("^.*/(?=[^/]*$)", "");
         if (name.isBlank()) {
             if (mappingAnnotation.getPath().isBlank())
-                throw new SitemapException("Invalid mapping path");
-            throw new SitemapException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
+                throw new MappingException("Invalid mapping path");
+            throw new MappingException("Invalid mapping path: " + mappingAnnotation.getPath().trim());
         }
 
         final File file = new File(path, annotations);
@@ -258,22 +258,22 @@ class Sitemap implements Serializable {
 
         // The Add method creates recursive parent structures of folders, this
         // is not good in case of error when adding them to the final tree.
-        // Sitemap can be used as an instance (which is not planned) and if
-        // the map method is called and it generates a SitemapException, the
-        // error can be caught and the instance from Sitemap will be used
+        // Mapping can be used as an instance (which is not planned) and if
+        // the map method is called and it generates a MappingException, the
+        // error can be caught and the instance from Mapping will be used
         // further. In that case no automatically recursively created folders
         // should be added to the final tree.
 
         // PutAll to merge looks strange, but the TreeMap replaces eponymous
         // and so it works as expected.
 
-        final TreeMap<String, Sitemap.Entry> treeWorkspace = (TreeMap<String, Entry>)this.tree.clone();
+        final TreeMap<String, Mapping.Entry> treeWorkspace = (TreeMap<String, Entry>)this.tree.clone();
         final Entry entry = this.add(treeWorkspace, file);
         this.tree.putAll(treeWorkspace);
 
         // The trace is the basis for sharing, which is very complex due to the
-        // reference to the parent sitemap instance. That's why a trace is
-        // created to build the sitemap, so that for sharing a new instance can
+        // reference to the parent mapping instance. That's why a trace is
+        // created to build the mapping, so that for sharing a new instance can
         // be easily created based on the existing source information.
         this.trace.add(annotations);
 
@@ -285,7 +285,7 @@ class Sitemap implements Serializable {
         if (Objects.isNull(path))
             return null;
 
-        final Entry entry = this.tree.get(Sitemap.normalizePath(path).toLowerCase());
+        final Entry entry = this.tree.get(Mapping.normalizePath(path).toLowerCase());
         if (Objects.isNull(entry))
             return null;
 
@@ -317,8 +317,8 @@ class Sitemap implements Serializable {
     private static class Defaults {
         private static final String  contentType      = "application/octet-stream";
         private static final Integer contentLength    = Integer.valueOf(-1);
-        private static final Date    creationDate     = Sitemap.CREATION_DATE;
-        private static final Date    lastModified     = Sitemap.CREATION_DATE;
+        private static final Date    creationDate     = Mapping.CREATION_DATE;
+        private static final Date    lastModified     = Mapping.CREATION_DATE;
         private static final Boolean isReadOnly       = Boolean.TRUE;
         private static final Boolean isHidden         = Boolean.FALSE;
         private static final Boolean isAccepted       = Boolean.TRUE;
@@ -347,11 +347,11 @@ class Sitemap implements Serializable {
 
         private Entry(final String path) {
 
-            String parent = Sitemap.normalizePath(path);
+            String parent = Mapping.normalizePath(path);
             parent = parent.replaceAll("/+[^/]*$", "");
             if (!parent.isEmpty()) {
-                if (Sitemap.this.tree.containsKey(parent.toLowerCase()))
-                    parent = Sitemap.this.tree.get(parent.toLowerCase()).getPath();
+                if (Mapping.this.tree.containsKey(parent.toLowerCase()))
+                    parent = Mapping.this.tree.get(parent.toLowerCase()).getPath();
                 this.parent = parent;
             } else this.parent = "/";
 
@@ -374,7 +374,7 @@ class Sitemap implements Serializable {
         Folder getParent() {
             if (Objects.isNull(this.parent))
                 return null;
-            return (Folder)Sitemap.this.tree.get(this.getParentPathUnique());
+            return (Folder)Mapping.this.tree.get(this.getParentPathUnique());
         }
 
         String getParentPath() {
@@ -596,15 +596,15 @@ class Sitemap implements Serializable {
                     .build();
         }
 
-        // The attributes use a sitemap instance related (and thus request
+        // The attributes use a mapping instance related (and thus request
         // related) attribute cache. This avoids that expressions and callbacks
         // are called more than once by the getter. The construct may not be
         // self-explanatory, therefore a short explanation. Each request uses
-        // its own sitemap instance. Sitemap::data contains the request-related
+        // its own mapping instance. Mapping::data contains the request-related
         // properties, which are then used for the expressions, among other
-        // things. Sitemap::meta is a cache of attributes for a sitemap
-        // instance. After calling the share method a new sitemap instance is
-        // created and Sitemap::data as well as Sitemap::meta are then empty
+        // things. Mapping::meta is a cache of attributes for a mapping
+        // instance. After calling the share method a new mapping instance is
+        // created and Mapping::data as well as Mapping::meta are then empty
         // and filled with the usage.
         //
         // For the use of the attributes the following priority exists:
@@ -645,7 +645,7 @@ class Sitemap implements Serializable {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
             final String message = String.format("%s: %s %s", scope, exception.getClass().getName(), exception.getMessage());
-            LoggerFactory.getLogger(Sitemap.class.getPackageName() + "." + classification).error(message);
+            LoggerFactory.getLogger(Mapping.class.getPackageName() + "." + classification).error(message);
         };
 
         private final AttributeErrorOutputConsumer<String, Annotation.Target, Exception> attributeErrorOutputConsumer = (classification, scope, exception) -> {
@@ -669,16 +669,16 @@ class Sitemap implements Serializable {
 
         private <T> T compute(final Annotation.Target target, final Variant attribute, final T fallback) {
 
-            if (!Sitemap.this.meta.containsKey(this.getPathUnique()))
-                Sitemap.this.meta.put(this.getPathUnique(), new HashMap<>());
-            final Map<Object, Object> metaMap = (Map<Object, Object>)Sitemap.this.meta.get(this.getPathUnique());
+            if (!Mapping.this.meta.containsKey(this.getPathUnique()))
+                Mapping.this.meta.put(this.getPathUnique(), new HashMap<>());
+            final Map<Object, Object> metaMap = (Map<Object, Object>)Mapping.this.meta.get(this.getPathUnique());
             if (Objects.nonNull(target)
                     && metaMap.containsKey(target))
                 return (T)metaMap.get(target);
 
             Object result = fallback;
             if (attribute instanceof Callback) {
-                try {result = ((Callback)attribute).invoke(URI.create(Sitemap.File.this.getPath()), ((Callback)attribute).type);
+                try {result = ((Callback)attribute).invoke(URI.create(Mapping.File.this.getPath()), ((Callback)attribute).type);
                 } catch (Exception exception) {
                     attributeErrorOutputConsumer.accept("CallbackException", target, exception);
                     result = null;
@@ -689,8 +689,8 @@ class Sitemap implements Serializable {
                             Annotation.Target.ReadOnly, Annotation.Target.Hidden, Annotation.Target.Accepted, Annotation.Target.Permitted).contains(target)) {
                 if (!metaMap.containsKey(this.metaCallback)) {
                     final MetaProperties meta = Defaults.MetaDataTemplate.clone();
-                    meta.setUri(URI.create(Sitemap.File.this.getPath()));
-                    meta.setContentType((String)this.computeInitialValue(Annotation.Target.ContentType, this.contentType, Sitemap.probeContentType(Sitemap.File.this.getPath())));
+                    meta.setUri(URI.create(Mapping.File.this.getPath()));
+                    meta.setContentType((String)this.computeInitialValue(Annotation.Target.ContentType, this.contentType, Mapping.probeContentType(Mapping.File.this.getPath())));
                     meta.setContentLength((Integer)this.computeInitialValue(Annotation.Target.ContentLength, this.contentLength, Defaults.contentLength));
                     meta.setCreationDate((Date)this.computeInitialValue(Annotation.Target.CreationDate, this.creationDate, Defaults.creationDate));
                     meta.setLastModified((Date)this.computeInitialValue(Annotation.Target.LastModified, this.lastModified, Defaults.lastModified));
@@ -744,7 +744,7 @@ class Sitemap implements Serializable {
         }
 
         String getContentType() {
-            final String contentType = this.compute(Annotation.Target.ContentType, this.contentType, Sitemap.recognizeContentType(this.getName()));
+            final String contentType = this.compute(Annotation.Target.ContentType, this.contentType, Mapping.recognizeContentType(this.getName()));
             return Objects.nonNull(contentType) && !contentType.isBlank() ? contentType : null;
         }
 
@@ -839,7 +839,7 @@ class Sitemap implements Serializable {
             if (Objects.nonNull(this.exception))
                 throw exception;
             StandardEvaluationContext context = new StandardEvaluationContext();
-            Sitemap.this.data.forEach(context::setVariable);
+            Mapping.this.data.forEach(context::setVariable);
             return this.expression.getValue(context);
         }
     }
@@ -875,7 +875,7 @@ class Sitemap implements Serializable {
                 throws InvocationTargetException, IllegalAccessException {
             this.method.setAccessible(true);
             final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
-            argumentList.add(Sitemap.this.data.clone());
+            argumentList.add(Mapping.this.data.clone());
             return this.method.invoke(this.object, this.composeArguments(argumentList.toArray(new Object[0])));
         }
     }
