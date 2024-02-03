@@ -22,7 +22,7 @@ access to a Spring Boot based API without an additional frontend.
 
 * [Integration](#integration)
 * [Registration of WebDavFilter](#registration-of-webdavfilter)
-* [Definition of Sitemap](#definition-of-sitemap)
+* [Definition of Mapping](#definition-of-mapping)
 * [Using WebDAV Annotations](#using-webdav-annotations)
 * [Using Expressions](#using-expressions)
 * [Mapping of Virtual Entity](#mapping-of-virtual-entity)  
@@ -54,7 +54,7 @@ for Spring Boot 2:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -63,9 +63,16 @@ for Spring Boot 3:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>1.3.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
+
+__The major number of the artifacts refers to the version of Spring Boot
+version for the major number (1.x.x.x) and from the minor number (x.2.3.4)
+onwards to the release of spring-webdav. The development version always uses
+the major version 1.x.x.x and is based on Spring Boot 3. From this version, the
+artifacts for the different Spring Boot versions are then created during the
+build process.__
 
 ## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
@@ -117,15 +124,15 @@ void configure(final HttpSecurity httpSecurity) throws Exception;
 __For WebDAV, URL patterns end usually with `/*` and AntPathMatcher end with `/**`.__      
 __The patterns are always used without a context path.__
 
-## Definition of Sitemap
+## Definition of Mapping
 The WebDAV implementation uses a virtual file system. This file system is built
-per annotations in the Sitemap. Direct access to the sitemap is not possible,
+per annotations in the Mapping. Direct access to the mapping is not possible,
 it is only created via the annotations. The annotations are applied directly in
 the managed beans, e.g. in `Component`, `Controller`, `Service`,
 `RestController`, ...
 
 The WebDAV implementation contains various annotations. The central component
-is `@WebDavMapping`. This defines the virtual entities of the Sitemap and thus
+is `@WebDavMapping`. This defines the virtual entities of the Mapping and thus
 from the virtual file system. `@WebDavMapping` defines a virtual path for this
 purpose, which is later used as a reference in other WebDav annotations. The
 paths of the annotations are case-insensitive.
@@ -151,12 +158,12 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation for path definition_
 
-The Sitemap supports folders and files based on the paths of virtual entities.
+The Mapping supports folders and files based on the paths of virtual entities.
 Where and in which managed beans the paths are defined does not matter. During
 the initialization of the WebDavFilter all managed beans are scanned and the
-information for the sitemap is collected.
+information for the mapping is collected.
 
-The Sitemap is created with the initialization of the WebDavFilter. During this
+The Mapping is created with the initialization of the WebDavFilter. During this
 process the paths are checked for validity, possible collisions and possible
 conflicts. Similar to the Spring mapping, this causes an exception during the
 initialization of the application and aborts the application.
@@ -197,7 +204,7 @@ result.
 
 Why the exception behavior?
 
-If an mapping in the sitemap is incorrect, all other entries in a folder will
+If an mapping in the mapping is incorrect, all other entries in a folder will
 not work either.
 
 Automatic conversion from data type: Usually the return value of expressions is
@@ -211,7 +218,7 @@ described, but not an abort and the value null is used.
 
 ## Mapping of Virtual Entity
 The WebDAV implementation contains various annotations. The central component
-is `@WebDavMapping`. This defines the virtual entities of the Sitemap and thus
+is `@WebDavMapping`. This defines the virtual entities of the Mapping and thus
 from the virtual file system. `@WebDavMapping` defines a virtual path for this
 purpose, which is later used as a reference in other WebDav annotations. The
 paths of the annotations are case-insensitive.
@@ -509,7 +516,7 @@ Maven:
 Gradle:  
 `gradle bootRun`
 
-In log level `INFO` the structure of the Sitemap is logged.
+In log level `INFO` the structure of the Mapping is logged.
 
 ```
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.api.Application               : Starting Application using Java 11.0.12
@@ -520,7 +527,7 @@ In log level `INFO` the structure of the Sitemap is logged.
 2021-07-31 20:00:00 INFO 12345 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
 2021-07-31 20:00:00 INFO 12345 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1689 ms
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : WebDavFilter was established
-2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : Sitemap
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : Mapping
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : ---
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : + financial
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :   - costs.xlsx
