@@ -21,8 +21,8 @@
 package com.seanox.test.annotations;
 
 import com.seanox.test.AbstractTest;
-import com.seanox.webdav.SitemapAdapter;
-import com.seanox.webdav.SitemapExceptionAdapter;
+import com.seanox.webdav.MappingAdapter;
+import com.seanox.webdav.MappingExceptionAdapter;
 import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,14 +37,18 @@ import java.lang.annotation.Annotation;
  */
 class MappingTest extends AbstractTest {
 
+    // IntelliJ shows a false errors here:
+    // 'com.seanox.webdav.MappingException' is inaccessible here
+    // The error can be ignored.
+
     @WebDavMapping(path="a")
     @WebDavMapping(path="/a")
     @Test
     void test_1() {
-        final Object sitemap = SitemapAdapter.createInstance();
-        Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
+        final Object mapping = MappingAdapter.createInstance();
+        Throwable throwable = Assertions.assertThrows(MappingExceptionAdapter.getMappingExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
-                SitemapAdapter.map(sitemap, new Annotation[] {annotation});
+                MappingAdapter.map(mapping, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a", throwable.getMessage());
     }
@@ -53,10 +57,10 @@ class MappingTest extends AbstractTest {
     @WebDavMapping(path="/a/b/c/d/e")
     @Test
     void test_2() {
-        final Object sitemap = SitemapAdapter.createInstance();
-        Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
+        final Object mapping = MappingAdapter.createInstance();
+        Throwable throwable = Assertions.assertThrows(MappingExceptionAdapter.getMappingExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
-                SitemapAdapter.map(sitemap, new Annotation[] {annotation});
+                MappingAdapter.map(mapping, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c/d", throwable.getMessage());
     }
@@ -65,10 +69,10 @@ class MappingTest extends AbstractTest {
     @WebDavMapping(path="/a/b/c")
     @Test
     void test_3() {
-        final Object sitemap = SitemapAdapter.createInstance();
-        Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
+        final Object mapping = MappingAdapter.createInstance();
+        Throwable throwable = Assertions.assertThrows(MappingExceptionAdapter.getMappingExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
-                SitemapAdapter.map(sitemap, new Annotation[] {annotation});
+                MappingAdapter.map(mapping, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
@@ -77,10 +81,10 @@ class MappingTest extends AbstractTest {
     @WebDavMapping(path="/a/b/C")
     @Test
     void test_4() {
-        final Object sitemap = SitemapAdapter.createInstance();
-        Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
+        final Object mapping = MappingAdapter.createInstance();
+        Throwable throwable = Assertions.assertThrows(MappingExceptionAdapter.getMappingExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
-                SitemapAdapter.map(sitemap, new Annotation[] {annotation});
+                MappingAdapter.map(mapping, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/b/c", throwable.getMessage());
     }
@@ -89,10 +93,10 @@ class MappingTest extends AbstractTest {
     @WebDavMapping(path="/A/b/c")
     @Test
     void test_5() {
-        final Object sitemap = SitemapAdapter.createInstance();
-        Throwable throwable = Assertions.assertThrows(SitemapExceptionAdapter.getSitemapExceptionClass(), () -> {
+        final Object mapping = MappingAdapter.createInstance();
+        Throwable throwable = Assertions.assertThrows(MappingExceptionAdapter.getMappingExceptionClass(), () -> {
             for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
-                SitemapAdapter.map(sitemap, new Annotation[] {annotation});
+                MappingAdapter.map(mapping, new Annotation[] {annotation});
         });
         Assertions.assertEquals("Ambiguous Mapping: /a/B/c", throwable.getMessage());
     }
@@ -104,10 +108,10 @@ class MappingTest extends AbstractTest {
     @WebDavMapping(path="/marketing/sales.pptx")
     @Test
     void test_6() throws Exception {
-        final Object sitemap = SitemapAdapter.createInstance();
+        final Object mapping = MappingAdapter.createInstance();
         for (Annotation annotation : this.collectApiAnnotationsFromCurrentMethod())
-            SitemapAdapter.map(sitemap, new Annotation[] {annotation});
-        final String output = sitemap.toString().replaceAll("\\R", "\n");
+            MappingAdapter.map(mapping, new Annotation[] {annotation});
+        final String output = mapping.toString().replaceAll("\\R", "\n");
         final String pattern = "+ customer\n" +
                 "  - list.xlsx\n" +
                 "  + reports\n" +
