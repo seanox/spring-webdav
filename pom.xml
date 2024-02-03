@@ -2,6 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <!--
+      Use for the primary Spring Boot Version configuration:
+      ./spring-webdav/development/build.xml
+          - spring.boot.2.version
+          - spring.boot.3.version
+      Afterwards, call ant -f development/build.xml spring-boot-2 /
+      spring-boot-3 to set the standard for the project.
+  -->
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
