@@ -19,6 +19,9 @@
   <property name="workspace.development" value="${workspace}/development"/>
   <property name="workspace.target" value="${workspace}/target"/>
 
+  <property name="spring.boot.2.version" value="2.7.18"/>
+  <property name="spring.boot.3.version" value="3.2.1"/>
+
   <macrodef name="release-info-locate">
     <sequential>
       <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.tmp" overwrite="true"/>
@@ -90,7 +93,7 @@
 
   <target name="spring-boot-2">
     <local name="spring.version"/>
-    <property name="spring.version" value="2.7.18"/>
+    <property name="spring.version" value="${spring.boot.2.version}"/>
     <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
     <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
     <release-info-locate/>
@@ -110,7 +113,7 @@
 
   <target name="spring-boot-3">
     <local name="spring.version"/>
-    <property name="spring.version" value="3.2.1"/>
+    <property name="spring.version" value="${spring.boot.3.version}"/>
     <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
     <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="3"/>
     <release-info-locate/>
