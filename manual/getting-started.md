@@ -46,8 +46,7 @@ Create a new Spring Boot based project e.g. with https://start.spring.io or use
 an existing one and add the dependencies to the project, e.g. in the `pom.xml`
 for a Maven based project.
 
-Spring Boot 2 and 3 are supported. The Spring Boot version is reflected in the
-minor version number of spring-webdav.
+Spring Boot 2 and 3 are supported.
 
 for Spring Boot 2:
 ```xml
