@@ -5,6 +5,11 @@
     <echo>                                                               </echo>
     <echo>  changes    Synchronizes README.md with CHANGES               </echo>
     <echo>                                                               </echo>
+    <echo>  compile    Builds the jar files                              </echo>
+    <echo>                                                               </echo>
+    <echo>  test       Builds the jar files                              </echo>
+    <echo>             Runs the tests                                    </echo>
+    <echo>                                                               </echo>
     <echo>  release    Builds the complete release                       </echo>
     <echo>             Synchronizes the version in README.md             </echo>
     <echo>                                                               </echo>
@@ -48,7 +53,7 @@
   </macrodef>
 
   <macrodef name="release-info-insert">
-    <attribute name="version" default="${release.version} ${release.date}"/>
+    <attribute name="version"/>
     <sequential>
       <echo file="release-info.tmp" message="@{version}"/>
       <replaceregexp file="release-info.tmp" match="[^\d\.\s]" replace="0" flags="g"/>
@@ -63,16 +68,23 @@
       <replaceregexp match="(?&lt;!\*\s+)(Copyright\s+[^\s]+)\s+\d+" replace="\1 ${release.info.year}">
         <fileset dir="${workspace}" includes="${workspace.sources.filter}"/>
       </replaceregexp>
-      <replaceregexp match="(Version) \d+(?:\.\d+)+ \d+" replace="\1 ${release.info.version} ${release.info.date}">
-        <fileset dir="${workspace}" includes="${workspace.sources.filter}"/>
-      </replaceregexp>
       <replaceregexp match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
           replace="\1${release.info.version}\2" flags="g" byline="false">
         <fileset dir="${workspace}" includes="${workspace.sources.filter}"/>
       </replaceregexp>
     </sequential>
   </macrodef>
-  
+
+  <macrodef name="cmd">
+    <attribute name="command"/>
+    <sequential>
+      <exec executable="cmd" failonerror="true">
+        <arg value="/c"/>
+        <arg value="@{command}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
   <!--
       
       It took a long time to decide what to do about Spring 2 and Spring 3. The
@@ -91,50 +103,53 @@
 
   -->
 
-  <target name="spring-boot-2">
-    <local name="spring.version"/>
-    <property name="spring.version" value="${spring.boot.2.version}"/>
-    <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
-    <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
-    <release-info-locate/>
-    <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
-    <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
-        replace="\1javax\2" flags="g" byline="true">
-      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-    </replaceregexp>
-    <replaceregexp match="^(\s*import\s+)jakarta(\.annotation\.)"
-        replace="\1javax\2" flags="g" byline="true">
-      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-    </replaceregexp>
-    <replaceregexp file="${workspace}/pom.xml"
-        match="(?si)(&lt;artifactId&gt;spring-boot-starter-parent\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
-        replace="\1${spring.version}\2" flags="g" byline="false"/>
-  </target>
+  <macrodef name="spring-boot-2">
+    <sequential>
+      <local name="spring.version"/>
+      <property name="spring.version" value="${spring.boot.2.version}"/>
+      <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
+      <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="2"/>
+      <release-info-locate/>
+      <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
+      <replaceregexp match="^(\s*import\s+)jakarta(\.servlet\.)"
+          replace="\1javax\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp match="^(\s*import\s+)jakarta(\.annotation\.)"
+          replace="\1javax\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp file="${workspace}/pom.xml"
+          match="(?si)(&lt;artifactId&gt;spring-boot-starter-parent\b.*?&lt;version&gt;)\d[\d\.]+(&lt;/version&gt;)"
+          replace="\1${spring.version}\2" flags="g" byline="false"/>
+    </sequential>
+  </macrodef>
 
-  <target name="spring-boot-3">
-    <local name="spring.version"/>
-    <property name="spring.version" value="${spring.boot.3.version}"/>
-    <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
-    <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="3"/>
-    <release-info-locate/>
-    <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
-    <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
-        replace="\1jakarta\2" flags="g" byline="true">
-      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-    </replaceregexp>
-    <replaceregexp match="^(\s*import\s+)javax(\.annotation\.)"
-        replace="\1jakarta\2" flags="g" byline="true">
-      <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
-    </replaceregexp>
-    <replaceregexp file="${workspace}/pom.xml"
-        match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
-        replace="\1${spring.version}" flags="g" byline="false">
-    </replaceregexp>
-  </target>
-  
+  <macrodef name="spring-boot-3">
+    <sequential>
+      <local name="spring.version"/>
+      <property name="spring.version" value="${spring.boot.3.version}"/>
+      <copy file="${workspace}/CHANGES" tofile="${workspace}/CHANGES.spring" overwrite="true"/>
+      <replaceregexp file="${workspace}/CHANGES" match="^\s*\d+" replace="3"/>
+      <release-info-locate/>
+      <move file="${workspace}/CHANGES.spring" tofile="${workspace}/CHANGES" overwrite="true"/>
+      <replaceregexp match="^(\s*import\s+)javax(\.servlet\.)"
+          replace="\1jakarta\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp match="^(\s*import\s+)javax(\.annotation\.)"
+          replace="\1jakarta\2" flags="g" byline="true">
+        <fileset dir="${workspace.sources}" includes="${workspace.sources.filter}"/>
+      </replaceregexp>
+      <replaceregexp file="${workspace}/pom.xml"
+          match="(&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\s*&lt;version&gt;)\d[\d\.]+"
+          replace="\1${spring.version}" flags="g" byline="false">
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+
   <target name="changes">
     <release-info-locate/>
-
     <replaceregexp file="${workspace}/CHANGES" match="&#x00E4;" replace="ae" flags="g"/>
     <replaceregexp file="${workspace}/CHANGES" match="&#x00C4;" replace="Ae" flags="g"/>
     <replaceregexp file="${workspace}/CHANGES" match="&#x00F6;" replace="oe" flags="g"/>
@@ -167,35 +182,55 @@
         replace="${now.year}"/>
   </target>
 
-  <target name="release" depends="changes">
-    <exec executable="cmd" failonerror="true">
-      <arg value="/c"/>
-      <arg value="mvn clean test"/>
-    </exec>
+  <target name="compile">
     <release-info-locate/>
-    <release-info-insert/>
+    <cmd command="mvn clean -DskipTests"/>
+    <spring-boot-2/>
+    <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn package -DskipTests"/>
+    <spring-boot-3/>
+    <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn package -DskipTests"/>
+    <release-info-reset/>
+  </target>
+
+  <target name="test">
+    <release-info-locate/>
+    <spring-boot-2/>
+    <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean test"/>
+    <spring-boot-3/>
+    <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean test"/>
+    <release-info-reset/>
+  </target>
+
+  <target name="release" depends="changes">
+    <release-info-locate/>
+    <antcall target="test"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(?si)(&lt;version&gt;\s*\d+\)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
-        replace="\1${release.minor.version}\2"/>
+        match="(?si)(&lt;version&gt;\s*\d+)[\.\d\s]+(&lt;/version&gt;)" flags="g" byline="true"
+        replace="\1.${release.minor}.${release.patch}\2"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+\.)[\d\.]+(&lt;/version&gt;)"
-        replace="\1${release.minor.version}\2" flags="g" byline="false"/>
+        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+)[\d\.]+(&lt;/version&gt;)"
+        replace="\1.${release.minor}.${release.patch}\2" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(seanox-${ant.project.name}/\d+\.)\d[\d\.]+"
-        replace="\1${release.minor.version}" flags="g" byline="false"/>
+        match="(seanox-${ant.project.name}/\d+)\.\d[\d\.]+"
+        replace="\1.${release.minor}.${release.patch}" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/manual/getting-started.md"
-        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+\.)[\d\.]+(&lt;/version&gt;)"
-        replace="\1${release.minor.version}\2" flags="g" byline="false"/>
+        match="(?si)(&lt;artifactId&gt;seanox-${ant.project.name}\b.*?&lt;version&gt;\d+)[\d\.]+(&lt;/version&gt;)"
+        replace="\1.${release.minor}.${release.patch}\2" flags="g" byline="false"/>
     <release-info-reset/>
   </target>
 
   <target name="publish" depends="release">
     <release-info-locate/>
-    <release-info-insert/>
-    <exec executable="cmd" failonerror="true">
-      <arg value="/c"/>
-      <arg value="mvn clean deploy"/>
-    </exec>
+    <spring-boot-2/>
+    <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean deploy"/>
+    <spring-boot-3/>
+    <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
+    <cmd command="mvn clean deploy"/>
     <release-info-reset/>
   </target>
 </project>
