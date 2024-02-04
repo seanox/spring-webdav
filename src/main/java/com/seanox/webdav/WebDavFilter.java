@@ -338,10 +338,10 @@ public class WebDavFilter extends HttpFilter {
 
             LOGGER.info(this.getClass().getSimpleName() + " was established");
             if (this.mapping.toString().length() > 0) {
-                LOGGER.info("Mapping");
+                LOGGER.info("WebDavMapping");
                 LOGGER.info("---");
                 Arrays.stream(this.mapping.toString().split("\\R")).forEach(LOGGER::info);
-            } else LOGGER.warn("Mapping is empty");
+            } else LOGGER.warn("WebDavMapping is empty");
 
         } catch (Exception exception) {
             throw new ServletException(exception);

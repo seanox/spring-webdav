@@ -54,7 +54,7 @@ for Spring Boot 2:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>2.0.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 
@@ -63,7 +63,7 @@ for Spring Boot 3:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>3.0.0</version>
+    <version>3.4.0</version>
 </dependency>
 ```
 
@@ -527,7 +527,7 @@ In log level `INFO` the structure of the Mapping is logged.
 2021-07-31 20:00:00 INFO 12345 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
 2021-07-31 20:00:00 INFO 12345 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1689 ms
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : WebDavFilter was established
-2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : Mapping
+2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : WebDavMapping
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : ---
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           : + financial
 2021-07-31 20:00:00 INFO 12345 --- [main] com.seanox.webdav.WebDavFilter           :   - costs.xlsx
