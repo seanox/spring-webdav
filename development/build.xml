@@ -227,10 +227,10 @@
     <release-info-locate/>
     <spring-boot-2/>
     <release-info-insert version="2.${release.minor}.${release.patch} ${release.date}"/>
-    <cmd command="mvn clean deploy"/>
+    <cmd command="mvn clean deploy -DskipTests"/>
     <spring-boot-3/>
     <release-info-insert version="3.${release.minor}.${release.patch} ${release.date}"/>
-    <cmd command="mvn clean deploy"/>
+    <cmd command="mvn clean deploy -DskipTests"/>
     <release-info-reset/>
   </target>
 </project>
