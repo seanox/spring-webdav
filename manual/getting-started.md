@@ -5,10 +5,9 @@ Seanox Spring WebDAV is a minimal implementation of WebDAV 1 + 2 for
 integration into a Spring Boot based API. The implementation is based on a
 virtual file system with virtual entities as an abstraction. The virtual file
 system is created strictly via annotations in the managed beans and, like the
-virtual entities, does not use any physical file structures.
-
-A user can use this virtual file system as a network drive and has direct
-access to a Spring Boot based API without an additional frontend.
+virtual entities, does not use any physical file structures. A user can use the
+virtual file system created in this way like a network drive and has direct
+access to a Spring Boot-based API without an additional front end.
 
 ## Features
 - Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
@@ -114,30 +113,27 @@ public class Application extends SpringBootServletInitializer {
 ```
 _Example of configuration_
 
-__StrictHttpFirewall__ is required only if Spring Security Web Firewall is
-used.  
-If `@EnableWebSecurity` and `WebSecurityConfigurerAdapter` is used, the
-pattern of path of WebDavFilter must be configured here too if necessary:
+__StrictHttpFirewall__ is required only if Spring Security Web Firewall is used.
+If `@EnableWebSecurity` and `WebSecurityConfigurerAdapter` is used, the pattern
+of path of WebDavFilter must be configured here too if necessary:
 
 ```java
 void configure(final WebSecurity webSecurity);  
 void configure(final HttpSecurity httpSecurity) throws Exception;
 ```
-__For WebDAV, URL patterns end usually with `/*` and AntPathMatcher end with `/**`.__      
-__The patterns are always used without a context path.__
+__For WebDAV, URL patterns end usually with `/*` and AntPathMatcher end with
+`/**`. The patterns are always used without a context path.__
 
 ## Definition of Mapping
 The WebDAV implementation uses a virtual file system. This file system is built
-per annotations in the Mapping. Direct access to the mapping is not possible,
-it is only created via the annotations. The annotations are applied directly in
-the managed beans, e.g. in `Component`, `Controller`, `Service`,
-`RestController`, ...
-
-The WebDAV implementation contains various annotations. The central component
-is `@WebDavMapping`. This defines the virtual entities of the Mapping and thus
-from the virtual file system. `@WebDavMapping` defines a virtual path for this
-purpose, which is later used as a reference in other WebDav annotations. The
-paths of the annotations are case-insensitive.
+per annotations in the Mapping. Direct access to the mapping is not possible, it
+is only created via the annotations. The annotations are applied directly in the
+managed beans, e.g. in `Component`, `Controller`, `Service`, `RestController`,
+... For this purpose, the WebDAV implementation provides various annotations. The
+central component  is `@WebDavMapping`. This defines the virtual entities of the
+Mapping and thus from the virtual file system. `@WebDavMapping` defines a
+case-insensitive virtual path for this purpose, which is later used as a
+reference in other WebDav annotations.
 
 ```java
 @RestController
@@ -163,20 +159,18 @@ _Example of single and multiple use of annotation for path definition_
 The Mapping supports folders and files based on the paths of virtual entities.
 Where and in which managed beans the paths are defined does not matter. During
 the initialization of the WebDavFilter all managed beans are scanned and the
-information for the mapping is collected.
-
-The Mapping is created with the initialization of the WebDavFilter. During this
-process the paths are checked for validity, possible collisions and possible
-conflicts. Similar to the Spring mapping, this causes an exception during the
-initialization of the application and aborts the application.
+information for the mapping is collected. In this process, the paths are checked
+for validity, possible collisions and possible conflicts. Similar to the Spring
+mapping, this causes an exception during the initialization of the application
+and aborts the application.
 
 ## Using WebDAV Annotations
 The WebDAV relevant annotations always have a reference to methods which are
 called by the WebDAV implementation. The methods generally have no fixed
 signature, no naming conventions and use the data types of used arguments as
-placeholders which are then filled with the available data. Unknown
-placeholders are ignored and used with `null`. Multiple used placeholders are
-filled with the same data instances.
+placeholders which are then filled with the available data. Unknown placeholders
+are ignored and used with `null`. Multiple used placeholders are filled with the
+same data instances.
 
 The annotations supports callbacks and expression, which will be described
 later. If errors occur at runtime in callbacks, expressions or during automatic
@@ -197,12 +191,10 @@ Because expressions use a special annotation, there is no need for the usual
 
 The expressions are interpreted in their own context. In this, all beans whos
 name does not contain a dot, as well as `applicationContext`, `servletContext`,
-`request` and `session` are available as variables.
-
-If errors/exceptions occur during the interpretation or the optional
-conversion, this will cause an error output in the logging, but the processing
-will not be aborted, the WebDAV implementation will use the value `null` as
-result.
+`request` and `session` are available as variables. If errors/exceptions occur
+during the interpretation or the optional conversion, this will cause an error
+output in the logging, but the processing will not be aborted, the WebDAV
+implementation will use the value `null` as result.
 
 Why the exception behavior?
 
@@ -211,12 +203,11 @@ not work either.
 
 Automatic conversion from data type: Usually the return value of expressions is
 an object.However, the WebDAV implementation also uses primitive data types
-internally and wants to support the use of text as value. Therefore, if the
-data type of the return value does not match, the valueOf-method of the
-expected data type are used for Integer, Boolean and String if necessary.
-
-Possible errors during the conversion cause an error output as already
-described, but not an abort and the value null is used.
+internally and wants to support the use of text as value. Therefore, if the data
+type of the return value does not match, the valueOf-method of the expected data
+type are used for Integer, Boolean and String if necessary. Possible errors
+during the conversion cause an error output as already described, but not an
+abort and the value null is used.
 
 ## Mapping of Virtual Entity
 The WebDAV implementation contains various annotations. The central component
@@ -352,12 +343,11 @@ The following additional attributes are supported:
 
 Permitted has the higher priority and both affect all methods except `OPTIONS`.  
 
-Attributes can be defined in different ways with different priority (ascending).  
+Attributes can be defined in different ways with different priority (ascending).
 The priority is important when the same attribute is defined multiple times for
-the same entity.
-
-The value of attributes can suppress them. This means that they are not
-included in the response header and not in the response XML from the `PROPFIND`.
+the same entity. The value of attributes can suppress them. This means that they
+are not included in the response header and not in the response XML from the
+`PROPFIND`.
 
 ### Default value (lowest priority)
 
@@ -647,13 +637,11 @@ No return value is expected.
 
 ## Validation
 Requests to virtual entities support a permission concept via the Accepted
-attribute. The attribute can react dynamically for each use case when used as
-an expression, MetaData method, or attribute method.
-
-If the value of the attribute is not `true`, the requests are responded with
-status 400 / Bad Request. This status does not affect the display in the File
-Explorer / File Manager. The virtual entity is displayed if it is permitted and
-not hidden.
+attribute. The attribute can react dynamically for each use case when used as an
+expression, MetaData method, or attribute method. If the value of the attribute
+is not `true`, the requests are responded with status 400 / Bad Request. This
+status does not affect the display in the File Explorer / File Manager. The
+virtual entity is displayed if it is permitted and not hidden.
 
 Except the HTTP method `OPTIONS`, the function has an effect on all requests.
 
@@ -702,12 +690,11 @@ _Example of the use of the different possibilities_
 
 ## Permission
 Requests to virtual entities support a permission concept via the Permitted
-attribute. The attribute can react dynamically for each use case when used as
-an expression, MetaData method, or attribute method.
-
-If the value of the attribute is not `true`, the requests are responded with
-status 404 / Bad Request. This status affects the display in the File Explorer
-/ File Manager. The virtual entity is not displayed even if it is not hidden.
+attribute. The attribute can react dynamically for each use case when used as an
+expression, MetaData method, or attribute method. If the value of the attribute
+is not `true`, the requests are responded with status 404 / Bad Request. This
+status affects the display in the File Explorer / File Manager. The virtual
+entity is not displayed even if it is not hidden.
 
 Except the HTTP method `OPTIONS`, the function has an effect on all requests.
 
