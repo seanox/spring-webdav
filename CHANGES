@@ -1,7 +1,9 @@
-1.4.1 2025xxxx
+1.5.0 2025xxxx
 BF: Review: Optimization and corrections
 BF: Documentation: Update of content
 ??: Maven: Update of dependencies
+??: MetaInputStream: Added methods for accessing request parameters/headers
+??: MetaOutputStream: Added methods for accessing response headers
 
 1.4.0 20240204
 BF: Review: Optimization and corrections
