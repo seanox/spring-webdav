@@ -20,6 +20,15 @@
  */
 package com.seanox.webdav;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.FilterRegistration;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -33,15 +42,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.FilterRegistration;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayOutputStream;
@@ -803,16 +803,16 @@ public class WebDavFilter extends HttpFilter {
         if (entry.isFolder())
             throw new NotFoundState();
 
+        final WebDavConnect webDavConnect = WebDavConnect.create(request, response);
         final Mapping.File file = (Mapping.File)entry;
         final Mapping.Callback outputCallback = file.getOutputCallback();
-
         try (final MetaOutputStream metaOutputStream = MetaOutputStream.builder()
                 .response(response)
                 .contentType(file.getContentType())
                 .contentLength(file.getContentLength())
                 .lastModified(file.getLastModified())
                 .build()) {
-            try {outputCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaOutputStream);
+            try {outputCallback.invoke(webDavConnect, URI.create(file.getPath()), file.getProperties(), metaOutputStream);
             } catch (Exception exception) {
                 while (exception instanceof InvocationTargetException)
                     exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -859,6 +859,7 @@ public class WebDavFilter extends HttpFilter {
 
         response.setHeader(HEADER_CONTENT_LOCATION, this.locateMappingPath(request));
 
+        final WebDavConnect webDavConnect = WebDavConnect.create(request, response);
         final Mapping.File file = (Mapping.File)entry;
         WebDavFilter.acceptContentType(file.getAccept(), request.getContentType());
         final Mapping.Callback inputCallback = file.getInputCallback();
@@ -868,7 +869,7 @@ public class WebDavFilter extends HttpFilter {
                 .contentLength(file.getContentLength())
                 .contentLengthMax(file.getContentLengthMax())
                 .build();
-        try {inputCallback.invoke(URI.create(file.getPath()), file.getProperties(), metaInputStream);
+        try {inputCallback.invoke(webDavConnect, URI.create(file.getPath()), file.getProperties(), metaInputStream);
         } catch (Exception exception) {
             while (exception instanceof InvocationTargetException)
                 exception = (Exception)((InvocationTargetException)exception).getTargetException();
@@ -964,9 +965,7 @@ public class WebDavFilter extends HttpFilter {
             throws ServletException, IOException {
 
         final long timing = System.currentTimeMillis();
-
-        final ServletContext servletContext = request.getServletContext();
-        final ApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
+        final WebDavConnect webDavConnect = WebDavConnect.create(request, response);
 
         // The mapping is used as a request-based shared instance.
         // The values of the annotations can contain values, expressions and
@@ -980,24 +979,23 @@ public class WebDavFilter extends HttpFilter {
             // initialization is unknown, this is done with the first request.
 
             final Properties properties = new Properties();
-            for (final String beanName : Arrays.stream(applicationContext.getBeanDefinitionNames())
+            for (final String beanName : Arrays.stream(webDavConnect.getApplicationContext().getBeanDefinitionNames())
                     .filter(Predicate.not(entry -> entry.contains(".")))
                     .collect(Collectors.toSet()))
-                properties.put(beanName, applicationContext.getBean(beanName));
+                properties.put(beanName, webDavConnect.getApplicationContext().getBean(beanName));
             if (Objects.isNull(this.properties))
                 this.properties = properties;
         }
 
         final Properties properties = this.properties.clone();
-        properties.put("applicationContext", applicationContext);
-        properties.put("servletContext", servletContext);
-        properties.put("request", request);
+        properties.putAll(webDavConnect.toMap());
+
         final HttpSession session = request.getSession(false);
         if (Objects.nonNull(session))
             properties.put("session", session);
 
         final Mapping mapping;
-        try {mapping = this.mapping.share(properties);
+        try {mapping = this.mapping.share(webDavConnect, properties);
         } catch (MappingException exception) {
             throw new ServletException(exception);
         }

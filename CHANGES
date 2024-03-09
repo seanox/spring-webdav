@@ -1,7 +1,9 @@
 1.5.0 2025xxxx
 BF: Review: Optimization and corrections
 BF: Documentation: Update of content
+CR: WebDavFilter: Optimized access to the servlet API Request/Response/...
 ??: Maven: Update of dependencies
+
 ??: MetaInputStream: Added methods for accessing request parameters/headers
 ??: MetaOutputStream: Added methods for accessing response headers
 
