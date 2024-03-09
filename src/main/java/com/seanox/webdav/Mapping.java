@@ -73,6 +73,8 @@ class Mapping implements Serializable {
     private final Properties data;
     private final Properties meta;
 
+    private  WebDavConnect connect;
+
     private static final Date CREATION_DATE = Mapping.detectApplicationBuildDate();
 
     Mapping() {
@@ -82,7 +84,7 @@ class Mapping implements Serializable {
         this.meta  = new Properties();
     }
 
-    Mapping share(final Properties properties)
+    Mapping share(final WebDavConnect webDavConnect, final Properties properties)
             throws MappingException {
 
         // The trace is the basis for sharing, which is very complex due to the
@@ -94,6 +96,7 @@ class Mapping implements Serializable {
         for (final Annotation[] annotations : this.trace)
             mapping.map(annotations);
         mapping.data.putAll(properties.clone());
+        mapping.connect = webDavConnect;
         return mapping;
     }
 
@@ -101,7 +104,7 @@ class Mapping implements Serializable {
         String classResourceName = className.replaceAll("\\.", "/");
         if (!classResourceName.endsWith(".class"))
             classResourceName += ".class";
-        final URL classResourceUrl = WebDavFilter.class.getResource(classResourceName);
+        final URL classResourceUrl = Mapping.class.getResource(classResourceName);
         if (Objects.isNull(classResourceUrl))
             return null;
         if (("jar").equals(classResourceUrl.getProtocol()))
@@ -678,7 +681,7 @@ class Mapping implements Serializable {
 
             Object result = fallback;
             if (attribute instanceof Callback) {
-                try {result = ((Callback)attribute).invoke(URI.create(Mapping.File.this.getPath()), ((Callback)attribute).type);
+                try {result = ((Callback)attribute).invoke(Mapping.this.connect, URI.create(Mapping.File.this.getPath()), ((Callback)attribute).type);
                 } catch (Exception exception) {
                     attributeErrorOutputConsumer.accept("CallbackException", target, exception);
                     result = null;
@@ -698,7 +701,7 @@ class Mapping implements Serializable {
                     meta.setHidden((Boolean)this.computeInitialValue(Annotation.Target.Hidden, this.isHidden, Defaults.isHidden));
                     meta.setAccepted((Boolean)this.computeInitialValue(Annotation.Target.Accepted, this.isAccepted, Defaults.isAccepted));
                     meta.setPermitted((Boolean)this.computeInitialValue(Annotation.Target.Permitted, this.isPermitted, Defaults.isPermitted));
-                    try {this.metaCallback.invoke(meta.getUri(), meta, this.metaCallback.type);
+                    try {this.metaCallback.invoke(Mapping.this.connect, meta.getUri(), meta, this.metaCallback.type);
                     } catch (Exception exception) {
                         errorOutputConsumer.accept("CallbackException", "MetaMapping", exception);
                         result = null;
@@ -858,7 +861,6 @@ class Mapping implements Serializable {
         }
 
         Object[] composeArguments(final Object... arguments) {
-
             final Map<Class<?>, Object> placeholder = new HashMap<>();
             Arrays.stream(arguments).forEach(argument -> {
                 if (Objects.nonNull(argument))
@@ -874,8 +876,23 @@ class Mapping implements Serializable {
         Object invoke(final Object... arguments)
                 throws InvocationTargetException, IllegalAccessException {
             this.method.setAccessible(true);
-            final Collection<Object> argumentList = new ArrayList<>(Arrays.asList(arguments));
-            argumentList.add(Mapping.this.data.clone());
+            final Collection<Object> argumentList = new ArrayList<>();
+            Arrays.stream(arguments)
+                    .filter(argument -> !(argument instanceof WebDavConnect))
+                    .forEach(argumentList::add);
+            final WebDavConnect connect = (WebDavConnect)Arrays.stream(arguments)
+                    .filter(argument -> argument instanceof WebDavConnect)
+                    .findFirst()
+                    .orElse(null);
+            if (Objects.nonNull(connect)) {
+                argumentList.add(connect.getApplicationContext());
+                argumentList.add(connect.getServletContext());
+                argumentList.add(connect.getServletConnection());
+                argumentList.add(connect.getServletRequest());
+                argumentList.add(connect.getServletResponse());
+                argumentList.add(connect.getHttpServletRequest());
+                argumentList.add(connect.getHttpServletResponse());
+            }
             return this.method.invoke(this.object, this.composeArguments(argumentList.toArray(new Object[0])));
         }
     }
