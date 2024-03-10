@@ -191,10 +191,11 @@ Because expressions use a special annotation, there is no need for the usual
 
 The expressions are interpreted in their own context. In this, all beans whos
 name does not contain a dot, as well as `applicationContext`, `servletContext`,
-`request` and `session` are available as variables. If errors/exceptions occur
-during the interpretation or the optional conversion, this will cause an error
-output in the logging, but the processing will not be aborted, the WebDAV
-implementation will use the value `null` as result.
+`servletConnection`, `servletRequest`, `servletResponse`, `httpServletRequest`,
+`httpServletRequest` and `httpSession` are available as variables. If
+errors/exceptions occur during the interpretation or the optional conversion,
+this will cause an error output in the logging, but the processing will not be
+aborted, the WebDAV implementation will use the value `null` as result.
 
 Why the exception behavior?
 
