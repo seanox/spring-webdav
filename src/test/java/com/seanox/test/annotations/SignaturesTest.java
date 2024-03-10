@@ -49,21 +49,21 @@ class SignaturesTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("A2-ABCD---"));
+                .andExpect(MockMvcResultMatchers.content().string("A2-A-BC---"));
     }
     @Test
     void test_A3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("A3----ABCD"));
+                .andExpect(MockMvcResultMatchers.content().string("A3----AB-C"));
     }
     @Test
     void test_A4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_A4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("A4-AaBbCc-c-Dab"));
+                .andExpect(MockMvcResultMatchers.content().string("A4-Aa--Bb-b-Ca-"));
     }
 
     // {@link WebDavMapping}
@@ -92,7 +92,7 @@ class SignaturesTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_B2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("B2-ABCD---"));
+                .andExpect(MockMvcResultMatchers.content().string("B2-A-BC---"));
     }
     @Test
     void test_B3() throws Exception {
@@ -102,7 +102,7 @@ class SignaturesTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_B3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("B3----ABCD"));
+                .andExpect(MockMvcResultMatchers.content().string("B3----AB-C"));
     }
     @Test
     void test_B4() throws Exception {
@@ -112,7 +112,7 @@ class SignaturesTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_B4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("B4-AaBbCc-cD-ab"));
+                .andExpect(MockMvcResultMatchers.content().string("B4-Aa--Bb-bC-a-"));
     }
 
     // {@link WebDavMetaMapping}
@@ -135,21 +135,21 @@ class SignaturesTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("C2-ABC---"));
+                .andExpect(MockMvcResultMatchers.content().string("C2-A-B---"));
     }
     @Test
     void test_C3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("C3----ABC"));
+                .andExpect(MockMvcResultMatchers.content().string("C3----A-B"));
     }
     @Test
     void test_C4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_C4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("C4-AaBbCcc---ab"));
+                .andExpect(MockMvcResultMatchers.content().string("C4-Aa--Bbb---a-"));
     }
 
     // {@link WebDavAttributeMapping}
@@ -172,20 +172,20 @@ class SignaturesTest extends AbstractApiTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D2))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("D2-ABC---"));
+                .andExpect(MockMvcResultMatchers.content().string("D2-A-B---"));
     }
     @Test
     void test_D3() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("D3----ABC"));
+                .andExpect(MockMvcResultMatchers.content().string("D3----A-B"));
     }
     @Test
     void test_D4() throws Exception {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("D4-AaBbCc----ab"));
+                .andExpect(MockMvcResultMatchers.content().string("D4-Aa--Bb----a-"));
     }
 }
