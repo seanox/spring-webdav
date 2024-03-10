@@ -1,11 +1,13 @@
-1.5.0 2025xxxx
+1.5.0 2024xxxx
 BF: Review: Optimization and corrections
 BF: Documentation: Update of content
-CR: WebDavFilter: Optimized access to the servlet API Request/Response/...
+CR: WebDavFilter: Optimized access to the servlet API
+    - Signatures of the WebDAV methods now support new objects:
+      ApplicationContext, ServletContext, ServletConnection, ServletRequest,
+      ServletResponse, HttpServletRequest, HttpServletResponse, HttpSession
+    - Signatures of the WebDAV methods no longer support the objects:
+      Properties
 ??: Maven: Update of dependencies
-
-??: MetaInputStream: Added methods for accessing request parameters/headers
-??: MetaOutputStream: Added methods for accessing response headers
 
 1.4.0 20240204
 BF: Review: Optimization and corrections

@@ -6,6 +6,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ class WebDavConnect {
 
     private final HttpServletRequest httpServletRequest;
     private final HttpServletResponse httpServletResponse;
+    private final HttpSession httpSession;
 
     static WebDavConnect create(final HttpServletRequest request, final HttpServletResponse response) {
         return new WebDavConnect(
@@ -37,7 +39,8 @@ class WebDavConnect {
                 request,
                 response,
                 request,
-                response
+                response,
+                request.getSession(false)
         );
     }
 
@@ -50,6 +53,7 @@ class WebDavConnect {
             this.put("servletResponse", WebDavConnect.this.servletResponse);
             this.put("httpServletRequest", WebDavConnect.this.httpServletRequest);
             this.put("httpServletResponse", WebDavConnect.this.httpServletResponse);
+            this.put("httpSession", WebDavConnect.this.httpSession);
         }};
     }
 }
