@@ -209,7 +209,7 @@ class MetaTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B3))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B3 + " true true true"));
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B3 + " false true true"));
     }
 
     @Test
@@ -218,7 +218,7 @@ class MetaTest extends AbstractApiTest {
                 MockMvcRequestBuilders
                         .get(MetaTestController.MAPPING_B4))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B4 + " true true true true true true true true true true"));
+                .andExpect(MockMvcResultMatchers.content().string(MetaTestController.MAPPING_B4 + " true true true false false true true true true true"));
     }
 
     @Test
