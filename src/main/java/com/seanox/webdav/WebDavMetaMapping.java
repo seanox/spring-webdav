@@ -71,7 +71,7 @@ import java.net.URI;
  *   }
  *
  *   &#64;WebDavMetaMapping(path="/example/file.txt")
- *   void setMetaData(final URI uri, final Properties properties, final MetaData meta) {
+ *   void setMetaData(final URI uri, final MetaData meta) {
  *       meta.set...
  *       ...
  *   }

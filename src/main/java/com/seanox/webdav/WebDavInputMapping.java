@@ -82,7 +82,7 @@ import java.net.URI;
  *   &#64;WebDavInputMapping(path="/example/fileA.txt", accept="text/*", contentLengthMax=1073741824)
  *   &#64;WebDavInputMapping(path="/example/fileB.txt", accept="text/*", contentLengthMax=1073741824)
  *   &#64;WebDavInputMapping(path="/example/fileC.txt", accept="text/*", contentLengthMax=1073741824)
- *   void putEntity(final URI uri, final Properties properties, final MetaProperties metaProperties, final MetaInputStream input) throws IOException {
+ *   void putEntity(final URI uri, final MetaProperties metaProperties, final MetaInputStream input) throws IOException {
  *       ...
  *   }
  *

@@ -81,7 +81,7 @@ import java.net.URI;
  *   &#64;WebDavMapping(path="/example/fileA.txt", contentLength=1073741824, lastModified="2000-01-01 00:00:00")
  *   &#64;WebDavMapping(path="/example/fileB.txt", contentLength=1073741824, lastModified="2000-01-01 00:00:00")
  *   &#64;WebDavMapping(path="/example/fileC.txt", contentLength=1073741824, lastModified="2000-01-01 00:00:00")
- *   void getEntity(final URI uri, final Properties properties, final MetaProperties metaProperties, final MetaOutputStream output) throws IOException {
+ *   void getEntity(final URI uri, final MetaProperties metaProperties, final MetaOutputStream output) throws IOException {
  *       ...
  *   }
  *

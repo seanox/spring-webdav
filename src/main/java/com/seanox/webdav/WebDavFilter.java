@@ -481,7 +481,7 @@ public class WebDavFilter extends HttpFilter {
     }
 
     private static void collectProperties(final XmlWriter xmlWriter, final String contextUrl, final Mapping.Entry entry,
-                  final int type, final Properties properties)
+                    final int type, final Properties properties)
             throws IOException {
 
         xmlWriter.writeElement(WebDavFilter.WEBDAV_DEFAULT_XML_NAMESPACE, XML_RESPONSE, XmlWriter.ElementType.OPENING);

@@ -105,7 +105,7 @@ import java.util.Date;
  *     &#64;WebDavAttributeMapping(path="/example/fileA.txt", attribute=WebDavMappingAttribute.ContentLength)
  *     &#64;WebDavAttributeMapping(path="/example/fileB.txt", attribute=WebDavMappingAttribute.ContentLength)
  *     &#64;WebDavAttributeMapping(path="/example/fileC.txt", attribute=WebDavMappingAttribute.ContentLength)
- *     Integer getContentLength(final URI uri, final Properties properties, final WebDavMappingAttribute attribute) {
+ *     Integer getContentLength(final URI uri, final WebDavMappingAttribute attribute) {
  *         return ...;
  *     }
  *
