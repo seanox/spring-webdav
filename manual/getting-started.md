@@ -1,13 +1,13 @@
 # Getting Started
 
 ## What is Seanox Spring-WebDAV?
-Seanox Spring WebDAV is a minimal implementation of WebDAV 1 + 2 for
-integration into a Spring Boot based API. The implementation is based on a
-virtual file system with virtual entities as an abstraction. The virtual file
-system is created strictly via annotations in the managed beans and, like the
-virtual entities, does not use any physical file structures. A user can use the
-virtual file system created in this way like a network drive and has direct
-access to a Spring Boot-based API without an additional front end.
+Seanox Spring WebDAV is a minimal implementation of WebDAV 1 + 2 for integration
+into a Spring Boot based API. The implementation is based on a virtual file
+system with virtual entities as an abstraction. The virtual file system is
+created strictly via annotations in the managed beans and, like the virtual
+entities, does not use any physical file structures. A user can use the virtual
+file system created in this way like a network drive and has direct access to a
+Spring Boot-based API without an additional front end.
 
 ## Features
 - Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
@@ -68,12 +68,11 @@ for Spring Boot 3:
 </dependency>
 ```
 
-__The major number of the artifacts refers to the version of Spring Boot
-version for the major number (1.x.x.x) and from the minor number (x.2.3.4)
-onwards to the release of spring-webdav. The development version always uses
-the major version 1.x.x.x and is based on Spring Boot 3. From this version, the
-artifacts for the different Spring Boot versions are then created during the
-build process.__
+__The major number of the artifacts refers to the version of Spring Boot version
+for the major number (1.x.x.x) and from the minor number (x.2.3.4) onwards to
+the release of spring-webdav. The development version always uses the major
+version 1.x.x.x and is based on Spring Boot 3. From this version, the artifacts
+for the different Spring Boot versions are then created during the build process.__
 
 ## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
@@ -211,9 +210,9 @@ during the conversion cause an error output as already described, but not an
 abort and the value null is used.
 
 ## Mapping of Virtual Entity
-The WebDAV implementation contains various annotations. The central component
-is `@WebDavMapping`. This defines the virtual entities of the Mapping and thus
-from the virtual file system. `@WebDavMapping` defines a virtual path for this
+The WebDAV implementation contains various annotations. The central component is
+`@WebDavMapping`. This defines the virtual entities of the Mapping and thus from
+the virtual file system. `@WebDavMapping` defines a virtual path for this
 purpose, which is later used as a reference in other WebDav annotations. The
 paths of the annotations are case-insensitive.
 
@@ -266,26 +265,35 @@ __@WebDavMapping__ supports the following attributes:
 - __attributeExpressions__ Optionally to the static values, an array of dynamic
   expressions
 
-The annotation can be used multiple times for different virtual entities
-in one method. The method has no fixed signature and the data types of the
-arguments are considered as placeholders and filled accordingly. If arguments
-with the same data type are used multiple times, they are filled with the same
-object multiple times. Unknown data types are filled with `null`.
+The annotation can be used multiple times for different virtual entities in one
+method. The method has no fixed signature and the data types of the arguments
+are considered as placeholders and filled accordingly. If arguments with the
+same data type are used multiple times, they are filled with the same object
+multiple times. Unknown data types are filled with `null`.
 
 __@WebDavMapping__ supports the following data types as arguments:
 - __URI__ Path of the virtual entity.
-- __Properties__ Collector with relevant runtime, request and meta information
-  as a nested case-insensitive map.
 - __MetaProperties__ MetaProperties, read-only collector with all attributes of
   the virtual entity.
 - __MetaOutputStream__ OutputStream with meta information for the response header.
+
+Partially, the Servlet API is also supported as arguments:
+
+- __ApplicationContext__
+- __ServletContext__
+- __ServletConnection__
+- __ServletRequest__
+- __ServletResponse__
+- __HttpServletRequest__
+- __HttpServletRequest__
+- __HttpSession__
 
 No return value is expected.
 
 ## Attributes of Virtual Entity
 For WebDAV, file attributes are an important thing. Especially the last change
-is important, because WebDAV is designed for versioning among other things,
-even if it has no direct use in this WebDAV implementation.    
+is important, because WebDAV is designed for versioning among other things, even
+if it has no direct use in this WebDAV implementation.    
 
 Following file attributes are supported:
 
@@ -296,15 +304,15 @@ Following file attributes are supported:
 
 - __ContentLength__ is the size of the entity, in decimal number of bytes.  
   WebDAV does not need this value, but it is helpful in the representation of
-  the virtual entity in File Explorer / File Manager. The value should be
-  cached based on the LastModified value in the application.
+  the virtual entity in File Explorer / File Manager. The value should be cached
+  based on the LastModified value in the application.
   
     
 - __CreationDate__ the last modification date of the entity, used to compare
   several versions of the same entity.  
   WebDAV does not need this value, but it is helpful in the representation of
-  the virtual entity in File Explorer / File Manager. The default value uses
-  the creation date of the application / jar and normally does not need to be
+  the virtual entity in File Explorer / File Manager. The default value uses the
+  creation date of the application / jar and normally does not need to be 
   defined.
 
 
@@ -325,9 +333,9 @@ Following file attributes are supported:
   The value `true` has only a visual effect in File Explorer / File Manager
   where the virtual entity is then not displayed. Folder structures that are
   only created indirectly via the paths of the virtual entities are only
-  displayed in File Explorer / File Manager if they contain at least one
-  visible entity. The root folder is an exception, this is always displayed and
-  would then be empty.
+  displayed in File Explorer / File Manager if they contain at least one visible
+  entity. The root folder is an exception, this is always displayed and would
+  then be empty.
 
 The following additional attributes are supported:
 
@@ -366,8 +374,8 @@ Without further definition, the following default values are used:
 | `Permitted`     | `true`                              |                                  |
 
 ### Static value from annotation
-In the easiest case the attributes can be defined as static values directly
-with `@WebDavMapping`.
+In the easiest case the attributes can be defined as static values directly with
+`@WebDavMapping`.
 
 ```java
 @RestController
@@ -408,10 +416,10 @@ public class ExampleController {
 _Example of single and multiple use of annotation_
 
 ### Dynamic value from the MetaData
-Implementing a method to get the meta-data can provide all the information
-about a virtual entity in one place. By using the supported parameters: `URI`,
-`Properties`, `WebDavMappingAttribute` it can also be used for different
-virtual entities.
+Implementing a method to get the meta-data can provide all the information about
+a virtual entity in one place. By using the supported parameters: `URI`,
+`WebDavMappingAttribute` as well `ApplicationContext`, `ServletContext`,
+`ServletConnection`  it can also be used for different virtual entities.
 
 ```java
 @RestController
@@ -446,11 +454,20 @@ __@WebDavMetaMapping__ supports the following attributes:
 
 __@WebDavMetaMapping__ supports the following data types as arguments:
 - __URI__ Path of the virtual entity.
-- __Properties__ Collector with relevant runtime, request and meta information
-  as a nested case-insensitive map.
 - __WebDavMappingAttribute__ The attribute requested with the method.
 - __MetaData__ Writable collector containing all relevant attributes for a
   virtual entity.
+
+Partially, the Servlet API is also supported as arguments:
+
+- __ApplicationContext__
+- __ServletContext__
+- __ServletConnection__
+- __ServletRequest__
+- __ServletResponse__
+- __HttpServletRequest__
+- __HttpServletRequest__
+- __HttpSession__
 
 No return value is expected.
 
@@ -493,9 +510,18 @@ __@WebDavAttributeMapping__ supports the following attributes:
 
 __@WebDavAttributeMapping__ supports the following data types as arguments:
 - __URI__ Path of the virtual entity.
-- __Properties__ Collector with relevant runtime, request and meta information
-  as a nested case-insensitive map.
 - __WebDavMappingAttribute__ The attribute requested with the method.
+
+Partially, the Servlet API is also supported as arguments:
+
+- __ApplicationContext__
+- __ServletContext__
+- __ServletConnection__
+- __ServletRequest__
+- __ServletResponse__
+- __HttpServletRequest__
+- __HttpServletRequest__
+- __HttpSession__
 
 The expected data type of the return value depends on the attribute:  
 `Boolean`, `Integer`, `String`, `Date`
@@ -613,26 +639,35 @@ _Example of single and multiple use of annotation_
 
 __@WebDavInputMapping__ supports the following attributes:
 - __path__ Path as a reference of the virtual entity.
-- __accept__ Based on the Accept HTTP header, a comma-separated list of
-  expected MimeType / ContentType. The wildcard character is supported (`*/*`,
+- __accept__ Based on the Accept HTTP header, a comma-separated list of expected
+  MimeType / ContentType. The wildcard character is supported (`*/*`, 
   `mime-type/*`, `mime-type/mime-subtype`, `*/mime-subtype`). If the attribute
   is used, requests that do not match the filter will be rejected with status
-  406 / Not-Acceptable. Without specification or if empty, all content types
-  are accepted.
+  406 / Not-Acceptable. Without specification or if empty, all content types are
+  accepted.
 - __contentLengthMax__ Limits the size of the request body in bytes. For this
-  purpose the number of bytes read is evaluated. If the limit is exceeded,
-  the requests are rejected with status 413 / Payload-Too-Large. Without
+  purpose the number of bytes read is evaluated. If the limit is exceeded, the
+  requests are rejected with status 413 / Payload-Too-Large. Without
   specification or a value less than 0, the limit is ignored.
 - __attributeExpressions__ Optionally to the static values, an array of dynamic
   expressions 
 
 __@WebDavInputMapping__ supports the following data types as arguments:
 - __URI__ Path of the virtual entity.
-- __Properties__ Collector with relevant runtime, request and meta information
-  as a nested case-insensitive map.
-- __MetaProperties__ MetaProperties, read-only collector with all attributes
-  of the virtual entity.
+- __MetaProperties__ MetaProperties, read-only collector with all attributes of
+  the virtual entity.
 - __MetaInputStream__ InputStream with read-only meta information.
+
+Partially, the Servlet API is also supported as arguments:
+
+- __ApplicationContext__
+- __ServletContext__
+- __ServletConnection__
+- __ServletRequest__ 
+- __ServletResponse__
+- __HttpServletRequest__
+- __HttpServletRequest__
+- __HttpSession__
 
 No return value is expected.
 
@@ -670,17 +705,17 @@ public class ExampleController {
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    boolean exampleFileAccepted(final URI uri, final Properties properties) throws IOException {
+    boolean exampleFileAccepted(final URI uri) throws IOException {
         return true;
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    Boolean exampleFileAccepted(final URI uri, final Properties properties) throws IOException {
+    Boolean exampleFileAccepted(final URI uri) throws IOException {
         return Booelan.TRUE;
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    String exampleFileAccepted(final URI uri, final Properties properties) throws IOException {
+    String exampleFileAccepted(final URI uri) throws IOException {
         return "true";
     }
     
@@ -723,17 +758,17 @@ public class ExampleController {
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
-    boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
+    boolean isFilePermitted(final URI uri) throws IOException {
         return true;
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Permitted)
-    Boolean isFilePermitted(final URI uri, final Properties properties) throws IOException {
+    Boolean isFilePermitted(final URI uri) throws IOException {
         return Booelan.TRUE;
     }
 
     @WebDavAttributeMapping(path=MAPPING_FILE_TXT, attribute=WebDavMappingAttribute.Accepted)
-    String isFilePermitted(final URI uri, final Properties properties) throws IOException {
+    String isFilePermitted(final URI uri) throws IOException {
         return "true";
     }
     
