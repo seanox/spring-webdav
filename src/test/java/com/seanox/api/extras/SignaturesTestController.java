@@ -31,6 +31,14 @@ import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.MetaProperties;
 import com.seanox.webdav.Properties;
 import com.seanox.test.AbstractTest;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -186,6 +194,7 @@ public class SignaturesTestController {
     public static final String MAPPING_D2 = "/extras/signatures/d2.txt";
     public static final String MAPPING_D3 = "/extras/signatures/d3.txt";
     public static final String MAPPING_D4 = "/extras/signatures/d4.txt";
+    public static final String MAPPING_D5 = "/extras/signatures/d5.txt";
 
     private String resultD;
 
@@ -193,6 +202,7 @@ public class SignaturesTestController {
     @WebDavMapping(path=MAPPING_D2)
     @WebDavMapping(path=MAPPING_D3)
     @WebDavMapping(path=MAPPING_D4)
+    @WebDavMapping(path=MAPPING_D5)
     void test_DX(final MetaOutputStream outputStream) throws IOException {
         outputStream.write(this.resultD.getBytes());
     }
@@ -215,6 +225,19 @@ public class SignaturesTestController {
     Object test_D4(final URI uri1, final URI uri2, final Properties properties1, final Properties properties2, final WebDavMappingAttribute attribute1, final WebDavMappingAttribute attribute2,
                    final MetaData o1, final MetaProperties o2, final MetaInputStream o3, final MetaOutputStream o4, final URI uri3, final Properties properties3) {
         this.resultD = "D4-" + AbstractTest.createObjectFingerprint(uri1, uri2, properties1, properties2, attribute1, attribute2, o1, o2, o3, o4, uri3, properties3);
+        return this.resultD;
+    }
+
+    @WebDavAttributeMapping(path=MAPPING_D5, attribute=WebDavMappingAttribute.ContentType)
+    Object test_D4(final URI uri,
+                   final ApplicationContext applicationContext,
+                   final ServletContext servletContext, final ServletConnection servletConnection, final ServletRequest servletRequest, final ServletResponse servletResponse,
+                   final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse, final HttpSession httpSession) {
+        this.resultD = "D5-" + AbstractTest.createObjectFingerprint(uri,
+                applicationContext,
+                servletContext,
+                servletConnection, servletRequest, servletResponse,
+                httpServletRequest, httpServletResponse, httpSession);
         return this.resultD;
     }
 }

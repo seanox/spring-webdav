@@ -20,10 +20,18 @@
  */
 package com.seanox.webdav;
 
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.io.IOException;
@@ -863,8 +871,30 @@ class Mapping implements Serializable {
         Object[] composeArguments(final Object... arguments) {
             final Map<Class<?>, Object> placeholder = new HashMap<>();
             Arrays.stream(arguments).forEach(argument -> {
-                if (Objects.nonNull(argument))
-                    placeholder.put(argument.getClass(), argument);
+                if (Objects.isNull(argument))
+                    return;
+
+                Class type = argument.getClass();
+                if (argument instanceof HttpServletRequest)
+                    type = HttpServletRequest.class;
+                else if (argument instanceof HttpServletResponse)
+                    type = HttpServletResponse.class;
+                else if (argument instanceof HttpSession)
+                    type = HttpSession.class;
+                if (!argument.getClass().equals(type))
+                    placeholder.put(type, argument);
+
+                if (argument instanceof ApplicationContext)
+                    type = ApplicationContext.class;
+                else if (argument instanceof ServletContext)
+                    type = ServletContext.class;
+                else if (argument instanceof ServletConnection)
+                    type = ServletConnection.class;
+                else if (argument instanceof ServletRequest)
+                    type = ServletRequest.class;
+                else if (argument instanceof ServletResponse)
+                    type = ServletResponse.class;
+                placeholder.put(type, argument);
             });
             final List<Object> compose = new ArrayList<>();
             Arrays.stream(this.method.getParameterTypes()).forEach(parameterType ->

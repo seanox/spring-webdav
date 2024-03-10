@@ -188,4 +188,12 @@ class SignaturesTest extends AbstractApiTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("D4-Aa--Bb----a-"));
     }
+
+    @Test
+    void test_D5() throws Exception {
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.get(SignaturesTestController.MAPPING_D5))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("D5-ABCDEFef-"));
+    }
 }
