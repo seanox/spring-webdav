@@ -989,11 +989,6 @@ public class WebDavFilter extends HttpFilter {
 
         final Properties properties = this.properties.clone();
         properties.putAll(webDavConnect.toMap());
-
-        final HttpSession session = request.getSession(false);
-        if (Objects.nonNull(session))
-            properties.put("session", session);
-
         final Mapping mapping;
         try {mapping = this.mapping.share(webDavConnect, properties);
         } catch (MappingException exception) {
