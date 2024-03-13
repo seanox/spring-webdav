@@ -1,6 +1,5 @@
 package com.seanox.webdav;
 
-import jakarta.servlet.ServletConnection;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -23,7 +22,6 @@ class WebDavConnect {
     private final ApplicationContext applicationContext;
 
     private final ServletContext servletContext;
-    private final ServletConnection servletConnection;
     private final ServletRequest servletRequest;
     private final ServletResponse servletResponse;
 
@@ -35,7 +33,6 @@ class WebDavConnect {
         return new WebDavConnect(
                 WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext()),
                 request.getServletContext(),
-                request.getServletConnection(),
                 request,
                 response,
                 request,
@@ -48,7 +45,6 @@ class WebDavConnect {
         return new HashMap<>() {{
             this.put("applicationContext", WebDavConnect.this.applicationContext);
             this.put("servletContext", WebDavConnect.this.servletContext);
-            this.put("servletConnection", WebDavConnect.this.servletConnection);
             this.put("servletRequest", WebDavConnect.this.servletRequest);
             this.put("servletResponse", WebDavConnect.this.servletResponse);
             this.put("httpServletRequest", WebDavConnect.this.httpServletRequest);

@@ -3,8 +3,8 @@ BF: Review: Optimization and corrections
 BF: Documentation: Update of content
 CR: WebDavFilter: Optimized access to the servlet API
     - Signatures of the WebDAV methods now support new objects:
-      ApplicationContext, ServletContext, ServletConnection, ServletRequest,
-      ServletResponse, HttpServletRequest, HttpServletResponse, HttpSession
+      ApplicationContext, ServletContext, ServletRequest, ServletResponse,
+      HttpServletRequest, HttpServletResponse, HttpSession
     - Signatures of the WebDAV methods no longer support the objects:
       Properties
 

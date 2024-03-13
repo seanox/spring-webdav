@@ -10,9 +10,12 @@ file system created in this way like a network drive and has direct access to a
 Spring Boot-based API without an additional front end.
 
 ## Features
-- Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`, `UNLOCK`
-- Declarative approach with annotations, also supports Spring Expression Language
-- Supports __WebDAV Class 1 + 2__ and thus also MS Office (Excel, Word, PowerPoint, ...)  
+- Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`,
+  `UNLOCK`
+- Declarative approach with annotations, also supports Spring Expression
+  Language
+- Supports __WebDAV Class 1 + 2__ and thus also MS Office (Excel, Word,
+  PowerPoint, ...)  
   but it does not create or transform Office documents automatically
 - Supports use as a network drive
 - Supports extended file attributes for Windows
@@ -72,7 +75,8 @@ __The major number of the artifacts refers to the version of Spring Boot version
 for the major number (1.x.x.x) and from the minor number (x.2.3.4) onwards to
 the release of spring-webdav. The development version always uses the major
 version 1.x.x.x and is based on Spring Boot 3. From this version, the artifacts
-for the different Spring Boot versions are then created during the build process.__
+for the different Spring Boot versions are then created during the build
+process.__
 
 ## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
@@ -128,9 +132,9 @@ The WebDAV implementation uses a virtual file system. This file system is built
 per annotations in the Mapping. Direct access to the mapping is not possible, it
 is only created via the annotations. The annotations are applied directly in the
 managed beans, e.g. in `Component`, `Controller`, `Service`, `RestController`,
-... For this purpose, the WebDAV implementation provides various annotations. The
-central component  is `@WebDavMapping`. This defines the virtual entities of the
-Mapping and thus from the virtual file system. `@WebDavMapping` defines a
+... For this purpose, the WebDAV implementation provides various annotations.
+The central component  is `@WebDavMapping`. This defines the virtual entities of
+the Mapping and thus from the virtual file system. `@WebDavMapping` defines a
 case-insensitive virtual path for this purpose, which is later used as a
 reference in other WebDav annotations.
 
@@ -190,11 +194,11 @@ Because expressions use a special annotation, there is no need for the usual
 
 The expressions are interpreted in their own context. In this, all beans whos
 name does not contain a dot, as well as `applicationContext`, `servletContext`,
-`servletConnection`, `servletRequest`, `servletResponse`, `httpServletRequest`,
-`httpServletRequest` and `httpSession` are available as variables. If
-errors/exceptions occur during the interpretation or the optional conversion,
-this will cause an error output in the logging, but the processing will not be
-aborted, the WebDAV implementation will use the value `null` as result.
+`servletRequest`, `servletResponse`, `httpServletRequest`, `httpServletRequest`
+and `httpSession` are available as variables. If errors/exceptions occur during
+the interpretation or the optional conversion, this will cause an error output
+in the logging, but the processing will not be aborted, the WebDAV
+implementation will use the value `null` as result.
 
 Why the exception behavior?
 
@@ -275,13 +279,13 @@ __@WebDavMapping__ supports the following data types as arguments:
 - __URI__ Path of the virtual entity.
 - __MetaProperties__ MetaProperties, read-only collector with all attributes of
   the virtual entity.
-- __MetaOutputStream__ OutputStream with meta information for the response header.
+- __MetaOutputStream__ OutputStream with meta information for the response
+  header.
 
 Partially, the Servlet API is also supported as arguments:
 
 - __ApplicationContext__
 - __ServletContext__
-- __ServletConnection__
 - __ServletRequest__
 - __ServletResponse__
 - __HttpServletRequest__
@@ -418,8 +422,8 @@ _Example of single and multiple use of annotation_
 ### Dynamic value from the MetaData
 Implementing a method to get the meta-data can provide all the information about
 a virtual entity in one place. By using the supported parameters: `URI`,
-`WebDavMappingAttribute` as well `ApplicationContext`, `ServletContext`,
-`ServletConnection`  it can also be used for different virtual entities.
+`WebDavMappingAttribute` as well `ApplicationContext`, `ServletContext`, it can
+also be used for different virtual entities.
 
 ```java
 @RestController
@@ -462,7 +466,6 @@ Partially, the Servlet API is also supported as arguments:
 
 - __ApplicationContext__
 - __ServletContext__
-- __ServletConnection__
 - __ServletRequest__
 - __ServletResponse__
 - __HttpServletRequest__
@@ -516,7 +519,6 @@ Partially, the Servlet API is also supported as arguments:
 
 - __ApplicationContext__
 - __ServletContext__
-- __ServletConnection__
 - __ServletRequest__
 - __ServletResponse__
 - __HttpServletRequest__
@@ -662,7 +664,6 @@ Partially, the Servlet API is also supported as arguments:
 
 - __ApplicationContext__
 - __ServletContext__
-- __ServletConnection__
 - __ServletRequest__ 
 - __ServletResponse__
 - __HttpServletRequest__

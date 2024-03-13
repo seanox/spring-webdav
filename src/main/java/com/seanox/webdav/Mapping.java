@@ -20,7 +20,6 @@
  */
 package com.seanox.webdav;
 
-import jakarta.servlet.ServletConnection;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -888,8 +887,6 @@ class Mapping implements Serializable {
                     type = ApplicationContext.class;
                 else if (argument instanceof ServletContext)
                     type = ServletContext.class;
-                else if (argument instanceof ServletConnection)
-                    type = ServletConnection.class;
                 else if (argument instanceof ServletRequest)
                     type = ServletRequest.class;
                 else if (argument instanceof ServletResponse)
@@ -917,7 +914,6 @@ class Mapping implements Serializable {
             if (Objects.nonNull(connect)) {
                 argumentList.add(connect.getApplicationContext());
                 argumentList.add(connect.getServletContext());
-                argumentList.add(connect.getServletConnection());
                 argumentList.add(connect.getServletRequest());
                 argumentList.add(connect.getServletResponse());
                 argumentList.add(connect.getHttpServletRequest());

@@ -31,7 +31,6 @@ import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.MetaProperties;
 import com.seanox.webdav.Properties;
 import com.seanox.test.AbstractTest;
-import jakarta.servlet.ServletConnection;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -231,12 +230,11 @@ public class SignaturesTestController {
     @WebDavAttributeMapping(path=MAPPING_D5, attribute=WebDavMappingAttribute.ContentType)
     Object test_D4(final URI uri,
                    final ApplicationContext applicationContext,
-                   final ServletContext servletContext, final ServletConnection servletConnection, final ServletRequest servletRequest, final ServletResponse servletResponse,
+                   final ServletContext servletContext, final ServletRequest servletRequest, final ServletResponse servletResponse,
                    final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse, final HttpSession httpSession) {
         this.resultD = "D5-" + AbstractTest.createObjectFingerprint(uri,
                 applicationContext,
-                servletContext,
-                servletConnection, servletRequest, servletResponse,
+                servletContext, servletRequest, servletResponse,
                 httpServletRequest, httpServletResponse, httpSession);
         return this.resultD;
     }
