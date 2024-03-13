@@ -68,24 +68,24 @@ specific language governing permissions and limitations under the License.
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 
 for Spring Boot 2:  
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.4.0
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.5.0
 
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.0</version>
 </dependency>
 ```
 
 for Spring Boot 3:  
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.4.0
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.5.0
 
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>3.4.0</version>
+    <version>3.5.0</version>
 </dependency>
 ```
 
@@ -93,11 +93,10 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.4.0
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 # Changes 
-## 1.4.0 20240204  
+## 1.5.0 20240313  
 BF: Review: Optimization and corrections  
-CR: Build: Optimization for Spring version 2 and 3  
-CR: Build: New approach for the version number  
-CR: Sitemap: Refactoring / renamed to Mapping  
+BF: Documentation: Update of content  
+CR: WebDavFilter: Optimized access to the servlet API  
 
 [Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
 
