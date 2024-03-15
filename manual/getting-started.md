@@ -3,11 +3,11 @@
 ## What is Seanox Spring-WebDAV?
 Seanox Spring WebDAV is a minimal implementation of WebDAV 1 + 2 for integration
 into a Spring Boot based API. The implementation is based on a virtual file
-system with virtual entities as an abstraction. The virtual file system is
-created strictly via annotations in the managed beans and, like the virtual
-entities, does not use any physical file structures. A user can use the virtual
-file system created in this way like a network drive and has direct access to a
-Spring Boot-based API without an additional front end.
+system with virtual entities as abstraction. The virtual file system with its
+entities is created and used exclusively via annotations in the managed beans.
+There are no physical file structures. The virtual file system created in this
+way is then used like a network drive and you have direct access to a Spring
+Boot-based API without an additional front end.
 
 ## Features
 - Supported HTTP methods: `OPTIONS`, `PROPFIND`, `HEAD`, `GET`, `LOCK`, `PUT`,
@@ -21,7 +21,6 @@ Spring Boot-based API without an additional front end.
 - Supports extended file attributes for Windows
 
 ## Contents Overview
-
 * [Integration](#integration)
 * [Registration of WebDavFilter](#registration-of-webdavfilter)
 * [Definition of Mapping](#definition-of-mapping)
@@ -71,19 +70,18 @@ for Spring Boot 3:
 </dependency>
 ```
 
-__The major number of the artifacts refers to the version of Spring Boot version
-for the major number (1.x.x.x) and from the minor number (x.2.3.4) onwards to
-the release of spring-webdav. The development version always uses the major
-version 1.x.x.x and is based on Spring Boot 3. From this version, the artifacts
-for the different Spring Boot versions are then created during the build
-process.__
+__The major number (1.x.x.x) of the artifacts always refers to the major version
+of Spring Boot to be used. The minor number (x.2.3.4) refers to the release of
+spring-webdav. The development version always uses the major version 1.x.x.x and
+is based on Spring Boot 3. The artifacts for the various Spring Boot versions
+are created based on this version during the build process.__
 
 ## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
-very easy in Spring. At least a URL pattern is needed that defines the context
-path of the WebDavFilter. Thus, the WebDAV implementation should always use its
-own scope. Optionally, the order of filter can be specified, which is useful
-when using filter chains.
+very easy in Spring. At least a URL pattern is required that defines the context
+path of the WebDavFilter. The WebDAV implementation should therefore always use
+its own scope. Optionally, the order of the filters can be specified, which is
+useful when using filter chains.
 
 Example of a easy registration, directly in an application:
 
@@ -129,14 +127,14 @@ __For WebDAV, URL patterns end usually with `/*` and AntPathMatcher end with
 
 ## Definition of Mapping
 The WebDAV implementation uses a virtual file system. This file system is built
-per annotations in the Mapping. Direct access to the mapping is not possible, it
-is only created via the annotations. The annotations are applied directly in the
-managed beans, e.g. in `Component`, `Controller`, `Service`, `RestController`,
-... For this purpose, the WebDAV implementation provides various annotations.
-The central component  is `@WebDavMapping`. This defines the virtual entities of
-the Mapping and thus from the virtual file system. `@WebDavMapping` defines a
-case-insensitive virtual path for this purpose, which is later used as a
-reference in other WebDav annotations.
+per annotations in the Mapping object. Direct access to the mapping is not
+possible, it is only created via the annotations. The annotations are applied
+directly in the managed beans, e.g. in `Component`, `Controller`, `Service`,
+`RestController`, ... For this purpose, the WebDAV implementation provides
+various annotations. The central component  is `@WebDavMapping`. This defines
+the virtual entities of the mapping and thus from the virtual file system.
+`@WebDavMapping` defines a case-insensitive virtual path for this purpose, which
+is later used as a reference in other WebDav annotations.
 
 ```java
 @RestController
@@ -159,7 +157,7 @@ public class ExampleController {
 ```
 _Example of single and multiple use of annotation for path definition_
 
-The Mapping supports folders and files based on the paths of virtual entities.
+The mapping supports folders and files based on the paths of virtual entities.
 Where and in which managed beans the paths are defined does not matter. During
 the initialization of the WebDavFilter all managed beans are scanned and the
 information for the mapping is collected. In this process, the paths are checked
