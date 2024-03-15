@@ -1,14 +1,14 @@
 <p>
   <a href="https://github.com/seanox/spring-webdav/pulls"
-      title="Development is waiting for new issues / requests / ideas">
-    <img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge">
-  </a>
-  <a href="https://github.com/seanox/spring-webdav/issues">
-    <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
-  </a>
-  <a href="http://seanox.de/contact">
-    <img src="https://img.shields.io/badge/support-active-green?style=for-the-badge">
-  </a>
+      title="Development is waiting for new issues / requests / ideas"
+    ><img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge"
+  ></a>
+  <a href="https://github.com/seanox/spring-webdav/issues"
+    ><img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge"
+  ></a>
+  <a href="http://seanox.de/contact"
+    ><img src="https://img.shields.io/badge/support-active-green?style=for-the-badge"
+  ></a>
 </p>
 
 
@@ -61,7 +61,7 @@ specific language governing permissions and limitations under the License.
 
 # System Requirement
 - Java 11 or higher
-- Spring Boot 2 + 3
+- Spring Boot 2 or 3
 
 
 # Downloads
