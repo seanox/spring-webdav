@@ -16,12 +16,13 @@
  */
 package com.seanox.test;
 
-import com.seanox.webdav.XmlWriterAdapter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import com.seanox.webdav.XmlWriterAdapter;
 
 /** Test of the XmlWriter functions. */
 class XmlWriterTest extends AbstractTest {

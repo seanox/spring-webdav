@@ -16,11 +16,12 @@
  */
 package com.seanox.test;
 
-import com.seanox.webdav.MappingAdapter;
+import java.nio.file.InvalidPathException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.InvalidPathException;
+import com.seanox.webdav.MappingAdapter;
 
 /** Test of the Mapping functions. */
 class MappingTest extends AbstractTest {

@@ -16,10 +16,6 @@
  */
 package com.seanox.test;
 
-import com.seanox.webdav.WebDavAttributeMapping;
-import com.seanox.webdav.WebDavInputMapping;
-import com.seanox.webdav.WebDavMapping;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,6 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
 
 /** General implementation for the execution of tests. */
 public class AbstractTest {

@@ -16,14 +16,15 @@
  */
 package com.seanox.test;
 
-import com.seanox.webdav.MetaInputStreamAdapter;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import com.seanox.webdav.MetaInputStreamAdapter;
 
 /** Test of the MetaOutputStream functions. */
 @SuppressWarnings("boxing")
