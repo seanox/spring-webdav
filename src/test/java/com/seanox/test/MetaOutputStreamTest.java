@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -20,21 +16,17 @@
  */
 package com.seanox.test;
 
-import com.seanox.webdav.MetaInputStreamAdapter;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-/**
- * Test of the MetaOutputStream functions.
- *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210815
- */
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import com.seanox.webdav.MetaInputStreamAdapter;
+
+/** Test of the MetaOutputStream functions. */
 @SuppressWarnings("boxing")
 class MetaOutputStreamTest extends AbstractTest {
 
