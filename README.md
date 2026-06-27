@@ -36,7 +36,7 @@ based API without an additional frontend.
   but it does not create or transform Office documents automatically
 - Supports use as a network drive
 - Supports extended file attributes for Windows
-- Supports Spring Boot 2 + 3
+- Supports Spring Boot 2, 3 and later
 
 
 # License Terms
@@ -61,7 +61,7 @@ specific language governing permissions and limitations under the License.
 
 # System Requirement
 - Java 11 or higher
-- Spring Boot 2 or 3 or later
+- Spring Boot 2, 3 and later
 
 
 # Downloads
