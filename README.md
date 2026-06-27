@@ -67,7 +67,7 @@ specific language governing permissions and limitations under the License.
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 
-for Spring Boot 2:  
+For __Spring Boot 2__:  
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.5.0
 
 ```xml
@@ -78,7 +78,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.5.0
 </dependency>
 ```
 
-for Spring Boot 3:  
+For __Spring Boot 3 or later__:  
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.5.0
 
 ```xml
