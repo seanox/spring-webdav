@@ -50,9 +50,9 @@ Create a new Spring Boot based project e.g. with https://start.spring.io or use
 an existing one and add the dependencies to the project, e.g. in the `pom.xml`
 for a Maven based project.
 
-Spring Boot 2 and 3 are supported.
+Spring Boot 2, 3 and later are supported.
 
-for Spring Boot 2:
+Spring Boot 2 / javax.servlet:
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
@@ -61,7 +61,7 @@ for Spring Boot 2:
 </dependency>
 ```
 
-for Spring Boot 3:
+Spring Boot 3 or later / jakarta.servlet:
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
