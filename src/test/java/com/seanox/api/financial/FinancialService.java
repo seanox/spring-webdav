@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2024 Seanox Software Solutions
  *
@@ -29,12 +25,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
 
-/**
- * Simulation of a simple data access layer.
- *
- * @author  Seanox Software Solutions
- * @version 1.3.0 20240103
- */
+/** Simulation of a simple data access layer. */
 @Service
 class FinancialService {
 
