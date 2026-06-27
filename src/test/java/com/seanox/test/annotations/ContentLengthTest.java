@@ -16,11 +16,12 @@
  */
 package com.seanox.test.annotations;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import com.seanox.api.extras.ContentLengthTestController;
 import com.seanox.test.AbstractApiTest;
 import com.seanox.webdav.WebDavMapping;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 /** Test the function of the ContentLength attribute for {@link WebDavMapping}. */
 class ContentLengthTest extends AbstractApiTest {

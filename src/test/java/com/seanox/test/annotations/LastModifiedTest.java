@@ -16,14 +16,15 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.LastModifiedTestController;
-import com.seanox.webdav.DateTimeAdapter;
-import com.seanox.test.AbstractApiTest;
-import com.seanox.webdav.WebDavMapping;
+import java.util.Locale;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Locale;
+import com.seanox.api.extras.LastModifiedTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.DateTimeAdapter;
+import com.seanox.webdav.WebDavMapping;
 
 /** Test the function of the LastModified attribute for {@link WebDavMapping}. */
 class LastModifiedTest extends AbstractApiTest {

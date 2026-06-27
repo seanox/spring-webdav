@@ -16,9 +16,15 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.MetaTestController;
-import com.seanox.webdav.WebDavMetaMapping;
-import com.seanox.test.AbstractApiTest;
+import java.io.ByteArrayInputStream;
+import java.net.URI;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
@@ -26,13 +32,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.w3c.dom.Document;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.net.URI;
+import com.seanox.api.extras.MetaTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavMetaMapping;
 
 /** Test of the annotation {@link WebDavMetaMapping}. */
 class MetaTest extends AbstractApiTest {

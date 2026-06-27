@@ -16,12 +16,13 @@
  */
 package com.seanox.test.annotations;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import com.seanox.api.extras.AcceptedTestController;
 import com.seanox.test.AbstractApiTest;
 import com.seanox.webdav.WebDavInputMapping;
 import com.seanox.webdav.WebDavMapping;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 /**
  * Test the function of the accepted attribute for

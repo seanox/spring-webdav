@@ -16,14 +16,15 @@
  */
 package com.seanox.test.annotations;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import com.seanox.api.extras.ExpressionTestController;
+import com.seanox.test.AbstractApiTest;
 import com.seanox.webdav.AnnotationAdapter;
 import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.WebDavMappingAttributeExpression;
-import com.seanox.test.AbstractApiTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 /** Test of the expressions. */
 class ExpressionTest extends AbstractApiTest {

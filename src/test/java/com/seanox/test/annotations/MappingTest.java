@@ -16,14 +16,15 @@
  */
 package com.seanox.test.annotations;
 
+import java.lang.annotation.Annotation;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import com.seanox.test.AbstractTest;
 import com.seanox.webdav.MappingAdapter;
 import com.seanox.webdav.MappingExceptionAdapter;
 import com.seanox.webdav.WebDavMapping;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.lang.annotation.Annotation;
 
 /** Test of the annotation {@link WebDavMapping}. */
 class MappingTest extends AbstractTest {

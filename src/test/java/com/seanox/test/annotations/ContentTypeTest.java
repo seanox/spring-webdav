@@ -16,11 +16,12 @@
  */
 package com.seanox.test.annotations;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import com.seanox.api.extras.ContentTypeTestController;
 import com.seanox.test.AbstractApiTest;
 import com.seanox.webdav.WebDavMapping;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 /** Test the function of the ContentType attribute for {@link WebDavMapping}. */
 class ContentTypeTest extends AbstractApiTest {

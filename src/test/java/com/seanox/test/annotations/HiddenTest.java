@@ -16,22 +16,24 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.HiddenTestController;
-import com.seanox.test.AbstractApiTest;
-import com.seanox.webdav.WebDavMapping;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.w3c.dom.Document;
+import java.io.ByteArrayInputStream;
+import java.net.URI;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.net.URI;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.w3c.dom.Document;
+
+import com.seanox.api.extras.HiddenTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavMapping;
 
 /**
  * Test the function of the hidden attribute for

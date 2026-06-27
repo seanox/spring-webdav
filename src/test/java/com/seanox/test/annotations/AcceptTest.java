@@ -16,12 +16,13 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.AcceptTestController;
-import com.seanox.test.AbstractApiTest;
-import com.seanox.webdav.WebDavInputMapping;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.seanox.api.extras.AcceptTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavInputMapping;
 
 /** Test the function of the accept attribute for {@link WebDavInputMapping}. */
 class AcceptTest extends AbstractApiTest {

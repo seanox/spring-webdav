@@ -16,12 +16,13 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.CreationDateTestController;
-import com.seanox.webdav.DateTimeAdapter;
-import com.seanox.test.AbstractApiTest;
-import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import com.seanox.api.extras.CreationDateTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.DateTimeAdapter;
+import com.seanox.webdav.WebDavMapping;
 
 /** Test the function of the CreationDate attribute for {@link WebDavMapping}. */
 class CreationDateTest extends AbstractApiTest {

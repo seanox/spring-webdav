@@ -16,11 +16,12 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.SignaturesTestController;
-import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.seanox.api.extras.SignaturesTestController;
+import com.seanox.test.AbstractApiTest;
 
 /** Test the function of the method signatures. */
 class SignaturesTest extends AbstractApiTest {
