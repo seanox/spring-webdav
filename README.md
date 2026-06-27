@@ -61,7 +61,7 @@ specific language governing permissions and limitations under the License.
 
 # System Requirement
 - Java 11 or higher
-- Spring Boot 2 or 3
+- Spring Boot 2 or 3 or later
 
 
 # Downloads
