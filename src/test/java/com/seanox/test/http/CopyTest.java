@@ -16,12 +16,13 @@
  */
 package com.seanox.test.http;
 
-import com.seanox.test.AbstractApiTest;
+import java.net.URI;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.net.URI;
+import com.seanox.test.AbstractApiTest;
 
 /**
  * Test for HTTP method COPY.<br>

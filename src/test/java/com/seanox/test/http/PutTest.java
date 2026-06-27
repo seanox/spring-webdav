@@ -16,12 +16,13 @@
  */
 package com.seanox.test.http;
 
-import com.seanox.test.AbstractApiTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.seanox.test.AbstractApiTest;
 
 /** Test the sequence for PUT file and folders. */
 public class PutTest extends AbstractApiTest {

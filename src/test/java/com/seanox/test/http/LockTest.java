@@ -16,7 +16,9 @@
  */
 package com.seanox.test.http;
 
-import com.seanox.test.AbstractApiTest;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -24,8 +26,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
+import com.seanox.test.AbstractApiTest;
 
 /**
  * Test the sequence for LOCK and UNLOCK file and folders.<br>
