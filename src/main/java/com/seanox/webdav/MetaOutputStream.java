@@ -16,14 +16,14 @@
  */
 package com.seanox.webdav;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Objects;
+
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.Builder;
 
 /**
  * MetaOutputStream is an {@link OutputStream} with meta information for the

@@ -16,13 +16,13 @@
  */
 package com.seanox.webdav;
 
+import java.net.URI;
+import java.util.Date;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Setter;
-
-import java.net.URI;
-import java.util.Date;
 
 /**
  * MetaProperties, read-only collector with all attributes of the virtual
