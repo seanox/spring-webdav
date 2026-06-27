@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -20,20 +16,16 @@
  */
 package com.seanox.test.http;
 
-import com.seanox.test.AbstractApiTest;
+import java.net.URI;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.net.URI;
+import com.seanox.test.AbstractApiTest;
 
-/**
- * Test the sequence for PROPFIND for files and folders.
- *
- * @author  Seanox Software Solutions
- * @version 1.1.0 20210811
- */
+/** Test the sequence for PROPFIND for files and folders. */
 @SuppressWarnings("boxing")
 public class PropfindTest extends AbstractApiTest {
 
