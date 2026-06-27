@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -20,13 +16,6 @@
  */
 package com.seanox.webdav;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +23,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
+
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * Annotation is the base class for handling the annotations. There are two
@@ -43,9 +40,6 @@ import java.util.Objects;
  * prefix would be too present and more information, functions and abstraction
  * can be provided for the internal world, which would rather confuse the
  * public world.
- *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210725
  */
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)

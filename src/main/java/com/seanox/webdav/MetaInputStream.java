@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2024 Seanox Software Solutions
  *
@@ -20,14 +16,14 @@
  */
 package com.seanox.webdav;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 /**
  * <p>
@@ -46,9 +42,6 @@ import java.util.Objects;
  *   permanent one, because it is not known how many bytes could be read, which
  *   can distort the limit. Without limiting, the data stream behaves normally.
  * </p>
- *
- * @author  Seanox Software Solutions
- * @version 1.3.0 20240103
  */
 @Builder(access=AccessLevel.PACKAGE)
 @AllArgsConstructor(access=AccessLevel.PACKAGE)
