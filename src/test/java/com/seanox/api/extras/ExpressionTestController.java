@@ -16,14 +16,15 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.webdav.WebDavMapping;
-import com.seanox.webdav.WebDavMappingAttribute;
-import com.seanox.webdav.WebDavMappingAttributeExpression;
-import com.seanox.webdav.MetaOutputStream;
+import java.io.IOException;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import com.seanox.webdav.MetaOutputStream;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMappingAttributeExpression;
 
 /** Test of the expressions. */
 @Profile("test")

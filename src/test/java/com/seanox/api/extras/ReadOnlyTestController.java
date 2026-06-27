@@ -16,10 +16,11 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.webdav.WebDavInputMapping;
-import com.seanox.webdav.WebDavMapping;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
 
 /**
  * Test the function of the readOnly attribute for

@@ -16,6 +16,13 @@
  */
 package com.seanox.api.extras;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
 import com.seanox.webdav.DateTimeAdapter;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.MetaOutputStream;
@@ -24,12 +31,6 @@ import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.webdav.WebDavMetaMapping;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Test the function of the LastModified attribute for
