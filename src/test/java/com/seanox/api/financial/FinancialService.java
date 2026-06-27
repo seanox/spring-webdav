@@ -25,7 +25,7 @@ import com.seanox.api.financial.data.FinancialReportSales;
 import com.seanox.api.financial.data.FinancialReportStatistic;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
 

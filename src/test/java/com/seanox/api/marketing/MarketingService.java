@@ -24,7 +24,7 @@ import com.seanox.api.marketing.data.MarketingFlyer;
 import com.seanox.api.marketing.data.MarketingNewsletter;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
 
