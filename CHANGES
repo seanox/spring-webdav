@@ -1,3 +1,11 @@
+1.6.0 2026xxxx
+CR: Build: Reorganization of the release process
+    - 1.x Spring-Boot 2.x (javax.servlet)
+    - 2.x Spring-Boot 3.x / 4.x (jakarta.servlet)
+    The major number of project version is no longer tied to future Spring Boot
+    major versions to avoid ambiguity once newer Servlet API releases become
+    available.
+
 1.5.0 20240313
 BF: Review: Optimization and corrections
 BF: Documentation: Update of content
