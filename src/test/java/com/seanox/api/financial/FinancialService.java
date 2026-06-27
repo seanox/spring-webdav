@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2024 Seanox Software Solutions
  *
@@ -20,21 +16,18 @@
  */
 package com.seanox.api.financial;
 
-import com.seanox.api.financial.data.FinancialCosts;
-import com.seanox.api.financial.data.FinancialReportSales;
-import com.seanox.api.financial.data.FinancialReportStatistic;
-import org.springframework.stereotype.Service;
-
-import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
 
-/**
- * Simulation of a simple data access layer.
- *
- * @author  Seanox Software Solutions
- * @version 1.3.0 20240103
- */
+import org.springframework.stereotype.Service;
+
+import com.seanox.api.financial.data.FinancialCosts;
+import com.seanox.api.financial.data.FinancialReportSales;
+import com.seanox.api.financial.data.FinancialReportStatistic;
+
+import jakarta.annotation.PostConstruct;
+
+/** Simulation of a simple data access layer. */
 @Service
 class FinancialService {
 
