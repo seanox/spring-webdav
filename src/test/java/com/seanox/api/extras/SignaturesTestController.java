@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -20,36 +16,33 @@
  */
 package com.seanox.api.extras;
 
-import com.seanox.webdav.WebDavAttributeMapping;
-import com.seanox.webdav.WebDavInputMapping;
-import com.seanox.webdav.WebDavMapping;
-import com.seanox.webdav.WebDavMappingAttribute;
-import com.seanox.webdav.WebDavMetaMapping;
+import java.io.IOException;
+import java.net.URI;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+import com.seanox.test.AbstractTest;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.MetaInputStream;
 import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.MetaProperties;
 import com.seanox.webdav.Properties;
-import com.seanox.test.AbstractTest;
+import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavInputMapping;
+import com.seanox.webdav.WebDavMapping;
+import com.seanox.webdav.WebDavMappingAttribute;
+import com.seanox.webdav.WebDavMetaMapping;
+
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URI;
-
-/**
- * Test the function of the method signatures.
- *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210726
- */
+/** Test the function of the method signatures. */
 @Profile("test")
 @Component
 public class SignaturesTestController {
