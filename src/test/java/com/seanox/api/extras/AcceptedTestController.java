@@ -16,15 +16,16 @@
  */
 package com.seanox.api.extras;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
+import com.seanox.webdav.MetaData;
 import com.seanox.webdav.WebDavAttributeMapping;
+import com.seanox.webdav.WebDavInputMapping;
 import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.webdav.WebDavMetaMapping;
-import com.seanox.webdav.MetaData;
-import com.seanox.webdav.WebDavInputMapping;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
 /**
  * Test the function of the accepted attribute for

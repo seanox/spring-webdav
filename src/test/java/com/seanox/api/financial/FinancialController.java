@@ -16,21 +16,23 @@
  */
 package com.seanox.api.financial;
 
+import java.io.IOException;
+import java.util.Date;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.seanox.api.financial.data.FinancialCosts;
 import com.seanox.api.financial.data.FinancialReportSales;
 import com.seanox.api.financial.data.FinancialReportStatistic;
+import com.seanox.webdav.MetaInputStream;
+import com.seanox.webdav.MetaOutputStream;
 import com.seanox.webdav.WebDavAttributeMapping;
 import com.seanox.webdav.WebDavInputMapping;
 import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.WebDavMappingAttribute;
-import com.seanox.webdav.MetaInputStream;
-import com.seanox.webdav.MetaOutputStream;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.util.Date;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Example for the integration of webDAV into a RestController.<br>

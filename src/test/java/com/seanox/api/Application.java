@@ -16,8 +16,6 @@
  */
 package com.seanox.api;
 
-import com.seanox.webdav.WebDavFilter;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +27,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import com.seanox.webdav.WebDavFilter;
+
+import lombok.Data;
 
 /**
  * Example for the integration of webDAV in a Spring bases application.<br>

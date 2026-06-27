@@ -16,9 +16,9 @@
  */
 package com.seanox.api.financial.data;
 
-import lombok.Data;
-
 import java.util.Date;
+
+import lombok.Data;
 
 /** Example for a data object. */
 @Data

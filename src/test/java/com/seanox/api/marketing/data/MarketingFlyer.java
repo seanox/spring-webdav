@@ -16,9 +16,9 @@
  */
 package com.seanox.api.marketing.data;
 
-import lombok.Data;
-
 import java.util.Date;
+
+import lombok.Data;
 
 /** Example for a data object. */
 @Data

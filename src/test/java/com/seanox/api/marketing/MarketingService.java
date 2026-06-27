@@ -16,13 +16,15 @@
  */
 package com.seanox.api.marketing;
 
-import com.seanox.api.marketing.data.MarketingFlyer;
-import com.seanox.api.marketing.data.MarketingNewsletter;
-import org.springframework.stereotype.Service;
-
-import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Date;
+
+import org.springframework.stereotype.Service;
+
+import com.seanox.api.marketing.data.MarketingFlyer;
+import com.seanox.api.marketing.data.MarketingNewsletter;
+
+import jakarta.annotation.PostConstruct;
 
 /** Simulation of a simple data access layer. */
 @Service

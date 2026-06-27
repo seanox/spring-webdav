@@ -16,14 +16,16 @@
  */
 package com.seanox.api.financial;
 
+import java.io.IOException;
+import java.util.Date;
+
+import org.springframework.stereotype.Service;
+
 import com.seanox.api.financial.data.FinancialCosts;
 import com.seanox.api.financial.data.FinancialReportSales;
 import com.seanox.api.financial.data.FinancialReportStatistic;
-import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.Date;
 
 /** Simulation of a simple data access layer. */
 @Service
