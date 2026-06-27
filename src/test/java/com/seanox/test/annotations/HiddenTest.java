@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -20,22 +16,24 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.HiddenTestController;
-import com.seanox.test.AbstractApiTest;
-import com.seanox.webdav.WebDavMapping;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.w3c.dom.Document;
+import java.io.ByteArrayInputStream;
+import java.net.URI;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.net.URI;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.w3c.dom.Document;
+
+import com.seanox.api.extras.HiddenTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.WebDavMapping;
 
 /**
  * Test the function of the hidden attribute for
@@ -53,9 +51,6 @@ import java.net.URI;
  * - /extras/hidden/b/b-1/b-2/b-3 can be used, but is empty
  * - /extras/hidden/b/b-1/b-2/b-3/b1.txt can be used, shows the file name
  * - /extras/hidden/c/c-1/c-2/c-3 can be used and is not empty
- *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210815
  */
 class HiddenTest extends AbstractApiTest {
 

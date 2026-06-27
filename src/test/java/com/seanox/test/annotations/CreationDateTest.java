@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -20,19 +16,15 @@
  */
 package com.seanox.test.annotations;
 
-import com.seanox.api.extras.CreationDateTestController;
-import com.seanox.webdav.DateTimeAdapter;
-import com.seanox.test.AbstractApiTest;
-import com.seanox.webdav.WebDavMapping;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-/**
- * Test the function of the CreationDate attribute for {@link WebDavMapping}.
- *
- * @author  Seanox Software Solutions
- * @version 1.1.0 20210815
- */
+import com.seanox.api.extras.CreationDateTestController;
+import com.seanox.test.AbstractApiTest;
+import com.seanox.webdav.DateTimeAdapter;
+import com.seanox.webdav.WebDavMapping;
+
+/** Test the function of the CreationDate attribute for {@link WebDavMapping}. */
 class CreationDateTest extends AbstractApiTest {
 
     // Supported types of data definition:
