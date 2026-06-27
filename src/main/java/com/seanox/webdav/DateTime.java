@@ -1,8 +1,4 @@
 /**
- * LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt,
- * im Folgenden Seanox Software Solutions oder kurz Seanox genannt.
- * Diese Software unterliegt der Version 2 der Apache License.
- *
  * WebDAV mapping for Spring Boot
  * Copyright (C) 2021 Seanox Software Solutions
  *
@@ -26,12 +22,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-/**
- * Static utilities for date and time.
- *
- * @author  Seanox Software Solutions
- * @version 1.0.0 20210626
- */
+/** Static utilities for date and time. */
 class DateTime {
 
     final static TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("GMT");
