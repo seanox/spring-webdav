@@ -67,7 +67,7 @@ specific language governing permissions and limitations under the License.
 # Downloads
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 
-__Spring Boot 2 and javax.servlet__:  
+__Spring Boot 2 / javax.servlet__:  
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.5.0
 
 ```xml
@@ -78,7 +78,7 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.5.0
 </dependency>
 ```
 
-__Spring Boot 3 or later and jakarta.servlet__:  
+__Spring Boot 3 or later / jakarta.servlet__:  
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.5.0
 
 ```xml
