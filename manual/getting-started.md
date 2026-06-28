@@ -57,7 +57,7 @@ Spring Boot 2 / javax.servlet:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>2.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
@@ -66,7 +66,7 @@ Spring Boot 3 or later / jakarta.servlet:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>3.5.0</version>
+    <version>2.6.0</version>
 </dependency>
 ```
 
