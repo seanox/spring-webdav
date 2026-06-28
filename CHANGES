@@ -11,6 +11,17 @@ CR: Test: Omission of test reports (there are better CI/CD solutions)
 CR: Test: Integration of JaCoCo (Java Code Coverage)
 CR: Maven: Switch to org.sonatype.central
 
+1.6.0 20260628
+CR: Build: Reorganization of the release process
+    - 1.x Spring-Boot 2.x (javax.servlet)
+    - 2.x Spring-Boot 3.x / 4.x (jakarta.servlet)
+    The major number of project version is no longer tied to future Spring Boot
+    major versions to avoid ambiguity once newer servlet API releases become
+    available.
+CR: Test: Omission of test reports (there are better CI/CD solutions)
+CR: Test: Integration of JaCoCo (Java Code Coverage)
+CR: Maven: Switch to org.sonatype.central
+
 1.5.0 20240313
 BF: Review: Optimization and corrections
 BF: Documentation: Update of content
