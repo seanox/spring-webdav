@@ -45,7 +45,7 @@
   </macrodef>
 
   <macrodef name="release-info-insert">
-    <attribute name="version" default="1.${release.minor}.${release.patch} ${release.date}"/>
+    <attribute name="version" default="2.${release.minor}.${release.patch} ${release.date}"/>
     <sequential>
       <echo file="release-info.tmp" message="@{version}"/>
       <replaceregexp file="release-info.tmp" match="[^\d\.\s]" replace="0" flags="g"/>
