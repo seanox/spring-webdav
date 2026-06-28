@@ -796,11 +796,11 @@ Downloads the dependencies and then executes the tests.
 Downloads the dependencies and skips the tests.
 
 `mvn clean test`  
-Rebuilds the project and executes the tests.
+Rebuilds the project and executes the tests and JaCoCo.
 
-`mvn clean compile site`  
-Rebuilds the project, starts the static code analysis and creates the report:  
-`./spring-webdav/target/site/project-reports.html`
+`mvn clean verify`  
+Rebuilds the project and executes the tests, JaCoCo and GPG.  
+`./spring-webdav/target/site/jacoco/index.html`
 
 `mvn clean package -DskipTests`  
 Rebuilds the project incl. JavaDoc but without tests.
@@ -813,5 +813,5 @@ Maps the WebDAV as drive X: in Windows (not permanent).
 `net use x: /delete /YES`  
 Remove the mapping for drive X: in Windows.
 
-`mvn clean deploy`  
+`mvn clean verify org.sonatype.central:central-publishing-maven-plugin:publish`  
 Rebuilds the project and publish a release.
