@@ -18,6 +18,7 @@ package com.seanox.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -55,8 +56,8 @@ class XmlWriterTest extends AbstractTest {
 
             xmlWriter.close();
 
-            final String output = buffer.toString().replaceAll("<(?!/)", "\n<").trim();
-            final String pattern = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            final String output = buffer.toString(StandardCharsets.UTF_8).replaceAll("<(?!/)", "\n<").trim();
+            final String master = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<![CDATA[writeData1-\u00F6]]>\n" +
                     "<space1:name1>writeText1-\u00F6</space1:name1>\n" +
                     "<space2:name2 xmlns:space2=\"note2\">writeText2-\u00F6</space2:name2 xmlns:space2=\"note2\">\n" +
@@ -67,17 +68,16 @@ class XmlWriterTest extends AbstractTest {
                     "<space7:name7 xmlns:space7=\"note7\">value7</space7:name7 xmlns:space7=\"note7\">\n" +
                     "<space8:name8>\n" +
                     "<![CDATA[value8]]></space8:name8>";
-            Assertions.assertEquals(pattern, output);
+            Assertions.assertEquals(master, output);
 
             final byte[] outputRaw = buffer.toByteArray();
+            final byte[] umlautRaw = ("\u00F6").getBytes(StandardCharsets.UTF_8);;
+            
             int count = 0;
-            for (int cursor = 0; cursor < outputRaw.length -1; cursor++) {
-                int a = outputRaw[cursor];
-                int b = outputRaw[cursor +1];
-                if (a == -61
-                        && b == -74)
+            for (int cursor = 0; cursor < outputRaw.length -1; cursor++)
+                if (outputRaw[cursor] == umlautRaw[0]
+                        && outputRaw[cursor +1] == umlautRaw[1])
                     count++;
-            }
             Assertions.assertEquals(3, count);
         }
     }

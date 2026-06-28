@@ -68,24 +68,24 @@ specific language governing permissions and limitations under the License.
 https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
 
 __Spring Boot 2 / javax.servlet__:  
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.5.0
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/1.6.0
 
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>2.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
 __Spring Boot 3 or later / jakarta.servlet__:  
-https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.5.0
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/2.6.0
 
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>3.5.0</version>
+    <version>2.6.0</version>
 </dependency>
 ```
 
@@ -93,10 +93,13 @@ https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav/3.5.0
 [Getting Started](https://github.com/seanox/spring-webdav/blob/master/manual/getting-started.md)
 
 # Changes 
-## 1.5.0 20240313  
+## 2.6.0 20260628  
 BF: Review: Optimization and corrections  
-BF: Documentation: Update of content  
-CR: WebDavFilter: Optimized access to the servlet API  
+BF: Update of dependencies  
+CR: Build: Reorganization of the release process  
+CR: Test: Omission of test reports (there are better CI/CD solutions)  
+CR: Test: Integration of JaCoCo (Java Code Coverage)  
+CR: Maven: Switch to org.sonatype.central  
 
 [Read more](https://raw.githubusercontent.com/seanox/spring-webdav/master/CHANGES)
 

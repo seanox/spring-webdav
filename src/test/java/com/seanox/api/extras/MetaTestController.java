@@ -16,6 +16,14 @@
  */
 package com.seanox.api.extras;
 
+import java.io.IOException;
+import java.net.URI;
+import java.text.ParseException;
+import java.util.Objects;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
 import com.seanox.webdav.DateTimeAdapter;
 import com.seanox.webdav.MetaData;
 import com.seanox.webdav.MetaInputStream;
@@ -26,13 +34,6 @@ import com.seanox.webdav.WebDavMapping;
 import com.seanox.webdav.WebDavMappingAttribute;
 import com.seanox.webdav.WebDavMappingAttributeExpression;
 import com.seanox.webdav.WebDavMetaMapping;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.URI;
-import java.text.ParseException;
-import java.util.Objects;
 
 /** Test of the annotation {@link WebDavMetaMapping}. */
 @Profile("test")

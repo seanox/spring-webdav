@@ -57,7 +57,7 @@ Spring Boot 2 / javax.servlet:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>2.5.0</version>
+    <version>1.6.0</version>
 </dependency>
 ```
 
@@ -66,15 +66,9 @@ Spring Boot 3 or later / jakarta.servlet:
 <dependency>
     <groupId>com.seanox</groupId>
     <artifactId>seanox-spring-webdav</artifactId>
-    <version>3.5.0</version>
+    <version>2.6.0</version>
 </dependency>
 ```
-
-__The major number (1.x.x.x) of the artifacts always refers to the major version
-of Spring Boot to be used. The minor number (x.2.3.4) refers to the release of
-spring-webdav. The development version always uses the major version 1.x.x.x and
-is based on Spring Boot 3. The artifacts for the various Spring Boot versions
-are created based on this version during the build process.__
 
 ## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
@@ -796,11 +790,11 @@ Downloads the dependencies and then executes the tests.
 Downloads the dependencies and skips the tests.
 
 `mvn clean test`  
-Rebuilds the project and executes the tests.
+Rebuilds the project and executes the tests and JaCoCo.
 
-`mvn clean compile site`  
-Rebuilds the project, starts the static code analysis and creates the report:  
-`./spring-webdav/target/site/project-reports.html`
+`mvn clean verify`  
+Rebuilds the project and executes the tests, JaCoCo and GPG.  
+`./spring-webdav/target/site/jacoco/index.html`
 
 `mvn clean package -DskipTests`  
 Rebuilds the project incl. JavaDoc but without tests.
@@ -813,5 +807,5 @@ Maps the WebDAV as drive X: in Windows (not permanent).
 `net use x: /delete /YES`  
 Remove the mapping for drive X: in Windows.
 
-`mvn clean deploy`  
+`mvn clean verify org.sonatype.central:central-publishing-maven-plugin:publish`  
 Rebuilds the project and publish a release.
