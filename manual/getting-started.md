@@ -70,12 +70,6 @@ Spring Boot 3 or later / jakarta.servlet:
 </dependency>
 ```
 
-__The major number (1.x.x.x) of the artifacts always refers to the major version
-of Spring Boot to be used. The minor number (x.2.3.4) refers to the release of
-spring-webdav. The development version always uses the major version 1.x.x.x and
-is based on Spring Boot 3. The artifacts for the various Spring Boot versions
-are created based on this version during the build process.__
-
 ## Registration of WebDavFilter
 To use the WebDAV implementation, the WebDavFilter must be registered, which is
 very easy in Spring. At least a URL pattern is required that defines the context
