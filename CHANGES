@@ -1,4 +1,4 @@
-2.6.0 2026xxxx
+2.6.0 20260628
 BF: Review: Optimization and corrections
 BF: Update of dependencies
 CR: Build: Reorganization of the release process
@@ -9,7 +9,7 @@ CR: Build: Reorganization of the release process
     available.
 CR: Test: Omission of test reports (there are better CI/CD solutions)
 CR: Test: Integration of JaCoCo (Java Code Coverage)
-CR: Maven: Switch to org.sonatype.central 
+CR: Maven: Switch to org.sonatype.central
 
 1.5.0 20240313
 BF: Review: Optimization and corrections
