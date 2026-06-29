@@ -52,7 +52,7 @@ for a Maven based project.
 
 Spring Boot 2, 3 and later are supported.
 
-Spring Boot 2 / javax.servlet:
+__Spring Boot 2 / javax.servlet:__
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
@@ -61,7 +61,7 @@ Spring Boot 2 / javax.servlet:
 </dependency>
 ```
 
-Spring Boot 3 or later / jakarta.servlet:
+__Spring Boot 3 or later / jakarta.servlet:__
 ```xml
 <dependency>
     <groupId>com.seanox</groupId>
