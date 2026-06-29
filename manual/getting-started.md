@@ -793,8 +793,8 @@ Downloads the dependencies and skips the tests.
 Rebuilds the project and executes the tests and JaCoCo.
 
 `mvn clean verify`  
-Rebuilds the project and executes the tests, JaCoCo and GPG. 
-Output: `./target/site/jacoco/index.html`
+Rebuilds the project and executes the tests, JaCoCo and GPG.  
+output: `./target/site/jacoco/index.html`
 
 `mvn clean package -DskipTests`  
 Rebuilds the project incl. JavaDoc but without tests.
