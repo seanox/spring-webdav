@@ -793,8 +793,8 @@ Downloads the dependencies and skips the tests.
 Rebuilds the project and executes the tests and JaCoCo.
 
 `mvn clean verify`  
-Rebuilds the project and executes the tests, JaCoCo and GPG.  
-`./spring-webdav/target/site/jacoco/index.html`
+Rebuilds the project and executes the tests, JaCoCo and GPG. 
+Output: `./target/site/jacoco/index.html`
 
 `mvn clean package -DskipTests`  
 Rebuilds the project incl. JavaDoc but without tests.
@@ -808,4 +808,6 @@ Maps the WebDAV as drive X: in Windows (not permanent).
 Remove the mapping for drive X: in Windows.
 
 `mvn clean verify org.sonatype.central:central-publishing-maven-plugin:publish`  
-Rebuilds the project and publish a release.
+Rebuilds the project and publish a release.  
+https://central.sonatype.com/artifact/com.seanox/seanox-spring-webdav  
+https://mvnrepository.com/artifact/com.seanox/seanox-spring-webdav
